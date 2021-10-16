@@ -48,7 +48,6 @@ public class Tablero {
     }
 
 
-
     public Pair<Integer, Integer> identificaFicha(float xPos, float yPos){
        int identificadorX = (int) (xPos / _casillasAncho);
        int identificadorY = (int) (yPos / _casillasAlto);
@@ -85,6 +84,9 @@ public class Tablero {
             }
         }
         return esSolucion;
+    }
+    public Celda [][] getTablero(){
+        return _matrizJuego;
     }
 
     //La matriz solucíón solo guarda los colores de cada posición
