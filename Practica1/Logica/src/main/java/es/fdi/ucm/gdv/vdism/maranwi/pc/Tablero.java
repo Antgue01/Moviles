@@ -70,12 +70,12 @@ public class Tablero {
         if(result == 1) --_numFichasBlancas;
         else if(result == 2 ) ++_numFichasBlancas;
 
-        if(_numFichasBlancas == 0 && compruebaSolucion()){
-            //SE HA GANADO LA PARTIDA -> HACER LO QUE SEA
-        }
+
     }
 
-    private boolean compruebaSolucion(){
+    public boolean compruebaSolucion(){
+        if(_numFichasBlancas >0)
+            return  false;
         boolean esSolucion = true;
         for(int x = 0; x < _matrizSolucion[0].length && esSolucion; ++x){
             for(int j = 0; j < _matrizSolucion[1].length; ++j){
@@ -83,7 +83,7 @@ public class Tablero {
                     esSolucion = false;
             }
         }
-        return esSolucion;
+        return esSolucion ;
     }
     public Celda [][] getTablero(){
         return _matrizJuego;

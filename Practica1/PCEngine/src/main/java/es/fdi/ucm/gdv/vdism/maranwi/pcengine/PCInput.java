@@ -1,10 +1,12 @@
+package es.fdi.ucm.gdv.vdism.maranwi.pcengine;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Input implements MouseListener, MouseMotionListener {
+
+public class PCInput implements MouseListener, MouseMotionListener,es.fdi.ucm.gdv.vdism.maranwi.engine.Input {
 
     List<TouchEvent>getEvents(){
         List<TouchEvent> auxEvents=new ArrayList<>(_events);
@@ -52,5 +54,10 @@ public class Input implements MouseListener, MouseMotionListener {
     @Override
     public void mouseMoved(MouseEvent mouseEvent) {
 
+    }
+
+    @Override
+    public List<TouchEvent> getTouchEvents() {
+        return _events;
     }
 }
