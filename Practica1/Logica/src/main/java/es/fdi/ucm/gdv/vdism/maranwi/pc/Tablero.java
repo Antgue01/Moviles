@@ -5,7 +5,7 @@ import jdk.internal.net.http.common.Pair;
 
 
 public class Tablero {
-    public void Tablero(int filas, int columnas, int width, int height){
+    public Tablero(int filas, int columnas, int width, int height){
         _filas = filas;
         _columnas = columnas;
         _width = width;
@@ -85,7 +85,7 @@ public class Tablero {
         }
         return esSolucion ;
     }
-    public Celda [][] getTablero(){
+    public Celda [][] getMatrizJuego(){
         return _matrizJuego;
     }
 

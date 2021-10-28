@@ -1,18 +1,15 @@
 package es.fdi.ucm.gdv.vdism.maranwi.pc;
 import  es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
-import es.fdi.ucm.gdv.vdism.maranwi.pc.Celda;
-import es.fdi.ucm.gdv.vdism.maranwi.pc.Tablero;
 
 public class UIRenderer {
-    public  UIRenderer(Tablero tablero){
-        _myTablero=tablero.getTablero();
+    public UIRenderer(Tablero tablero){
+        _matrizJuego = tablero.getMatrizJuego();
     }
-    public void render( Graphics g){
-        int tamanyoFicha=g.getWidth()/_myTablero[0].length;
-        for (int i=0;i<_myTablero[0].length;i++)
-              for(int j=0;j< _myTablero[1].length;j++){
+    public void render(Graphics g){
+        int tamanyoFicha= g.getWidth()/ _matrizJuego[0].length;
+        for (int i = 0; i< _matrizJuego[0].length; i++)
+              for(int j = 0; j< _matrizJuego[1].length; j++){
                   g.fillCircle((i*tamanyoFicha)+tamanyoFicha/2,(j*tamanyoFicha)+tamanyoFicha/2,tamanyoFicha);
-
         }
     }
     private int GetColorFromInt(TipoCelda Colorid){
@@ -25,5 +22,5 @@ public class UIRenderer {
     return -1;
 
     }
-    private Celda[][] _myTablero;
+    private Celda[][] _matrizJuego;
 }

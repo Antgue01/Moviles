@@ -2,9 +2,9 @@ package es.fdi.ucm.gdv.vdism.maranwi.engine;
 
 public interface Application {
     void onInit();
-    void onDestroy();
+    boolean onExit();
+    void onRelease();
     void onInput(Input input);
     void onUpdate(float deltaTime);
     void onRender(Graphics graphics);
-
 }
