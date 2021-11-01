@@ -12,11 +12,28 @@ public interface Input {
             _posY=posY;
             _id=id;
         }
+        public TouchType get_type() {
+            return _type;
+        }
         public enum TouchType {pulsacion,liberacion,desplazamiento};
+
+        public int get_posX() {
+            return _posX;
+        }
+
+        public int get_posY() {
+            return _posY;
+        }
+
+        public int get_id() {
+            return _id;
+        }
+
         private TouchType _type;
         private int _posX;
         private int _posY;
         private int _id;
+
 
     }
     List<TouchEvent> getTouchEvents();

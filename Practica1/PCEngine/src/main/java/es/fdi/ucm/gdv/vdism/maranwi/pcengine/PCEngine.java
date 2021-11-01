@@ -17,14 +17,16 @@ public class PCEngine implements Engine {
 
     public void Play(){
         _myGame.onInit();
+        _graphics.addMouseListener(_input);
+        _graphics.addMouseMotionListener(_input);
         //hace deltatime
+
         float deltaTime = 0.0f;
         boolean play = true;
         while(play){
             _myGame.onInput(_input);
             _myGame.onUpdate(deltaTime);
-
-            _myGame.onRender(_graphics);
+            _graphics.draw(_myGame);
             if(!_myGame.onExit()) play = false;
         }
         _myGame.onRelease();

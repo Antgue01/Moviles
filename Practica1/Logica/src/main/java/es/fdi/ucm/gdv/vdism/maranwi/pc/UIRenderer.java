@@ -6,9 +6,10 @@ public class UIRenderer {
         _matrizJuego = tablero.getMatrizJuego();
     }
     public void render(Graphics g){
-        int tamanyoFicha= g.getWidth()/ _matrizJuego[0].length;
+        int tamanyoFicha= g.getWidth()/( _matrizJuego[0].length +1);
         for (int i = 0; i< _matrizJuego[0].length; i++)
               for(int j = 0; j< _matrizJuego[1].length; j++){
+                  g.setColor(GetColorFromInt(_matrizJuego[i][j].getTipoCelda()));
                   g.fillCircle((i*tamanyoFicha)+tamanyoFicha/2,(j*tamanyoFicha)+tamanyoFicha/2,tamanyoFicha);
         }
     }

@@ -2,9 +2,12 @@ package es.fdi.ucm.gdv.vdism.maranwi.pcengine;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JFrame;
 
+import es.fdi.ucm.gdv.vdism.maranwi.engine.Application;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Font;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Image;
 
@@ -12,32 +15,48 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Image;
 public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics
 {
     public PCGraphics(){
+        //averiguamos tamaño pantalla
         init();
     }
 
-    public boolean prepararBuffer(){
-         //do {
-          /*  do {
+    public void draw(Application app){
+
+        do {
+            do {
                 _myGraphics = _frame.getBufferStrategy().getDrawGraphics();
                 try {
-                    //ventana.render(graphics);
+                    app.onRender(this);
                 }
                 finally {
                     _myGraphics.dispose();
                 }
             } while(_frame.getBufferStrategy().contentsRestored()); //True si se ha limpiado con un color de fondo y está preparado
-            */
-         //   strategy.show();
-        //} while(strategy.contentsLost()); //Devuelve si se ha perdido el buffer de pintado
-        return false;
+
+            _frame.getBufferStrategy().show();
+        } while(_frame.getBufferStrategy().contentsLost()); //Devuelve si se ha perdido el buffer de pintado
     }
 
     private void init(){
-        _frame=new JFrame();
-        _width=800;
+        _frame=new JFrame("OhNo!");
+        _width=400;
         _height=600;
         _frame.setSize(_width,_height);
-        _myGraphics = _frame.getBufferStrategy().getDrawGraphics();
+        _frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        _frame.setIgnoreRepaint(true);
+        _frame.setVisible(true);
+        int intentos = 100;
+        while(intentos-- > 0) {
+            try {
+                _frame.createBufferStrategy(2);
+                break;
+            }
+            catch(Exception e) {
+            }
+        } // while pidiendo la creación de la buffeStrategy
+        if (intentos == 0) {
+            System.err.println("No pude crear la BufferStrategy");
+            return;
+        }
     }
 
     public Image newImage(String name) {
@@ -106,7 +125,12 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics
         return _height;
     }
 
-
+    public void addMouseListener(MouseListener ml){
+        _frame.addMouseListener(ml);
+    }
+    public void addMouseMotionListener(MouseMotionListener mml) {
+        _frame.addMouseMotionListener(mml);
+    }
     private java.awt.Graphics _myGraphics;
     private int _width;
     private int _height;
