@@ -25,8 +25,9 @@ public class PCEngine implements Engine {
         boolean play = true;
         while(play){
             _myGame.onInput(_input);
-            _myGame.onUpdate(deltaTime);
+            //todo primero se actualiza luego se pinta
             _graphics.draw(_myGame);
+            _myGame.onUpdate(deltaTime);
             if(!_myGame.onExit()) play = false;
         }
         _myGame.onRelease();

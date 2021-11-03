@@ -15,11 +15,11 @@ public class UIRenderer {
     }
     private int GetColorFromInt(TipoCelda Colorid){
     if (Colorid==TipoCelda.Azul)
-        return 0x0000FFFF;
+        return 0x0000FF;
     else if(Colorid ==TipoCelda.Rojo)
-        return  0xFF0000FF;
+        return  0xFF0000;
     else if(Colorid==TipoCelda.Blanco)
-        return  0xFFFFFFFF;
+        return  0xFFFFFF;
     return -1;
 
     }

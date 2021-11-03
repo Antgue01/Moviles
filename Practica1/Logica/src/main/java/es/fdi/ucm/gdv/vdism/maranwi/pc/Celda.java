@@ -6,9 +6,10 @@ import sun.util.resources.cldr.ext.CurrencyNames_to;
 enum TipoCelda { Azul, Rojo, Blanco}
 
 public class Celda {
-    Celda(boolean esFicha, TipoCelda tipo){
+    Celda(boolean esFicha, TipoCelda tipo,int neighbours){
         _esFicha  = esFicha;
         _tipo = tipo;
+        _requiredNeighbours=neighbours;
     }
 
     //Devuelve 0 si no hay cambios
@@ -40,6 +41,16 @@ public class Celda {
         return _tipo.ordinal();
     }
 
+    private int _requiredNeighbours;
     private boolean _esFicha;
+
+    public int getRequiredNeighbours() {
+        return _requiredNeighbours;
+    }
+
+    public void setTipo(TipoCelda tipo) {
+        this._tipo = tipo;
+    }
+
     private TipoCelda _tipo;
 }
