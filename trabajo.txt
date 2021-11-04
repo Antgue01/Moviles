@@ -1,5 +1,5 @@
--Pista 1 AJ
--Pista 2
+-Pista 1 AJ donete
+-Pista 2 AJ
 -Pista 3
 -Pista 4
 -Pista 5

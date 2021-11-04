@@ -57,7 +57,7 @@ public class Pista {
         for (int i = 0; i < tablero[0].length && !counted; i++) {
             for (int j = 0; j < tablero[1].length && !counted; j++) {
                 //si me salgo paro
-                if (myX > tablero[1].length || myX < 0 || myY > tablero[0].length || myY < 0)
+                if (myX >= tablero[1].length || myX < 0 || myY >= tablero[0].length || myY < 0)
                     return number;
                 if (tablero[myY][myX].getTipoCelda() == target)
                     number++;
