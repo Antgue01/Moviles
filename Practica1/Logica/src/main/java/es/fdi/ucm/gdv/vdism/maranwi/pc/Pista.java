@@ -55,30 +55,43 @@ public class Pista {
                     //Pista 2 (el if solo comprueba si es aplicable ya que si total es mayor que las requeridas aplicable va a
                     //ser false y si es igual se encarga el caso de arriba)
                     else if (Applicable) {
+                        int numRojas = 0;
                         for (int k = 0; k < dirs.length; k++) {
                             int targetX = j + dirs[k][0] * offsets[k];
                             int targetY = i + dirs[k][1] * offsets[k];
                             //Si el target existe y es blanco
-                            if (targetX >= 0 && targetX < tablero[0].length && targetY >= 0 && targetY < tablero[1].length
-                                    && tablero[targetY][targetX].getTipoCelda() == TipoCelda.Blanco)
-                                //todo si encontramos las pairs podríamos implementar un count que pare en cuanto alcance un valor y
-                                //todo devuelva un pair booleano, int diciendo si se ha pasado y cuántas fichas ha contado
-                                //se suma 1 en el if porque si pusieramos una azul en el target habría una más
-                                if (count(tablero, targetX + dirs[k][0], targetY + dirs[k][1], dirs[k][0], dirs[k][1], TipoCelda.Azul) + 1
-                                        > tablero[i][j].getRequiredNeighbours()) {
-                                    t.setColor(targetX, targetY, TipoCelda.Rojo);
-                                    applied = true;
-                                }
+                            if (targetX >= 0 && targetX < tablero[0].length && targetY >= 0 && targetY < tablero[1].length) {
+                                if (tablero[targetY][targetX].getTipoCelda() == TipoCelda.Blanco) {//todo si encontramos las pairs podríamos implementar un count que pare en cuanto alcance un valor y
+                                    //todo devuelva un pair booleano, int diciendo si se ha pasado y cuántas fichas ha contado
+                                    //se suma 1 en el if porque si pusieramos una azul en el target habría una más
+                                    if (count(tablero, targetX + dirs[k][0], targetY + dirs[k][1], dirs[k][0], dirs[k][1], TipoCelda.Azul) + 1
+                                            > tablero[i][j].getRequiredNeighbours()) {
+                                        t.setColor(targetX, targetY, TipoCelda.Rojo);
+                                        applied = true;
+                                    }
+                                    //Si por el contrario es roja está cerrada en esa dirección
+                                } else if (tablero[targetY][targetX].getTipoCelda() == TipoCelda.Rojo)
+                                    numRojas++;
+                                //Si no existe el target también está cerrada en esa dirección
+                            } else numRojas++;
+                            //pista 5
+                            // Si estamos cerrados y no hay suficientes vecinos nos hemos equivocado
+                            if (numRojas == 4 && total < tablero[i][j].getRequiredNeighbours()) {
+                                System.out.println("Demasiado pocos azules en un número");
+                                applied = true;
+                            }
                         }
                     }
                 }
                 //pistas 6 y 7
-                else if(tablero[i][j].getEsFicha()){
+                else if (tablero[i][j].getEsFicha()) {
                     //si es una ficha vacía y está cerrada o es una azul y está cerrada(ergo el usuario se ha equivocado)
                     //hay que poner rojo
                     //todo no se si habría que comprobar que las rojas no las ha puesto el usuario (es decir su getFicha es true)
-                    if(tablero[i][j].getTipoCelda()!=TipoCelda.Rojo && isClosed(tablero,i,j,dirs))
-                        t.setColor(i,j,TipoCelda.Rojo);
+                    if (tablero[i][j].getTipoCelda() != TipoCelda.Rojo && isClosed(tablero, i, j, dirs)) {
+                        t.setColor(i, j, TipoCelda.Rojo);
+                        applied = true;
+                    }
                 }
 
             }
@@ -120,7 +133,7 @@ public class Pista {
 
 
         }
-        return  closedSides==4;
+        return closedSides == 4;
     }
 
     //cuenta todas las fichas
