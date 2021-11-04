@@ -1,7 +1,7 @@
 -Pista 1 AJ donete
 -Pista 2 AJ donete
 -Pista 3 AJ
--Pista 4
+-Pista 4 AJ donete
 -Pista 5
 -Pista 6
 -Pista 7

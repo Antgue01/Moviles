@@ -32,8 +32,12 @@ public class Pista {
                     for (int k = 0; k < dirs.length && Applicable; k++) {
                         offsets[k] = count(tablero, j, i, dirs[k][0], dirs[k][1], TipoCelda.Azul);
                         total += offsets[k] - 1;
-                        if (total > tablero[i][j].getRequiredNeighbours())
+                        if (total > tablero[i][j].getRequiredNeighbours()) {
                             Applicable = false;
+                            //Pista 4 (la 4 y la 5 no se pueden "ejecutar", ya que no sabrías cuál de todas debes quitar ya que
+                            // puede que estuviera bien
+                        System.out.println("Demasiadas fichas azules");
+                        }
 
                     }
                     //si no nos hemos pasado
