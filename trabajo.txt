@@ -1,6 +1,6 @@
 -Pista 1 AJ donete
--Pista 2 AJ
--Pista 3
+-Pista 2 AJ donete
+-Pista 3 AJ
 -Pista 4
 -Pista 5
 -Pista 6
