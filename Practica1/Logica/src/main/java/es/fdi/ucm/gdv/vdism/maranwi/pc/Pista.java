@@ -36,7 +36,7 @@ public class Pista {
                             Applicable = false;
                             //Pista 4 (la 4 y la 5 no se pueden "ejecutar", ya que no sabrías cuál de todas debes quitar ya que
                             // puede que estuviera bien
-                        System.out.println("Demasiadas fichas azules");
+                            System.out.println("Demasiadas fichas azules");
                         }
 
                     }
@@ -64,13 +64,20 @@ public class Pista {
                                 //todo si encontramos las pairs podríamos implementar un count que pare en cuanto alcance un valor y
                                 //todo devuelva un pair booleano, int diciendo si se ha pasado y cuántas fichas ha contado
                                 //se suma 1 en el if porque si pusieramos una azul en el target habría una más
-                                if (count(tablero, targetX + dirs[k][0], targetY + dirs[k][1], dirs[k][0], dirs[k][1], TipoCelda.Azul) +1
+                                if (count(tablero, targetX + dirs[k][0], targetY + dirs[k][1], dirs[k][0], dirs[k][1], TipoCelda.Azul) + 1
                                         > tablero[i][j].getRequiredNeighbours()) {
                                     t.setColor(targetX, targetY, TipoCelda.Rojo);
                                     applied = true;
                                 }
                         }
                     }
+                }
+                else if(tablero[i][j].getEsFicha()){
+                    //si es una ficha vacía y está cerrada o es una azul y está cerrada(ergo el usuario se ha equivocado)
+                    //hay que poner rojo
+                    //todo no se si habría que comprobar que las rojas no las ha puesto el usuario (es decir su getFicha es true)
+                    if(tablero[i][j].getTipoCelda()!=TipoCelda.Rojo && isClosed(tablero,i,j,dirs))
+                        t.setColor(i,j,TipoCelda.Rojo);
                 }
 
             }
@@ -82,10 +89,10 @@ public class Pista {
         boolean counted = false;
         int number = 0;
         int myX = X, myY = Y;
-        for (int i = 0; i < tablero[0].length && !counted; i++) {
-            for (int j = 0; j < tablero[1].length && !counted; j++) {
+        for (int i = 0; i < tablero.length && !counted; i++) {
+            for (int j = 0; j < tablero[0].length && !counted; j++) {
                 //si me salgo paro
-                if (myX >= tablero[1].length || myX < 0 || myY >= tablero[0].length || myY < 0)
+                if (myX >= tablero[0].length || myX < 0 || myY >= tablero.length || myY < 0)
                     return number;
                 if (tablero[myY][myX].getTipoCelda() == target)
                     number++;
@@ -97,6 +104,22 @@ public class Pista {
             }
         }
         return number;
+    }
+
+    private boolean isClosed(Celda[][] tablero, int X, int Y, int[][] dirs) {
+        int closedSides = 0;
+        for (int k = 0; k < dirs.length; k++) {
+            int targetX = X + dirs[k][0];
+            int targetY = Y + dirs[k][1];
+            //si me salgo
+            if (targetX < 0 || targetX >= tablero[0].length || targetY < 0 || targetY >= tablero.length
+                    //o mi adyacente es roja estoy cerrado en esa dirección
+                    || tablero[targetY][targetX].getTipoCelda() == TipoCelda.Rojo)
+                closedSides += 1;
+
+
+        }
+        return  closedSides==4;
     }
 
     //cuenta todas las fichas

@@ -3,8 +3,8 @@
 -Pista 3 AJ
 -Pista 4 AJ donete
 -Pista 5
--Pista 6
--Pista 7
+-Pista 6 AJ donete
+-Pista 7 AJ donete
 -Pista 8
 -Pista 9
 -Pista 10

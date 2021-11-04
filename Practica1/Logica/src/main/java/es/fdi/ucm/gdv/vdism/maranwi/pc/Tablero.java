@@ -48,12 +48,19 @@ public class Tablero {
 
                 _matrizJuego[x][j] = c;
             }
-            _matrizJuego[1][1]=new Celda(false,TipoCelda.Azul,1);
-            _matrizJuego[1][2]=new Celda(true,TipoCelda.Blanco,-1);
-            _matrizJuego[2][1]=new Celda(true,TipoCelda.Blanco,-1);
-            _matrizJuego[1][3]=new Celda(true,TipoCelda.Azul,-1);
-            _matrizJuego[3][1]=new Celda(true,TipoCelda.Azul,-1);
+            //prueba pista 2
+            //_matrizJuego[1][1]=new Celda(false,TipoCelda.Azul,1);
+            //_matrizJuego[1][2]=new Celda(true,TipoCelda.Blanco,-1);
+            //_matrizJuego[2][1]=new Celda(true,TipoCelda.Blanco,-1);
+            //_matrizJuego[1][3]=new Celda(true,TipoCelda.Azul,-1);
+            //_matrizJuego[3][1]=new Celda(true,TipoCelda.Azul,-1);
 
+            //pruebas pistas 6 y 7
+            _matrizJuego[1][1]=new Celda(true,TipoCelda.Azul,-1);
+            _matrizJuego[0][1]=new Celda(true,TipoCelda.Rojo,-1);
+            _matrizJuego[1][0]=new Celda(true,TipoCelda.Rojo,-1);
+            _matrizJuego[1][2]=new Celda(true,TipoCelda.Rojo,-1);
+            _matrizJuego[2][1]=new Celda(true,TipoCelda.Rojo,-1);
 
         }
     }
