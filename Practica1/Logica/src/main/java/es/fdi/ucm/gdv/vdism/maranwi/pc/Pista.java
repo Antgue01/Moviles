@@ -28,8 +28,10 @@ public class Pista {
                 //si es fija
                 if (!tablero[i][j].getEsFicha() && tablero[i][j].getTipoCelda() == TipoCelda.Azul) {
                     int total = 0;
-                    //miramos si nos podemos saltar esta pista, ya que si tiene más vecinos de la cuenta está mal
-                    for (int k = 0; k < dirs.length && Applicable; k++) {
+                    //miramos si nos podemos saltar esta pista, ya que si tiene más vecinos de la cuenta está mal,
+                    //a la vez que rellenamos las distancias a las fichas que no son azules para usarlas luego
+                    //mientras que contamos el número de azules circundantes
+                    for (int k = 0; k < dirs.length; k++) {
                         offsets[k] = count(tablero, j, i, dirs[k][0], dirs[k][1], TipoCelda.Azul);
                         total += offsets[k] - 1;
                         if (total > tablero[i][j].getRequiredNeighbours()) {
