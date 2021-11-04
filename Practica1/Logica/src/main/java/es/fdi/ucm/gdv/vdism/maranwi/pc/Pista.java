@@ -72,6 +72,7 @@ public class Pista {
                         }
                     }
                 }
+                //pistas 6 y 7
                 else if(tablero[i][j].getEsFicha()){
                     //si es una ficha vacía y está cerrada o es una azul y está cerrada(ergo el usuario se ha equivocado)
                     //hay que poner rojo

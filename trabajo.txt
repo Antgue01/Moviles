@@ -1,8 +1,8 @@
 -Pista 1 AJ donete
 -Pista 2 AJ donete
--Pista 3 AJ
+-Pista 3 Pensar entre varios
 -Pista 4 AJ donete
--Pista 5
+-Pista 5 AJ
 -Pista 6 AJ donete
 -Pista 7 AJ donete
 -Pista 8
