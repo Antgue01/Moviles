@@ -14,4 +14,5 @@ public interface Graphics {
     public void drawText(String text,int x,int y);
     public int getWidth();
     public int getHeight();
+
 }

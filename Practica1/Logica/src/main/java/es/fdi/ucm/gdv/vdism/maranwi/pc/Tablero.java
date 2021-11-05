@@ -30,7 +30,7 @@ public class Tablero {
         java.util.Random r=new Random();
         for (int x = 0; x < _matrizSolucion[0].length; ++x) {
             for (int j = 0; j < _matrizSolucion[1].length; ++j) {
-                _matrizSolucion[x][j] = r.nextInt(3) ;
+                _matrizSolucion[x][j] = r.nextInt(2) ;
 
 
                 boolean esFicha = r.nextBoolean();
@@ -49,24 +49,24 @@ public class Tablero {
                 _matrizJuego[x][j] = c;
             }
             //prueba pista 2
-            //_matrizJuego[1][1]=new Celda(false,TipoCelda.Azul,1);
-            //_matrizJuego[1][2]=new Celda(true,TipoCelda.Blanco,-1);
-            //_matrizJuego[2][1]=new Celda(true,TipoCelda.Blanco,-1);
-            //_matrizJuego[1][3]=new Celda(true,TipoCelda.Azul,-1);
-            //_matrizJuego[3][1]=new Celda(true,TipoCelda.Azul,-1);
+            _matrizJuego[1][1]=new Celda(false,TipoCelda.Azul,1);
+            _matrizJuego[1][2]=new Celda(true,TipoCelda.Blanco,-1);
+            _matrizJuego[2][1]=new Celda(true,TipoCelda.Blanco,-1);
+            _matrizJuego[1][3]=new Celda(true,TipoCelda.Azul,-1);
+            _matrizJuego[3][1]=new Celda(true,TipoCelda.Azul,-1);
 
             //pruebas pistas 6 y 7
-            _matrizJuego[1][1]=new Celda(true,TipoCelda.Azul,-1);
-            _matrizJuego[0][1]=new Celda(true,TipoCelda.Rojo,-1);
-            _matrizJuego[1][0]=new Celda(true,TipoCelda.Rojo,-1);
-            _matrizJuego[1][2]=new Celda(true,TipoCelda.Rojo,-1);
-            _matrizJuego[2][1]=new Celda(true,TipoCelda.Rojo,-1);
+//            _matrizJuego[1][1]=new Celda(true,TipoCelda.Azul,-1);
+//            _matrizJuego[0][1]=new Celda(true,TipoCelda.Rojo,-1);
+//            _matrizJuego[1][0]=new Celda(true,TipoCelda.Rojo,-1);
+//            _matrizJuego[1][2]=new Celda(true,TipoCelda.Rojo,-1);
+//            _matrizJuego[2][1]=new Celda(true,TipoCelda.Rojo,-1);
 
         }
     }
 
     public  void setColor(int X,int Y,TipoCelda tipo){
-        if(X>=0 &&  X<_matrizJuego[1].length && Y>=0 &&  Y<_matrizJuego[0].length && _matrizJuego[Y][X].getEsFicha()){
+        if(X>=0 &&  X<_matrizJuego[0].length && Y>=0 &&  Y<_matrizJuego.length && _matrizJuego[Y][X].getEsFicha()){
            boolean wasWhite=_matrizJuego[Y][X].getTipoCelda()==TipoCelda.Blanco;
            _matrizJuego[Y][X].setTipo(tipo);
            if(wasWhite && tipo!=TipoCelda.Blanco)

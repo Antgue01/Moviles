@@ -21,10 +21,10 @@ public class Pista {
         dirs[3][1] = -1;
         //Pista 1 (lleva implícita la detección de la pista 4 con el bool Aplicable)
         boolean applied = false;
-        boolean Applicable = true;
         int[] offsets = new int[4];
         for (int i = 0; i < tablero[0].length && !applied; i++) {
             for (int j = 0; j < tablero[1].length && !applied; j++) {
+                boolean Applicable = true;
                 //si es fija
                 if (!tablero[i][j].getEsFicha() && tablero[i][j].getTipoCelda() == TipoCelda.Azul) {
                     int total = 0;
@@ -38,7 +38,8 @@ public class Pista {
                             Applicable = false;
                             //Pista 4 (la 4 y la 5 no se pueden "ejecutar", ya que no sabrías cuál de todas debes quitar ya que
                             // puede que estuviera bien
-                            System.out.println("Demasiadas fichas azules");
+                            System.out.println("Demasiadas fichas azules en un numero");
+//                            applied=true;
                         }
 
                     }
@@ -47,7 +48,8 @@ public class Pista {
                         for (int k = 0; k < dirs.length; k++) {
                             int targetX = j + dirs[k][0] * offsets[k];
                             int targetY = i + dirs[k][1] * offsets[k];
-                            if (targetX >= 0 && targetX < tablero[1].length && targetY >= 0 && targetY < tablero[0].length) {
+                            if (targetX >= 0 && targetX < tablero[1].length && targetY >= 0 && targetY < tablero[0].length
+                                    && tablero[targetY][targetX].getTipoCelda() == TipoCelda.Blanco) {
                                 t.setColor(targetX, targetY, TipoCelda.Rojo);
                                 applied = true;
                             }
@@ -78,9 +80,11 @@ public class Pista {
                             } else numRojas++;
                             //pista 5
                             // Si estamos cerrados y no hay suficientes vecinos nos hemos equivocado
+                            //la segunda comprobación creo que no hace falta porque si nos hemos pasado de azules Applicable
+                            //es false y no entra aquí y si aplicable es true y son justas entra en el otro if
                             if (numRojas == 4 && total < tablero[i][j].getRequiredNeighbours()) {
-                                System.out.println("Demasiado pocos azules en un número");
-                                applied = true;
+                                System.out.println("Demasiado pocos azules en un numero");
+//                                applied = true;
                             }
                         }
                     }

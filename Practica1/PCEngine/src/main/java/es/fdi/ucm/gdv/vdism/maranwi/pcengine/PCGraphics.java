@@ -17,6 +17,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics
     public PCGraphics(){
         //averiguamos tamaño pantalla
         init();
+
     }
 
     public void draw(Application app){
@@ -65,7 +66,8 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics
 
 
     public Font newFont(String filename, int size, boolean isBold) {
-        return null;
+
+        return  new PCFont(filename,isBold,size);
     }
 
 
@@ -115,7 +117,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics
 
     @Override
     public void drawText(String text, int x, int y) {
-
+        _myGraphics.drawString(text,x,y);
     }
 
     public int getWidth(){return  _width;}
@@ -131,6 +133,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics
     public void addMouseMotionListener(MouseMotionListener mml) {
         _frame.addMouseMotionListener(mml);
     }
+
     private java.awt.Graphics _myGraphics;
     private int _width;
     private int _height;

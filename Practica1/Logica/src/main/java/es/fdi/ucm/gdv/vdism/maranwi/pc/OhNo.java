@@ -68,6 +68,7 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
     public void onRender(Graphics graphics) {
         graphics.clear(0x008800);
         _myRenderer.render(graphics);
+
     }
 
     Pista _myPista;
