@@ -19,6 +19,7 @@ public class Tablero {
         _matrizJuego = new Celda[_filas][_columnas];
 
         _numFichasBlancas = 0;
+        _tracker=new MoveTracker();
     }
 
 
@@ -95,11 +96,13 @@ public class Tablero {
         boolean siguiente = leftClick() ? true : false;
 
         //0 = NO hay cambios. 1 = se quita blanca del tablero. 2 = se añade blanca al tablero
+        _tracker.addMove(posicionFicha.first, posicionFicha.second, _matrizJuego[posicionFicha.first][posicionFicha.second].getTipoCelda());
         int result = _matrizJuego[posicionFicha.first][posicionFicha.second].cambiarFicha(siguiente);
+
         if (result == 1) --_numFichasBlancas;
         else if (result == 2) ++_numFichasBlancas;
-
-
+        //if(//han pulsado el botón de restaurar)
+//            _tracker.restoreMove(this);
     }
 
     public boolean compruebaSolucion() {
@@ -128,6 +131,7 @@ public class Tablero {
     float _casillasAlto;
     int _width;
     int _height;
+    MoveTracker _tracker;
 
     int _numFichasBlancas;
 }
