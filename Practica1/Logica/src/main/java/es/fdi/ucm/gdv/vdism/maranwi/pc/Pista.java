@@ -1,23 +1,18 @@
 package es.fdi.ucm.gdv.vdism.maranwi.pc;
 
-import org.graalvm.compiler.asm.amd64.AMD64Assembler;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
 
 public class Pista {
     public void Aplicar(Tablero t) {
         Celda[][] tablero = t.getMatrizJuego();
         //todo encontrar la clase pair, si es que existe
         int[][] dirs = new int[4][2];
-        dirs[0][0] = 1;
+        dirs[0][0] = 1; //derecha
         dirs[0][1] = 0;
-        dirs[1][0] = -1;
+        dirs[1][0] = -1;//izquierda
         dirs[1][1] = 0;
-        dirs[2][0] = 0;
+        dirs[2][0] = 0;//abajo
         dirs[2][1] = 1;
-        dirs[3][0] = 0;
+        dirs[3][0] = 0;//arriba
         dirs[3][1] = -1;
         //Pista 1 (lleva implícita la detección de la pista 4 con el bool Aplicable)
         boolean applied = false;
@@ -32,7 +27,7 @@ public class Pista {
                     //a la vez que rellenamos las distancias a las fichas que no son azules para usarlas luego
                     //mientras que contamos el número de azules circundantes
                     for (int k = 0; k < dirs.length; k++) {
-                        offsets[k] = count(tablero, j, i, dirs[k][0], dirs[k][1], TipoCelda.Azul);
+                        offsets[k] = countTargetColor(tablero, j, i, dirs[k][0], dirs[k][1], TipoCelda.Azul, true);
                         total += offsets[k] - 1;
                         if (total > tablero[i][j].getRequiredNeighbours()) {
                             Applicable = false;
@@ -68,7 +63,10 @@ public class Pista {
                                 if (tablero[targetY][targetX].getTipoCelda() == TipoCelda.Blanco) {//todo si encontramos las pairs podríamos implementar un count que pare en cuanto alcance un valor y
                                     //todo devuelva un pair booleano, int diciendo si se ha pasado y cuántas fichas ha contado
                                     //se suma 1 en el if porque si pusieramos una azul en el target habría una más
-                                    if (count(tablero, targetX + dirs[k][0], targetY + dirs[k][1], dirs[k][0], dirs[k][1], TipoCelda.Azul) + 1
+                                    //p es el indice de la dirección opuesta
+                                    int p = k % 2 == 0 ? 1 : -1;
+                                    if (countTargetColor(tablero, targetX + dirs[k][0], targetY + dirs[k][1], dirs[k][0], dirs[k][1], TipoCelda.Azul, true) + 1
+                                            + offsets[k] + offsets[k + p]
                                             > tablero[i][j].getRequiredNeighbours()) {
                                         t.setColor(targetX, targetY, TipoCelda.Rojo);
                                         applied = true;
@@ -87,7 +85,25 @@ public class Pista {
 //                                applied = true;
                             }
                         }
+                        ////////////////////
+                        total = 0;
+                        boolean tieneSolucion = true;
+                        for (int k = 0; k < dirs.length && tieneSolucion; k++) {
+                            offsets[k] = countTargetColor(tablero, j, i, dirs[k][0], dirs[k][1], TipoCelda.Rojo, false);
+                            if (k > 0 && offsets[k] >= tablero[i][j].getRequiredNeighbours() && total >= tablero[i][j].getRequiredNeighbours())
+                                tieneSolucion = false;
+                            total += offsets[k];
+                        }
+                        if (total < tablero[i][j].getRequiredNeighbours())
+                            tieneSolucion = false;
                     }
+                    //
+                    //
+                    //
+                    //
+                    //
+                    //
+                    //
                 }
                 //pistas 6 y 7
                 else if (tablero[i][j].getEsFicha()) {
@@ -105,7 +121,7 @@ public class Pista {
     }
 
 
-    private int count(Celda[][] tablero, int X, int Y, int dirX, int dirY, TipoCelda target) {
+    private int countTargetColor(Celda[][] tablero, int X, int Y, int dirX, int dirY, TipoCelda target, boolean equals) {
         boolean counted = false;
         int number = 0;
         int myX = X, myY = Y;
@@ -114,7 +130,7 @@ public class Pista {
                 //si me salgo paro
                 if (myX >= tablero[0].length || myX < 0 || myY >= tablero.length || myY < 0)
                     return number;
-                if (tablero[myY][myX].getTipoCelda() == target)
+                if ((equals && tablero[myY][myX].getTipoCelda() == target) || (!equals && tablero[myY][myX].getTipoCelda() != target))
                     number++;
                 else
                     counted = true;
@@ -142,23 +158,6 @@ public class Pista {
         return closedSides == 4;
     }
 
-    //cuenta todas las fichas
-    private int count(Celda[][] tablero, int X, int Y, TipoCelda target) {
-        int total = 0;
-        int[][] dirs = new int[4][2];
-        dirs[0][0] = 1;
-        dirs[0][1] = 0;
-        dirs[1][0] = -1;
-        dirs[1][1] = 0;
-        dirs[2][0] = 0;
-        dirs[2][1] = 1;
-        dirs[3][0] = 0;
-        dirs[3][1] = -1;
-        for (int i = 0; i < dirs.length; i++) {
-            total += count(tablero, X, Y, dirs[i][0], dirs[i][1], target);
-        }
-        return total;
 
-    }
 }
 

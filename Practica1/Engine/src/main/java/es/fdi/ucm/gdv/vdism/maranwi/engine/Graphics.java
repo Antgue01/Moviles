@@ -2,7 +2,7 @@ package es.fdi.ucm.gdv.vdism.maranwi.engine;
 
 public interface Graphics {
     public Image newImage(String name);
-    public Font newFont(String filename, int size, boolean isBold);
+    public void newFont(String filename,String tag, int size, boolean isBold);
     public void clear(int color);
     public void translate(int x,int y);
     public void scale(int x,int y);
@@ -14,5 +14,6 @@ public interface Graphics {
     public void drawText(String text,int x,int y);
     public int getWidth();
     public int getHeight();
+    public  void setFont(String tag);
 
 }
