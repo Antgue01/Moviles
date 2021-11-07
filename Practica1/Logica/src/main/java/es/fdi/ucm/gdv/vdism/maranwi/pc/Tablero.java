@@ -9,9 +9,6 @@ public class Tablero {
     public Tablero(int filas, int columnas, int width, int height) {
         _filas = filas;
         _columnas = columnas;
-        _width = width;
-        _height = height;
-        _currentHint="";
         _casillasAlto = height / filas;
         _casillasAncho = width / columnas;
 
@@ -119,27 +116,17 @@ public class Tablero {
         return esSolucion;
     }
 
-    public String getHint() {
-        return _currentHint;
-    }
-    public  void setHint(String hint){
-        _currentHint=hint;
-    }
     public Celda[][] getMatrizJuego() {
         return _matrizJuego;
     }
 
-    String _currentHint;
     //La matriz solucíón solo guarda los colores de cada posición
-    int _matrizSolucion[][];
-    Celda _matrizJuego[][];
-    int _filas;
-    int _columnas;
-    float _casillasAncho;
-    float _casillasAlto;
-    int _width;
-    int _height;
-    MoveTracker _tracker;
-
-    int _numFichasBlancas;
+    private int _matrizSolucion[][];
+    private Celda _matrizJuego[][];
+    private int _filas;
+    private int _columnas;
+    private float _casillasAncho;
+    private float _casillasAlto;
+    private MoveTracker _tracker;
+    private  int _numFichasBlancas;
 }

@@ -5,41 +5,25 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.GameState;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Input;
 
-public class MenuState implements Application, GameState {
+public class MenuState implements GameState {
     @Override
-    public void onInit() {
-
+    public void start(Graphics g) {
+        _font = "JosefinSans-Bold";
+        _fontSize = 48;
+        g.newFont(_font + ".ttf", _font, _fontSize, false);
     }
 
     @Override
-    public boolean onExit() {
-        return false;
+    public void render(Graphics g) {
+        g.setFont(_font);
+        //g.drawText();
     }
 
     @Override
-    public void onRelease() {
+    public void update(float deltaTime) {
 
     }
 
-    @Override
-    public void onInput(Input input) {
-
-    }
-
-    @Override
-    public void onRender(Graphics graphics) {
-
-    }
-
-    @Override
-    public void setGameZone(double width, double height, double windowsWidth, double windowsHeigth) {
-
-    }
-
-    @Override
-    public void onUpdate(float deltaTime) {
-
-    }
 
     @Override
     public void identifyEvent(int x, int y) {
@@ -51,5 +35,8 @@ public class MenuState implements Application, GameState {
         _mainApp = a;
     }
 
-    Application _mainApp;
+    private Application _mainApp;
+    private String _font;
+    private int _fontSize;
+    private boolean _onMainMenu;
 }

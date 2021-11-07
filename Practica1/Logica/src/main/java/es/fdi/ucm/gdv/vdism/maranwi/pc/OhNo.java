@@ -1,6 +1,7 @@
 package es.fdi.ucm.gdv.vdism.maranwi.pc;
 
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Application;
+import es.fdi.ucm.gdv.vdism.maranwi.engine.GameState;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Input;
 /*
@@ -29,20 +30,10 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Input;
 public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
 
     @Override
-    public void onInit() {
-        _states = new Application[2];
-        _currentState = 0;
-
-        _menu   = new MenuState();
-        _menu.setMainApplicaton(this);
-        _states[0] = _menu;
-
-        _game = new PlayState();
-        _game.setMainApplicaton(this);
-
-        _states[1] = _game;
-
-        _states[1].onInit();
+    public void onInit(Graphics graphics) {
+        _graphics = graphics;
+        //goToMenuState();
+        goToPlayState(4,4);
     }
 
     @Override
@@ -68,6 +59,7 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
                    t.get_posY() >= yTopLimitBox && t.get_posY() <= yBottomLimitBox){
                         double xInput = t.get_posX() - xLeftLimitBox;
                         double yInput = t.get_posY() - yTopLimitBox;
+                        _currentState.identifyEvent((int) xInput, (int) yInput);
                         System.out.println("Event x :" + xInput + " Event y: " + yInput);
                         //System.out.println("Event x :" + t.get_posX() + " Event y: " + t.get_posY());
                 }
@@ -77,34 +69,53 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
 
     @Override
     public void onUpdate(float deltaTime) {
-        _states[_currentState].onUpdate(deltaTime);
+        _currentState.update(deltaTime);
     }
 
     @Override
     public void onRender(Graphics graphics) {
         graphics.clear(0x008800);
-        _states[_currentState].onRender(graphics);
+        _currentState.render(graphics);
     }
 
-    public void changeState(int state){
-        if(state >= 0 && state < _states.length)
-            _currentState = state;
+    public void goToMenuState(){
+        _currentState = new MenuState();
+        _currentState.setMainApplicaton(this);
+        _currentState.start(_graphics);
     }
 
-    public void setGameZone(double width, double height, double windowsWidth, double windowsHeigth){
+    public void goToPlayState(int boardRows, int boardCols){
+        PlayState game = new PlayState();
+        game.setMainApplicaton(this);
+        game.setBoardSize(boardRows, boardCols, BOX_LOGIC_WIDTH, BOX_LOGIC_HEIGHT);
+        game.start(_graphics);
+        _currentState = game;
+    }
+
+    public void setApplicationZone(double width, double height, double windowsWidth, double windowsHeigth){
         _boxGameWidth = width;
-        _windowsWidth = windowsWidth;
-
         _boxGameHeight = height;
+
+        _windowsWidth = windowsWidth;
         _windowsHeigth = windowsHeigth;
     }
 
-    Application _states[];
-    int _currentState;
-    MenuState _menu;
-    PlayState _game;
-    double _boxGameWidth;
-    double _boxGameHeight;
-    double _windowsWidth;
-    double _windowsHeigth;
+    @Override
+    public int getLogicWidth() {
+        return BOX_LOGIC_WIDTH;
+    }
+
+    @Override
+    public int getLogicHeight() {
+        return BOX_LOGIC_HEIGHT;
+    }
+
+    private Graphics _graphics;
+    private GameState _currentState;
+    private double _boxGameWidth;
+    private double _boxGameHeight;
+    private double _windowsWidth;
+    private double _windowsHeigth;
+    static private final int BOX_LOGIC_WIDTH = 400;
+    static private final int BOX_LOGIC_HEIGHT = 600;
 }

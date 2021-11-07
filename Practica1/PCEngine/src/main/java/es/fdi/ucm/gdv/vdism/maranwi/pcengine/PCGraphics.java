@@ -18,10 +18,11 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Application;
 
 
 public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics {
-    public PCGraphics() {
+    public PCGraphics(int logicWidth, int logicHeight) {
+        _logicWidth = logicWidth;
+        _logicHeight = logicHeight;
         //averiguamos tamaño pantalla
         init();
-
     }
 
     public void draw(Application app) {
@@ -47,8 +48,6 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
     private void init() {
         _frame = new JFrame("OhNo!");
-        _logicWidth = 400;
-        _logicHeight = 600;
         _frame.setSize(_logicWidth, _logicHeight);
 
         _frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -140,7 +139,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
         }
         _width = _scaleX * _logicWidth;
         _height = _scaleY * _logicHeight;
-        app.setGameZone(_width, _height, size.getWidth(), size.getHeight());
+        app.setApplicationZone(_width, _height, size.getWidth(), size.getHeight());
     }
 
     public void translate(double x, double y) {

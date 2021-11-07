@@ -5,12 +5,9 @@ import es.fdi.ucm.gdv.vdism.maranwi.pcengine.PCEngine;
 
 public class PCGame {
     public static void main(String[] args) {
-
         PCEngine engine = new PCEngine();
         OhNo myGame = new OhNo();
         engine.SetApplication(myGame);
-        System.out.println("Holakase");
         engine.Play();
-
     }
 }
