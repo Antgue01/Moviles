@@ -7,4 +7,5 @@ public interface Application {
     void onInput(Input input);
     void onUpdate(float deltaTime);
     void onRender(Graphics graphics);
+    void setGameZone(double width, double height, double windowsWidth, double windowsHeigth);
 }

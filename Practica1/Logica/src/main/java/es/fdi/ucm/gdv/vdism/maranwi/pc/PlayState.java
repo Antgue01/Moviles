@@ -1,5 +1,6 @@
 package es.fdi.ucm.gdv.vdism.maranwi.pc;
 
+import es.fdi.ucm.gdv.vdism.maranwi.engine.Application;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Input;
 
@@ -21,7 +22,7 @@ public class PlayState implements GameState{
 
     @Override
     public void onRender(Graphics g) {
-        int elementSize= g.getWidth()/( _gameMatrix[0].length +1);
+        int elementSize= g.getWidth()/( _gameMatrix[0].length + 1);
 
         for (int i = 0; i< _gameMatrix[0].length; i++)
             for(int j = 0; j< _gameMatrix[1].length; j++){
@@ -40,16 +41,14 @@ public class PlayState implements GameState{
     }
 
     @Override
-    public void onEvent(Input input) {
-        for (Input.TouchEvent t : input.getTouchEvents()) {
-            if (t != null && t.get_type() == Input.TouchEvent.TouchType.pulsacion)
-                identifyEvent(t.get_posX(), t.get_posY());
-        }
+    public void identifyEvent(int x, int y) {
+
+        System.out.println(x + " " + y);
     }
 
     @Override
-    public void identifyEvent(int x, int y) {
-        System.out.println(x + " " + y);
+    public void setApplication(Application a) {
+
     }
 
     private int GetColorFromInt(TipoCelda Colorid){

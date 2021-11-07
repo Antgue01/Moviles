@@ -24,8 +24,7 @@ public class PCEngine implements Engine {
         float deltaTime = 0.0f;
         boolean play = true;
         while(play){
-
-            _graphics.adjustToScreen();
+            _graphics.adjustToScreen(_myGame);
             _myGame.onInput(_input);
             _myGame.onUpdate(deltaTime);
             _graphics.draw(_myGame);

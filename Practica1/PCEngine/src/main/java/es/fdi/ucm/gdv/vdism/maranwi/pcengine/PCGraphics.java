@@ -46,9 +46,9 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
     private void init() {
         _frame = new JFrame("OhNo!");
-        _width = 400;
-        _height = 600;
-        _frame.setSize(_width, _height);
+        _logicWidth = 400;
+        _logicHeight = 600;
+        _frame.setSize(_logicWidth, _logicHeight);
 
         _frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         _frame.setIgnoreRepaint(true);
@@ -93,33 +93,36 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     public void clear(int color) {
         if (color != -1) {
             _myGraphics.setColor(new Color(color));
-            _myGraphics.fillRect(0, 0, _width, _height);
+            _myGraphics.fillRect(0, 0, _logicWidth, _logicHeight);
         }
 
     }
 
-    public void adjustToScreen() {
+    public void adjustToScreen(Application app) {
         Dimension size = _frame.getSize();
         //Hacemos la regla de tres para ver si cabría
 
-        double newY = _height * size.width / _width;
-        double newX = _width * size.height / _height;
+        double newY = _logicHeight * size.width / _logicWidth;
+        double newX = _logicWidth * size.height / _logicHeight;
+        double newPosX = 0.0f, newPosY = 0.0f;
         //Si escalando la Y no cabríamos
+
         if (newY > size.height) {
-            _scaleX = newX / _width;
-            _scaleY = size.height / (double) _height;
+            _scaleX = newX / _logicWidth;
+            _scaleY = size.height / (double) _logicHeight;
             double centerX = size.width / 2;
-            double newPosX = centerX - (newX/2);
-            translate(newPosX-_posX , 0);
-
-
+            newPosX = centerX - (newX/2);
+            translate(newPosX , 0);
         } else if (newX > size.width) {
-            _scaleX = size.width / (double) _width;
-            _scaleY = newY / _height;
+            _scaleX = size.width / (double) _logicWidth;
+            _scaleY = newY / _logicHeight;
             double centerY = size.height / 2;
-            double newPosY = centerY - (newY/2);
+            newPosY = centerY - (newY/2);
             translate(0, newPosY );
         }
+        _width = _scaleX * _logicWidth;
+        _height = _scaleY * _logicHeight;
+        app.setGameZone(_width, _height, size.getWidth(), size.getHeight());
     }
 
     public void translate(double x, double y) {
@@ -164,12 +167,12 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     }
 
     public int getWidth() {
-        return _width;
+        return _logicWidth;
     }
 
     @Override
     public int getHeight() {
-        return _height;
+        return _logicHeight;
     }
 
     @Override
@@ -196,7 +199,9 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     double _scaleY = 1;
     HashMap<String, Font> _fonts;
     private java.awt.Graphics _myGraphics;
-    private int _width;
-    private int _height;
+    private int _logicWidth;
+    private int _logicHeight;
+    private double _width;
+    private double _height;
     private JFrame _frame;
 }
