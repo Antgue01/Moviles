@@ -1,10 +1,8 @@
 package es.fdi.ucm.gdv.vdism.maranwi.pc;
 
+import es.fdi.ucm.gdv.vdism.maranwi.engine.Application;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Input;
-/* DUDAS:
-    Main de PC tiene un setApplication y luego un play, ¿correcto?
- */
 /*
     Interfaces (Engine)
         - Graphics: ok
@@ -12,14 +10,15 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Input;
         - Image: ok
         - Application: ok
         - Font: todo
-    Engines
+    Engines: todo hacer deltatime
         - Android: todo algunos metodos
         - Pc: todo algunos metodos
     Logica
         - Tablero    :  todo FALTA GENERACIÓN DE TABLERO
         - Celdas    :  ok
         - Pistas    : todo Falta terminar la 3
-        - Renderer  : todo todo
+        - Renderer  : todo solucionar bug de reescalamiento
+        - States: todo terminar botones y states
     "Mains / Lanzadores"
         - Android: todo TODO
         - PC: ok
@@ -31,21 +30,19 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
 
     @Override
     public void onInit() {
-        _states = new GameState[2];
-        _currentState = 1;
+        _states = new Application[2];
+        _currentState = 0;
 
         _menu   = new MenuState();
-        _menu.setApplication(this);
+        _menu.setMainApplicaton(this);
         _states[0] = _menu;
 
         _game = new PlayState();
-        _game.setApplication(this);
+        _game.setMainApplicaton(this);
 
         _states[1] = _game;
 
         _states[1].onInit();
-        _game.setNumberFont("JosefinSans-Bold");
-
     }
 
     @Override
@@ -90,7 +87,8 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
     }
 
     public void changeState(int state){
-        _currentState = state;
+        if(state >= 0 && state < _states.length)
+            _currentState = state;
     }
 
     public void setGameZone(double width, double height, double windowsWidth, double windowsHeigth){
@@ -101,7 +99,7 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
         _windowsHeigth = windowsHeigth;
     }
 
-    GameState _states[];
+    Application _states[];
     int _currentState;
     MenuState _menu;
     PlayState _game;

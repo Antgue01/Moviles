@@ -1,9 +1,11 @@
 package es.fdi.ucm.gdv.vdism.maranwi.pc;
 
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Application;
+import es.fdi.ucm.gdv.vdism.maranwi.engine.GameState;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
+import es.fdi.ucm.gdv.vdism.maranwi.engine.Input;
 
-public class PlayState implements GameState{
+public class PlayState implements Application, GameState {
     public void setBoardSize(int fil, int col, int width, int height){
         _fils = fil;
         _cols = col;
@@ -18,7 +20,22 @@ public class PlayState implements GameState{
         _board.rellenaMatrizResueltaRandom();
         _gameMatrix = _board.getMatrizJuego();
         _hints = new Pista();
-        _font = "";
+        _font = "JosefinSans-Bold";
+    }
+
+    @Override
+    public boolean onExit() {
+        return false;
+    }
+
+    @Override
+    public void onRelease() {
+
+    }
+
+    @Override
+    public void onInput(Input input) {
+
     }
 
     @Override
@@ -50,6 +67,11 @@ public class PlayState implements GameState{
     }
 
     @Override
+    public void setGameZone(double width, double height, double windowsWidth, double windowsHeigth) {
+
+    }
+
+    @Override
     public void onUpdate(float deltaTime) {
         _hints.aplicar(_board,true);
 
@@ -63,11 +85,8 @@ public class PlayState implements GameState{
     }
 
     @Override
-    public void setApplication(Application a) {
-
-    }
-    public  void setNumberFont(String f){
-        _font = f;
+    public void setMainApplicaton(Application a) {
+        _mainApp = a;
     }
 
     private int GetColorFromInt(TipoCelda Colorid){
@@ -87,7 +106,8 @@ public class PlayState implements GameState{
     private int _cols;
     private int _width;
     private int _height;
-    String _font;
+    private String _font;
+    private Application _mainApp;
     //final = const
     final private int _offsetY = 100;
 }
