@@ -18,7 +18,7 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Input;
     Logica
         - Tablero    :  todo FALTA GENERACIÓN DE TABLERO
         - Celdas    :  ok
-        - Pistas    : todo FALTA HACERLAS TODAS
+        - Pistas    : todo Falta terminar la 3
         - Renderer  : todo todo
     "Mains / Lanzadores"
         - Android: todo TODO
