@@ -7,4 +7,5 @@ public interface GameState {
     public void onRender(Graphics graphics);
     public void onUpdate(float deltaTime);
     public void onEvent(Input input);
+    public void identifyEvent(int x, int y);
 }

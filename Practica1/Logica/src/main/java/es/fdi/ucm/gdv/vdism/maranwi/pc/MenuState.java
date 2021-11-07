@@ -23,4 +23,9 @@ public class MenuState implements  GameState {
     public void onEvent(Input input) {
 
     }
+
+    @Override
+    public void identifyEvent(int x, int y) {
+
+    }
 }

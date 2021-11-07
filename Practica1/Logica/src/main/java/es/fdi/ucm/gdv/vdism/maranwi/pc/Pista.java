@@ -2,7 +2,7 @@ package es.fdi.ucm.gdv.vdism.maranwi.pc;
 
 
 public class Pista {
-    public void Aplicar(Tablero t) {
+    public void aplicar(Tablero t) {
         Celda[][] tablero = t.getMatrizJuego();
         //todo encontrar la clase pair, si es que existe
         int[][] dirs = new int[4][2];

@@ -1,5 +1,7 @@
 package es.fdi.ucm.gdv.vdism.maranwi.pc;
 
+import java.awt.Menu;
+
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Input;
 /* DUDAS:
@@ -31,13 +33,18 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
 
     @Override
     public void onInit() {
+        _states = new GameState[2];
+        _menu   = new MenuState();
+        _states[0] = _menu;
+        _game = new PlayState();
+        _states[1] = _game;
+        _currentState = 1;
+
+        _states[1].onInit();
         //lanzar el menu
         //recoger
         //MOVERLO DE AQUÍ
-        _myTablero = new Tablero(4, 4, 400, 600);
-        _myRenderer = new UIRenderer(_myTablero);
-        _myTablero.rellenaMatrizResueltaRandom();
-        _myPista = new Pista();
+
     }
 
     @Override
@@ -52,26 +59,22 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
 
     @Override
     public void onInput(Input input) {
-        for (Input.TouchEvent t : input.getTouchEvents()) {
-            if (t != null && t.get_type() == Input.TouchEvent.TouchType.pulsacion)
-                System.out.println(t.get_posX() + " " + t.get_posY());
-        }
+        _states[_currentState].onEvent(input);
     }
 
     @Override
     public void onUpdate(float deltaTime) {
-        _myPista.Aplicar(_myTablero);
-        _myTablero.compruebaSolucion();
+        _states[_currentState].onUpdate(deltaTime);
     }
 
     @Override
     public void onRender(Graphics graphics) {
         graphics.clear(0x008800);
-        _myRenderer.render(graphics);
-
+        _states[_currentState].onRender(graphics);
     }
 
-    Pista _myPista;
-    Tablero _myTablero;
-    UIRenderer _myRenderer;
+    GameState _states[];
+    int _currentState;
+    MenuState _menu;
+    PlayState _game;
 }
