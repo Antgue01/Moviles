@@ -2,7 +2,6 @@ package es.fdi.ucm.gdv.vdism.maranwi.pc;
 
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Application;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
-import es.fdi.ucm.gdv.vdism.maranwi.engine.Input;
 
 public class PlayState implements GameState{
     public void setBoardSize(int fil, int col, int width, int height){
@@ -18,25 +17,30 @@ public class PlayState implements GameState{
         _board.rellenaMatrizResueltaRandom();
         _gameMatrix = _board.getMatrizJuego();
         _tracks = new Pista();
+        _rend=new UIRenderer(_board);
+
     }
 
     @Override
     public void onRender(Graphics g) {
-        int elementSize= g.getWidth()/( _gameMatrix[0].length + 1);
 
-        for (int i = 0; i< _gameMatrix[0].length; i++)
-            for(int j = 0; j< _gameMatrix[1].length; j++){
-                int color = GetColorFromInt(_gameMatrix[i][j].getTipoCelda());
-                if(color != -1) {
-                    g.setColor(color);
-                    g.fillCircle((i*elementSize)+elementSize/2,(j*elementSize)+elementSize/2,elementSize);
-                }else System.out.println("Error: Invalid color");
-            }
+//        int elementSize= g.getWidth()/( _gameMatrix[0].length + 1);
+//
+//        for (int i = 0; i< _gameMatrix[0].length; i++)
+//            for(int j = 0; j< _gameMatrix[1].length; j++){
+//                int color = GetColorFromInt(_gameMatrix[i][j].getTipoCelda());
+//                if(color != -1) {
+//                    g.setColor(color);
+//                    g.fillCircle((i*elementSize)+elementSize/2,(j*elementSize)+elementSize/2,elementSize);
+//                }else System.out.println("Error: Invalid color");
+//            }
+        _rend.render(g);
     }
 
     @Override
     public void onUpdate(float deltaTime) {
-        //_tracks.aplicar(_board);
+        _tracks.aplicar(_board,true);
+
         _board.compruebaSolucion();
     }
 
@@ -49,6 +53,9 @@ public class PlayState implements GameState{
     @Override
     public void setApplication(Application a) {
 
+    }
+    public  void set_numberFont(String f){
+        _rend.setFont(f);
     }
 
     private int GetColorFromInt(TipoCelda Colorid){
@@ -68,4 +75,5 @@ public class PlayState implements GameState{
     private int _cols;
     private int _width;
     private int _height;
+    private  UIRenderer _rend;
 }

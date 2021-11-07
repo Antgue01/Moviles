@@ -2,7 +2,7 @@ package es.fdi.ucm.gdv.vdism.maranwi.pc;
 
 
 public class Pista {
-    public void aplicar(Tablero t) {
+    public void aplicar(Tablero t, boolean playing) {
         Celda[][] tablero = t.getMatrizJuego();
         //todo encontrar la clase pair, si es que existe
         int[][] dirs = new int[4][2];
@@ -33,23 +33,28 @@ public class Pista {
                             Applicable = false;
                             //Pista 4 (la 4 y la 5 no se pueden "ejecutar", ya que no sabrías cuál de todas debes quitar ya que
                             // puede que estuviera bien
-                            System.out.println("Demasiadas fichas azules en un numero");
+                            if (playing)
+                                t.setHint("Demasiadas fichas azules en un numero");
 //                            applied=true;
                         }
 
                     }
                     //si no nos hemos pasado
                     if (Applicable && total == tablero[i][j].getRequiredNeighbours()) {
-                        for (int k = 0; k < dirs.length; k++) {
-                            int targetX = j + dirs[k][0] * offsets[k];
-                            int targetY = i + dirs[k][1] * offsets[k];
-                            if (targetX >= 0 && targetX < tablero[1].length && targetY >= 0 && targetY < tablero[0].length
-                                    && tablero[targetY][targetX].getTipoCelda() == TipoCelda.Blanco) {
-                                t.setColor(targetX, targetY, TipoCelda.Rojo);
-                                applied = true;
+                        if (playing) {
+                            t.setHint("Hay que cerrar la casilla");
+                            applied = true;
+                        } else {
+                            for (int k = 0; k < dirs.length; k++) {
+                                int targetX = j + dirs[k][0] * offsets[k];
+                                int targetY = i + dirs[k][1] * offsets[k];
+                                if (targetX >= 0 && targetX < tablero[1].length && targetY >= 0 && targetY < tablero[0].length
+                                        && tablero[targetY][targetX].getTipoCelda() == TipoCelda.Blanco) {
+                                    t.setColor(targetX, targetY, TipoCelda.Rojo);
+                                    applied = true;
+                                }
                             }
                         }
-
                     }
                     //Pista 2 (el if solo comprueba si es aplicable ya que si total es mayor que las requeridas aplicable va a
                     //ser false y si es igual se encarga el caso de arriba)
@@ -68,9 +73,11 @@ public class Pista {
                                     if (countTargetColor(tablero, targetX + dirs[k][0], targetY + dirs[k][1], dirs[k][0], dirs[k][1], TipoCelda.Azul, true) + 1
                                             + offsets[k] + offsets[k + p]
                                             > tablero[i][j].getRequiredNeighbours()) {
+                                        if(!playing)
                                         t.setColor(targetX, targetY, TipoCelda.Rojo);
                                         applied = true;
                                     }
+
                                     //Si por el contrario es roja está cerrada en esa dirección
                                 } else if (tablero[targetY][targetX].getTipoCelda() == TipoCelda.Rojo)
                                     numRojas++;
@@ -81,9 +88,13 @@ public class Pista {
                             //la segunda comprobación creo que no hace falta porque si nos hemos pasado de azules Applicable
                             //es false y no entra aquí y si aplicable es true y son justas entra en el otro if
                             if (numRojas == 4 && total < tablero[i][j].getRequiredNeighbours()) {
-                                System.out.println("Demasiado pocos azules en un numero");
+                                if (playing)
+                                    t.setHint("Demasiado pocos azules en un numero");
 //                                applied = true;
                             }
+                            //Si hubiera tenido que aplicarla y estoy jugando
+                            if(applied && playing)
+                                t.setHint("Si se pone una azul en una determinada direccion\nquedairresoluble");
                         }
                         ////////////////////
                         total = 0;
@@ -96,14 +107,9 @@ public class Pista {
                         }
                         if (total < tablero[i][j].getRequiredNeighbours())
                             tieneSolucion = false;
+                        if (playing && tieneSolucion)
+                            t.setHint("Hay una ficha comun en todas las posibles soluciones");
                     }
-                    //
-                    //
-                    //
-                    //
-                    //
-                    //
-                    //
                 }
                 //pistas 6 y 7
                 else if (tablero[i][j].getEsFicha()) {
@@ -111,7 +117,12 @@ public class Pista {
                     //hay que poner rojo
                     //todo no se si habría que comprobar que las rojas no las ha puesto el usuario (es decir su getFicha es true)
                     if (tablero[i][j].getTipoCelda() != TipoCelda.Rojo && isClosed(tablero, i, j, dirs)) {
-                        t.setColor(i, j, TipoCelda.Rojo);
+                        if (playing) {
+                            if (tablero[i][j].getTipoCelda() == TipoCelda.Azul)
+                                t.setHint("Hay una azul que no ve ningun vecino");
+                            else t.setHint("Hay una blanca que se puede cerrar");
+                        } else
+                            t.setColor(i, j, TipoCelda.Rojo);
                         applied = true;
                     }
                 }

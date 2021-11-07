@@ -40,9 +40,12 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
 
         _game = new PlayState();
         _game.setApplication(this);
+
         _states[1] = _game;
 
         _states[1].onInit();
+        _game.set_numberFont("JosefinSans-Bold");
+
     }
 
     @Override
