@@ -44,7 +44,7 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
         _states[1] = _game;
 
         _states[1].onInit();
-        _game.set_numberFont("JosefinSans-Bold");
+        _game.setNumberFont("JosefinSans-Bold");
 
     }
 
@@ -60,12 +60,8 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
 
     @Override
     public void onInput(Input input) {
-        //_states[_currentState].onEvent(input);
         for (Input.TouchEvent t : input.getTouchEvents()) {
             if (t != null && t.get_type() == Input.TouchEvent.TouchType.pulsacion){
-                //System.out.println("Event x :" + t.get_posX() + " Event y: " + t.get_posY());
-                //System.out.println("x: " + _boxGameXPos + " y: " + _boxGameYPos + " w: " + _boxGameWidth + " h: " + _boxGameHeight);
-
                 double xLeftLimitBox  = (_windowsWidth / 2) - (_boxGameWidth / 2);
                 double xRightLimitBox  = (_windowsWidth / 2) + (_boxGameWidth / 2);
                 double yTopLimitBox = (_windowsHeigth / 2) - (_boxGameHeight / 2);
@@ -76,12 +72,9 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
                         double xInput = t.get_posX() - xLeftLimitBox;
                         double yInput = t.get_posY() - yTopLimitBox;
                         System.out.println("Event x :" + xInput + " Event y: " + yInput);
+                        //System.out.println("Event x :" + t.get_posX() + " Event y: " + t.get_posY());
                 }
-
-
-                //_states[_currentState].identifyEvent();
             }
-            //identifyEvent(t.get_posX(), t.get_posY());
         }
     }
 
@@ -114,8 +107,6 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
     PlayState _game;
     double _boxGameWidth;
     double _boxGameHeight;
-    double _boxGameXPos;
-    double _boxGameYPos;
     double _windowsWidth;
     double _windowsHeigth;
 }

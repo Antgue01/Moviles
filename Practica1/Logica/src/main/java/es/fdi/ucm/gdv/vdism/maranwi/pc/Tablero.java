@@ -128,6 +128,7 @@ public class Tablero {
     public Celda[][] getMatrizJuego() {
         return _matrizJuego;
     }
+
     String _currentHint;
     //La matriz solucíón solo guarda los colores de cada posición
     int _matrizSolucion[][];

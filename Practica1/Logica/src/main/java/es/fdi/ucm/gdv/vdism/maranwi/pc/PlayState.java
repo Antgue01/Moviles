@@ -10,36 +10,48 @@ public class PlayState implements GameState{
         _width = width;
         _height = height;
     }
+
     @Override
     public void onInit() {
         //_board = new Tablero(_fils, _cols, _width, _height);
         _board = new Tablero(4, 4, 400, 600);
         _board.rellenaMatrizResueltaRandom();
         _gameMatrix = _board.getMatrizJuego();
-        _tracks = new Pista();
-        _rend=new UIRenderer(_board);
-
+        _hints = new Pista();
+        _font = "";
     }
 
     @Override
     public void onRender(Graphics g) {
+        int fontS = 48;
+        if (_font != "") {
 
-//        int elementSize= g.getWidth()/( _gameMatrix[0].length + 1);
-//
-//        for (int i = 0; i< _gameMatrix[0].length; i++)
-//            for(int j = 0; j< _gameMatrix[1].length; j++){
-//                int color = GetColorFromInt(_gameMatrix[i][j].getTipoCelda());
-//                if(color != -1) {
-//                    g.setColor(color);
-//                    g.fillCircle((i*elementSize)+elementSize/2,(j*elementSize)+elementSize/2,elementSize);
-//                }else System.out.println("Error: Invalid color");
-//            }
-        _rend.render(g);
+            g.newFont(_font + ".ttf", _font, fontS, false);
+            g.setFont(_font);
+        }
+        String hintText= _board.getHint();
+        if(hintText!=""){
+            g.setColor(0xFFFFFF);
+            g.drawText(hintText,0,0);
+        }
+        int tamanyoFicha = g.getWidth() / (_gameMatrix.length + 1);
+        for (int i = 0; i < _gameMatrix.length; i++)
+            for (int j = 0; j < _gameMatrix[0].length; j++) {
+                g.setColor(GetColorFromInt(_gameMatrix[i][j].getTipoCelda()));
+                int X = (i * tamanyoFicha) + tamanyoFicha / 2;
+                int Y = _offsetY+(j * tamanyoFicha) + tamanyoFicha / 2;
+                g.fillCircle(X, Y, tamanyoFicha);
+                int neighbours = _gameMatrix[i][j].getRequiredNeighbours();
+                if (neighbours > -1) {
+                    g.setColor(0xFFFFFF);
+                    g.drawText(Integer.toString(neighbours), X + (tamanyoFicha / 2) - fontS / 4, Y + (tamanyoFicha / 2) + fontS / 4);
+                }
+            }
     }
 
     @Override
     public void onUpdate(float deltaTime) {
-        _tracks.aplicar(_board,true);
+        _hints.aplicar(_board,true);
 
         _board.compruebaSolucion();
     }
@@ -54,8 +66,8 @@ public class PlayState implements GameState{
     public void setApplication(Application a) {
 
     }
-    public  void set_numberFont(String f){
-        _rend.setFont(f);
+    public  void setNumberFont(String f){
+        _font = f;
     }
 
     private int GetColorFromInt(TipoCelda Colorid){
@@ -68,12 +80,14 @@ public class PlayState implements GameState{
         return -1;
     }
 
-    private Pista _tracks;
+    private Pista _hints;
     private Tablero _board;
     private Celda[][] _gameMatrix;
     private int _fils;
     private int _cols;
     private int _width;
     private int _height;
-    private  UIRenderer _rend;
+    String _font;
+    //final = const
+    final private int _offsetY = 100;
 }
