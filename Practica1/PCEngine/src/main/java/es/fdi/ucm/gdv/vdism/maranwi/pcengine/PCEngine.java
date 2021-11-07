@@ -24,10 +24,11 @@ public class PCEngine implements Engine {
         float deltaTime = 0.0f;
         boolean play = true;
         while(play){
+
+            _graphics.adjustToScreen();
             _myGame.onInput(_input);
-            _graphics.draw(_myGame);
-            //todo dar la vuelta
             _myGame.onUpdate(deltaTime);
+            _graphics.draw(_myGame);
             if(!_myGame.onExit()) play = false;
         }
         _myGame.onRelease();

@@ -4,8 +4,8 @@ public interface Graphics {
     public Image newImage(String name);
     public void newFont(String filename,String tag, int size, boolean isBold);
     public void clear(int color);
-    public void translate(int x,int y);
-    public void scale(int x,int y);
+    public void translate(double x,double y);
+    public void scale(double x,double y);
     public void save();
     public void restore();
     public void drawImage(Image image, int x,int y, int width, int height);

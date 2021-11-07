@@ -1,12 +1,14 @@
 package es.fdi.ucm.gdv.vdism.maranwi.pcengine;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.Dictionary;
+import java.util.HashMap;
 
 import javax.swing.JFrame;
 
@@ -26,6 +28,11 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
         do {
             do {
                 _myGraphics = _frame.getBufferStrategy().getDrawGraphics();
+                if (_myGraphics != null) {
+                    Graphics2D g = (Graphics2D) _myGraphics;
+                    g.scale(_scaleX, _scaleY);
+                    g.translate(_translationX, _translationY);
+                }
                 try {
                     app.onRender(this);
                 } finally {
@@ -42,10 +49,11 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
         _width = 400;
         _height = 600;
         _frame.setSize(_width, _height);
+
         _frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         _frame.setIgnoreRepaint(true);
         _frame.setVisible(true);
-//        _fonts=new Dictionary<String, java.awt.Font>();
+        _fonts = new HashMap<String, Font>();
 
         int intentos = 100;
         while (intentos-- > 0) {
@@ -90,14 +98,39 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
     }
 
+    public void adjustToScreen() {
+        Dimension size = _frame.getSize();
+        //Hacemos la regla de tres para ver si cabría
 
-    public void translate(int x, int y) {
+        double newY = _height * size.width / _width;
+        double newX = _width * size.height / _height;
+        //Si escalando la Y no cabríamos
+        if (newY > size.height) {
+            _scaleX = newX / _width;
+            _scaleY = size.height / (double) _height;
+            double centerX = size.width / 2;
+            double newPosX = centerX - (newX/2);
+            translate(newPosX-_posX , 0);
 
+
+        } else if (newX > size.width) {
+            _scaleX = size.width / (double) _width;
+            _scaleY = newY / _height;
+            double centerY = size.height / 2;
+            double newPosY = centerY - (newY/2);
+            translate(0, newPosY );
+        }
+    }
+
+    public void translate(double x, double y) {
+        _translationX = x;
+        _translationY = y;
     }
 
     @Override
-    public void scale(int x, int y) {
-
+    public void scale(double x, double y) {
+        _scaleX = x;
+        _scaleY = y;
     }
 
     @Override
@@ -141,12 +174,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
     @Override
     public void setFont(String tag) {
-        java.awt.Font currentFont = null;
-        try {
-            currentFont = _fonts.get(tag);
-        } catch (Exception e) {
-            System.err.println("No existe esa fuente");
-        }
+        java.awt.Font currentFont = _fonts.get(tag);
         if (currentFont != null)
             _myGraphics.setFont(currentFont);
     }
@@ -160,7 +188,13 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
         _frame.addMouseMotionListener(mml);
     }
 
-    Dictionary<String, java.awt.Font> _fonts;
+    double _posX = 0;
+    double _posY = 0;
+    double _translationX = 0;
+    double _translationY = 0;
+    double _scaleX = 1;
+    double _scaleY = 1;
+    HashMap<String, Font> _fonts;
     private java.awt.Graphics _myGraphics;
     private int _width;
     private int _height;
