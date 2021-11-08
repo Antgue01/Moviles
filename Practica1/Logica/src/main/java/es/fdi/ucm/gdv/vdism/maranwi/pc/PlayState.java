@@ -84,4 +84,5 @@ public class PlayState implements GameState {
     private int _fontSize;
     private Application _mainApp;
     static private final int BOARD_LOGIC_OFFSET_Y = 100;
+
 }
