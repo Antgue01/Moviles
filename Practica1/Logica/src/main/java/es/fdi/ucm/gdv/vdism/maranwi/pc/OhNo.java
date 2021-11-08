@@ -2,6 +2,7 @@ package es.fdi.ucm.gdv.vdism.maranwi.pc;
 
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Application;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.GameState;
+import es.fdi.ucm.gdv.vdism.maranwi.engine.Engine;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Input;
 /*
@@ -30,8 +31,8 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Input;
 public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
 
     @Override
-    public void onInit(Graphics graphics) {
-        _graphics = graphics;
+    public void onInit(Engine engine) {
+        _graphics = engine.getGraphics();
         goToMenuState();
         //goToPlayState(4,4);
     }
@@ -110,6 +111,7 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
         return BOX_LOGIC_HEIGHT;
     }
 
+    private Engine _engine;
     private Graphics _graphics;
     private GameState _currentState;
     private double _boxGameWidth;

@@ -12,7 +12,7 @@ public class PCEngine implements Engine {
         _graphics = new PCGraphics(_myAppName, _myGame.getLogicWidth(), _myGame.getLogicHeight());
         _graphics.addMouseListener(_input);
         _graphics.addMouseMotionListener(_input);
-        _myGame.onInit(_graphics);
+        _myGame.onInit(this);
     }
 
     public PCEngine(){}
