@@ -6,18 +6,24 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Input;
 
 public class PCEngine implements Engine {
+
+    private void Init(){
+        _input = new PCInput();
+        _graphics = new PCGraphics(_myAppName, _myGame.getLogicWidth(), _myGame.getLogicHeight());
+        _graphics.addMouseListener(_input);
+        _graphics.addMouseMotionListener(_input);
+        _myGame.onInit(_graphics);
+    }
+
     public PCEngine(){}
 
-    public void SetApplication(Application a){
+    public void SetApplication(String applicationName, Application a){
+        _myAppName = applicationName;
         _myGame = a;
     }
 
     public void Play(){
-        _input = new PCInput();
-        _graphics = new PCGraphics(_myGame.getLogicWidth(), _myGame.getLogicHeight());
-        _graphics.addMouseListener(_input);
-        _graphics.addMouseMotionListener(_input);
-        _myGame.onInit(_graphics);
+        Init();
         //hace deltatime
 
         float deltaTime = 0.0f;
@@ -42,6 +48,7 @@ public class PCEngine implements Engine {
         return _input;
     }
 
+    String _myAppName;
     Application _myGame;
     PCGraphics _graphics;
     PCInput _input;

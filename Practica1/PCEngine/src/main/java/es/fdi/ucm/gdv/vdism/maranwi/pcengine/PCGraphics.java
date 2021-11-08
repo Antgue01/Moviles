@@ -18,11 +18,11 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Application;
 
 
 public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics {
-    public PCGraphics(int logicWidth, int logicHeight) {
+    public PCGraphics(String windowName, int logicWidth, int logicHeight) {
         _logicWidth = logicWidth;
         _logicHeight = logicHeight;
         //averiguamos tamaño pantalla
-        init();
+        init(windowName);
     }
 
     public void draw(Application app) {
@@ -46,8 +46,8 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
         } while (_frame.getBufferStrategy().contentsLost()); //Devuelve si se ha perdido el buffer de pintado
     }
 
-    private void init() {
-        _frame = new JFrame("OhNo!");
+    private void init(String windowName) {
+        _frame = new JFrame(windowName);
         _frame.setSize(_logicWidth, _logicHeight);
 
         _frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

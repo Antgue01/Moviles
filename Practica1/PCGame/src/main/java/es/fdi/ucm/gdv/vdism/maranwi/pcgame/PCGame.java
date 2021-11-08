@@ -7,7 +7,7 @@ public class PCGame {
     public static void main(String[] args) {
         PCEngine engine = new PCEngine();
         OhNo myGame = new OhNo();
-        engine.SetApplication(myGame);
+        engine.SetApplication("OhNo!", myGame);
         engine.Play();
     }
 }
