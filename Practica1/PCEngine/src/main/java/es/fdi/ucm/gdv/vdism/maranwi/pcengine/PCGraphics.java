@@ -25,27 +25,6 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
         init(windowName);
     }
 
-    public void draw(Application app) {
-
-        do {
-            do {
-                _myGraphics = _frame.getBufferStrategy().getDrawGraphics();
-                if (_myGraphics != null) {
-                    Graphics2D g = (Graphics2D) _myGraphics;
-                    g.scale(_scaleX, _scaleY);
-                    g.translate(_translationX, _translationY);
-                }
-                try {
-                    app.onRender(this);
-                } finally {
-                    _myGraphics.dispose();
-                }
-            } while (_frame.getBufferStrategy().contentsRestored()); //True si se ha limpiado con un color de fondo y está preparado
-
-            _frame.getBufferStrategy().show();
-        } while (_frame.getBufferStrategy().contentsLost()); //Devuelve si se ha perdido el buffer de pintado
-    }
-
     private void init(String windowName) {
         _frame = new JFrame(windowName);
         _frame.setSize(_logicWidth, _logicHeight);
@@ -67,6 +46,29 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
             System.err.println("No pude crear la BufferStrategy");
             return;
         }
+        //Obtenemos el Buffer Strategy que se supone que acaba de crearse
+        _strategy = _frame.getBufferStrategy();
+    }
+
+    public void draw(Application app) {
+
+        do {
+            do {
+                _myGraphics = _strategy.getDrawGraphics();
+                if (_myGraphics != null) {
+                    Graphics2D g = (Graphics2D) _myGraphics;
+                    g.scale(_scaleX, _scaleY);
+                    g.translate(_translationX, _translationY);
+                }
+                try {
+                    app.onRender(this);
+                } finally {
+                    _myGraphics.dispose();
+                }
+            } while (_strategy.contentsRestored()); //True si se ha limpiado con un color de fondo y está preparado
+
+            _strategy.show();
+        } while (_strategy.contentsLost()); //Devuelve si se ha perdido el buffer de pintado
     }
 
 
@@ -229,4 +231,5 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     private double _width;
     private double _height;
     private JFrame _frame;
+    private java.awt.image.BufferStrategy _strategy;
 }
