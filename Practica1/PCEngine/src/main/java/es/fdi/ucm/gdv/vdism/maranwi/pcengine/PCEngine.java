@@ -7,6 +7,12 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Input;
 
 public class PCEngine implements Engine {
 
+    public PCEngine(Application a, String applicationName){
+        _myAppName = applicationName;
+        _myGame = a;
+        Init();
+    }
+
     private void Init(){
         _input = new PCInput();
         _graphics = new PCGraphics(_myAppName, _myGame.getLogicWidth(), _myGame.getLogicHeight());
@@ -15,16 +21,8 @@ public class PCEngine implements Engine {
         _myGame.onInit(this);
     }
 
-    public PCEngine(){}
-
-    public void SetApplication(String applicationName, Application a){
-        _myAppName = applicationName;
-        _myGame = a;
-    }
 
     public void Play(){
-        Init();
-
         boolean play = true;
 
         long lastFrameTime = System.nanoTime();
@@ -35,10 +33,12 @@ public class PCEngine implements Engine {
             lastFrameTime = currentTime;
             double elapsedTime = (double) nanoElapsedTime / 1.0E9;
 
-            _graphics.adjustToScreen(_myGame);
+            //if(eventoReescaladoJava)
+
             _myGame.onInput(_input);
             _myGame.onUpdate(elapsedTime);
             _graphics.draw(_myGame);
+            _graphics.adjustToScreen(_myGame);
             if(!_myGame.onExit()) play = false;
         }
         _myGame.onRelease();

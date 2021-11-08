@@ -6,11 +6,9 @@ import jdk.internal.net.http.common.Pair;
 
 
 public class Tablero {
-    public Tablero(int filas, int columnas, int width, int height) {
+    public Tablero(int filas, int columnas) {
         _filas = filas;
         _columnas = columnas;
-        _casillasAlto = height / filas;
-        _casillasAncho = width / columnas;
 
         _matrizSolucion = new int[_filas][_columnas];
         _matrizJuego = new Celda[_filas][_columnas];
@@ -24,7 +22,7 @@ public class Tablero {
         0 = Azul
         1 = Rojo
      */
-    public void rellenaMatrizResueltaRandom() {
+    public void rellenaMatrizResueltaRandom(int RAD, int BOARD_LOGIC_OFFSET_Y, String font, int fontColor, int fontSize) {
         java.util.Random r = new Random();
         for (int x = 0; x < _matrizSolucion[0].length; ++x) {
             for (int j = 0; j < _matrizSolucion[1].length; ++j) {
@@ -33,14 +31,17 @@ public class Tablero {
 
                 boolean esFicha = r.nextBoolean();
                 Celda c;
+                //Fil(f) col(c)
+                //<f,c> to int => f * COL + c
+                //Int to <f,c> => f = n / COLS, c = n % COL
+                int id = x * _matrizJuego[0].length + j;
 
-                //Si es ficha se oculta su color, si no, se deja como está
                 if (esFicha) {
-                    c = new Celda(esFicha, TipoCelda.Blanco, -1);
+                    c = new Celda(id, esFicha, TipoCelda.Blanco, -1, x, j, RAD, BOARD_LOGIC_OFFSET_Y, font, fontColor, fontSize);
                     ++_numFichasBlancas;
                 } else {
                     int neigbours = _matrizSolucion[x][j] == 0 ? r.nextInt(3) + 1 : -1;
-                    c = new Celda(esFicha, TipoCelda.values()[_matrizSolucion[x][j]], neigbours);
+                    c = new Celda(id, esFicha, TipoCelda.values()[_matrizSolucion[x][j]], neigbours, x, j, RAD, BOARD_LOGIC_OFFSET_Y, font, fontColor, fontSize);
 
                 }
 
@@ -74,12 +75,12 @@ public class Tablero {
         }
     }
 
-    public Pair<Integer, Integer> identificaFicha(float xPos, float yPos) {
-        int identificadorX = (int) (xPos / _casillasAncho);
-        int identificadorY = (int) (yPos / _casillasAlto);
-
-        return new Pair<Integer, Integer>(identificadorX, identificadorY);
-    }
+//    public Pair<Integer, Integer> identificaFicha(float xPos, float yPos) {
+//        int identificadorX = (int) (xPos / _casillasAncho);
+//        int identificadorY = (int) (yPos / _casillasAlto);
+//
+//        return new Pair<Integer, Integer>(identificadorX, identificadorY);
+//    }
 
     //Auxiliares que hay que quitar, se ponen para completar onclick
     public boolean leftClick() {
@@ -88,17 +89,17 @@ public class Tablero {
 
     //ESTAMOS SUPONIENDO QUE TODOS LOS CLICKS CAEN EN CASILLAS
     public void onClick(float xPos, float yPos) {
-        Pair<Integer, Integer> posicionFicha = identificaFicha(xPos, yPos);
-
-        //Identificar si es click izquierdo o click derecho (preguntar)
-        boolean siguiente = leftClick() ? true : false;
-
-        //0 = NO hay cambios. 1 = se quita blanca del tablero. 2 = se añade blanca al tablero
-        _tracker.addMove(posicionFicha.first, posicionFicha.second, _matrizJuego[posicionFicha.first][posicionFicha.second].getTipoCelda());
-        int result = _matrizJuego[posicionFicha.first][posicionFicha.second].cambiarFicha(siguiente);
-
-        if (result == 1) --_numFichasBlancas;
-        else if (result == 2) ++_numFichasBlancas;
+//        Pair<Integer, Integer> posicionFicha = identificaFicha(xPos, yPos);
+//
+//        //Identificar si es click izquierdo o click derecho (preguntar)
+//        boolean siguiente = leftClick() ? true : false;
+//
+//        //0 = NO hay cambios. 1 = se quita blanca del tablero. 2 = se añade blanca al tablero
+//        _tracker.addMove(posicionFicha.first, posicionFicha.second, _matrizJuego[posicionFicha.first][posicionFicha.second].getTipoCelda());
+//        int result = _matrizJuego[posicionFicha.first][posicionFicha.second].cambiarFicha(siguiente);
+//
+//        if (result == 1) --_numFichasBlancas;
+//        else if (result == 2) ++_numFichasBlancas;
         //if(//han pulsado el botón de restaurar)
 //            _tracker.restoreMove(this);
     }
@@ -125,8 +126,6 @@ public class Tablero {
     private Celda _matrizJuego[][];
     private int _filas;
     private int _columnas;
-    private float _casillasAncho;
-    private float _casillasAlto;
     private MoveTracker _tracker;
     private  int _numFichasBlancas;
 }

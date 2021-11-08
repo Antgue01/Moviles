@@ -1,29 +1,25 @@
 package es.fdi.ucm.gdv.vdism.maranwi.pc;
 
-import java.awt.Font;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Application;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.GameState;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
-import es.fdi.ucm.gdv.vdism.maranwi.engine.Input;
 
 public class MenuState implements GameState {
     @Override
     public void start(Graphics g) {
         _font = "JosefinSans-Bold";
-        _fontSize = 48;
+        _fontSize = 50;
         _fontColor = 0x000000;
         g.newFont(_font + ".ttf", _font, _fontSize, true);
         _onMainMenu = true;
 
+        //Main menu => 1 Button : Play
         int xPos = BUTTON_RAD / 2, yPos = BUTTON_RAD;
         _buttons = new Interact[5];
         _buttons[0] = new Interact("Play", 0xFFFFFF, (g.getWidth()/2) - BUTTON_RAD, (g.getHeight()/2) - BUTTON_RAD, BUTTON_RAD * 2, 0, 0);
         _buttons[0].setText("Start", _font, _fontColor, _fontSize);
 
+        //Sub menu => Board size selection buttons: 1 button per size
         for(int x = 1; x < _buttons.length; ++x){
             _buttons[x] = new Interact(x+"", 0xFFFFFF, xPos, yPos, BUTTON_RAD, x + 3, x + 3);
             _buttons[x].setText((x + 3) + "x" + (x + 3), _font, _fontColor, _fontSize);
@@ -79,13 +75,13 @@ public class MenuState implements GameState {
         else{
             OhNo o = (OhNo) _mainApp;
             if (o!= null){
-                System.out.println("Loading PlayState with BoardSize: " + b.getBoardWidth() + "x" + b.getBoardHeight());
-                if (o!= null) o.goToPlayState(b.getBoardWidth(),b.getBoardHeight());
+                System.out.println("Loading PlayState with BoardSize: " + b.getBoardX() + "x" + b.getBoardY());
+                if (o!= null) o.goToPlayState(b.getBoardX(),b.getBoardY());
             }
         }
     }
 
-    Interact _buttons[];
+    private Interact _buttons[];
     private Application _mainApp;
     private String _font;
     private int _fontSize;

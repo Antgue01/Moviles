@@ -5,9 +5,8 @@ import es.fdi.ucm.gdv.vdism.maranwi.pcengine.PCEngine;
 
 public class PCGame {
     public static void main(String[] args) {
-        PCEngine engine = new PCEngine();
         OhNo myGame = new OhNo();
-        engine.SetApplication("OhNo!", myGame);
+        PCEngine engine = new PCEngine(myGame, "OhNo!");
         engine.Play();
     }
 }

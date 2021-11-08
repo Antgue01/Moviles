@@ -1,7 +1,7 @@
 package es.fdi.ucm.gdv.vdism.maranwi.engine;
 
 public interface Application {
-    public void onInit(Engine graphics);
+    public void onInit(Engine engine);
     public boolean onExit();
     public void onRelease();
     public void onInput(Input input);

@@ -1,16 +1,17 @@
 package es.fdi.ucm.gdv.vdism.maranwi.pc;
 
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
+import sun.util.resources.cldr.ext.CurrencyNames_te;
 
 public class Interact {
-    public Interact(String id, int baseColor, int x, int y, int rad, int boardW, int boardH){
+    public Interact(String id, int baseColor, int x, int y, int rad, int boardX, int boardY){
         _id = id;
         _baseColor = baseColor;
         _xPos = x;
         _yPos = y;
         _radius = rad;
-        _boardWidth = boardW;
-        _boardHeight = boardH;
+        _boardX = boardX;
+        _boardY = boardY;
         _hasText = false;
     }
 
@@ -35,20 +36,25 @@ public class Interact {
         return _yPos;
     }
 
-    public int getBoardWidth() { return _boardWidth; }
+    public int getBoardX() { return _boardX; }
 
-    public int getBoardHeight() { return _boardHeight; }
+    public int getBoardY() { return _boardY; }
+
+    public void setBaseColor(int bC) { _baseColor = bC; }
 
 
 
     public void render(Graphics g){
         g.setColor(_baseColor);
-        //g.fillCircle(_xPos - (_radius / 2), _yPos - (_radius / 2), _radius);
         g.fillCircle(_xPos , _yPos , _radius);
         if(_hasText){
             if(_font !="") g.setFont(_font);
             g.setColor(_fontColor);
-            g.drawText(_text, _xPos + (_radius / 2) - ((_fontSize / 2)), _yPos + (_radius / 2) + (_fontSize/4));
+            if(_text.length() > 2)
+                g.drawText(_text, _xPos + (_radius / 2) - ((_fontSize / 2) + 10), _yPos + (_radius / 2) + (_fontSize/4));
+            else
+                g.drawText(_text, _xPos + (_radius / 2) - _fontSize / 4, _yPos + (_radius / 2) + _fontSize / 4);
+
         }
     }
 
@@ -65,6 +71,6 @@ public class Interact {
     private int _yPos;
     private int _baseColor;
 
-    private int _boardWidth;
-    private int _boardHeight;
+    private int _boardX;
+    private int _boardY;
 }

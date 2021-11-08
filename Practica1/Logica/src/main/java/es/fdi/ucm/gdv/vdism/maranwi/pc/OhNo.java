@@ -5,6 +5,7 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.GameState;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Engine;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Input;
+import sun.util.resources.cldr.ext.CurrencyNames_en_NG;
 /*
     Interfaces (Engine)
         - Graphics: ok
@@ -33,9 +34,7 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
     @Override
     public void onInit(Engine engine) {
         _engine = engine;
-        _graphics = _engine.getGraphics();
         goToMenuState();
-        //goToPlayState(4,4);
     }
 
     @Override
@@ -83,14 +82,14 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
     public void goToMenuState(){
         _currentState = new MenuState();
         _currentState.setMainApplicaton(this);
-        _currentState.start(_graphics);
+        _currentState.start(_engine.getGraphics());
     }
 
     public void goToPlayState(int boardRows, int boardCols){
         PlayState game = new PlayState();
         game.setMainApplicaton(this);
-        game.setBoardSize(boardRows, boardCols, BOX_LOGIC_WIDTH, BOX_LOGIC_HEIGHT);
-        game.start(_graphics);
+        game.setBoardSize(boardRows, boardCols);
+        game.start(_engine.getGraphics());
         _currentState = game;
     }
 
@@ -113,7 +112,6 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
     }
 
     private Engine _engine;
-    private Graphics _graphics;
     private GameState _currentState;
     private double _boxGameWidth;
     private double _boxGameHeight;
