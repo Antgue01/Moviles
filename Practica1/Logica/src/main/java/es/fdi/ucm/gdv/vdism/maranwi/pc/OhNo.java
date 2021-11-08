@@ -32,7 +32,8 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
 
     @Override
     public void onInit(Engine engine) {
-        _graphics = engine.getGraphics();
+        _engine = engine;
+        _graphics = _engine.getGraphics();
         goToMenuState();
         //goToPlayState(4,4);
     }
@@ -69,7 +70,7 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
     }
 
     @Override
-    public void onUpdate(float deltaTime) {
+    public void onUpdate(double deltaTime) {
         _currentState.update(deltaTime);
     }
 

@@ -24,14 +24,20 @@ public class PCEngine implements Engine {
 
     public void Play(){
         Init();
-        //hace deltatime
 
-        float deltaTime = 0.0f;
         boolean play = true;
+
+        long lastFrameTime = System.nanoTime();
+
         while(play){
+            long currentTime = System.nanoTime();
+            long nanoElapsedTime = currentTime - lastFrameTime;
+            lastFrameTime = currentTime;
+            double elapsedTime = (double) nanoElapsedTime / 1.0E9;
+
             _graphics.adjustToScreen(_myGame);
             _myGame.onInput(_input);
-            _myGame.onUpdate(deltaTime);
+            _myGame.onUpdate(elapsedTime);
             _graphics.draw(_myGame);
             if(!_myGame.onExit()) play = false;
         }

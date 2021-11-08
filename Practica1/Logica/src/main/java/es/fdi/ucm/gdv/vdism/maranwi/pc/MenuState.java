@@ -43,7 +43,7 @@ public class MenuState implements GameState {
     }
 
     @Override
-    public void update(float deltaTime) {
+    public void update(double deltaTime) {
         //todo: Llamar a la animación aquí y gestionar el tiempo de dicha animación
     }
 
