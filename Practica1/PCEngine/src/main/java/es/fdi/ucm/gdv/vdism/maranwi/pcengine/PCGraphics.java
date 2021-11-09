@@ -18,6 +18,7 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Application;
 
 
 public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics {
+
     public PCGraphics(String windowName, int logicWidth, int logicHeight) {
         _logicWidth = logicWidth;
         _logicHeight = logicHeight;
@@ -139,9 +140,9 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
             newPosY = centerY - (newY / 2);
             translate(0, newPosY);
         }
-        _width = _scaleX * _logicWidth;
-        _height = _scaleY * _logicHeight;
-        app.setApplicationZone(_width, _height, size.getWidth(), size.getHeight());
+        _canvasWidth = _scaleX * _logicWidth;
+        _canvasHeight = _scaleY * _logicHeight;
+        //app.setApplicationZone(_width, _height, size.getWidth(), size.getHeight());
     }
 
     public void translate(double x, double y) {
@@ -194,13 +195,22 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
         _myGraphics.drawString(text, x, y);
     }
 
-    public int getWidth() {
-        return _logicWidth;
+    @Override
+    public int getWindowsWidth() {
+        return _frame.getWidth();
     }
 
     @Override
-    public int getHeight() {
-        return _logicHeight;
+    public int getWindowsHeight() { return _frame.getHeight(); }
+
+    @Override
+    public int getCanvasWidth() {
+        return (int) _canvasWidth;
+    }
+
+    @Override
+    public int getCanvasHeight() {
+        return (int) _canvasHeight;
     }
 
     @Override
@@ -228,8 +238,8 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     private java.awt.Graphics _myGraphics;
     private int _logicWidth;
     private int _logicHeight;
-    private double _width;
-    private double _height;
+    private double _canvasWidth;
+    private double _canvasHeight;
     private JFrame _frame;
     private java.awt.image.BufferStrategy _strategy;
 }

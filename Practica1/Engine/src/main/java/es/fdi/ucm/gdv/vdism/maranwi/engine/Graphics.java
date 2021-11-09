@@ -12,8 +12,10 @@ public interface Graphics {
     public void setColor(int color);
     public void fillCircle(int cx,int cy,int r);
     public void drawText(String text,int x,int y);
-    public int getWidth();
-    public int getHeight();
+    public int getWindowsWidth();
+    public int getWindowsHeight();
+    public int getCanvasWidth();
+    public int getCanvasHeight();
     public  void setFont(String tag);
 
 }

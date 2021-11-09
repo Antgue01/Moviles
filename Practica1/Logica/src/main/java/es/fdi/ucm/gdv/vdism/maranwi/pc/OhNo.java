@@ -51,17 +51,21 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
     public void onInput(Input input) {
         for (Input.TouchEvent t : input.getTouchEvents()) {
             if (t != null && t.get_type() == Input.TouchEvent.TouchType.pulsacion){
-                double xLeftLimitBox  = (_windowsWidth / 2) - (_boxGameWidth / 2);
-                double xRightLimitBox  = (_windowsWidth / 2) + (_boxGameWidth / 2);
-                double yTopLimitBox = (_windowsHeigth / 2) - (_boxGameHeight / 2);
-                double yBottomLimitBox = (_windowsHeigth / 2) + (_boxGameHeight / 2);
+                int windowsWidth = _engine.getGraphics().getWindowsWidth();
+                int windowsHeigth = _engine.getGraphics().getWindowsHeight();
+                int canvasWidth = _engine.getGraphics().getCanvasWidth();
+                int canvasHeight = _engine.getGraphics().getCanvasHeight();
+                double xLeftLimitBox  = (windowsWidth / 2) - (canvasWidth / 2);
+                double xRightLimitBox  = (windowsWidth / 2) + (canvasWidth / 2);
+                double yTopLimitBox = (windowsHeigth / 2) - (canvasHeight / 2);
+                double yBottomLimitBox = (windowsHeigth / 2) + (canvasHeight / 2);
 
                 if(t.get_posX() >= xLeftLimitBox && t.get_posX() <= xRightLimitBox &&
                    t.get_posY() >= yTopLimitBox && t.get_posY() <= yBottomLimitBox){
                         double xInput = t.get_posX() - xLeftLimitBox;
                         double yInput = t.get_posY() - yTopLimitBox;
                         _currentState.identifyEvent((int) xInput, (int) yInput);
-                        //System.out.println("Event x :" + xInput + " Event y: " + yInput);
+                        System.out.println("Event x :" + xInput + " Event y: " + yInput);
                         //System.out.println("Event x :" + t.get_posX() + " Event y: " + t.get_posY());
                 }
             }
@@ -93,13 +97,6 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
         _currentState = game;
     }
 
-    public void setApplicationZone(double width, double height, double windowsWidth, double windowsHeigth){
-        _boxGameWidth = width;
-        _boxGameHeight = height;
-
-        _windowsWidth = windowsWidth;
-        _windowsHeigth = windowsHeigth;
-    }
 
     @Override
     public int getLogicWidth() {
@@ -113,10 +110,6 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
 
     private Engine _engine;
     private GameState _currentState;
-    private double _boxGameWidth;
-    private double _boxGameHeight;
-    private double _windowsWidth;
-    private double _windowsHeigth;
     static private final int BOX_LOGIC_WIDTH = 400;
     static private final int BOX_LOGIC_HEIGHT = 600;
 }
