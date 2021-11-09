@@ -91,7 +91,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     }
 
 
-    public void newFont(String filename, int size, boolean isBold) {
+    public Font newFont(String filename, int size, boolean isBold) {
 
         java.awt.Font searched = _fonts.get(filename);
         int style = isBold ? java.awt.Font.BOLD : java.awt.Font.PLAIN;
