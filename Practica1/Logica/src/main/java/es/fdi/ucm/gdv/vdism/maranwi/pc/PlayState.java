@@ -10,10 +10,10 @@ public class PlayState implements GameState {
     public void start(Graphics g) {
         //_board = new Tablero(_fils, _cols, _width, _height);
         _hints = new Pista();
-        _font = "JosefinSans-Bold";
+        _font = "JosefinSans-Bold.ttf";
         _fontSize = 48;
         _fontColor = 0x000000;
-        g.newFont(_font + ".ttf", _font, _fontSize, false);
+        g.newFont(_font, _fontSize, false);
         _hintText = "";
         _board = new Tablero(_rows, _cols);
         _board.rellenaMatrizResueltaRandom(_buttonRadius, BOARD_LOGIC_OFFSET_Y, _font, _fontColor, _fontSize);

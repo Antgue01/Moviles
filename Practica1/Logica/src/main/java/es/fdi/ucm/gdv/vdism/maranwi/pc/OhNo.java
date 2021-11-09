@@ -1,5 +1,7 @@
 package es.fdi.ucm.gdv.vdism.maranwi.pc;
-
+/* Dudas:
+     - ¿Hacer las llamadas a escale y translate desde lógica o dejar que lo haga el motor cuando sea conveniente?
+ */
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Application;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.GameState;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Engine;

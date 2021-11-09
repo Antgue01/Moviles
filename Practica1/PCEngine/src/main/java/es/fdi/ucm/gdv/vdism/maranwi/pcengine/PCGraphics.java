@@ -74,9 +74,10 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
 
     public void newImage(String name, String tag) {
-        java.awt.Image searched = _images.get(tag);
+        java.awt.Image image = _images.get(tag);
         //We only create the image if we don't have it yet
-        if (searched == null) {
+        if (image == null) {
+            //image = new PCImage();
             java.awt.Image img = null;
             try {
                 img = javax.imageio.ImageIO.read(new java.io.File(name));
@@ -86,14 +87,13 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
             }
             if (img != null)
                 _images.put(tag, img);
-
         }
     }
 
 
-    public void newFont(String filename, String tag, int size, boolean isBold) {
+    public void newFont(String filename, int size, boolean isBold) {
 
-        java.awt.Font searched = _fonts.get(tag);
+        java.awt.Font searched = _fonts.get(filename);
         int style = isBold ? java.awt.Font.BOLD : java.awt.Font.PLAIN;
         //We create the font only if we don't have it yet
         if (searched == null || searched.getSize() != size || searched.getStyle() != style) {
@@ -105,7 +105,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
                 System.err.println("Error cargando la fuente: " + e);
             }
             f = f.deriveFont(style, size);
-            _fonts.put(tag, f);
+            _fonts.put(filename, f);
         }
     }
 
@@ -169,7 +169,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     ///si nos da widht o height -1 se considera que ese parametro es full
     @Override
     public void drawImage(String image, int x, int y, int width, int height) {
-        Image img = _images.get(image);
+        java.awt.Image img = _images.get(image);
         if (img != null) {
             if (width < 0)
                 width = img.getWidth(_frame);

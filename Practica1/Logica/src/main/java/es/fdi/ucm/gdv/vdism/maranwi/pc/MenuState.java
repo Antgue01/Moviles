@@ -7,10 +7,10 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 public class MenuState implements GameState {
     @Override
     public void start(Graphics g) {
-        _font = "JosefinSans-Bold";
+        _font = "JosefinSans-Bold.ttf";
         _fontSize = 50;
         _fontColor = 0x000000;
-        g.newFont(_font + ".ttf", _font, _fontSize, true);
+        g.newFont(_font, _fontSize, true);
         _onMainMenu = true;
 
         //Main menu => 1 Button : Play

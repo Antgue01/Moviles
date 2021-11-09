@@ -1,8 +1,10 @@
 package es.fdi.ucm.gdv.vdism.maranwi.engine;
 
 public interface Graphics {
+    //public Image newImage(String name,String tag);
     public void newImage(String name,String tag);
-    public void newFont(String filename,String tag, int size, boolean isBold);
+    //public Font newFont(String filename, int size, boolean isBold);
+    public void newFont(String filename, int size, boolean isBold);
     public void clear(int color);
     public void translate(double x,double y);
     public void scale(double x,double y);
