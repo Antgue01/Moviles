@@ -1,12 +1,13 @@
 package es.fdi.ucm.gdv.vdism.maranwi.pc;
 
+import es.fdi.ucm.gdv.vdism.maranwi.engine.Font;
 import sun.util.resources.cldr.ext.CurrencyNames_to;
 
 //                  0     1      2
 enum TipoCelda {Azul, Rojo, Blanco}
 
 public class Celda {
-    Celda(int id, boolean esFicha, TipoCelda tipo, int neighbours, int x, int y, int rad, int BOARD_LOGIC_OFFSET_Y, String font, int fontColor, int fontSize) {
+    Celda(int id, boolean esFicha, TipoCelda tipo, int neighbours, int x, int y, int rad, int BOARD_LOGIC_OFFSET_Y, Font font, int fontColor) {
         _esFicha = esFicha;
         _tipo = tipo;
         _requiredNeighbours = neighbours;
@@ -15,7 +16,7 @@ public class Celda {
         int yPos = BOARD_LOGIC_OFFSET_Y + (y * rad) + rad / 2;
         _button = new Interact(id + "", getColorFromInt(tipo), xPos, yPos, rad, x, y);
         if (neighbours != -1) {
-            _button.setText(neighbours + "", font, fontColor, fontSize);
+            _button.setText(neighbours + "", font, fontColor);
         }
     }
 

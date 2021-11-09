@@ -1,5 +1,6 @@
 package es.fdi.ucm.gdv.vdism.maranwi.pc;
 
+import es.fdi.ucm.gdv.vdism.maranwi.engine.Font;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 import sun.util.resources.cldr.ext.CurrencyNames_te;
 
@@ -15,12 +16,11 @@ public class Interact {
         _hasText = false;
     }
 
-    public void setText(String text, String font, int fontColor, int fontSize){
+    public void setText(String text, Font font, int fontColor){
         _text = text;
         _hasText = true;
         _font = font;
         _fontColor = fontColor;
-        _fontSize = fontSize;
     }
     public String getId(){ return _id; }
 
@@ -48,12 +48,12 @@ public class Interact {
         g.setColor(_baseColor);
         g.fillCircle(_xPos , _yPos , _radius);
         if(_hasText){
-            if(_font !="") g.setFont(_font);
+            if(_font != null) g.setFont(_font);
             g.setColor(_fontColor);
             if(_text.length() > 2)
-                g.drawText(_text, _xPos + (_radius / 2) - ((_fontSize / 2) + 10), _yPos + (_radius / 2) + (_fontSize/4));
+                g.drawText(_text, _xPos + (_radius / 2) - ((_font.getSize() / 2) + 10), _yPos + (_radius / 2) + (_font.getSize()/4));
             else
-                g.drawText(_text, _xPos + (_radius / 2) - _fontSize / 4, _yPos + (_radius / 2) + _fontSize / 4);
+                g.drawText(_text, _xPos + (_radius / 2) - _font.getSize() / 4, _yPos + (_radius / 2) + _font.getSize() / 4);
 
         }
     }
@@ -61,9 +61,8 @@ public class Interact {
     private String _id;
 
     private String _text;
-    private String _font;
+    private Font _font;
     private int _fontColor;
-    private int _fontSize;
     private boolean _hasText;
 
     private int _radius;

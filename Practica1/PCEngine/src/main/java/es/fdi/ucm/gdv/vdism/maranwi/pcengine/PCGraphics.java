@@ -2,9 +2,9 @@ package es.fdi.ucm.gdv.vdism.maranwi.pcengine;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
+import es.fdi.ucm.gdv.vdism.maranwi.engine.Font;
 import java.awt.Graphics2D;
-import java.awt.Image;
+import es.fdi.ucm.gdv.vdism.maranwi.engine.Image;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.FileInputStream;
@@ -33,7 +33,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
         _frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         _frame.setIgnoreRepaint(true);
         _frame.setVisible(true);
-        _fonts = new HashMap<String, Font>();
+        _fonts = new HashMap<String, PCFont>();
 
         int intentos = 100;
         while (intentos-- > 0) {
@@ -73,40 +73,24 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     }
 
 
-    public void newImage(String name, String tag) {
-        java.awt.Image image = _images.get(tag);
-        //We only create the image if we don't have it yet
-        if (image == null) {
-            //image = new PCImage();
-            java.awt.Image img = null;
-            try {
-                img = javax.imageio.ImageIO.read(new java.io.File(name));
-            } catch (IOException e) {
-                System.err.println("Error cargando la imagen: " + e);
-
-            }
-            if (img != null)
-                _images.put(tag, img);
+    public Image newImage(String name) {
+        java.awt.Image sprite = null;
+        try {
+            sprite = javax.imageio.ImageIO.read(new java.io.File(name));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return sprite != null ? new PCImage(sprite.getWidth(_frame), sprite.getHeight(_frame), sprite) : null;
     }
 
 
     public Font newFont(String filename, int size, boolean isBold) {
-
-        java.awt.Font searched = _fonts.get(filename);
-        int style = isBold ? java.awt.Font.BOLD : java.awt.Font.PLAIN;
-        //We create the font only if we don't have it yet
-        if (searched == null || searched.getSize() != size || searched.getStyle() != style) {
-            java.awt.Font f = null;
-
-            try (InputStream is = new FileInputStream(filename)) {
-                f = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, is);
-            } catch (Exception e) {
-                System.err.println("Error cargando la fuente: " + e);
-            }
-            f = f.deriveFont(style, size);
-            _fonts.put(filename, f);
+        String id = filename + size + isBold + "";
+        PCFont font = _fonts.get(id);
+        if(font == null){
+            font = new PCFont(filename, size, isBold);
         }
+        return font;
     }
 
 
@@ -168,15 +152,8 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
     ///si nos da widht o height -1 se considera que ese parametro es full
     @Override
-    public void drawImage(String image, int x, int y, int width, int height) {
-        java.awt.Image img = _images.get(image);
-        if (img != null) {
-            if (width < 0)
-                width = img.getWidth(_frame);
-            if (height < 0)
-                height = img.getHeight(_frame);
-            _myGraphics.drawImage(img, x, y, width, height, _frame);
-        }
+    public void drawImage(Image img, int x, int y, int width, int height) {
+        if (img != null) _myGraphics.drawImage( ((PCImage)(img)).getAwtImage(), x, y, width, height, _frame);
     }
 
     public void setColor(int color) {
@@ -214,10 +191,9 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     }
 
     @Override
-    public void setFont(String tag) {
-        java.awt.Font currentFont = _fonts.get(tag);
-        if (currentFont != null)
-            _myGraphics.setFont(currentFont);
+    public void setFont(Font font) {
+        java.awt.Font f = ((PCFont)(font)).getJavaFont();
+        if(f!= null) _myGraphics.setFont(f);
     }
 
 
@@ -233,7 +209,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     double _translationY = 0;
     double _scaleX = 1;
     double _scaleY = 1;
-    HashMap<String, Font> _fonts;
+    HashMap<String, PCFont> _fonts;
     HashMap<String, java.awt.Image> _images;
     private java.awt.Graphics _myGraphics;
     private int _logicWidth;

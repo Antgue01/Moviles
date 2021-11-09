@@ -2,6 +2,7 @@ package es.fdi.ucm.gdv.vdism.maranwi.pc;
 
 import java.util.Random;
 
+import es.fdi.ucm.gdv.vdism.maranwi.engine.Font;
 import jdk.internal.net.http.common.Pair;
 
 
@@ -22,7 +23,7 @@ public class Tablero {
         0 = Azul
         1 = Rojo
      */
-    public void rellenaMatrizResueltaRandom(int RAD, int BOARD_LOGIC_OFFSET_Y, String font, int fontColor, int fontSize) {
+    public void rellenaMatrizResueltaRandom(int RAD, int BOARD_LOGIC_OFFSET_Y, Font font, int fontColor) {
         java.util.Random r = new Random();
         for (int x = 0; x < _matrizSolucion[0].length; ++x) {
             for (int j = 0; j < _matrizSolucion[1].length; ++j) {
@@ -37,11 +38,11 @@ public class Tablero {
                 int id = x * _matrizJuego[0].length + j;
 
                 if (esFicha) {
-                    c = new Celda(id, esFicha, TipoCelda.Blanco, -1, x, j, RAD, BOARD_LOGIC_OFFSET_Y, font, fontColor, fontSize);
+                    c = new Celda(id, esFicha, TipoCelda.Blanco, -1, x, j, RAD, BOARD_LOGIC_OFFSET_Y, font, fontColor);
                     ++_numFichasBlancas;
                 } else {
                     int neigbours = _matrizSolucion[x][j] == 0 ? r.nextInt(3) + 1 : -1;
-                    c = new Celda(id, esFicha, TipoCelda.values()[_matrizSolucion[x][j]], neigbours, x, j, RAD, BOARD_LOGIC_OFFSET_Y, font, fontColor, fontSize);
+                    c = new Celda(id, esFicha, TipoCelda.values()[_matrizSolucion[x][j]], neigbours, x, j, RAD, BOARD_LOGIC_OFFSET_Y, font, fontColor);
 
                 }
 

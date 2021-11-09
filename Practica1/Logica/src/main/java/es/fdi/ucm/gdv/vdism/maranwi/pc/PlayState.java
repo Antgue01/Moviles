@@ -1,6 +1,7 @@
 package es.fdi.ucm.gdv.vdism.maranwi.pc;
 
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Application;
+import es.fdi.ucm.gdv.vdism.maranwi.engine.Font;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.GameState;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 
@@ -10,13 +11,11 @@ public class PlayState implements GameState {
     public void start(Graphics g) {
         //_board = new Tablero(_fils, _cols, _width, _height);
         _hints = new Pista();
-        _font = "JosefinSans-Bold.ttf";
-        _fontSize = 48;
+        _font = g.newFont("JosefinSans-Bold.ttf", 48, false);
         _fontColor = 0x000000;
-        g.newFont(_font, _fontSize, false);
         _hintText = "";
         _board = new Tablero(_rows, _cols);
-        _board.rellenaMatrizResueltaRandom(_buttonRadius, BOARD_LOGIC_OFFSET_Y, _font, _fontColor, _fontSize);
+        _board.rellenaMatrizResueltaRandom(_buttonRadius, BOARD_LOGIC_OFFSET_Y, _font, _fontColor);
         _gameMatrix = _board.getMatrizJuego();
     }
 
@@ -68,8 +67,7 @@ public class PlayState implements GameState {
     private String _hintText;
     private Tablero _board;
     private Celda[][] _gameMatrix;
-    private String _font;
-    private int _fontSize;
+    private Font _font;
     private int _fontColor;
     private Application _mainApp;
     private static final int BOARD_LOGIC_OFFSET_Y = 100;
