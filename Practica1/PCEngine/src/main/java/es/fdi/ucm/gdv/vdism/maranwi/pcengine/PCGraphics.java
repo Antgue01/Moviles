@@ -5,6 +5,9 @@ import java.awt.Dimension;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Font;
 import java.awt.Graphics2D;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Image;
+
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.FileInputStream;
@@ -19,6 +22,37 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Application;
 
 public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics {
 
+    private class MyJFrame extends JFrame implements ComponentListener{
+
+        public MyJFrame(String title){
+            super(title);
+            getContentPane().addComponentListener(this);
+        }
+
+        public boolean getResized(){
+            if(resized){
+                resized = false;
+                return  true;
+            }
+            return false;
+        }
+
+        @Override
+        public void componentResized(ComponentEvent componentEvent) {
+            resized = true;
+        }
+
+        @Override
+        public void componentMoved(ComponentEvent componentEvent) { }
+
+        @Override
+        public void componentShown(ComponentEvent componentEvent) { }
+
+        @Override
+        public void componentHidden(ComponentEvent componentEvent) { }
+
+        private boolean resized = false;
+    }
     public PCGraphics(String windowName, int logicWidth, int logicHeight) {
         _logicWidth = logicWidth;
         _logicHeight = logicHeight;
@@ -27,7 +61,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     }
 
     private void init(String windowName) {
-        _frame = new JFrame(windowName);
+        _frame = new MyJFrame(windowName);
         _frame.setSize(_logicWidth, _logicHeight);
 
         _frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -52,6 +86,8 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     }
 
     public void draw(Application app) {
+
+        if(_frame.getResized()) adjustToScreen();
 
         do {
             do {
@@ -104,7 +140,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
     }
 
-    public void adjustToScreen(Application app) {
+    private void adjustToScreen() {
         Dimension size = _frame.getSize();
         //Hacemos la regla de tres para ver si cabría
 
@@ -218,6 +254,6 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     private int _logicHeight;
     private double _canvasWidth;
     private double _canvasHeight;
-    private JFrame _frame;
+    private MyJFrame _frame;
     private java.awt.image.BufferStrategy _strategy;
 }

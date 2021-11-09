@@ -33,7 +33,7 @@ public class PCEngine implements Engine {
             lastFrameTime = currentTime;
             double elapsedTime = (double) nanoElapsedTime / 1.0E9;
 
-            _graphics.adjustToScreen(_myGame);
+            //_graphics.adjustToScreen(_myGame);
             _myGame.onInput(_input);
             _myGame.onUpdate(elapsedTime);
             _graphics.draw(_myGame);
