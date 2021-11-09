@@ -58,8 +58,10 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
                 _myGraphics = _strategy.getDrawGraphics();
                 if (_myGraphics != null) {
                     Graphics2D g = (Graphics2D) _myGraphics;
-                    g.scale(_scaleX, _scaleY);
-                    g.translate(_translationX, _translationY);
+                    if(g!= null){
+                        g.scale(_scaleX, _scaleY);
+                        g.translate(_translationX, _translationY);
+                    }
                 }
                 try {
                     app.onRender(this);

@@ -9,14 +9,12 @@ public class PlayState implements GameState {
 
     @Override
     public void start(Graphics g) {
-        //_board = new Tablero(_fils, _cols, _width, _height);
         _hints = new Pista();
         _font = g.newFont("JosefinSans-Bold.ttf", 48, false);
         _fontColor = 0x000000;
         _hintText = "";
         _board = new Tablero(_rows, _cols);
-        _board.rellenaMatrizResueltaRandom(_buttonRadius, BOARD_LOGIC_OFFSET_Y, _font, _fontColor);
-        _gameMatrix = _board.getMatrizJuego();
+        _board.rellenaMatrizResueltaRandom(_buttonRadius, BOARD_LOGIC_OFFSET_X, BOARD_LOGIC_OFFSET_Y, _font, _fontColor);
     }
 
     @Override
@@ -27,9 +25,9 @@ public class PlayState implements GameState {
             g.drawText(_hintText,0,0);
         }
 
-       for (int x = 0; x < _gameMatrix.length; x++)
-           for (int y = 0; y < _gameMatrix[0].length; y++)
-                _gameMatrix[x][y].getButton().render(g);
+       for (int x = 0; x < _rows; x++)
+           for (int y = 0; y < _cols; y++)
+               _board.getMatrizJuego()[x][y].getButton().render(g);
     }
 
     @Override
@@ -41,9 +39,16 @@ public class PlayState implements GameState {
 
     @Override
     public void identifyEvent(int x, int y) {
+        if(x >= BOARD_LOGIC_OFFSET_X && x <= BOARD_LOGIC_OFFSET_X + (_buttonRadius * _cols) &&
+           y >= BOARD_LOGIC_OFFSET_Y && y <= BOARD_LOGIC_OFFSET_Y + (_buttonRadius * _rows)){
+                int row = (x - BOARD_LOGIC_OFFSET_X) / _buttonRadius;
+                int col = (y - BOARD_LOGIC_OFFSET_Y) / _buttonRadius;
+                _board.nextColor(row, col);
+                //System.out.println("Event x :" + x + " Event y: " + y + " ButtonRadius: " + _buttonRadius);
+                //System.out.println("Row x :" + row + " Col y: " + col);
+        }
         //_hints.aplicar(_board,true);
         //_hintText = _hints.getCurrentHint();
-        System.out.println(x + " " + y);
     }
 
     @Override
@@ -55,6 +60,7 @@ public class PlayState implements GameState {
         _rows = rows;
         _cols = cols;
         _buttonRadius = _mainApp.getLogicWidth() / ( cols + 1);
+        BOARD_LOGIC_OFFSET_X = _buttonRadius / 2;
     }
 
     private boolean clickOnButton(int xEvent, int yEvent, Interact b){
@@ -63,15 +69,15 @@ public class PlayState implements GameState {
         return false;
     }
 
+    private Application _mainApp;
+    private Tablero _board;
     private Pista _hints;
     private String _hintText;
-    private Tablero _board;
-    private Celda[][] _gameMatrix;
     private Font _font;
     private int _fontColor;
-    private Application _mainApp;
-    private static final int BOARD_LOGIC_OFFSET_Y = 100;
     private int _buttonRadius;
     private int _rows;
     private int _cols;
+    private static final int BOARD_LOGIC_OFFSET_Y = 100;
+    private int BOARD_LOGIC_OFFSET_X;
 }

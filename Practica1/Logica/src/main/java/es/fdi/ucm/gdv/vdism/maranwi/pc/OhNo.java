@@ -71,7 +71,7 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
                         double xInput = t.get_posX() - xLeftLimitBox;
                         double yInput = t.get_posY() - yTopLimitBox;
                         _currentState.identifyEvent((int) xInput, (int) yInput);
-                        System.out.println("Event x :" + xInput + " Event y: " + yInput);
+                        //System.out.println("Event x :" + xInput + " Event y: " + yInput);
                         //System.out.println("Event x :" + t.get_posX() + " Event y: " + t.get_posY());
                 }
             }

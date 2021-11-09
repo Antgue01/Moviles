@@ -54,7 +54,6 @@ public class Interact {
                 g.drawText(_text, _xPos + (_radius / 2) - ((_font.getSize() / 2) + 10), _yPos + (_radius / 2) + (_font.getSize()/4));
             else
                 g.drawText(_text, _xPos + (_radius / 2) - _font.getSize() / 4, _yPos + (_radius / 2) + _font.getSize() / 4);
-
         }
     }
 

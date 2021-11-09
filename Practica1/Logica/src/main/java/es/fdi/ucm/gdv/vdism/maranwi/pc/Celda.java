@@ -7,13 +7,13 @@ import sun.util.resources.cldr.ext.CurrencyNames_to;
 enum TipoCelda {Azul, Rojo, Blanco}
 
 public class Celda {
-    Celda(int id, boolean esFicha, TipoCelda tipo, int neighbours, int x, int y, int rad, int BOARD_LOGIC_OFFSET_Y, Font font, int fontColor) {
+    Celda(int id, boolean esFicha, TipoCelda tipo, int neighbours, int x, int y, int rad, int BOARD_LOGIC_OFFSET_X, int BOARD_LOGIC_OFFSET_Y, Font font, int fontColor) {
         _esFicha = esFicha;
         _tipo = tipo;
         _requiredNeighbours = neighbours;
 
-        int xPos = (x * rad) + rad / 2;
-        int yPos = BOARD_LOGIC_OFFSET_Y + (y * rad) + rad / 2;
+        int xPos = (x * rad) + BOARD_LOGIC_OFFSET_X;
+        int yPos = (y * rad) + BOARD_LOGIC_OFFSET_Y;
         _button = new Interact(id + "", getColorFromInt(tipo), xPos, yPos, rad, x, y);
         if (neighbours != -1) {
             _button.setText(neighbours + "", font, fontColor);
