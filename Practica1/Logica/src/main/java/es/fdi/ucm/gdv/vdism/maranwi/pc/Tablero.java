@@ -1,9 +1,7 @@
 package es.fdi.ucm.gdv.vdism.maranwi.pc;
-
 import java.util.Random;
-
+import java.util.Stack;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Font;
-import jdk.internal.net.http.common.Pair;
 
 
 public class Tablero {
@@ -15,7 +13,7 @@ public class Tablero {
         _matrizJuego = new Celda[_filas][_columnas];
 
         _numFichasBlancas = 0;
-        _tracker = new MoveTracker();
+        _moves = new Stack<Move>();
     }
 
 
@@ -69,9 +67,18 @@ public class Tablero {
         //Devuelve 0 si no hay cambios
         //Devuelve 1 si se cambia una ficha blanca a otro color - se pierde una blanca en el tablero -
         //Devuelve 2 si se cambia una ficha de otro color a blanca - se añade una blanca en el tablero -
+        _moves.push(new Move(col, row, _matrizJuego[row][col].getTipoCelda()));
+
         int result = _matrizJuego[row][col].cambiarFicha(true);
         if(result == 1) --_numFichasBlancas;
         else if(result == 2) ++_numFichasBlancas;
+    }
+
+    public void restoreMove(){
+        if (!_moves.empty()) {
+            Move last=_moves.pop();
+            setColor(last.getX(), last.getY(),last.getType());
+        }
     }
 
     public void setColor(int X, int Y, TipoCelda tipo) {
@@ -83,35 +90,6 @@ public class Tablero {
             else if (!wasWhite && tipo == TipoCelda.Blanco)
                 _numFichasBlancas++;
         }
-    }
-
-//    public Pair<Integer, Integer> identificaFicha(float xPos, float yPos) {
-//        int identificadorX = (int) (xPos / _casillasAncho);
-//        int identificadorY = (int) (yPos / _casillasAlto);
-//
-//        return new Pair<Integer, Integer>(identificadorX, identificadorY);
-//    }
-
-    //Auxiliares que hay que quitar, se ponen para completar onclick
-    public boolean leftClick() {
-        return true;
-    }
-
-    //ESTAMOS SUPONIENDO QUE TODOS LOS CLICKS CAEN EN CASILLAS
-    public void onClick(float xPos, float yPos) {
-//        Pair<Integer, Integer> posicionFicha = identificaFicha(xPos, yPos);
-//
-//        //Identificar si es click izquierdo o click derecho (preguntar)
-//        boolean siguiente = leftClick() ? true : false;
-//
-//        //0 = NO hay cambios. 1 = se quita blanca del tablero. 2 = se añade blanca al tablero
-//        _tracker.addMove(posicionFicha.first, posicionFicha.second, _matrizJuego[posicionFicha.first][posicionFicha.second].getTipoCelda());
-//        int result = _matrizJuego[posicionFicha.first][posicionFicha.second].cambiarFicha(siguiente);
-//
-//        if (result == 1) --_numFichasBlancas;
-//        else if (result == 2) ++_numFichasBlancas;
-        //if(//han pulsado el botón de restaurar)
-//            _tracker.restoreMove(this);
     }
 
     public boolean compruebaSolucion() {
@@ -136,6 +114,6 @@ public class Tablero {
     private Celda _matrizJuego[][];
     private int _filas;
     private int _columnas;
-    private MoveTracker _tracker;
     private  int _numFichasBlancas;
+    private Stack<Move> _moves;
 }

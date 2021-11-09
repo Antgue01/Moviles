@@ -7,10 +7,6 @@ public class Move {
         _Y = y;
         _Type = type;
     }
-    private int _X;
-    private  int _Y;
-    private TipoCelda _Type;
-
 
     public int getX() {
         return _X;
@@ -20,8 +16,11 @@ public class Move {
         return _Y;
     }
 
-
     public TipoCelda getType() {
         return _Type;
     }
+
+    private int _X;
+    private  int _Y;
+    private TipoCelda _Type;
 }

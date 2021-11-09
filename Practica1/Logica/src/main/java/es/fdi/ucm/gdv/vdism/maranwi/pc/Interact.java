@@ -1,7 +1,10 @@
 package es.fdi.ucm.gdv.vdism.maranwi.pc;
 
+import org.graalvm.compiler.nodes.extended.PluginFactory_RawLoadNode;
+
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Font;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
+import es.fdi.ucm.gdv.vdism.maranwi.engine.Image;
 import sun.util.resources.cldr.ext.CurrencyNames_te;
 
 public class Interact {
@@ -14,8 +17,13 @@ public class Interact {
         _boardX = boardX;
         _boardY = boardY;
         _hasText = false;
+        _hasImg = false;
     }
 
+    public void setImage(Image img){
+        _image = img;
+        _hasImg = true;
+    }
     public void setText(String text, Font font, int fontColor){
         _text = text;
         _hasText = true;
@@ -43,7 +51,6 @@ public class Interact {
     public void setBaseColor(int bC) { _baseColor = bC; }
 
 
-
     public void render(Graphics g){
         g.setColor(_baseColor);
         g.fillCircle(_xPos , _yPos , _radius);
@@ -55,6 +62,9 @@ public class Interact {
             else
                 g.drawText(_text, _xPos + (_radius / 2) - _font.getSize() / 4, _yPos + (_radius / 2) + _font.getSize() / 4);
         }
+        if(_hasImg){
+            g.drawImage(_image, _xPos + (_radius / 2), _yPos + (_radius / 2), _image.getWidth(), _image.getHeigth());
+        }
     }
 
     private String _id;
@@ -63,6 +73,9 @@ public class Interact {
     private Font _font;
     private int _fontColor;
     private boolean _hasText;
+
+    private Image _image;
+    private boolean _hasImg;
 
     private int _radius;
     private int _xPos;
