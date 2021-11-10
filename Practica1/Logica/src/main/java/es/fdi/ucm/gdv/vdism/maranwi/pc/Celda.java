@@ -65,11 +65,11 @@ public class Celda {
 
     private int getColorFromInt(TipoCelda Colorid) {
         if (Colorid == TipoCelda.Azul)
-            return 0x0000FF;
+            return 0x0FF0FF;
         else if (Colorid == TipoCelda.Rojo)
             return 0xFF0000;
         else if (Colorid == TipoCelda.Blanco)
-            return 0xFFFFFF;
+            return 0xECE1DE;
         return -1;
     }
 

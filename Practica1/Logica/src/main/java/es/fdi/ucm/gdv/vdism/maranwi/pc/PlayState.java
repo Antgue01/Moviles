@@ -11,9 +11,14 @@ public class PlayState implements GameState {
     @Override
     public void start(Graphics g) {
         _hints = new Pista();
-        _font = g.newFont("JosefinSans-Bold.ttf", 48, false);
+        _font = g.newFont("JosefinSans-Bold.ttf", 48, true);
         _fontColor = 0x000000;
+
+
         _hintText = "";
+        _hintFont = g.newFont("Molle-Regular.ttf", 30, true);
+
+        //BOARD SET UP
         _board = new Tablero(_rows, _cols);
         Image lockImg = g.newImage("lock.png");
         _board.setLockImg(lockImg);
@@ -49,11 +54,16 @@ public class PlayState implements GameState {
 
     @Override
     public void render(Graphics g) {
-        if(_hintText!=""){
+
+        g.setColor(_fontColor);
+        if(_hintText == "") {
             g.setFont(_font);
-            g.setColor(0xFFFFFF);
-            g.drawText(_hintText,BOARD_LOGIC_OFFSET_X / 2,BOARD_LOGIC_OFFSET_Y / 2);
+            g.drawText(_boardSizeText,(_mainApp.getLogicWidth() / 2) - 40,BOARD_LOGIC_OFFSET_Y - 40);
+        }else{
+            g.setFont(_hintFont);
+            g.drawText(_hintText,BOARD_LOGIC_OFFSET_X,BOARD_LOGIC_OFFSET_Y - 40);
         }
+
 
        for (int x = 0; x < _rows; x++)
            for (int y = 0; y < _cols; y++)
@@ -72,17 +82,16 @@ public class PlayState implements GameState {
 
     @Override
     public void identifyEvent(int x, int y) {
+        if(_hintText != "") _hintText = "";
         if(x >= BOARD_LOGIC_OFFSET_X && x <= BOARD_LOGIC_OFFSET_X + (_buttonRadius * _cols) &&
            y >= BOARD_LOGIC_OFFSET_Y && y <= BOARD_LOGIC_OFFSET_Y + (_buttonRadius * _rows)){
             int row = (x - BOARD_LOGIC_OFFSET_X) / _buttonRadius;
             int col = (y - BOARD_LOGIC_OFFSET_Y) / _buttonRadius;
             _board.nextColor(row, col);
-            if(_hintText != "") _hintText = "";
             //System.out.println("Event x :" + x + " Event y: " + y + " ButtonRadius: " + _buttonRadius);
             //System.out.println("Row x :" + row + " Col y: " + col);
         }
         else if(clickOnButton(x, y, _buttons[0])){ //EXIT
-            if(_hintText != "") _hintText = "";
             OhNo o = (OhNo) _mainApp;
             if (o!= null){
                 System.out.println("Loading MenuState");
@@ -91,7 +100,6 @@ public class PlayState implements GameState {
         }
         else if(clickOnButton(x, y, _buttons[1])){ //UNDO
             System.out.println("UNDO");
-            if(_hintText != "") _hintText = "";
             _board.restoreMove();
         }
         else if(clickOnButton(x, y, _buttons[2])){ // HINTS
@@ -108,6 +116,7 @@ public class PlayState implements GameState {
     }
 
     public void setBoardSize(int rows, int cols){
+        _boardSizeText = rows + " x " + cols;
         _rows = rows;
         _cols = cols;
         _buttonRadius = _mainApp.getLogicWidth() / ( cols + 1);
@@ -121,12 +130,17 @@ public class PlayState implements GameState {
     }
 
     private Application _mainApp;
-    private Interact _buttons[];
-    private Tablero _board;
-    private Pista _hints;
-    private String _hintText;
     private Font _font;
     private int _fontColor;
+
+    private String _boardSizeText;
+    private Interact _buttons[];
+    private Tablero _board;
+
+    private Pista _hints;
+    private Font _hintFont;
+    private String _hintText;
+
     private int _buttonRadius;
     private int _rows;
     private int _cols;

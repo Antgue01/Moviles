@@ -16,17 +16,12 @@ public class Tablero {
         _moves = new Stack<Move>();
     }
 
-
-    /*
-        0 = Azul
-        1 = Rojo
-     */
     public void rellenaMatrizResueltaRandom(int RAD, int BOARD_LOGIC_OFFSET_X, int BOARD_LOGIC_OFFSET_Y, Font font, int fontColor) {
         java.util.Random r = new Random();
         for (int x = 0; x < _matrizSolucion[0].length; ++x) {
             for (int j = 0; j < _matrizSolucion[1].length; ++j) {
+                //0 = Azul, 1 = Rojo
                 _matrizSolucion[x][j] = r.nextInt(2);
-
 
                 boolean esFicha = r.nextBoolean();
                 Celda c;
@@ -46,27 +41,23 @@ public class Tablero {
 
                 _matrizJuego[x][j] = c;
             }
-            //prueba pista 2
+        }
+    }
+//prueba pista 2
 //            _matrizJuego[1][1] = new Celda(false, TipoCelda.Azul, 1);
 //            _matrizJuego[1][2] = new Celda(true, TipoCelda.Blanco, -1);
 //            _matrizJuego[2][1] = new Celda(true, TipoCelda.Blanco, -1);
 //            _matrizJuego[1][3] = new Celda(true, TipoCelda.Azul, -1);
 //            _matrizJuego[3][1] = new Celda(true, TipoCelda.Azul, -1);
 
-            //pruebas pistas 6 y 7
+//pruebas pistas 6 y 7
 //            _matrizJuego[1][1]=new Celda(true,TipoCelda.Azul,-1);
 //            _matrizJuego[0][1]=new Celda(true,TipoCelda.Rojo,-1);
 //            _matrizJuego[1][0]=new Celda(true,TipoCelda.Rojo,-1);
 //            _matrizJuego[1][2]=new Celda(true,TipoCelda.Rojo,-1);
 //            _matrizJuego[2][1]=new Celda(true,TipoCelda.Rojo,-1);
 
-        }
-    }
-
     public void nextColor(int row, int col){
-        //Devuelve 0 si no hay cambios
-        //Devuelve 1 si se cambia una ficha blanca a otro color - se pierde una blanca en el tablero -
-        //Devuelve 2 si se cambia una ficha de otro color a blanca - se añade una blanca en el tablero -
         _moves.push(new Move(row, col, _matrizJuego[row][col].getTipoCelda()));
         checkResult(_matrizJuego[row][col].cambiarFicha(true));
     }
@@ -110,6 +101,9 @@ public class Tablero {
     public void setLockImg(Image img) { _lockImg = img;}
 
     private void checkResult(int result){
+        //Result = 0 -> no changes
+        //Result = 1 ->  -white token
+        //Result = 2 ->  +white token
         if(result == 1) --_numFichasBlancas;
         else if(result == 2) ++_numFichasBlancas;
     }

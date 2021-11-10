@@ -89,7 +89,7 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
 
     @Override
     public void onRender(Graphics graphics) {
-        graphics.clear(0x008800);
+        graphics.clear(0xFFFFFF);
         _currentState.render(graphics);
     }
 

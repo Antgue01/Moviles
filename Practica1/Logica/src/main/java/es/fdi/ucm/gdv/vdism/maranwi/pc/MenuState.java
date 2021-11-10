@@ -20,7 +20,7 @@ public class MenuState implements GameState {
 
         //Sub menu => Board size selection buttons: 1 button per size
         for(int x = 1; x < _buttons.length; ++x){
-            _buttons[x] = new Interact(x+"", 0xFFFFFF, xPos, yPos, BUTTON_RAD, x + 3, x + 3);
+            _buttons[x] = new Interact(x+"", 0x00FF00, xPos, yPos, BUTTON_RAD, x + 3, x + 3);
             _buttons[x].setText((x + 3) + "x" + (x + 3), _font, _fontColor);
             xPos += BUTTON_RAD * 2;
             if(xPos + BUTTON_RAD > _mainApp.getLogicWidth()){
