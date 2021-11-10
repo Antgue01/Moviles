@@ -1,7 +1,16 @@
 plugins {
     id 'com.android.application'
 }
+task copyData(type: Copy) {
+    description = 'Copying game data into assets folder...'
+    def fromDir = rootDir.getAbsolutePath() + '/data'
+    from(fromDir) {
+        include "**"
+    }
+    into 'src/main/assets'
+}
 
+preBuild.dependsOn copyData
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
