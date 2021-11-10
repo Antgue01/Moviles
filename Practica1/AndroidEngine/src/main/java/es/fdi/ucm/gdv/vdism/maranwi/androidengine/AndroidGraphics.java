@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 
@@ -87,8 +88,8 @@ public class AndroidGraphics implements Graphics {
 
     @Override
     public void clear(int color) {
-
-        _canvas.drawColor(0xff000000 | color);
+        _paint.setColor(0xff000000 | color);
+        _canvas.drawRect(0,0,_logicWidth,_logicHeight,_paint);
     }
 
     @Override
