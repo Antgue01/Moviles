@@ -67,17 +67,15 @@ public class Tablero {
         //Devuelve 0 si no hay cambios
         //Devuelve 1 si se cambia una ficha blanca a otro color - se pierde una blanca en el tablero -
         //Devuelve 2 si se cambia una ficha de otro color a blanca - se añade una blanca en el tablero -
-        _moves.push(new Move(col, row, _matrizJuego[row][col].getTipoCelda()));
-
-        int result = _matrizJuego[row][col].cambiarFicha(true);
-        if(result == 1) --_numFichasBlancas;
-        else if(result == 2) ++_numFichasBlancas;
+        _moves.push(new Move(row, col, _matrizJuego[row][col].getTipoCelda()));
+        checkResult(_matrizJuego[row][col].cambiarFicha(true));
     }
 
     public void restoreMove(){
         if (!_moves.empty()) {
             Move last=_moves.pop();
-            setColor(last.getX(), last.getY(),last.getType());
+            checkResult(_matrizJuego[last.getX()][last.getY()].cambiarFicha(false));
+            System.out.println("Move restored: " + last.getX() + "," + last.getY() + " with value: " + last.getType() + " Numblancas: " + _numFichasBlancas);
         }
     }
 
@@ -107,6 +105,11 @@ public class Tablero {
 
     public Celda[][] getMatrizJuego() {
         return _matrizJuego;
+    }
+
+    private void checkResult(int result){
+        if(result == 1) --_numFichasBlancas;
+        else if(result == 2) ++_numFichasBlancas;
     }
 
     //La matriz solucíón solo guarda los colores de cada posición
