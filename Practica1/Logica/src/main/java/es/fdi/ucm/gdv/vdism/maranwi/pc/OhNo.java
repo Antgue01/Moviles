@@ -57,26 +57,26 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
     public void onInput(Input input) {
         for (Input.TouchEvent t : input.getTouchEvents()) {
             if (t != null && t.get_type() == Input.TouchEvent.TouchType.pulsacion){
-                int windowsWidth = _engine.getGraphics().getWindowsWidth();
-                int windowsHeigth = _engine.getGraphics().getWindowsHeight();
-                int canvasWidth = _engine.getGraphics().getCanvasWidth();
-                int canvasHeight = _engine.getGraphics().getCanvasHeight();
-                int xLeftLimitBox  = (windowsWidth - canvasWidth) / 2;
-                int xRightLimitBox  = xLeftLimitBox + canvasWidth;
-                int yTopLimitBox = (windowsHeigth - canvasHeight) / 2;
-                int yBottomLimitBox = yTopLimitBox + canvasHeight;
+                double windowsWidth = _engine.getGraphics().getWindowsWidth();
+                double windowsHeigth = _engine.getGraphics().getWindowsHeight();
+                double canvasWidth = _engine.getGraphics().getCanvasWidth();
+                double canvasHeight = _engine.getGraphics().getCanvasHeight();
+                double xLeftLimitBox  = (windowsWidth - canvasWidth) / 2;
+                double xRightLimitBox  = xLeftLimitBox + canvasWidth;
+                double yTopLimitBox = (windowsHeigth - canvasHeight) / 2;
+                double yBottomLimitBox = yTopLimitBox + canvasHeight;
 
                 //Solo queremos el input dentro del canvas (sin las bandas)
                 if(t.get_posX() >= xLeftLimitBox && t.get_posX() <= xRightLimitBox &&
                    t.get_posY() >= yTopLimitBox && t.get_posY() <= yBottomLimitBox){
-                        int xInput = t.get_posX() - xLeftLimitBox;
-                        int yInput = t.get_posY() - yTopLimitBox;
-                        int scaleFactorX =  BOX_LOGIC_WIDTH  / canvasWidth;
-                        int scaleFactorY =  BOX_LOGIC_HEIGHT / canvasHeight;
+                        double xInput = t.get_posX() - xLeftLimitBox;
+                        double yInput = t.get_posY() - yTopLimitBox;
+                        double scaleFactorX =  BOX_LOGIC_WIDTH  / canvasWidth;
+                        double scaleFactorY =  BOX_LOGIC_HEIGHT / canvasHeight;
                         //Lo pasamos a coordenadas logicas
                         xInput *= scaleFactorX;
                         yInput *= scaleFactorY;
-                        _currentState.identifyEvent(xInput, yInput);
+                        _currentState.identifyEvent((int) xInput, (int) yInput);
                 }
             }
         }
