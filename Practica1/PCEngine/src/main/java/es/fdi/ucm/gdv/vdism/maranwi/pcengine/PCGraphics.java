@@ -87,7 +87,8 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
     public void draw(Application app) {
 
-        if(_frame.getResized()) adjustToScreen();
+//        if(_frame.getResized())
+            adjustToScreen();
 
         do {
             do {

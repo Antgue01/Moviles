@@ -129,22 +129,22 @@ public class AndroidGraphics implements Graphics {
 
     @Override
     public int getWindowsWidth() {
-        return 0;
+        return _view.getWidth();
     }
 
     @Override
     public int getWindowsHeight() {
-        return 0;
+        return _view.getHeight();
     }
 
     @Override
     public int getCanvasWidth() {
-        return 0;
+        return _canvasWidth;
     }
 
     @Override
     public int getCanvasHeight() {
-        return 0;
+        return _canvasHeight;
     }
 
 
@@ -170,4 +170,6 @@ public class AndroidGraphics implements Graphics {
     private AssetManager _assets;
     private int _logicWidth;
     private int _logicHeight;
+    private int _canvasWidth;
+    private int _canvasHeight;
 }
