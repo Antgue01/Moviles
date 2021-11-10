@@ -16,6 +16,7 @@ public class ExecutionThreadManager {
     public void resume() {
         if (_engine != null && !_engine.getPlay()) {
             _thread = new Thread(_engine);
+           System.out.println("EL THREAD ES "+_thread);
             _thread.start();
         }
 
@@ -27,6 +28,7 @@ public class ExecutionThreadManager {
             while (true) {
                 try {
                     //esperamos al ultimo frame antes de cerrar
+
                     _thread.join();
                     _thread = null;
                     break;

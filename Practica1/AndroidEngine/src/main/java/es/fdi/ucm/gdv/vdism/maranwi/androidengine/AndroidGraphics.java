@@ -27,12 +27,16 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Application;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 
 public class AndroidGraphics implements Graphics {
-    public AndroidGraphics(Context context, AssetManager assets) {
+    public AndroidGraphics(Context context, AssetManager assets,int logicWidth, int logicHeight) {
         _view = new SurfaceView(context);
+        System.out.println("VISTA HECHA");
+
         _holder = _view.getHolder();
         _paint = new Paint();
         _assets = assets;
         _fonts = new HashMap<String, Typeface>();
+        _logicWidth=logicWidth;
+        _logicHeight=logicHeight;
 
     }
 
@@ -41,6 +45,8 @@ public class AndroidGraphics implements Graphics {
             //Espera activa
             ;
         _canvas = _holder.lockCanvas();
+        adjustToScreen();
+
         app.onRender(this);
         _holder.unlockCanvasAndPost(_canvas);
     }
@@ -48,24 +54,33 @@ public class AndroidGraphics implements Graphics {
     @Override
     public Image newImage(String name) {
         Bitmap sprite = null;
+        System.out.println("Empiezo a cargar la imagen " + name);
         //esto debería cerrar el archivo si fallara al abrir
         try (InputStream is = _assets.open(name)) {
             sprite = BitmapFactory.decodeStream(is);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("ACABO DE cargar la imagen " + name);
+
         return sprite != null ? new AndroidImage(sprite.getWidth(), sprite.getHeight(), sprite) : null;
 
     }
 
     @Override
     public Font newFont(String filename, int size, boolean isBold) {
+        System.out.println("Empiezo a cargar la fuente " + filename);
+
         Typeface font = _fonts.get(filename);
         if (font == null) {
+
             font = Typeface.createFromAsset(_assets, filename);
             _fonts.put(filename, font);
         }
+        System.out.println("ACABO DE cargar la FUENTE " + filename + font != null);
+
         AndroidFont newFont = new AndroidFont(filename, size, isBold, font);
+
         return newFont;
     }
 
@@ -73,7 +88,7 @@ public class AndroidGraphics implements Graphics {
     @Override
     public void clear(int color) {
 
-        _canvas.drawColor(0xFF | color);
+        _canvas.drawColor(0xff000000 | color);
     }
 
     @Override
@@ -113,7 +128,7 @@ public class AndroidGraphics implements Graphics {
 
     @Override
     public void setColor(int color) {
-        _paint.setColor(0xFF | color);
+        _paint.setColor(0xff000000 | color);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -139,12 +154,12 @@ public class AndroidGraphics implements Graphics {
 
     @Override
     public int getCanvasWidth() {
-        return _canvasWidth;
+        return (int)_canvasWidth;
     }
 
     @Override
     public int getCanvasHeight() {
-        return _canvasHeight;
+        return (int)_canvasHeight;
     }
 
 
@@ -156,6 +171,37 @@ public class AndroidGraphics implements Graphics {
             _paint.setTextSize(font.getSize());
             _paint.setFakeBoldText(font.getIsBold());
         }
+    }
+
+    private void adjustToScreen() {
+        int frameW = _view.getWidth();
+        int frameH = _view.getHeight();
+        //Hacemos la regla de tres para ver si cabría
+
+        double newY = _logicHeight * frameW / _logicWidth;
+        double newX = _logicWidth * frameH / _logicHeight;
+        double newPosX = 0.0f, newPosY = 0.0f;
+        double scaleX=0,scaleY=0;
+        //Si escalando la Y no cabríamos
+
+        if (newY > frameH) {
+            scaleX = newX / _logicWidth;
+            scaleY = frameH / (double) _logicHeight;
+            double centerX = frameW / 2;
+            newPosX = centerX - (newX / 2);
+            translate(newPosX, 0);
+            scale(scaleX,scaleY);
+        } else if (newX > frameW) {
+            scaleX = frameW / (double) _logicWidth;
+            scaleY = newY / _logicHeight;
+            double centerY = frameH / 2;
+            newPosY = centerY - (newY / 2);
+            translate(0, newPosY);
+            scale(scaleX,scaleY);
+        }
+        _canvasWidth = scaleX * _logicWidth;
+        _canvasHeight = scaleY * _logicHeight;
+        //app.setApplicationZone(_width, _height, size.getWidth(), size.getHeight());
     }
 
     public SurfaceView getView() {
@@ -170,6 +216,6 @@ public class AndroidGraphics implements Graphics {
     private AssetManager _assets;
     private int _logicWidth;
     private int _logicHeight;
-    private int _canvasWidth;
-    private int _canvasHeight;
+    private double _canvasWidth;
+    private double _canvasHeight;
 }

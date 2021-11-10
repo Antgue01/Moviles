@@ -1,7 +1,7 @@
 package es.fdi.ucm.gdv.vdism.maranwi.practica1;
-
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.SurfaceView;
 
@@ -16,7 +16,6 @@ public class AndroidGame extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         _ohno=new OhNo();
-
         _manager = new ExecutionThreadManager(_ohno, this,getAssets());
         AndroidGraphics g=(AndroidGraphics)_manager.getEngine().getGraphics();
         setContentView(g.getView());
@@ -26,6 +25,7 @@ public class AndroidGame extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         _manager.resume();
+
     }
 
     @Override

@@ -1,5 +1,4 @@
 package es.fdi.ucm.gdv.vdism.maranwi.androidengine;
-
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.view.SurfaceView;
@@ -12,11 +11,13 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Input;
 public class AndroidEngine implements Engine, Runnable {
     public AndroidEngine(Application app, Context context, AssetManager assets) {
         _app = app;
-        _play = true;
-        _graphics = new AndroidGraphics(context,assets);
+
+        _play = false;
+        _graphics = new AndroidGraphics(context,assets,_app.getLogicWidth(),_app.getLogicHeight());
         _input = new AndroidInput();
         _lastFrameTime=0;
-
+        System.out.println("DELTA TIME INICIALIZADO");
+        _app.onInit(this);
     }
 
     @Override
@@ -32,7 +33,8 @@ public class AndroidEngine implements Engine, Runnable {
     @Override
     public void run() {
 
-
+        _play=true;
+        System.out.println("EMPIEZO A CORRER EL BUCLE");
         // Antes de saltar a la simulación, confirmamos que tenemos
         // un tamaño mayor que 0. Si la hebra se pone en marcha
         // muy rápido, la vista podría todavía no estar inicializada.
