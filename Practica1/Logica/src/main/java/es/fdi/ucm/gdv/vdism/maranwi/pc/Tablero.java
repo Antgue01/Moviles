@@ -103,6 +103,17 @@ public class Tablero {
         return arr;
     }
 
+    private boolean isClosed(int x, int y){
+        for(int[] d : dirs){
+            int currentPosX = x + d[0];
+            int currentPosY = y + d[1];
+            if(validPos(currentPosX,currentPosY) && _matrizJuego[currentPosX][currentPosY].getTipoCelda() != TipoCelda.Rojo){
+                return false;
+            }
+        }
+        return true;
+    }
+
     private void updateHintsList(){
         _hintsList.clear();
 
@@ -146,8 +157,9 @@ public class Tablero {
                     }
                 }
                 //Si es un azul no numero, o blanco, se comprueban la pista 6 y 7
-                else if(currentCelda.getEsFicha() && currentCelda.getTipoCelda() != TipoCelda.Azul){
-
+                else if(currentCelda.getEsFicha() && currentCelda.getTipoCelda() != TipoCelda.Rojo && isClosed(i,j)){
+                    //PISTA 6 y 7
+                    Pista p = (currentCelda.getTipoCelda()==TipoCelda.Blanco) ? new Pista(Pista.HintType.SIX,i,j):new Pista(Pista.HintType.SEVEN,i,j);
                 }
             }
         }
