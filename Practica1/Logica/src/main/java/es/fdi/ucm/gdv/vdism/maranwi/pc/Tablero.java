@@ -296,5 +296,4 @@ public class Tablero {
 
     //derch, abajo, izq, arriba
     private int[][] dirs = {{1,0},{0,-1},{-1,0},{0,1}};
-
 }
