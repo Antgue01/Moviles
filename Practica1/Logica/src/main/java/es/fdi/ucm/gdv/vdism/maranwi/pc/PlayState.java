@@ -45,7 +45,7 @@ public class PlayState implements GameState {
         if(_hintText!=""){
             g.setFont(_font);
             g.setColor(0xFFFFFF);
-            g.drawText(_hintText,0,0);
+            g.drawText(_hintText,BOARD_LOGIC_OFFSET_X / 2,BOARD_LOGIC_OFFSET_Y / 2);
         }
 
        for (int x = 0; x < _rows; x++)

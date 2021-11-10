@@ -15,7 +15,7 @@ public class MenuState implements GameState {
         //Main menu => 1 Button : Play
         int xPos = BUTTON_RAD / 2, yPos = BUTTON_RAD;
         _buttons = new Interact[5];
-        _buttons[0] = new Interact("Play", 0xFFFFFF, (g.getWindowsWidth()/2) - BUTTON_RAD, (g.getWindowsHeight()/2) - BUTTON_RAD, BUTTON_RAD * 2, 0, 0);
+        _buttons[0] = new Interact("Play", 0xFFFFFF, (_mainApp.getLogicWidth()/2) - BUTTON_RAD, (_mainApp.getLogicHeight()/2) - BUTTON_RAD, BUTTON_RAD * 2, 0, 0);
         _buttons[0].setText("Start", _font, _fontColor);
 
         //Sub menu => Board size selection buttons: 1 button per size
@@ -23,7 +23,7 @@ public class MenuState implements GameState {
             _buttons[x] = new Interact(x+"", 0xFFFFFF, xPos, yPos, BUTTON_RAD, x + 3, x + 3);
             _buttons[x].setText((x + 3) + "x" + (x + 3), _font, _fontColor);
             xPos += BUTTON_RAD * 2;
-            if(xPos + BUTTON_RAD > g.getWindowsWidth()){
+            if(xPos + BUTTON_RAD > g.getCanvasWidth()){
                 xPos = BUTTON_RAD / 2;
                 yPos += BUTTON_RAD * 2;
             }

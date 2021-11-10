@@ -16,7 +16,13 @@ public class Pista {
         dirs[3][0] = 0;//arriba
         dirs[3][1] = -1;
         //Pista 1 (lleva implícita la detección de la pista 4 con el bool Aplicable)
-        boolean applied = false;
+        //boolean applied = false;
+        //QUITAR LAS DOS SIGUIENTES LÍNEAS Y DESCOMENTAR LA ANTERIOR => MODO TESTEO  ---------- IMPORTANTE BORRAR ESTO !!!!!!!!!!!!!!!!!!!!!!!!!!!
+        //QUITAR LAS DOS SIGUIENTES LÍNEAS Y DESCOMENTAR LA ANTERIOR => MODO TESTEO  ---------- IMPORTANTE BORRAR ESTO !!!!!!!!!!!!!!!!!!!!!!!!!!!
+        //QUITAR LAS DOS SIGUIENTES LÍNEAS Y DESCOMENTAR LA ANTERIOR => MODO TESTEO  ---------- IMPORTANTE BORRAR ESTO !!!!!!!!!!!!!!!!!!!!!!!!!!!
+        //QUITAR LAS DOS SIGUIENTES LÍNEAS Y DESCOMENTAR LA ANTERIOR => MODO TESTEO  ---------- IMPORTANTE BORRAR ESTO !!!!!!!!!!!!!!!!!!!!!!!!!!!
+        boolean applied = true;
+        _currentHint = "Si se pone una azul en una determinada direccion\nquedairresoluble";
         int[] offsets = new int[4];
         for (int i = 0; i < tablero[0].length && !applied; i++) {
             for (int j = 0; j < tablero[1].length && !applied; j++) {
