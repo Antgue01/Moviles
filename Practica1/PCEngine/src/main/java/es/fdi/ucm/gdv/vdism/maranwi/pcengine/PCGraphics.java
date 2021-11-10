@@ -87,7 +87,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
     public void draw(Application app) {
 
-//        if(_frame.getResized())
+        if(_frame.getResized())
             adjustToScreen();
 
         do {
@@ -96,8 +96,8 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
                 if (_myGraphics != null) {
                     Graphics2D g = (Graphics2D) _myGraphics;
                     if(g!= null){
-                        g.scale(_scaleX, _scaleY);
                         g.translate(_translationX, _translationY);
+                        g.scale(_scaleX, _scaleY);
                     }
                 }
                 try {
@@ -152,13 +152,13 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
         if (newY > size.height) {
             _scaleX = newX / _logicWidth;
-            _scaleY = size.height / (double) _logicHeight;
+            _scaleY = _scaleX;
             double centerX = size.width / 2;
             newPosX = centerX - (newX / 2);
             translate(newPosX, 0);
         } else if (newX > size.width) {
-            _scaleX = size.width / (double) _logicWidth;
             _scaleY = newY / _logicHeight;
+            _scaleX = _scaleY;
             double centerY = size.height / 2;
             newPosY = centerY - (newY / 2);
             translate(0, newPosY);
@@ -166,6 +166,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
         _canvasWidth = _scaleX * _logicWidth;
         _canvasHeight = _scaleY * _logicHeight;
         //app.setApplicationZone(_width, _height, size.getWidth(), size.getHeight());
+
     }
 
     public void translate(double x, double y) {

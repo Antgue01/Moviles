@@ -61,18 +61,22 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
                 int windowsHeigth = _engine.getGraphics().getWindowsHeight();
                 int canvasWidth = _engine.getGraphics().getCanvasWidth();
                 int canvasHeight = _engine.getGraphics().getCanvasHeight();
-                double xLeftLimitBox  = (windowsWidth / 2) - (canvasWidth / 2);
-                double xRightLimitBox  = (windowsWidth / 2) + (canvasWidth / 2);
-                double yTopLimitBox = (windowsHeigth / 2) - (canvasHeight / 2);
-                double yBottomLimitBox = (windowsHeigth / 2) + (canvasHeight / 2);
+                double xLeftLimitBox  = (windowsWidth - canvasWidth) / 2;
+                double xRightLimitBox  = xLeftLimitBox + canvasWidth;
+                double yTopLimitBox = (windowsHeigth - canvasHeight) / 2;
+                double yBottomLimitBox = yTopLimitBox + canvasHeight;
 
+                //Solo queremos el input dentro del canvas (sin las bandas)
                 if(t.get_posX() >= xLeftLimitBox && t.get_posX() <= xRightLimitBox &&
                    t.get_posY() >= yTopLimitBox && t.get_posY() <= yBottomLimitBox){
                         double xInput = t.get_posX() - xLeftLimitBox;
                         double yInput = t.get_posY() - yTopLimitBox;
+                        double scaleFactorX = (double) BOX_LOGIC_WIDTH/(double) canvasWidth;
+                        double scaleFactorY = (double) BOX_LOGIC_HEIGHT/(double) canvasHeight;
+                        //Lo pasamos a coordenadas logicas
+                        xInput *= scaleFactorX;
+                        yInput *= scaleFactorY;
                         _currentState.identifyEvent((int) xInput, (int) yInput);
-                        //System.out.println("Event x :" + xInput + " Event y: " + yInput);
-                        //System.out.println("Event x :" + t.get_posX() + " Event y: " + t.get_posY());
                 }
             }
         }
