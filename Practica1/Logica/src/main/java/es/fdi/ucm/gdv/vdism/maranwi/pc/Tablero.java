@@ -55,6 +55,53 @@ public class Tablero {
         return blues;
     }
 
+    private int[] calculateHint2(int x, int y, int number){
+        int[] arr = {0,0,0};
+
+        for(int[] d : dirs){
+            int blues = 0;
+            int currentPosX = x + d[0];
+            int currentPosY = y + d[1];
+            //Si en esa direccion hay una blanca, la cuenta como azul y sigue contando en esa direccion
+            if(validPos(currentPosX,currentPosY) && _matrizJuego[currentPosX][currentPosY].getTipoCelda() == TipoCelda.Blanco){
+                blues++;
+                currentPosX += d[0];
+                currentPosY += d[1];
+            }
+            while (validPos(currentPosX,currentPosY)){
+                if (_matrizJuego[currentPosX][currentPosY].getTipoCelda() == TipoCelda.Azul){
+                    blues++;
+                }
+                else{
+                    break;
+                }
+                currentPosX += d[0];
+                currentPosY += d[1];
+            }
+            //¿Excederia el numero al haber colocado azul en esa direccion?
+            if(blues > number){
+                arr[0] = 1; //true
+                arr[1] = x+d[0]; //posX de celda que se deberia cerrar
+                arr[2] = y+d[1]; //posY de celda que se deberia cerrar
+            }
+
+        }
+
+        return arr;
+    }
+
+    private int[] calculateHint3(int x, int y){
+        int[] arr = {0,0,0};
+
+        for(int[] d : dirs){
+            int blues = 0;
+            int currentPosX = x + d[0];
+            int currentPosY = y + d[1];
+
+        }
+
+        return arr;
+    }
 
     private void updateHintsList(){
         _hintsList.clear();
@@ -84,7 +131,23 @@ public class Tablero {
                         _hintsList.add(new Pista(Pista.HintType.ONE,i,j));
                     }
                     //PISTA 2
-                    //int[] hint2 = calculateHint2();
+                    int[] hint2 = calculateHint2( i, j, currentCelda.getRequiredNeighbours());
+                    if(hint2[0]!=0){
+                        Pista p = new Pista(Pista.HintType.TWO, i, j);
+                        p.setWhereToApply(hint2[1], hint2[2]);
+                        _hintsList.add(p);
+                    }
+                    //PISTA 3
+                    int[] hint3 = calculateHint3( i, j);
+                    if(hint3[0]!=0){
+                        Pista p = new Pista(Pista.HintType.THREE, i, j);
+                        p.setWhereToApply(hint2[1], hint2[2]);
+                        _hintsList.add(p);
+                    }
+                }
+                //Si es un azul no numero, o blanco, se comprueban la pista 6 y 7
+                else if(currentCelda.getEsFicha() && currentCelda.getTipoCelda() != TipoCelda.Azul){
+
                 }
             }
         }

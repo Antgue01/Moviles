@@ -219,10 +219,21 @@ public class Pista {
     public String getCurrentHint() { return _currentHint;}
     public HintType getHintType() { return _type;}
 
+    public void setWhereToApply(int x, int y){
+        _posXToApply = x;
+        _posYToApply = y;
+    }
+
+    public int[] getWhereToApply(){
+        int[] pos = {_posXToApply, _posYToApply};
+        return pos;
+    }
 
     private String _currentHint;
 
     private int _posX,_posY;
+    //Posiciones donde se deberia colocar una ficha si fuese el caso.
+    private int _posXToApply,_posYToApply;
 
     HintType _type = HintType.NONE;
 }
