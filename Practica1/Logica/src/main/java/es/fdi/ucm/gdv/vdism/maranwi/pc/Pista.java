@@ -1,7 +1,46 @@
 package es.fdi.ucm.gdv.vdism.maranwi.pc;
 
+import org.graalvm.compiler.nodes.TypeCheckHints;
+
+import sun.security.pkcs11.wrapper.CK_TLS12_KEY_MAT_PARAMS;
 
 public class Pista {
+    enum HintType{
+        ONE,TWO,THREE,FOUR,FIVE,SIX,SEVEN,
+        NONE
+    }
+
+    public Pista(HintType type, int x, int y){
+        _type = type;
+        _posX = x;
+        _posY = y;
+
+        switch (type){
+            case ONE:
+                _currentHint = "Hay que cerrar la casilla";
+                break;
+            case TWO:
+                _currentHint = "Mirar mas lejos en una direccion excederia el numero";
+                break;
+            case THREE:
+                _currentHint = "Un punto esta en todas las posibles soluciones";
+                break;
+            case FOUR:
+                _currentHint = "Ve demasiados azules";
+                break;
+            case FIVE:
+                _currentHint = "No ve suficientes azules";
+                break;
+            case SIX:
+                _currentHint = "Celda vacia cerrada debe ser roja";
+                break;
+            case SEVEN:
+                _currentHint = "Celda azul cerrada debe ser roja";
+                break;
+
+        }
+    }
+
     public void aplicar(Tablero t, boolean playing) {
         _currentHint = "";
         Celda[][] tablero = t.getMatrizJuego();
@@ -178,8 +217,13 @@ public class Pista {
 
 
     public String getCurrentHint() { return _currentHint;}
+    public HintType getHintType() { return _type;}
 
 
     private String _currentHint;
+
+    private int _posX,_posY;
+
+    HintType _type = HintType.NONE;
 }
 

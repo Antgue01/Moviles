@@ -1,6 +1,11 @@
 package es.fdi.ucm.gdv.vdism.maranwi.pc;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Stack;
+
+import javax.swing.event.HyperlinkEvent;
+
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Font;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Image;
 
@@ -14,7 +19,95 @@ public class Tablero {
 
         _numFichasBlancas = 0;
         _moves = new Stack<Move>();
+
+        _hintsList = new ArrayList<Pista>();
     }
+
+    /*
+        0 = Azul
+        1 = Rojo
+     */
+
+    private boolean validPos(int x, int y){
+        return (x >= 0 && x < _matrizJuego[0].length) &&
+                (y >= 0 && y < _matrizJuego[1].length);
+    }
+
+    private int getBluesVisibleFrom(int x, int y){
+        int blues = 0;
+
+        for(int[] d : dirs){
+            int currentPosX = x + d[0];
+            int currentPosY = y + d[1];
+            while (validPos(currentPosX,currentPosY)){
+                if (_matrizJuego[currentPosX][currentPosY].getTipoCelda() == TipoCelda.Azul){
+                    blues++;
+                }
+                else{
+                    break;
+                }
+                currentPosX += d[0];
+                currentPosY += d[1];
+            }
+
+        }
+
+        return blues;
+    }
+
+
+    private void updateHintsList(){
+        _hintsList.clear();
+
+        _playerError = false;
+
+        for (int i = 0; i < _matrizJuego[0].length; ++i) {
+            for (int j = 0; j < _matrizJuego[1].length; ++j) {
+                Celda currentCelda = _matrizJuego[i][j];
+                //Si es un numero azul, se comprueban la pista 4 , 5 , 1
+                if(!currentCelda.getEsFicha() && currentCelda.getTipoCelda() == TipoCelda.Azul){
+                    int bluesVisible = getBluesVisibleFrom(i,j);
+                    //PISTA 4 es un error del jugador (no pasaran en la generacion del tablero)
+                    if(bluesVisible > currentCelda.getRequiredNeighbours()){
+                        _playerError = true;
+                        _hintsList.add(new Pista(Pista.HintType.FOUR,i,j));
+                        return;
+                    }
+                    //PISTA 5 es un error del jugador (no pasaran en la generacion del tablero)
+                    else if(bluesVisible < currentCelda.getRequiredNeighbours()){
+                        _playerError = true;
+                        _hintsList.add(new Pista(Pista.HintType.FIVE,i,j));
+                        return;
+                    }
+                    //PISTA 1
+                    else if(bluesVisible == currentCelda.getRequiredNeighbours()){
+                        _hintsList.add(new Pista(Pista.HintType.ONE,i,j));
+                    }
+                    //PISTA 2
+                    //int[] hint2 = calculateHint2();
+                }
+            }
+        }
+    }
+
+    public Pista getAHint(){
+
+        updateHintsList();
+
+        //No hay pistas
+        if(_hintsList.isEmpty()) return new Pista(Pista.HintType.NONE,-1,-1);
+
+        //Si el jugador comete un error, es la primera pista que se da
+        if(_playerError){
+            return _hintsList.get(_hintsList.size()-1);
+        }
+        //Si no, escoge una aleatoria
+        else {
+            Random rand = new Random();
+            return _hintsList.get(rand.nextInt(_hintsList.size()));
+        }
+    }
+
 
     public void rellenaMatrizResueltaRandom(int RAD, int BOARD_LOGIC_OFFSET_X, int BOARD_LOGIC_OFFSET_Y, Font font, int fontColor) {
         java.util.Random r = new Random();
@@ -115,5 +208,13 @@ public class Tablero {
     private int _columnas;
     private  int _numFichasBlancas;
     private Stack<Move> _moves;
+
     private Image _lockImg;
+
+    private List<Pista> _hintsList;
+    private boolean _playerError = false;
+
+    //derch, abajo, izq, arriba
+    private int[][] dirs = {{1,0},{0,-1},{-1,0},{0,1}};
+
 }

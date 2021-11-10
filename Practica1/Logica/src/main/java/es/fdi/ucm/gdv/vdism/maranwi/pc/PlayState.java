@@ -10,7 +10,7 @@ public class PlayState implements GameState {
 
     @Override
     public void start(Graphics g) {
-        _hints = new Pista();
+        _hints = new Pista(Pista.HintType.NONE,0,0);
         _font = g.newFont("JosefinSans-Bold.ttf", 48, true);
         _fontColor = 0x000000;
 
@@ -104,6 +104,7 @@ public class PlayState implements GameState {
         }
         else if(clickOnButton(x, y, _buttons[2])){ // HINTS
             System.out.println("HINTS");
+            _board.getAHint();
             _hints.aplicar(_board,true);
             _hintText = _hints.getCurrentHint();
         }
