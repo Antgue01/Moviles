@@ -33,15 +33,21 @@ public class Tablero {
                 (y >= 0 && y < _matrizJuego[1].length);
     }
 
-    private int getBluesVisibleFrom(int x, int y){
-        int blues = 0;
+    private int[] getErrorHints(int x, int y){
+        // {Azules, EstaAbierta}
+        int[] arr = {0,0};
 
         for(int[] d : dirs){
             int currentPosX = x + d[0];
             int currentPosY = y + d[1];
             while (validPos(currentPosX,currentPosY)){
                 if (_matrizJuego[currentPosX][currentPosY].getTipoCelda() == TipoCelda.Azul){
-                    blues++;
+                    arr[0]++;
+                }
+                //Esta abierta
+                else if (_matrizJuego[currentPosX][currentPosY].getTipoCelda() != TipoCelda.Rojo){
+                    arr[1] = 1;
+                    break;
                 }
                 else{
                     break;
@@ -49,10 +55,9 @@ public class Tablero {
                 currentPosX += d[0];
                 currentPosY += d[1];
             }
-
         }
 
-        return blues;
+        return arr;
     }
 
     private int[] calculateHint2(int x, int y, int number){
@@ -124,21 +129,21 @@ public class Tablero {
                 Celda currentCelda = _matrizJuego[i][j];
                 //Si es un numero azul, se comprueban la pista 4 , 5 , 1
                 if(!currentCelda.getEsFicha() && currentCelda.getTipoCelda() == TipoCelda.Azul){
-                    int bluesVisible = getBluesVisibleFrom(i,j);
+                    int[] hintsInfo = getErrorHints(i,j);
                     //PISTA 4 es un error del jugador (no pasaran en la generacion del tablero)
-                    if(bluesVisible > currentCelda.getRequiredNeighbours()){
+                    if(hintsInfo[0] > currentCelda.getRequiredNeighbours()){
                         _playerError = true;
                         _hintsList.add(new Pista(Pista.HintType.FOUR,i,j));
                         return;
                     }
                     //PISTA 5 es un error del jugador (no pasaran en la generacion del tablero)
-                    else if(bluesVisible < currentCelda.getRequiredNeighbours()){
+                    else if(hintsInfo[1]!=0 && hintsInfo[0] < currentCelda.getRequiredNeighbours()){
                         _playerError = true;
                         _hintsList.add(new Pista(Pista.HintType.FIVE,i,j));
                         return;
                     }
                     //PISTA 1
-                    else if(bluesVisible == currentCelda.getRequiredNeighbours()){
+                    else if(hintsInfo[1]!=1 && hintsInfo[0] == currentCelda.getRequiredNeighbours()){
                         _hintsList.add(new Pista(Pista.HintType.ONE,i,j));
                     }
                     //PISTA 2
