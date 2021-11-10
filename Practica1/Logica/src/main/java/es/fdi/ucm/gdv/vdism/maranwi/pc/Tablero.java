@@ -2,7 +2,7 @@ package es.fdi.ucm.gdv.vdism.maranwi.pc;
 import java.util.Random;
 import java.util.Stack;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Font;
-
+import es.fdi.ucm.gdv.vdism.maranwi.engine.Image;
 
 public class Tablero {
     public Tablero(int filas, int columnas) {
@@ -41,7 +41,7 @@ public class Tablero {
                 } else {
                     int neigbours = _matrizSolucion[x][j] == 0 ? r.nextInt(3) + 1 : -1;
                     c = new Celda(id, esFicha, TipoCelda.values()[_matrizSolucion[x][j]], neigbours, x, j, RAD, BOARD_LOGIC_OFFSET_X, BOARD_LOGIC_OFFSET_Y, font, fontColor);
-
+                    if(neigbours == -1) c.getButton().setImage(_lockImg, _lockImg.getWidth() / 2, _lockImg.getHeigth() / 2);
                 }
 
                 _matrizJuego[x][j] = c;
@@ -107,6 +107,8 @@ public class Tablero {
         return _matrizJuego;
     }
 
+    public void setLockImg(Image img) { _lockImg = img;}
+
     private void checkResult(int result){
         if(result == 1) --_numFichasBlancas;
         else if(result == 2) ++_numFichasBlancas;
@@ -119,4 +121,5 @@ public class Tablero {
     private int _columnas;
     private  int _numFichasBlancas;
     private Stack<Move> _moves;
+    private Image _lockImg;
 }

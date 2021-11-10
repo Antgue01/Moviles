@@ -61,22 +61,22 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
                 int windowsHeigth = _engine.getGraphics().getWindowsHeight();
                 int canvasWidth = _engine.getGraphics().getCanvasWidth();
                 int canvasHeight = _engine.getGraphics().getCanvasHeight();
-                double xLeftLimitBox  = (windowsWidth - canvasWidth) / 2;
-                double xRightLimitBox  = xLeftLimitBox + canvasWidth;
-                double yTopLimitBox = (windowsHeigth - canvasHeight) / 2;
-                double yBottomLimitBox = yTopLimitBox + canvasHeight;
+                int xLeftLimitBox  = (windowsWidth - canvasWidth) / 2;
+                int xRightLimitBox  = xLeftLimitBox + canvasWidth;
+                int yTopLimitBox = (windowsHeigth - canvasHeight) / 2;
+                int yBottomLimitBox = yTopLimitBox + canvasHeight;
 
                 //Solo queremos el input dentro del canvas (sin las bandas)
                 if(t.get_posX() >= xLeftLimitBox && t.get_posX() <= xRightLimitBox &&
                    t.get_posY() >= yTopLimitBox && t.get_posY() <= yBottomLimitBox){
-                        double xInput = t.get_posX() - xLeftLimitBox;
-                        double yInput = t.get_posY() - yTopLimitBox;
-                        double scaleFactorX = (double) BOX_LOGIC_WIDTH/(double) canvasWidth;
-                        double scaleFactorY = (double) BOX_LOGIC_HEIGHT/(double) canvasHeight;
+                        int xInput = t.get_posX() - xLeftLimitBox;
+                        int yInput = t.get_posY() - yTopLimitBox;
+                        int scaleFactorX =  BOX_LOGIC_WIDTH  / canvasWidth;
+                        int scaleFactorY =  BOX_LOGIC_HEIGHT / canvasHeight;
                         //Lo pasamos a coordenadas logicas
                         xInput *= scaleFactorX;
                         yInput *= scaleFactorY;
-                        _currentState.identifyEvent((int) xInput, (int) yInput);
+                        _currentState.identifyEvent(xInput, yInput);
                 }
             }
         }

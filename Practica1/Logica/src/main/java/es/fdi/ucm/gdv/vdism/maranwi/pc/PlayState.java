@@ -15,29 +15,36 @@ public class PlayState implements GameState {
         _fontColor = 0x000000;
         _hintText = "";
         _board = new Tablero(_rows, _cols);
+        Image lockImg = g.newImage("lock.png");
+        _board.setLockImg(lockImg);
         _board.rellenaMatrizResueltaRandom(_buttonRadius, BOARD_LOGIC_OFFSET_X, BOARD_LOGIC_OFFSET_Y, _font, _fontColor);
 
+        //BUTTONS
         _buttons = new Interact[3];
         int xOffset = _mainApp.getLogicWidth() / 6;
-        int xPos = xOffset / 2;
-        int yPos = BOARD_LOGIC_OFFSET_Y + (_buttonRadius * _rows) + (BOARD_LOGIC_OFFSET_Y / 2);
+        int xPos = xOffset;
+        int yPos = /*BoardOffset*/ BOARD_LOGIC_OFFSET_Y + /*BoardSize*/ (_buttonRadius * _rows)  + /*Additional Offset*/(_buttonRadius / 2) ;
 
         //Exit button
-        _buttons[0] = new Interact("Exit", _fontColor, xPos, yPos, _buttonRadius, 0, 0);
-//        Image playImg = g.newImage("");
-//        _buttons[0].setImage(playImg);
+        Image playImg = g.newImage("close.png");
+        _buttons[0] = new Interact("Exit", _fontColor, xPos, yPos, playImg.getWidth() / 4, 0, 0);
+        _buttons[0].setImage(playImg, playImg.getWidth() / 2, playImg.getHeigth() / 2);
+        _buttons[0].setBottomCircle(false);
 
         //Undo button
         xPos += xOffset * 2;
-        _buttons[1] = new Interact("Undo", _fontColor, xPos, yPos, _buttonRadius, 0, 0);
-//        Image undoImg = g.newImage("");
-//        _buttons[0].setImage(undoImg);
+        Image undoImg = g.newImage("history.png");
+        _buttons[1] = new Interact("Undo", _fontColor, xPos, yPos, undoImg.getWidth() / 4, 0, 0);
+
+        _buttons[1].setImage(undoImg, undoImg.getWidth() / 2, undoImg.getHeigth() / 2);
+        _buttons[1].setBottomCircle(false);
 
         //Hints button
         xPos += xOffset * 2;
-        _buttons[2] = new Interact("Hints", _fontColor, xPos, yPos, _buttonRadius, 0, 0);
-//        Image hintsImg = g.newImage("");
-//        _buttons[0].setImage(hintsImg);
+        Image hintsImg = g.newImage("eye.png");
+        _buttons[2] = new Interact("Hints", _fontColor, xPos, yPos, hintsImg.getWidth() / 4, 0, 0);
+        _buttons[2].setImage(hintsImg, hintsImg.getWidth() / 2, hintsImg.getHeigth() / 2);
+        _buttons[2].setBottomCircle(false);
     }
 
     @Override
@@ -123,6 +130,6 @@ public class PlayState implements GameState {
     private int _buttonRadius;
     private int _rows;
     private int _cols;
-    private static final int BOARD_LOGIC_OFFSET_Y = 100;
+    private static final int BOARD_LOGIC_OFFSET_Y = 150;
     private int BOARD_LOGIC_OFFSET_X;
 }
