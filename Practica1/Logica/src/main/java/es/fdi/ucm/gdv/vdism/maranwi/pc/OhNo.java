@@ -2,9 +2,9 @@ package es.fdi.ucm.gdv.vdism.maranwi.pc;
 /* Dudas:
      - ¿Hacer las llamadas a escale y translate desde lógica o dejar que lo haga el motor cuando sea conveniente?
      -¿El engine de Android tiene que estar en un hilo (implementar runnable) o tener un hilo en el que se ejecute el bucle principal?
-     -¿Para qué sirve el id del input?
+     -¿Para qué sirve el id del input? No lo estamos usando para nada
      -¿Debería parpaddear la pantalla al hacer resize?
-     -¿Por qué el height y el width no se centran bien a pesar de que los cálculos son correctos?
+     ¿Por qué cuando está reescalando a veces se pinta dos veces?
  */
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Application;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.GameState;
@@ -18,18 +18,18 @@ import sun.util.resources.cldr.ext.CurrencyNames_en_NG;
         - Inputs: ok
         - Image: ok
         - Application: ok
-        - Font: todo
-    Engines: todo hacer deltatime
+        - Font: ok
+    Engines: ok
         - Android: todo algunos metodos
-        - Pc: todo algunos metodos
+        - Pc: ok
     Logica
         - Tablero    :  todo FALTA GENERACIÓN DE TABLERO
         - Celdas    :  ok
         - Pistas    : todo Falta terminar la 3
-        - Renderer  : todo solucionar bug de reescalamiento
-        - States: todo terminar botones y states
+        - Renderer  : ok
+        - States: todo Hints -> posicionamiento texto + Imágenes
     "Mains / Lanzadores"
-        - Android: todo TODO
+        - Android: todo algunas cosas
         - PC: ok
     Bucle principal: ok
 

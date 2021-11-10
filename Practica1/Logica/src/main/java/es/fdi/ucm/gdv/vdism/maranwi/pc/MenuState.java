@@ -23,7 +23,7 @@ public class MenuState implements GameState {
             _buttons[x] = new Interact(x+"", 0xFFFFFF, xPos, yPos, BUTTON_RAD, x + 3, x + 3);
             _buttons[x].setText((x + 3) + "x" + (x + 3), _font, _fontColor);
             xPos += BUTTON_RAD * 2;
-            if(xPos + BUTTON_RAD > g.getCanvasWidth()){
+            if(xPos + BUTTON_RAD > _mainApp.getLogicWidth()){
                 xPos = BUTTON_RAD / 2;
                 yPos += BUTTON_RAD * 2;
             }
