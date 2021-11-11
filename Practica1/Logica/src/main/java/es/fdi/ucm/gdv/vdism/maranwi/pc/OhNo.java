@@ -1,25 +1,4 @@
 package es.fdi.ucm.gdv.vdism.maranwi.pc;
-/* Dudas DE CARA A LA ENTREGA:
-     - Nuestro hilo de ejecución de Android, recibe el Engine como parámetro, esto provoca que varios hilos puedan tener a la vez la misma
-         referencia al Engine y que consecuentemente se puedan hacer llamadas a los mismos métodos a la vez o que se estén modificando valores de atributos
-         por sitios diferentes, ¿es esto correcto, habría que poner syncronze (métodos/atributos) o qué debemos hacer?
-     - ¿Para qué sirve el id del input? No sabemos si los dedos que entran en los eventos están en orden de pulsación
-     - ¿Debería parpadear la pantalla al hacer resize?
-     - ¿Se tiene que hacer el resize el tiempo real o solo cuando """""se pare"""""" el ratón una vez iniciado el proceso de reescalado?
-     - ¿Por qué cuando está reescalando a veces se pinta dos veces?
-     - ¿Por qué peta en depuración? -> MOSTRAR FOTO
-     - El escalado en android se comporta distinto que en pc, ya que en pc posconcatena las matrices. ¿Se puede emular este comportamiento
-            en Android? ¿Cómo habría que adaptar el scale en caso contrario? (ya que no parece haber más métodos para ello)
-     - Sobre la generación del tablero: Nosotros creamos el tablero inicial por un proceso en el que no intervienen las pistas, una vez creado, se ocultan
-        las azules y aleatoriamente se deciden cuales de las rojas (las que no se oculten serán candados).
-        Como confirmación, una vez ocultas las fichas se utilizan las pistas para verificar que da el mismo resultado (comprobación de solución única)
-        ¿Es válido este proceso? Si no es así, ¿dónde lo estamos haciendo mal?
-      - En nuestro proyecto, los motores son los encargados de, dado un tamaño lógico del juego y un posiconamiento de elementos en base a este tamaño lógico,
-         hacer las traslaciones y escalas necesarias para que siempre estén los elementos en su sitio y con su tamaño correcto, consecuentemente la lógica
-         no puede acceder a los métodos Translate y Escale ya que podría romper el trabajo que esté haciendo el motor. Dada esta situación el Save y Restore
-         no se usan, ¿este planteamiento es correcto? De ser así, ¿podemos borrar los métodos Save y Restore? Y en caso contrario, ¿el trabajo del reposicionamiento
-         debería hacerse en la lógica?
- */
 import es.fdi.ucm.gdv.vdism.maranwi.engine.GameState;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Engine;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
