@@ -19,7 +19,6 @@ public class ExecutionThreadManager {
            System.out.println("EL THREAD ES "+_thread);
             _thread.start();
         }
-
     }
 
     public void pause() {
