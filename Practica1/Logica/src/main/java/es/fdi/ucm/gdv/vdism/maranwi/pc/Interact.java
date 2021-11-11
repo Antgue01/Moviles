@@ -21,20 +21,6 @@ public class Interact {
         _hasBottomCircle = true;
     }
 
-    public void setImage(Image img, int imgW, int imgH){
-        _image = img;
-        _imageWidth = imgW;
-        _imageHeight = imgH;
-        _hasImg = true;
-    }
-
-    public void setText(String text, Font font, int fontColor){
-        _text = text;
-        _hasText = true;
-        _font = font;
-        _fontColor = fontColor;
-    }
-
     public void render(Graphics g){
         if(_hasBottomCircle){
             g.setColor(_baseColor);
@@ -48,9 +34,9 @@ public class Interact {
             else
                 g.drawText(_text, _xPos + (_radius / 2) - _font.getSize() / 4, _yPos + (_radius / 2) + _font.getSize() / 4);
         }
-        if(_hasImg){
+        if(_hasImg && _showImg){
             g.drawImage(_image, _xPos + (_radius / 2) - (_imageWidth / 2), _yPos + (_radius / 2) - (_imageHeight / 2),
-                        _imageWidth, _imageHeight);
+                    _imageWidth, _imageHeight);
         }
     }
 
@@ -68,7 +54,22 @@ public class Interact {
     public int getBoardY() { return _boardY; }
     public void setBaseColor(int bC) { _baseColor = bC; }
     public void setBottomCircle(boolean b){ _hasBottomCircle = false; }
+    public void setShowImg(boolean sImg) { _showImg = sImg; }
 
+    public void setImage(Image img, int imgW, int imgH, boolean showImg){
+        _image = img;
+        _imageWidth = imgW;
+        _imageHeight = imgH;
+        _showImg = showImg;
+        _hasImg = true;
+    }
+
+    public void setText(String text, Font font, int fontColor){
+        _text = text;
+        _hasText = true;
+        _font = font;
+        _fontColor = fontColor;
+    }
 
     private String _id;
 
@@ -81,6 +82,8 @@ public class Interact {
     private int _imageWidth;
     private int _imageHeight;
     private boolean _hasImg;
+    private boolean _hasAnimation;
+    private boolean _showImg;
 
     private int _radius;
     private int _xPos;

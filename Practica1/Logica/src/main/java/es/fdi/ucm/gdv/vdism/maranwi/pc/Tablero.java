@@ -209,7 +209,7 @@ public class Tablero {
                 } else {
                     int neigbours = _matrizSolucion[x][j] == 0 ? r.nextInt(3) + 1 : -1;
                     c = new Celda(id, esFicha, TipoCelda.values()[_matrizSolucion[x][j]], neigbours, x, j, RAD, BOARD_LOGIC_OFFSET_X, BOARD_LOGIC_OFFSET_Y, font, fontColor);
-                    if(neigbours == -1) c.getButton().setImage(_lockImg, _lockImg.getWidth() / 2, _lockImg.getHeigth() / 2);
+                    if(neigbours == -1) c.getButton().setImage(_lockImg, _lockImg.getWidth() / 2, _lockImg.getHeigth() / 2, false);
                 }
 
                 _matrizJuego[x][j] = c;
