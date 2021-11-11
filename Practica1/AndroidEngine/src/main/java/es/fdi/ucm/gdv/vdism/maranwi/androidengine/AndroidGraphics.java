@@ -46,6 +46,7 @@ public class AndroidGraphics implements Graphics {
             //Espera activa
             ;
         _canvas = _holder.lockCanvas();
+        clearAll(app.getBackgroundColor());
         adjustToScreen();
 
         app.onRender(this);
@@ -55,14 +56,12 @@ public class AndroidGraphics implements Graphics {
     @Override
     public Image newImage(String name) {
         Bitmap sprite = null;
-        System.out.println("Empiezo a cargar la imagen " + name);
         //esto debería cerrar el archivo si fallara al abrir
         try (InputStream is = _assets.open(name)) {
             sprite = BitmapFactory.decodeStream(is);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("ACABO DE cargar la imagen " + name);
 
         return sprite != null ? new AndroidImage(sprite.getWidth(), sprite.getHeight(), sprite) : null;
 
@@ -106,12 +105,12 @@ public class AndroidGraphics implements Graphics {
     @Override
     public void drawImage(Image img, int x, int y, int width, int height) {
         if (img != null) {
-        }
 
-        Bitmap sprite = ((AndroidImage) (img)).getBitmap();
-        Rect dest = new Rect(x, y, width, height);
-        Rect src = new Rect(0, 0, sprite.getWidth(), sprite.getHeight());
-        _canvas.drawBitmap(sprite, src, dest, _paint);
+            Bitmap sprite = ((AndroidImage) (img)).getBitmap();
+            Rect dest = new Rect(x, y, width, height);
+            Rect src = new Rect(0, 0, sprite.getWidth(), sprite.getHeight());
+            _canvas.drawBitmap(sprite, null, dest, _paint);
+        }
 
 
     }
@@ -135,7 +134,7 @@ public class AndroidGraphics implements Graphics {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void fillCircle(int cx, int cy, int r) {
-        _canvas.drawOval(cx - r, cy - r, cx + r, cy + r, _paint);
+        _canvas.drawOval(cx, cy, cx + r, cy + r, _paint);
     }
 
     @Override
@@ -178,6 +177,10 @@ public class AndroidGraphics implements Graphics {
         _view.setOnTouchListener(listener);
     }
 
+    private void clearAll(int color) {
+        _canvas.drawColor(0xff000000 | color);
+    }
+
     private void adjustToScreen() {
         int frameW = _view.getWidth();
         int frameH = _view.getHeight();
@@ -186,7 +189,7 @@ public class AndroidGraphics implements Graphics {
         double newY = _logicHeight * frameW / _logicWidth;
         double newX = _logicWidth * frameH / _logicHeight;
         double newPosX = 0.0f, newPosY = 0.0f;
-        double scaleX = 0, scaleY = 0;
+        double scaleX = 1, scaleY = 1;
         //Si escalando la Y no cabríamos
 
         if (newY > frameH) {

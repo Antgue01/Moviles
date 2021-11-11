@@ -95,6 +95,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
                 _myGraphics = _strategy.getDrawGraphics();
                 if (_myGraphics != null) {
                     Graphics2D g = (Graphics2D) _myGraphics;
+                    clearAll(app.getBackgroundColor());
                     if(g!= null){
                         g.translate(_translationX, _translationY);
                         g.scale(_scaleX, _scaleY);
@@ -141,33 +142,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
     }
 
-    private void adjustToScreen() {
-        Dimension size = _frame.getSize();
-        //Hacemos la regla de tres para ver si cabría
 
-        double newY = _logicHeight * size.width / _logicWidth;
-        double newX = _logicWidth * size.height / _logicHeight;
-        double newPosX = 0.0f, newPosY = 0.0f;
-        //Si escalando la Y no cabríamos
-
-        if (newY > size.height) {
-            _scaleX = newX / _logicWidth;
-            _scaleY = _scaleX;
-            double centerX = size.width / 2;
-            newPosX = centerX - (newX / 2);
-            translate(newPosX, 0);
-        } else if (newX > size.width) {
-            _scaleY = newY / _logicHeight;
-            _scaleX = _scaleY;
-            double centerY = size.height / 2;
-            newPosY = centerY - (newY / 2);
-            translate(0, newPosY);
-        }
-        _canvasWidth = _scaleX * _logicWidth;
-        _canvasHeight = _scaleY * _logicHeight;
-        //app.setApplicationZone(_width, _height, size.getWidth(), size.getHeight());
-
-    }
 
     public void translate(double x, double y) {
         _translationX = x;
@@ -245,6 +220,39 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
         _frame.addMouseMotionListener(mml);
     }
 
+    private void clearAll(int color) {
+        if (color != -1) {
+            _myGraphics.setColor(new Color(color));
+            _myGraphics.fillRect(0,0,_frame.getWidth(),_frame.getHeight());
+        }
+    }
+    private void adjustToScreen() {
+        Dimension size = _frame.getSize();
+        //Hacemos la regla de tres para ver si cabría
+
+        double newY = _logicHeight * size.width / _logicWidth;
+        double newX = _logicWidth * size.height / _logicHeight;
+        double newPosX = 0.0f, newPosY = 0.0f;
+        //Si escalando la Y no cabríamos
+
+        if (newY > size.height) {
+            _scaleX = newX / _logicWidth;
+            _scaleY = _scaleX;
+            double centerX = size.width / 2;
+            newPosX = centerX - (newX / 2);
+            translate(newPosX, 0);
+        } else if (newX > size.width) {
+            _scaleY = newY / _logicHeight;
+            _scaleX = _scaleY;
+            double centerY = size.height / 2;
+            newPosY = centerY - (newY / 2);
+            translate(0, newPosY);
+        }
+        _canvasWidth = _scaleX * _logicWidth;
+        _canvasHeight = _scaleY * _logicHeight;
+        //app.setApplicationZone(_width, _height, size.getWidth(), size.getHeight());
+
+    }
     double _translationX = 0;
     double _translationY = 0;
     double _scaleX = 1;
