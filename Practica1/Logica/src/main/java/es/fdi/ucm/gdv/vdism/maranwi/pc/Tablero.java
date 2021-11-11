@@ -1,12 +1,9 @@
 package es.fdi.ucm.gdv.vdism.maranwi.pc;
-import com.sun.imageio.plugins.tiff.TIFFAttrInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Stack;
-
-import javax.swing.event.HyperlinkEvent;
 
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Font;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Image;
@@ -25,17 +22,18 @@ public class Tablero {
         _hintsList = new ArrayList<Pista>();
     }
 
-    /*
-        0 = Azul
-        1 = Rojo
+    /**
+     * Comprobar limites
      */
-
     private boolean validPos(int x, int y){
-        return (x >= 0 && x < _matrizJuego[0].length) &&
-                (y >= 0 && y < _matrizJuego[1].length);
+        return (x >= 0 && x < _matrizJuego[0].length) && (y >= 0 && y < _matrizJuego[1].length);
     }
 
-    private int[] getErrorHints(int x, int y){
+    /**
+     * Calcula y devuelve la informacion para las pistas de error del jugador y la pista 1
+     * @return arr {NumeroAzulesVisibles, EstaAbierta en alguna direccion}
+     */
+    private int[] calculateHintsInfo(int x, int y){
         // {Azules, EstaAbierta}
         int[] arr = new int[2];
 
@@ -62,7 +60,27 @@ public class Tablero {
         return arr;
     }
 
-    private int[] calculateHint2(int x, int y, int number){
+    /**
+     * Calcula las fichas azules (sin espacios en blanco) en una direccion
+     */
+    private int countBluesAtDir(int x, int y, int[] dir){
+        int blues = 0;
+        int currentPosX = x + dir[0];
+        int currentPosY = y + dir[1];
+
+        while (validPos(currentPosX,currentPosY) && _matrizJuego[currentPosX][currentPosY].getTipoCelda() == TipoCelda.Azul){
+            blues++;
+            currentPosX += dir[0];
+            currentPosY += dir[1];
+        }
+
+        return blues;
+    }
+    /**
+     * Calcula y devuelve la informacion para la pista 2
+     * @return arr {CumplePista,PosXAplicar,PosYAplicar}
+     */
+    private int[] calculateHint2(int x, int y, int requiredNumber){
         int[] arr = new int[3];
 
         for(int[] d : _dirs){
@@ -72,21 +90,12 @@ public class Tablero {
             //Si en esa direccion hay una blanca, la cuenta como azul y sigue contando en esa direccion
             if(validPos(currentPosX,currentPosY) && _matrizJuego[currentPosX][currentPosY].getTipoCelda() == TipoCelda.Blanco){
                 blues++;
-                currentPosX += d[0];
-                currentPosY += d[1];
             }
-            while (validPos(currentPosX,currentPosY)){
-                if (_matrizJuego[currentPosX][currentPosY].getTipoCelda() == TipoCelda.Azul){
-                    blues++;
-                }
-                else{
-                    break;
-                }
-                currentPosX += d[0];
-                currentPosY += d[1];
-            }
+
+            blues += countBluesAtDir(currentPosX, currentPosY, d);
+
             //¿Excederia el numero al haber colocado azul en esa direccion?
-            if(blues > number){
+            if(blues > requiredNumber){
                 arr[0] = 1; //true
                 arr[1] = x+d[0]; //posX de celda que se deberia cerrar
                 arr[2] = y+d[1]; //posY de celda que se deberia cerrar
@@ -100,12 +109,8 @@ public class Tablero {
 
     /**
      * Cuenta cuantas fichas posibles hay en una direccion (azules y blancas) hasta una pared o limite, dada una posicion
-     * @param x posicion X
-     * @param y posicion Y
-     * @param dir direccion
-     * @return numero de fichas posibles
      */
-    private int possibleInDirection(int x, int y,int[] dir){
+    private int possibleInDirection(int x, int y, int[] dir){
         int count = 0;
 
         int currentPosX = x + dir[0];
@@ -123,7 +128,11 @@ public class Tablero {
         return count;
     }
 
-    private int[] calculateHint3(int x, int y){
+    /**
+     * Calcula y devuelve la informacion para la pista 3
+     * @return arr {CumplePista,PosXAplicar,PosYAplicar}
+     */
+    private int[] calculateHint3(int x, int y, int requiredNumber){
         int[] arr = new int[3];
 
         int[] countDirs = new int[4];
@@ -143,23 +152,15 @@ public class Tablero {
             int[] dir = _dirs[i];
             //countOtras las posibles que tienen el resto de direcciones = (las posibles en todas las direcciones - las posibles en esta)
             int countOtras = total - countDirs[i];
-            //se suman las azules adyacentes a countOtras
-            int currentPosX = x + dir[0];
-            int currentPosY = y + dir[1];
-            while (validPos(currentPosX,currentPosY)){
-                if(_matrizJuego[currentPosX][currentPosY].getTipoCelda() != TipoCelda.Azul){
-                    break;
-                }
-                countOtras++;
-                currentPosX = x + dir[0];
-                currentPosY = y + dir[1];
-            }
+            //se suman a countOtras las azules adyacentes
+            int azulesAdyacentes = countBluesAtDir(x,y,dir);
+            countOtras += azulesAdyacentes;
 
             //Si esa direccion es imprescindible, porque sin ella no se llega al numero requerido
-            if(countOtras < _matrizJuego[x][y].getRequiredNeighbours()){
+            if(countOtras < requiredNumber){
                 arr[0] = 1; // true
-                arr[1] = currentPosX; //posX de celda que deberia ser azul si o si
-                arr[2] = currentPosY; //posY de celda que deberia ser azul si o si
+                arr[1] = x + dir[0] * (azulesAdyacentes + 1); //posX de celda que deberia ser azul si o si
+                arr[2] = y + dir[1] * (azulesAdyacentes + 1) ; //posY de celda que deberia ser azul si o si
                 break;
             }
         }
@@ -167,6 +168,9 @@ public class Tablero {
         return arr;
     }
 
+    /**
+     * Comprueba si esta posicion esta cerrada por paredes y limites
+     */
     private boolean isClosed(int x, int y){
         for(int[] d : _dirs){
             int currentPosX = x + d[0];
@@ -178,6 +182,9 @@ public class Tablero {
         return true;
     }
 
+    /**
+     * Actualiza la lista de pistas, revisa en el tablero que pistas se añaden
+     */
     private void updateHintsList(){
         _hintsList.clear();
 
@@ -186,9 +193,9 @@ public class Tablero {
         for (int i = 0; i < _matrizJuego[0].length; ++i) {
             for (int j = 0; j < _matrizJuego[1].length; ++j) {
                 Celda currentCelda = _matrizJuego[i][j];
-                //Si es un numero azul, se comprueban la pista 4 , 5 , 1
-                if(!currentCelda.getEsFicha() && currentCelda.getTipoCelda() == TipoCelda.Azul){
-                    int[] hintsInfo = getErrorHints(i,j);
+                //Si es un numero azul, se comprueban la pista 4 , 5 , 1 , 2 y 3
+                if(currentCelda.getRequiredNeighbours() != -1 && currentCelda.getTipoCelda() == TipoCelda.Azul){
+                    int[] hintsInfo = calculateHintsInfo(i,j);
                     //PISTA 4 es un error del jugador (no pasaran en la generacion del tablero)
                     if(hintsInfo[0] > currentCelda.getRequiredNeighbours()){
                         _playerError = true;
@@ -196,14 +203,15 @@ public class Tablero {
                         return;
                     }
                     //PISTA 5 es un error del jugador (no pasaran en la generacion del tablero)
-                    else if(hintsInfo[1]!=0 && hintsInfo[0] < currentCelda.getRequiredNeighbours()){
+                    else if(hintsInfo[1]==0 && hintsInfo[0] < currentCelda.getRequiredNeighbours()){
                         _playerError = true;
                         _hintsList.add(new Pista(Pista.HintType.FIVE,i,j));
                         return;
                     }
                     //PISTA 1
-                    else if(hintsInfo[1]!=1 && hintsInfo[0] == currentCelda.getRequiredNeighbours()){
+                    else if(hintsInfo[1]==1 && hintsInfo[0] == currentCelda.getRequiredNeighbours()){
                         _hintsList.add(new Pista(Pista.HintType.ONE,i,j));
+                        continue;
                     }
                     //PISTA 2
                     int[] hint2 = calculateHint2( i, j, currentCelda.getRequiredNeighbours());
@@ -213,15 +221,15 @@ public class Tablero {
                         _hintsList.add(p);
                     }
                     //PISTA 3
-                    int[] hint3 = calculateHint3( i, j);
+                    int[] hint3 = calculateHint3( i, j, currentCelda.getRequiredNeighbours());
                     if(hint3[0]!=0){
                         Pista p = new Pista(Pista.HintType.THREE, i, j);
                         p.setWhereToApply(hint2[1], hint2[2]);
                         _hintsList.add(p);
                     }
                 }
-                //Si es un azul no numero, o blanco, se comprueban la pista 6 y 7
-                else if(currentCelda.getEsFicha() && currentCelda.getTipoCelda() != TipoCelda.Rojo && isClosed(i,j)){
+                //Si es un azul no numero, o blanco, y esta cerrada, se comprueban la pista 6 y 7
+                else if(currentCelda.getRequiredNeighbours()==-1 && currentCelda.getTipoCelda() != TipoCelda.Rojo && isClosed(i,j)){
                     //PISTA 6 y 7
                     Pista p = (currentCelda.getTipoCelda()==TipoCelda.Blanco) ? new Pista(Pista.HintType.SIX,i,j):new Pista(Pista.HintType.SEVEN,i,j);
                 }
@@ -229,6 +237,9 @@ public class Tablero {
         }
     }
 
+    /**
+     * Obtiene una pista aleatoria, en caso de error del jugador, devolvera una pista de error primero
+     */
     public Pista getAHint(){
 
         updateHintsList();
@@ -247,6 +258,9 @@ public class Tablero {
         }
     }
 
+    /**
+     * Cierra con paredes en todas las direcciones desde el punto x y
+     */
     private void close(int x, int y){
         for(int[] d : _dirs){
             int currentPosX = x + d[0];
@@ -268,6 +282,9 @@ public class Tablero {
         }
     }
 
+    /**
+     * Aplicar pistas
+     */
     public void applyHint(Pista hint){
         int[] pos = hint.getPos();
 
@@ -300,6 +317,10 @@ public class Tablero {
         }
     }
 
+    /*
+    0 = Azul
+    1 = Rojo
+    */
     public void rellenaMatrizResueltaRandom(int RAD, int BOARD_LOGIC_OFFSET_X, int BOARD_LOGIC_OFFSET_Y, Font font, int fontColor) {
         java.util.Random r = new Random();
         for (int x = 0; x < _matrizSolucion[0].length; ++x) {
