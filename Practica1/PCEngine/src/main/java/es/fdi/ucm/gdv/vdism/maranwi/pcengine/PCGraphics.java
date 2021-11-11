@@ -100,10 +100,11 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
         do {
             do {
-               try{ _myGraphics = _strategy.getDrawGraphics();}
-               catch (Exception e){
-                   System.err.println("This frame won't render due to resizing");
-               }
+                try {
+                    _myGraphics = _strategy.getDrawGraphics();
+                } catch (Exception e) {
+                    _myGraphics = _strategy.getDrawGraphics();
+                }
                 if (_myGraphics != null) {
                     Graphics2D g = (Graphics2D) _myGraphics;
                     clearAll(app.getBackgroundColor());
@@ -118,7 +119,6 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
                     _myGraphics.dispose();
                 }
             } while (_strategy.contentsRestored()); //True si se ha limpiado con un color de fondo y está preparado
-
             _strategy.show();
         } while (_strategy.contentsLost()); //Devuelve si se ha perdido el buffer de pintado
     }
@@ -164,7 +164,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     public void scale(double x, double y) {
         Graphics2D g2d = (Graphics2D) _myGraphics;
         if (g2d != null)
-            g2d.scale(x,y);
+            g2d.scale(x, y);
     }
 
 

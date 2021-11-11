@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 
@@ -31,7 +30,6 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 public class AndroidGraphics implements Graphics {
     public AndroidGraphics(Context context, AssetManager assets, int logicWidth, int logicHeight) {
         _view = new SurfaceView(context);
-        System.out.println("VISTA HECHA");
 
         _holder = _view.getHolder();
         _paint = new Paint();
@@ -77,7 +75,6 @@ public class AndroidGraphics implements Graphics {
             font = Typeface.createFromAsset(_assets, filename);
             _fonts.put(filename, font);
         }
-        System.out.println("ACABO DE cargar la FUENTE " + filename + font != null);
 
         AndroidFont newFont = new AndroidFont(filename, size, isBold, font);
 
@@ -107,8 +104,7 @@ public class AndroidGraphics implements Graphics {
         if (img != null) {
 
             Bitmap sprite = ((AndroidImage) (img)).getBitmap();
-            Rect dest = new Rect(0, 0, width, height);
-            Rect src = new Rect(0, 0, sprite.getWidth(), sprite.getHeight());
+            Rect dest = new Rect(x, y, x+width, y+height);
             _canvas.drawBitmap(sprite, null, dest, _paint);
         }
 

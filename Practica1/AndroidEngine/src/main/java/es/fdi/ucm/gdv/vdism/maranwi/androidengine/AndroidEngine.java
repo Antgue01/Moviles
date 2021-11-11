@@ -41,6 +41,7 @@ public class AndroidEngine implements Engine, Runnable {
         // muy rápido, la vista podría todavía no estar inicializada.
         while(_play && _graphics.getWindowsWidth() == 0)
             // Espera activa. Sería más elegante al menos dormir un poco.
+
             ;
         while (_play) {
             long currentTime = System.nanoTime();

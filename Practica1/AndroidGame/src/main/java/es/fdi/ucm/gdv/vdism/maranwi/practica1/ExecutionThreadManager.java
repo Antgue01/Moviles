@@ -9,14 +9,13 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Application;
 
 public class ExecutionThreadManager {
 
-    public ExecutionThreadManager(Application app, Context context,  AssetManager assets) {
-        _engine = new AndroidEngine(app, context,assets);
+    public ExecutionThreadManager(Application app, Context context, AssetManager assets) {
+        _engine = new AndroidEngine(app, context, assets);
     }
 
     public void resume() {
         if (_engine != null && !_engine.getPlay()) {
             _thread = new Thread(_engine);
-           System.out.println("EL THREAD ES "+_thread);
             _thread.start();
         }
     }
@@ -38,9 +37,11 @@ public class ExecutionThreadManager {
         }
 
     }
-    public AndroidEngine getEngine(){
+
+    public AndroidEngine getEngine() {
         return _engine;
     }
+
     private AndroidEngine _engine;
     private Thread _thread;
 }
