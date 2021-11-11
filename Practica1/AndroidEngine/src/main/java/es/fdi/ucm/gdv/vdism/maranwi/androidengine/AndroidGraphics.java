@@ -17,6 +17,7 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Image;
 import android.os.Build;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 
 import androidx.annotation.RequiresApi;
 
@@ -28,7 +29,7 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Application;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 
 public class AndroidGraphics implements Graphics {
-    public AndroidGraphics(Context context, AssetManager assets,int logicWidth, int logicHeight) {
+    public AndroidGraphics(Context context, AssetManager assets, int logicWidth, int logicHeight) {
         _view = new SurfaceView(context);
         System.out.println("VISTA HECHA");
 
@@ -36,9 +37,8 @@ public class AndroidGraphics implements Graphics {
         _paint = new Paint();
         _assets = assets;
         _fonts = new HashMap<String, Typeface>();
-        _logicWidth=logicWidth;
-        _logicHeight=logicHeight;
-
+        _logicWidth = logicWidth;
+        _logicHeight = logicHeight;
     }
 
     public void draw(Application app) {
@@ -89,7 +89,7 @@ public class AndroidGraphics implements Graphics {
     @Override
     public void clear(int color) {
         _paint.setColor(0xff000000 | color);
-        _canvas.drawRect(0,0,_logicWidth,_logicHeight,_paint);
+        _canvas.drawRect(0, 0, _logicWidth, _logicHeight, _paint);
     }
 
     @Override
@@ -155,12 +155,12 @@ public class AndroidGraphics implements Graphics {
 
     @Override
     public int getCanvasWidth() {
-        return (int)_canvasWidth;
+        return (int) _canvasWidth;
     }
 
     @Override
     public int getCanvasHeight() {
-        return (int)_canvasHeight;
+        return (int) _canvasHeight;
     }
 
 
@@ -174,6 +174,10 @@ public class AndroidGraphics implements Graphics {
         }
     }
 
+    public void setTouchListener(View.OnTouchListener listener) {
+        _view.setOnTouchListener(listener);
+    }
+
     private void adjustToScreen() {
         int frameW = _view.getWidth();
         int frameH = _view.getHeight();
@@ -182,7 +186,7 @@ public class AndroidGraphics implements Graphics {
         double newY = _logicHeight * frameW / _logicWidth;
         double newX = _logicWidth * frameH / _logicHeight;
         double newPosX = 0.0f, newPosY = 0.0f;
-        double scaleX=0,scaleY=0;
+        double scaleX = 0, scaleY = 0;
         //Si escalando la Y no cabríamos
 
         if (newY > frameH) {
@@ -191,14 +195,14 @@ public class AndroidGraphics implements Graphics {
             double centerX = frameW / 2;
             newPosX = centerX - (newX / 2);
             translate(newPosX, 0);
-            scale(scaleX,scaleY);
+            scale(scaleX, scaleY);
         } else if (newX > frameW) {
             scaleX = frameW / (double) _logicWidth;
             scaleY = newY / _logicHeight;
             double centerY = frameH / 2;
             newPosY = centerY - (newY / 2);
             translate(0, newPosY);
-            scale(scaleX,scaleY);
+            scale(scaleX, scaleY);
         }
         _canvasWidth = scaleX * _logicWidth;
         _canvasHeight = scaleY * _logicHeight;

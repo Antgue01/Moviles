@@ -15,6 +15,7 @@ public class AndroidEngine implements Engine, Runnable {
         _play = false;
         _graphics = new AndroidGraphics(context,assets,_app.getLogicWidth(),_app.getLogicHeight());
         _input = new AndroidInput();
+        _graphics.setTouchListener(_input);
         _lastFrameTime=0;
         System.out.println("DELTA TIME INICIALIZADO");
         _app.onInit(this);
