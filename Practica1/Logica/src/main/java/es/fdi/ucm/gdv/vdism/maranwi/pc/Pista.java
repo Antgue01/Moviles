@@ -224,6 +224,11 @@ public class Pista {
         _posYToApply = y;
     }
 
+    public int[] getPos(){
+        int[] pos = {_posX, _posY};
+        return pos;
+    }
+
     public int[] getWhereToApply(){
         int[] pos = {_posXToApply, _posYToApply};
         return pos;

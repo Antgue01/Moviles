@@ -1,4 +1,6 @@
 package es.fdi.ucm.gdv.vdism.maranwi.pc;
+import com.sun.imageio.plugins.tiff.TIFFAttrInfo;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -35,9 +37,9 @@ public class Tablero {
 
     private int[] getErrorHints(int x, int y){
         // {Azules, EstaAbierta}
-        int[] arr = {0,0};
+        int[] arr = new int[2];
 
-        for(int[] d : dirs){
+        for(int[] d : _dirs){
             int currentPosX = x + d[0];
             int currentPosY = y + d[1];
             while (validPos(currentPosX,currentPosY)){
@@ -61,9 +63,9 @@ public class Tablero {
     }
 
     private int[] calculateHint2(int x, int y, int number){
-        int[] arr = {0,0,0};
+        int[] arr = new int[3];
 
-        for(int[] d : dirs){
+        for(int[] d : _dirs){
             int blues = 0;
             int currentPosX = x + d[0];
             int currentPosY = y + d[1];
@@ -88,6 +90,7 @@ public class Tablero {
                 arr[0] = 1; //true
                 arr[1] = x+d[0]; //posX de celda que se deberia cerrar
                 arr[2] = y+d[1]; //posY de celda que se deberia cerrar
+                break;
             }
 
         }
@@ -95,21 +98,77 @@ public class Tablero {
         return arr;
     }
 
+    /**
+     * Cuenta cuantas fichas posibles hay en una direccion (azules y blancas) hasta una pared o limite, dada una posicion
+     * @param x posicion X
+     * @param y posicion Y
+     * @param dir direccion
+     * @return numero de fichas posibles
+     */
+    private int possibleInDirection(int x, int y,int[] dir){
+        int count = 0;
+
+        int currentPosX = x + dir[0];
+        int currentPosY = y + dir[1];
+
+        while (validPos(currentPosX,currentPosY)){
+            if(_matrizJuego[currentPosX][currentPosY].getTipoCelda() == TipoCelda.Rojo){
+                break;
+            }
+            count++;
+            currentPosX += dir[0];
+            currentPosY += dir[1];
+        }
+
+        return count;
+    }
+
     private int[] calculateHint3(int x, int y){
-        int[] arr = {0,0,0};
+        int[] arr = new int[3];
 
-        for(int[] d : dirs){
-            int blues = 0;
-            int currentPosX = x + d[0];
-            int currentPosY = y + d[1];
+        int[] countDirs = new int[4];
+        int total = 0;
 
+        //Array para contar en todas las direcciones
+        for (int i = 0; i<countDirs.length; i++){
+            countDirs[i] = possibleInDirection(x,y,_dirs[i]);
+            total += countDirs[i];
+        }
+
+        for (int i = 0; i < _dirs.length; i++){
+            //La direccion elegida tiene inmediatamente una pared o un limite, se pasa a la siguiente
+            if(countDirs[i]==0){
+                continue;
+            }
+            int[] dir = _dirs[i];
+            //countOtras las posibles que tienen el resto de direcciones = (las posibles en todas las direcciones - las posibles en esta)
+            int countOtras = total - countDirs[i];
+            //se suman las azules adyacentes a countOtras
+            int currentPosX = x + dir[0];
+            int currentPosY = y + dir[1];
+            while (validPos(currentPosX,currentPosY)){
+                if(_matrizJuego[currentPosX][currentPosY].getTipoCelda() != TipoCelda.Azul){
+                    break;
+                }
+                countOtras++;
+                currentPosX = x + dir[0];
+                currentPosY = y + dir[1];
+            }
+
+            //Si esa direccion es imprescindible, porque sin ella no se llega al numero requerido
+            if(countOtras < _matrizJuego[x][y].getRequiredNeighbours()){
+                arr[0] = 1; // true
+                arr[1] = currentPosX; //posX de celda que deberia ser azul si o si
+                arr[2] = currentPosY; //posY de celda que deberia ser azul si o si
+                break;
+            }
         }
 
         return arr;
     }
 
     private boolean isClosed(int x, int y){
-        for(int[] d : dirs){
+        for(int[] d : _dirs){
             int currentPosX = x + d[0];
             int currentPosY = y + d[1];
             if(validPos(currentPosX,currentPosY) && _matrizJuego[currentPosX][currentPosY].getTipoCelda() != TipoCelda.Rojo){
@@ -188,6 +247,58 @@ public class Tablero {
         }
     }
 
+    private void close(int x, int y){
+        for(int[] d : _dirs){
+            int currentPosX = x + d[0];
+            int currentPosY = y + d[1];
+            while (validPos(currentPosX,currentPosY)){
+                //Si se encuentra una pared, deja de ir en esa direccion
+                if(_matrizJuego[currentPosX][currentPosY].getTipoCelda() == TipoCelda.Rojo){
+                    break;
+                }
+                //Si se encuentra una celda Blanca en esa direccion, la hace roja y deja de ir en esa direccion
+                else if(_matrizJuego[currentPosX][currentPosY].getTipoCelda() == TipoCelda.Blanco){
+                    _matrizJuego[currentPosX][currentPosY].setTipo(TipoCelda.Rojo);
+                    break;
+                }
+                currentPosX += d[0];
+                currentPosY += d[1];
+            }
+
+        }
+    }
+
+    public void applyHint(Pista hint){
+        int[] pos = hint.getPos();
+
+        switch (hint.getHintType()){
+            case ONE:
+                close(pos[0],pos[1]);
+                break;
+            case TWO:{
+                int[] posToApply = hint.getWhereToApply();
+                _matrizJuego[posToApply[0]][posToApply[1]].setTipo(TipoCelda.Rojo);
+            }
+                break;
+            case THREE:{
+                int[] posToApply = hint.getWhereToApply();
+                _matrizJuego[posToApply[0]][posToApply[1]].setTipo(TipoCelda.Azul);
+                break;
+            }
+            case FOUR:
+                //No se deberia aplicar
+                break;
+            case FIVE:
+                //No se deberia aplicar
+                break;
+            case SIX:
+                _matrizJuego[pos[0]][pos[1]].setTipo(TipoCelda.Rojo);
+                break;
+            case SEVEN:
+                _matrizJuego[pos[0]][pos[1]].setTipo(TipoCelda.Rojo);
+                break;
+        }
+    }
 
     public void rellenaMatrizResueltaRandom(int RAD, int BOARD_LOGIC_OFFSET_X, int BOARD_LOGIC_OFFSET_Y, Font font, int fontColor) {
         java.util.Random r = new Random();
@@ -295,5 +406,5 @@ public class Tablero {
     private boolean _playerError = false;
 
     //derch, abajo, izq, arriba
-    private int[][] dirs = {{1,0},{0,-1},{-1,0},{0,1}};
+    private int[][] _dirs = {{1,0},{0,-1},{-1,0},{0,1}};
 }
