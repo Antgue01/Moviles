@@ -1,4 +1,4 @@
-package es.fdi.ucm.gdv.vdism.maranwi.pc;
+package es.fdi.ucm.gdv.vdism.maranwi.logica;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.GameState;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Engine;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;

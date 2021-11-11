@@ -1,4 +1,4 @@
-package es.fdi.ucm.gdv.vdism.maranwi.pc;
+package es.fdi.ucm.gdv.vdism.maranwi.logica;
 
 
 import java.awt.Color;

@@ -1,8 +1,4 @@
-package es.fdi.ucm.gdv.vdism.maranwi.pc;
-
-import org.graalvm.compiler.nodes.TypeCheckHints;
-
-import sun.security.pkcs11.wrapper.CK_TLS12_KEY_MAT_PARAMS;
+package es.fdi.ucm.gdv.vdism.maranwi.logica;
 
 public class Pista {
     enum HintType{

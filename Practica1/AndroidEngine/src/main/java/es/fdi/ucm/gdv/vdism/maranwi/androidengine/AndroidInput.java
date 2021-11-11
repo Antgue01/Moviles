@@ -37,21 +37,21 @@ public class AndroidInput implements Input, View.OnTouchListener {
             case MotionEvent.ACTION_DOWN:
                 type = TouchEvent.TouchType.pulsacion;
                 break;
-            case MotionEvent.ACTION_SCROLL:
+            case MotionEvent.ACTION_MOVE:
                 type = TouchEvent.TouchType.desplazamiento;
                 break;
         }
         if (type != null) {
-            int id = event.getActionIndex();
+            int id = event.getPointerId(event.getActionIndex());
             MotionEvent.PointerCoords coords = new MotionEvent.PointerCoords();
             event.getPointerCoords(id, coords);
-            TouchEvent e = new TouchEvent(type, (int)coords.x,(int) coords.y, id);
-            synchronized (this)
-            {
+            TouchEvent e = new TouchEvent(type, (int) coords.x, (int) coords.y, id);
+            synchronized (this) {
                 _events.add(e);
             }
             return true;
         } else return false;
     }
+
     private List<TouchEvent> _events;
 }

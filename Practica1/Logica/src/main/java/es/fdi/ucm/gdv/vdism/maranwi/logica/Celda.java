@@ -1,7 +1,6 @@
-package es.fdi.ucm.gdv.vdism.maranwi.pc;
+package es.fdi.ucm.gdv.vdism.maranwi.logica;
 
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Font;
-import sun.util.resources.cldr.ext.CurrencyNames_to;
 
 //                  0     1      2
 enum TipoCelda {Azul, Rojo, Blanco}

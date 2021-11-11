@@ -1,14 +1,10 @@
 package es.fdi.ucm.gdv.vdism.maranwi.practica1;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.view.SurfaceView;
 
-import es.fdi.ucm.gdv.vdism.maranwi.androidengine.AndroidEngine;
 import es.fdi.ucm.gdv.vdism.maranwi.androidengine.AndroidGraphics;
-import es.fdi.ucm.gdv.vdism.maranwi.engine.Engine;
-import es.fdi.ucm.gdv.vdism.maranwi.pc.OhNo;
+import es.fdi.ucm.gdv.vdism.maranwi.logica.OhNo;
 
 public class AndroidGame extends AppCompatActivity {
 
