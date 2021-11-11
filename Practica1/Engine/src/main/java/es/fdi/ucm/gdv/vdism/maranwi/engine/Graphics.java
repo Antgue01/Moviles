@@ -6,8 +6,6 @@ public interface Graphics {
     public void clear(int color);
     public void translate(double x,double y);
     public void scale(double x,double y);
-    public void save();
-    public void restore();
     public void drawImage(Image img, int x,int y, int width, int height);
     public void setColor(int color);
     public void fillCircle(int cx,int cy,int r);

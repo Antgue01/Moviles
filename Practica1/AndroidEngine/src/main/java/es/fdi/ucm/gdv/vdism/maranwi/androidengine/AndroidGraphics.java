@@ -107,7 +107,7 @@ public class AndroidGraphics implements Graphics {
         if (img != null) {
 
             Bitmap sprite = ((AndroidImage) (img)).getBitmap();
-            Rect dest = new Rect(x, y, width, height);
+            Rect dest = new Rect(0, 0, width, height);
             Rect src = new Rect(0, 0, sprite.getWidth(), sprite.getHeight());
             _canvas.drawBitmap(sprite, null, dest, _paint);
         }
@@ -116,15 +116,7 @@ public class AndroidGraphics implements Graphics {
     }
 
 
-    @Override
-    public void save() {
 
-    }
-
-    @Override
-    public void restore() {
-
-    }
 
     @Override
     public void setColor(int color) {
