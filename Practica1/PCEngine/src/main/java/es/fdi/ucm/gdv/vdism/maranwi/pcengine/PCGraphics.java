@@ -100,11 +100,11 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
         do {
             do {
-                try {
-                    _myGraphics = _strategy.getDrawGraphics();
-                } catch (Exception e) {
-                    _myGraphics = _strategy.getDrawGraphics();
-                }
+               try{ _myGraphics = _strategy.getDrawGraphics();}
+               catch (Exception e){
+                   System.err.println("This frame won't render due to resizing");
+                   return;
+               }
                 if (_myGraphics != null) {
                     Graphics2D g = (Graphics2D) _myGraphics;
                     clearAll(app.getBackgroundColor());
