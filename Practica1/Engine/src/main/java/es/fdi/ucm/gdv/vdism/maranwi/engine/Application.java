@@ -9,4 +9,5 @@ public interface Application {
     public void onRender(Graphics graphics);
     public int getLogicWidth();
     public int getLogicHeight();
+    public  int getBackgroundColor();
 }

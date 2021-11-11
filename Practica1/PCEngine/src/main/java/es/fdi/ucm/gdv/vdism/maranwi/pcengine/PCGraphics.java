@@ -2,8 +2,12 @@ package es.fdi.ucm.gdv.vdism.maranwi.pcengine;
 
 import java.awt.Color;
 import java.awt.Dimension;
+
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Font;
+
 import java.awt.Graphics2D;
+
+import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Image;
 
 import java.awt.event.ComponentEvent;
@@ -22,17 +26,17 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Application;
 
 public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics {
 
-    private class MyJFrame extends JFrame implements ComponentListener{
+    private class MyJFrame extends JFrame implements ComponentListener {
 
-        public MyJFrame(String title){
+        public MyJFrame(String title) {
             super(title);
             getContentPane().addComponentListener(this);
         }
 
-        public boolean getResized(){
-            if(resized){
+        public boolean getResized() {
+            if (resized) {
                 resized = false;
-                return  true;
+                return true;
             }
             return false;
         }
@@ -43,16 +47,20 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
         }
 
         @Override
-        public void componentMoved(ComponentEvent componentEvent) { }
+        public void componentMoved(ComponentEvent componentEvent) {
+        }
 
         @Override
-        public void componentShown(ComponentEvent componentEvent) { }
+        public void componentShown(ComponentEvent componentEvent) {
+        }
 
         @Override
-        public void componentHidden(ComponentEvent componentEvent) { }
+        public void componentHidden(ComponentEvent componentEvent) {
+        }
 
         private boolean resized = false;
     }
+
     public PCGraphics(String windowName, int logicWidth, int logicHeight) {
         _logicWidth = logicWidth;
         _logicHeight = logicHeight;
@@ -87,17 +95,21 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
     public void draw(Application app) {
 
-        if(_frame.getResized())
+        if (_frame.getResized())
             adjustToScreen();
 
         do {
             do {
-                _myGraphics = _strategy.getDrawGraphics();
+               try{ _myGraphics = _strategy.getDrawGraphics();}
+               catch (Exception e){
+                   System.err.println("This frame won't render due to resizing");
+               }
                 if (_myGraphics != null) {
                     Graphics2D g = (Graphics2D) _myGraphics;
-                    if(g!= null){
-                        g.translate(_translationX, _translationY);
-                        g.scale(_scaleX, _scaleY);
+                    clearAll(app.getBackgroundColor());
+                    if (g != null) {
+                        translate(_translationX, _translationY);
+                        scale(_scaleX, _scaleY);
                     }
                 }
                 try {
@@ -111,7 +123,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
         } while (_strategy.contentsLost()); //Devuelve si se ha perdido el buffer de pintado
     }
 
-
+    @Override
     public Image newImage(String name) {
         java.awt.Image sprite = null;
         try {
@@ -122,17 +134,17 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
         return sprite != null ? new PCImage(sprite.getWidth(_frame), sprite.getHeight(_frame), sprite) : null;
     }
 
-
+    @Override
     public Font newFont(String filename, int size, boolean isBold) {
         String id = filename + size + isBold + "";
         PCFont font = _fonts.get(id);
-        if(font == null){
+        if (font == null) {
             font = new PCFont(filename, size, isBold);
         }
         return font;
     }
 
-
+    @Override
     public void clear(int color) {
         if (color != -1) {
             _myGraphics.setColor(new Color(color));
@@ -141,66 +153,35 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
     }
 
-    private void adjustToScreen() {
-        Dimension size = _frame.getSize();
-        //Hacemos la regla de tres para ver si cabría
-
-        double newY = _logicHeight * size.width / _logicWidth;
-        double newX = _logicWidth * size.height / _logicHeight;
-        double newPosX = 0.0f, newPosY = 0.0f;
-        //Si escalando la Y no cabríamos
-
-        if (newY > size.height) {
-            _scaleX = newX / _logicWidth;
-            _scaleY = _scaleX;
-            double centerX = size.width / 2;
-            newPosX = centerX - (newX / 2);
-            translate(newPosX, 0);
-        } else if (newX > size.width) {
-            _scaleY = newY / _logicHeight;
-            _scaleX = _scaleY;
-            double centerY = size.height / 2;
-            newPosY = centerY - (newY / 2);
-            translate(0, newPosY);
-        }
-        _canvasWidth = _scaleX * _logicWidth;
-        _canvasHeight = _scaleY * _logicHeight;
-        //app.setApplicationZone(_width, _height, size.getWidth(), size.getHeight());
-
-    }
 
     public void translate(double x, double y) {
-        _translationX = x;
-        _translationY = y;
+        Graphics2D g2d = (Graphics2D) _myGraphics;
+        if (g2d != null)
+            g2d.translate(x, y);
     }
 
     @Override
     public void scale(double x, double y) {
-        _scaleX = x;
-        _scaleY = y;
+        Graphics2D g2d = (Graphics2D) _myGraphics;
+        if (g2d != null)
+            g2d.scale(x,y);
     }
 
-    @Override
-    public void save() {
-
-    }
-
-    @Override
-    public void restore() {
-
-    }
 
     ///si nos da widht o height -1 se considera que ese parametro es full
     @Override
     public void drawImage(Image img, int x, int y, int width, int height) {
-        if (img != null) _myGraphics.drawImage( ((PCImage)(img)).getAwtImage(), x, y, width, height, _frame);
+        if (img != null)
+            _myGraphics.drawImage(((PCImage) (img)).getAwtImage(), x, y, width, height, _frame);
     }
 
+    @Override
     public void setColor(int color) {
         if (color != -1)
             _myGraphics.setColor(new Color(color));
     }
 
+    @Override
     public void fillCircle(int cx, int cy, int r) {
         if (_myGraphics != null)
             _myGraphics.fillOval(cx, cy, r, r);
@@ -218,7 +199,9 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     }
 
     @Override
-    public int getWindowsHeight() { return _frame.getHeight(); }
+    public int getWindowsHeight() {
+        return _frame.getHeight();
+    }
 
     @Override
     public int getCanvasWidth() {
@@ -232,8 +215,8 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
     @Override
     public void setFont(Font font) {
-        java.awt.Font f = ((PCFont)(font)).getJavaFont();
-        if(f!= null) _myGraphics.setFont(f);
+        java.awt.Font f = ((PCFont) (font)).getJavaFont();
+        if (f != null) _myGraphics.setFont(f);
     }
 
 
@@ -243,6 +226,43 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
     public void addMouseMotionListener(MouseMotionListener mml) {
         _frame.addMouseMotionListener(mml);
+    }
+
+    private void clearAll(int color) {
+        if (color != -1) {
+            _myGraphics.setColor(new Color(color));
+            _myGraphics.fillRect(0, 0, _frame.getWidth(), _frame.getHeight());
+        }
+    }
+
+    private void adjustToScreen() {
+        Dimension size = _frame.getSize();
+        //Hacemos la regla de tres para ver si cabría
+
+        double newY = _logicHeight * size.width / _logicWidth;
+        double newX = _logicWidth * size.height / _logicHeight;
+        double newPosX = 0.0f, newPosY = 0.0f;
+        //Si escalando la Y no cabríamos
+
+        if (newY > size.height) {
+            _scaleX = newX / _logicWidth;
+            _scaleY = _scaleX;
+            double centerX = size.width / 2;
+            newPosX = centerX - (newX / 2);
+            _translationX = newPosX;
+            _translationY = 0;
+        } else if (newX > size.width) {
+            _scaleY = newY / _logicHeight;
+            _scaleX = _scaleY;
+            double centerY = size.height / 2;
+            newPosY = centerY - (newY / 2);
+            _translationX = 0;
+            _translationY = newPosY;
+        }
+        _canvasWidth = _scaleX * _logicWidth;
+        _canvasHeight = _scaleY * _logicHeight;
+        //app.setApplicationZone(_width, _height, size.getWidth(), size.getHeight());
+
     }
 
     double _translationX = 0;

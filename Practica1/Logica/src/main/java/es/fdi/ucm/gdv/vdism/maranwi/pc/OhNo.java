@@ -109,6 +109,11 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
         return BOX_LOGIC_HEIGHT;
     }
 
+    @Override
+    public int getBackgroundColor() {
+        return 0xEEEEEE;
+    }
+
     private Engine _engine;
     private GameState _currentState;
     static private final int BOX_LOGIC_WIDTH = 400;
