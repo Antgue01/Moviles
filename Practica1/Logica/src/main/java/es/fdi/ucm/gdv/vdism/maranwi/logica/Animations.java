@@ -1,8 +1,6 @@
 package es.fdi.ucm.gdv.vdism.maranwi.logica;
 
-
-import java.awt.Color;
-
+import es.fdi.ucm.gdv.vdism.maranwi.engine.Color;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 
 enum AnimationType { FadeIn, FadeOut, FastMove, SlowMove}
@@ -52,7 +50,6 @@ public class Animations {
 
             _lastAnimationTime = deltaTime;
         }
-
         return true;
     }
 

@@ -1,5 +1,6 @@
 package es.fdi.ucm.gdv.vdism.maranwi.logica;
 
+import es.fdi.ucm.gdv.vdism.maranwi.engine.Color;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Font;
 
 //                  0     1      2
