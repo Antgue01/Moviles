@@ -1,45 +1,41 @@
 package es.fdi.ucm.gdv.vdism.maranwi.logica;
 
-public class Pista {
-    enum HintType{
-        ONE,TWO,THREE,FOUR,FIVE,SIX,SEVEN,
-        NONE
-    }
+public class Hint {
 
-    public Pista(HintType type, int x, int y){
+    public Hint(HintsManager.HintType type, int x, int y){
         _type = type;
         _row = x;
         _col = y;
 
         switch (type){
             case ONE:
-                _currentHint = "Hay que cerrar la casilla";
+                _hintMessage = "Hay que cerrar la casilla";
                 break;
             case TWO:
-                _currentHint = "Mirar mas lejos en una direccion excederia el numero";
+                _hintMessage = "Mirar mas lejos en una direccion excederia el numero";
                 break;
             case THREE:
-                _currentHint = "Un punto esta en todas las posibles soluciones";
+                _hintMessage = "Un punto esta en todas las posibles soluciones";
                 break;
             case FOUR:
-                _currentHint = "Ve demasiados azules";
+                _hintMessage = "Ve demasiados azules";
                 break;
             case FIVE:
-                _currentHint = "No ve suficientes azules";
+                _hintMessage = "No ve suficientes azules";
                 break;
             case SIX:
-                _currentHint = "Celda vacia cerrada debe ser roja";
+                _hintMessage = "Celda vacia cerrada debe ser roja";
                 break;
             case SEVEN:
-                _currentHint = "Celda azul cerrada debe ser roja";
+                _hintMessage = "Celda azul cerrada debe ser roja";
                 break;
 
         }
     }
 
 
-    public String getCurrentHint() { return _currentHint;}
-    public HintType getHintType() { return _type;}
+    public String getHintMessage() { return _hintMessage;}
+    public HintsManager.HintType getHintType() { return _type;}
 
     public int[] getPos(){
         int[] pos = {_row, _col};
@@ -228,14 +224,12 @@ public class Pista {
     }*/
 
     /** Descripcion de la pista */
-    private String _currentHint;
+    private String _hintMessage;
     /** Posiciones en el tablero */
     private int _row, _col;
     /** Posiciones donde se deberia colocar una ficha si fuese el caso */
     private int _rowToApply, _colToApply;
 
-    HintType _type = HintType.NONE;
-
+    HintsManager.HintType _type = HintsManager.HintType.NONE;
 
 }
-

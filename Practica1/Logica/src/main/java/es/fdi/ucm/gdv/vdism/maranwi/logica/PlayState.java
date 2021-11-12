@@ -108,9 +108,9 @@ public class PlayState implements GameState {
         }
         else if(clickOnButton(x, y, _buttons[2])){ // HINTS
             System.out.println("HINTS");
-            Pista hint = _board.getAHint();
-            if(hint.getHintType() != Pista.HintType.NONE)    {
-                _hintText = hint.getCurrentHint();
+            Hint hint = _board.getAHint();
+            if(hint.getHintType() != HintsManager.HintType.NONE) {
+                _hintText = hint.getHintMessage();
                 int row = hint.getPos()[0];
                 int col = hint.getPos()[1];
                 _animator.addAnimationElement(row, col, false, true);
