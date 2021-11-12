@@ -1,6 +1,7 @@
 package es.fdi.ucm.gdv.vdism.maranwi.logica;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Stack;
@@ -20,6 +21,9 @@ public class Tablero {
         _moves = new Stack<Move>();
 
         _hintsList = new ArrayList<Pista>();
+
+        _lockTokensList = new LinkedList<Celda>();
+        _showLockImgs = false;
     }
 
     /**
@@ -366,9 +370,15 @@ public class Tablero {
                     c = new Celda(id, esFicha, TipoCelda.Blanco, -1, x, j, RAD, BOARD_LOGIC_OFFSET_X, BOARD_LOGIC_OFFSET_Y, font, fontColor);
                     ++_numFichasBlancas;
                 } else {
+                    //Si no es ficha se calculan los posibles vecinos y se instancia la celda
                     int neigbours = _matrizSolucion[x][j] == 0 ? r.nextInt(3) + 1 : -1;
                     c = new Celda(id, esFicha, TipoCelda.values()[_matrizSolucion[x][j]], neigbours, x, j, RAD, BOARD_LOGIC_OFFSET_X, BOARD_LOGIC_OFFSET_Y, font, fontColor);
-                    if(neigbours == -1) c.getButton().setImage(_lockImg, _lockImg.getWidth() / 2, _lockImg.getHeigth() / 2, false);
+
+                    //Si no es azul numérica(no tiene vecinos) es candado, se configura su imágen y se añade a la lista de tokens
+                    if(neigbours == -1){
+                        c.getButton().setImage(_lockImg, _lockImg.getWidth() / 2, _lockImg.getHeigth() / 2, false);
+                        _lockTokensList.add(c);
+                    }
                 }
 
                 _matrizJuego[x][j] = c;
@@ -410,6 +420,13 @@ public class Tablero {
                 _numFichasBlancas--;
             else if (!wasWhite && tipo == TipoCelda.Blanco)
                 _numFichasBlancas++;
+        }
+    }
+
+    public void showLockImgs(){
+        _showLockImgs = !_showLockImgs;
+        for(int x = 0; x<_lockTokensList.size(); ++x){
+            _lockTokensList.get(x).getButton().setShowImg(_showLockImgs);
         }
     }
 
@@ -455,4 +472,7 @@ public class Tablero {
 
     //derch, abajo, izq, arriba
     private int[][] _dirs = {{1,0},{0,-1},{-1,0},{0,1}};
+
+    LinkedList<Celda> _lockTokensList;
+    boolean _showLockImgs;
 }

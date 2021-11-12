@@ -22,7 +22,7 @@ public class Interact {
     }
 
     public void render(Graphics g){
-        if(_hasBottomCircle){
+        if(!_hasAnimation && _hasBottomCircle){
             g.setColor(_baseColor);
             g.fillCircle(_xPos , _yPos , _radius);
         }
@@ -54,7 +54,8 @@ public class Interact {
     public int getBoardY() { return _boardY; }
     public void setBaseColor(int bC) { _baseColor = bC; }
     public void setBottomCircle(boolean b){ _hasBottomCircle = false; }
-    public void setShowImg(boolean sImg) { _showImg = sImg; }
+    public void setShowImg(boolean s) { _showImg = s; }
+    public void setHasAnimation(boolean a){ _hasAnimation = a;}
 
     public void setImage(Image img, int imgW, int imgH, boolean showImg){
         _image = img;

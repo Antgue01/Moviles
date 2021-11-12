@@ -86,7 +86,9 @@ public class PlayState implements GameState {
            y >= BOARD_LOGIC_OFFSET_Y && y <= BOARD_LOGIC_OFFSET_Y + (_buttonRadius * _rows)){
             int row = (x - BOARD_LOGIC_OFFSET_X) / _buttonRadius;
             int col = (y - BOARD_LOGIC_OFFSET_Y) / _buttonRadius;
-            _board.nextColor(row, col);
+            if(_board.getMatrizJuego()[row][col].getEsFicha())
+                _board.nextColor(row, col);
+            else _board.showLockImgs();
             //System.out.println("Event x :" + x + " Event y: " + y + " ButtonRadius: " + _buttonRadius);
             //System.out.println("Row x :" + row + " Col y: " + col);
         }
