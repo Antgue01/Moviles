@@ -115,7 +115,14 @@ public class AndroidGraphics implements Graphics {
 
     @Override
     public void setColor(int color) {
-        _paint.setColor(0xff000000 | color);
+
+        int Red = (color >> 24) & 0xFF000000; //Shift red 16-bits and mask out other stuff
+        int Green = (color >> 16) & 0x00FF0000; //Shift Green 8-bits and mask out other stuff
+        int Blue = (color  >> 8)& 0x0000FF00; //Mask out anything not blue.
+        //int Alpha = _alpha & 0x000000FF;
+
+        //int colorARGB =  0x00000000 | Alpha | Red | Green | Blue; //0xFF000000 for 100% Alpha. Bitwise OR everything together.
+        //_paint.setColor(0xff000000 | colorARGB);
     }
 
     @Override

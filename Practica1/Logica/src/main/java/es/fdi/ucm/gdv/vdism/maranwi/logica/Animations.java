@@ -77,7 +77,7 @@ public class Animations {
 //                Color.red(int color)
 //                Color.blue(int color)
 //                Color.green(int color)
-                g.setColor(getIntFromColor((int) red, (int) green, (int) blue));
+                //g.setColor(getIntFromColor((int) red, (int) green, (int) blue));
                 //g.fillCircle(_xPos, _yPos, _radius);
             }
 
@@ -87,26 +87,6 @@ public class Animations {
             }
             _doAnimation = false;
         }
-    }
-
-    private int getIntFromColor(int Red, int Green, int Blue){
-        int R = Math.round(255 * Red);
-        int G = Math.round(255 * Green);
-        int B = Math.round(255 * Blue);
-
-        R = (R << 16) & 0x00FF0000;
-        G = (G << 8) & 0x0000FF00;
-        B = B & 0x000000FF;
-
-        return 0xFF000000 | R | G | B;
-    }
-
-    private int getIntFromColor2(int Red, int Green, int Blue){
-        Red = (Red << 16) & 0x00FF0000; //Shift red 16-bits and mask out other stuff
-        Green = (Green << 8) & 0x0000FF00; //Shift Green 8-bits and mask out other stuff
-        Blue = Blue & 0x000000FF; //Mask out anything not blue.
-
-        return 0xFF000000 | Red | Green | Blue; //0xFF000000 for 100% Alpha. Bitwise OR everything together.
     }
 
     public String getId() { return _id;}

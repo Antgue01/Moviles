@@ -36,11 +36,11 @@ public class MyColor implements Color {
         return _alpha;
     }
 
-    public void setRGBA(int rgba){ _rgba = rgba; };
-    public void setRed(int red){ _red = red;}
-    public void setGreen(int green){ _green = green;};
-    public void setBlue(int blue){ _blue = blue; };
-    public void setAlpha(int alpha){ _alpha = alpha;};
+    public void setRGBA(int rgba){ _rgba = rgba; RGBA_FromInts(); };
+    public void setRed(int red){ _red = red; RGBA_FromInts();}
+    public void setGreen(int green){ _green = green; RGBA_FromInts();};
+    public void setBlue(int blue){ _blue = blue; RGBA_FromInts();};
+    public void setAlpha(int alpha){ _alpha = alpha; RGBA_FromInts();};
 
     private void RGBA_FromInts(){
         int Red = (_red << 24) & 0xFF000000; //Shift red 16-bits and mask out other stuff
@@ -52,7 +52,10 @@ public class MyColor implements Color {
     }
 
     private void intsFrom_RGBA(){
-
+        _red = 0xFF000000 &_rgba;
+        _green = 0x00FF0000 &_rgba;
+        _blue = 0x0000FF00 &_rgba;
+        _alpha = 0x000000FF &_rgba;
     }
 
 
