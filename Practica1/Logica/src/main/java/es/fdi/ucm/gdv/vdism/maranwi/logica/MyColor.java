@@ -57,9 +57,7 @@ public class MyColor implements Color {
     }
 
     private void intsFrom_RGBA(){
-       // _rgba=0xff000000;
-        _red=(_rgba & 0xFF000000);
-        _red=_red>>>24;//Shift red 16-bits and mask out other stuff
+        _red=(_rgba & 0xFF000000) >>> 24; //Shift red 16-bits and mask out other stuff
         _green= (_rgba & 0x00FF0000) >>> 16; //Shift Green 8-bits and mask out other stuff
         _blue= (_rgba & 0x0000FF00) >>> 8; //Mask out anything not blue.
         _alpha = _rgba & 0x000000FF;

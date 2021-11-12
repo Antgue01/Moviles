@@ -1,6 +1,5 @@
 package es.fdi.ucm.gdv.vdism.maranwi.pcengine;
 
-import java.awt.Color;
 import java.awt.Dimension;
 
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Font;
@@ -9,6 +8,7 @@ import java.awt.Graphics2D;
 
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Image;
+import es.fdi.ucm.gdv.vdism.maranwi.engine.Color;
 
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -147,11 +147,21 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
     @Override
     public void clear(int color) {
-        if (color != -1) {
-            _myGraphics.setColor(new Color(color));
-            _myGraphics.fillRect(0, 0, _logicWidth, _logicHeight);
-        }
+        setColor(color);
+        _myGraphics.fillRect(0, 0, _logicWidth, _logicHeight);
 
+    }
+
+    @Override
+    public void clear(int r, int g, int b, int a) {
+        setColor(r,g,b,a);
+        _myGraphics.fillRect(0, 0, _logicWidth, _logicHeight);
+    }
+
+    @Override
+    public void clear(Color color) {
+        setColor(color);
+        _myGraphics.fillRect(0, 0, _logicWidth, _logicHeight);
     }
 
 
@@ -177,15 +187,14 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     }
 
     @Override
-    public void setColor(int color) {
-        if (color != -1)
-            _myGraphics.setColor(new Color(color));
+    public void setColor(int rgba) {
+        _myGraphics.setColor(new java.awt.Color(rgba));
     }
 
     @Override
     public void setColor(int r, int g, int b, int a) {
         if (r > -1 && r < 256 && g > -1 && g < 256 && b > -1 && b < 256 && a > -1 && a < 256)
-            _myGraphics.setColor(new Color(r, g, b, a));
+            _myGraphics.setColor(new java.awt.Color(r, g, b, a));
     }
 
     @Override
@@ -195,7 +204,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
         int g = color.getGreen();
         int a = color.getAlpha();
         if (r > -1 && r < 256 && g > -1 && g < 256 && b > -1 && b < 256 && a > -1 && a < 256) {
-            _myGraphics.setColor(new Color(r, g, b, a));
+            _myGraphics.setColor(new java.awt.Color(r, g, b, a));
         }
     }
 
@@ -248,7 +257,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
     private void clearAll(int color) {
         if (color != -1) {
-            _myGraphics.setColor(new Color(color));
+            _myGraphics.setColor(new java.awt.Color(color));
             _myGraphics.fillRect(0, 0, _frame.getWidth(), _frame.getHeight());
         }
     }

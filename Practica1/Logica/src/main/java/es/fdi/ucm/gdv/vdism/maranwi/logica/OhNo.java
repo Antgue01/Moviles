@@ -80,7 +80,7 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
 
     @Override
     public void onRender(Graphics graphics) {
-        graphics.clear(0xFFFFFF);
+        graphics.clear(0xFFFFFFFF);
         _currentState.render(graphics);
     }
 
@@ -110,9 +110,7 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
     }
 
     @Override
-    public int getBackgroundColor() {
-        return 0xEEEEEEFF;
-    }
+    public int getBackgroundColor() { return 0xEEEEEEFF; }
 
     private Engine _engine;
     private GameState _currentState;

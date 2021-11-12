@@ -3,7 +3,9 @@ package es.fdi.ucm.gdv.vdism.maranwi.engine;
 public interface Graphics {
     public Image newImage(String name);
     public Font newFont(String filename, int size, boolean isBold);
-    public void clear(int color);
+    public void clear(int rgba);
+    public void clear(int r, int g, int b, int a);
+    public void clear(Color color);
     public void translate(double x,double y);
     public void scale(double x,double y);
     public void drawImage(Image img, int x,int y, int width, int height);

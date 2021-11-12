@@ -84,8 +84,20 @@ public class AndroidGraphics implements Graphics {
 
 
     @Override
-    public void clear(int color) {
-        _paint.setColor(0xff000000 | color);
+    public void clear(int rgba) {
+        setColor(rgba);
+        _canvas.drawRect(0, 0, _logicWidth, _logicHeight, _paint);
+    }
+
+    @Override
+    public void clear(int r, int g, int b, int a) {
+        setColor(r,g,b,a);
+        _canvas.drawRect(0, 0, _logicWidth, _logicHeight, _paint);
+    }
+
+    @Override
+    public void clear(Color color) {
+        setColor(color);
         _canvas.drawRect(0, 0, _logicWidth, _logicHeight, _paint);
     }
 
@@ -108,28 +120,22 @@ public class AndroidGraphics implements Graphics {
             Rect dest = new Rect(x, y, x + width, y + height);
             _canvas.drawBitmap(sprite, null, dest, _paint);
         }
-
-
     }
 
 
     @Override
     public void setColor(int rgba) {
+        int argb = (rgba & 0xFFFFFF00) >>> 8;
+        int alpha = (rgba & 0x000000FF) << 24;
+        argb = argb | alpha;
 
-        int r = (rgba & 0xFF000000) >>> 24; //Shift red 16-bits and mask out other stuff
-        int g = (rgba & 0x00FF0000) >>> 16; //Shift Green 8-bits and mask out other stuff
-        int b = (rgba & 0x0000FF00) >>> 8; //Mask out anything not blue.
-        int a = rgba & 0x000000FF;
-        if (r > -1 && r < 256 && g > -1 && g < 256 && b > -1 && b < 256 && a > -1 && a < 256) {
-            _paint.setColor(android.graphics.Color.argb(a, r, g, b));
-        }
+        _paint.setColor(argb);
     }
 
     @Override
     public void setColor(int r, int g, int b, int a) {
         if (r > -1 && r < 256 && g > -1 && g < 256 && b > -1 && b < 256 && a > -1 && a < 256) {
             _paint.setColor(android.graphics.Color.argb(a, r, g, b));
-
         }
     }
 
@@ -191,7 +197,10 @@ public class AndroidGraphics implements Graphics {
     }
 
     private void clearAll(int color) {
-        _canvas.drawColor(0xff000000 | color);
+        int argb = (color & 0xFFFFFF00) >>> 8;
+        int alpha = (color & 0x000000FF) << 24;
+        argb = argb | alpha;
+        _canvas.drawColor(argb);
     }
 
     private void adjustToScreen() {
