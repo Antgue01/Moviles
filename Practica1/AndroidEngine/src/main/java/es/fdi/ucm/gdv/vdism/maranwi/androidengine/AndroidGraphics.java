@@ -116,9 +116,9 @@ public class AndroidGraphics implements Graphics {
     @Override
     public void setColor(int rgba) {
 
-        int r = (rgba & 0xFF000000) >> 24; //Shift red 16-bits and mask out other stuff
-        int g = (rgba & 0x00FF0000) >> 16; //Shift Green 8-bits and mask out other stuff
-        int b = (rgba & 0x0000FF00) >> 8; //Mask out anything not blue.
+        int r = (rgba & 0xFF000000) >>> 24; //Shift red 16-bits and mask out other stuff
+        int g = (rgba & 0x00FF0000) >>> 16; //Shift Green 8-bits and mask out other stuff
+        int b = (rgba & 0x0000FF00) >>> 8; //Mask out anything not blue.
         int a = rgba & 0x000000FF;
         if (r > -1 && r < 256 && g > -1 && g < 256 && b > -1 && b < 256 && a > -1 && a < 256) {
             _paint.setColor(android.graphics.Color.argb(a, r, g, b));
