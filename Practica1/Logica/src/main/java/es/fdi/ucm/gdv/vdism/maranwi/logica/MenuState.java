@@ -8,19 +8,19 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 public class MenuState implements GameState {
     @Override
     public void start(Graphics g) {
-        _fontColor = 0x000000;
+        _fontColor = new MyColor(0x000000FF);
         _font = g.newFont("JosefinSans-Bold.ttf", 50, true);
         _onMainMenu = true;
 
         //Main menu => 1 Button : Play
         int xPos = BUTTON_RAD / 2, yPos = BUTTON_RAD;
         _buttons = new Interact[5];
-        _buttons[0] = new Interact("Play", 0xFFFFFF, (_mainApp.getLogicWidth()/2) - BUTTON_RAD, (_mainApp.getLogicHeight()/2) - BUTTON_RAD, BUTTON_RAD * 2, 0, 0);
-        _buttons[0].setText("Start", _font, _fontColor);
+        _buttons[0] = new Interact("Play", new MyColor(0), (_mainApp.getLogicWidth()/2), (_mainApp.getLogicHeight()/2) , 0, 0, 0);
+        _buttons[0].setText("Click on screen to start", _font, _fontColor);
 
         //Sub menu => Board size selection buttons: 1 button per size
         for(int x = 1; x < _buttons.length; ++x){
-            _buttons[x] = new Interact(x+"", 0x00FF00, xPos, yPos, BUTTON_RAD, x + 3, x + 3);
+            _buttons[x] = new Interact(x+"", new MyColor(0x00FF00FF), xPos, yPos, BUTTON_RAD, x + 3, x + 3);
             _buttons[x].setText((x + 3) + "x" + (x + 3), _font, _fontColor);
             xPos += BUTTON_RAD * 2;
             if(xPos + BUTTON_RAD > _mainApp.getLogicWidth()){
@@ -45,7 +45,8 @@ public class MenuState implements GameState {
 
     @Override
     public void identifyEvent(int xEvent, int yEvent) {
-        if(_onMainMenu && clickOnButton(xEvent,yEvent, _buttons[0])) lookForButtonAction(_buttons[0]);
+        if(_onMainMenu)
+            lookForButtonAction(_buttons[0]);
         else if(!_onMainMenu){
             boolean find = false;
             int x = 1;
@@ -83,7 +84,7 @@ public class MenuState implements GameState {
     private Interact _buttons[];
     private Application _mainApp;
     private Font _font;
-    private int _fontColor;
+    private MyColor _fontColor;
     private boolean _onMainMenu;
     private static final int BUTTON_RAD = 100;
 }

@@ -111,7 +111,7 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
 
     @Override
     public int getBackgroundColor() {
-        return 0xEEEEEE;
+        return 0xEEEEEEFF;
     }
 
     private Engine _engine;

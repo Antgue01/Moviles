@@ -11,7 +11,7 @@ public class PlayState implements GameState {
     @Override
     public void start(Graphics g) {
         _font = g.newFont("JosefinSans-Bold.ttf", 48, true);
-        _fontColor = 0x000000;
+        _fontColor = new MyColor(0x000000FF);
 
 
         _hintText = "";
@@ -140,7 +140,7 @@ public class PlayState implements GameState {
 
     private Application _mainApp;
     private Font _font;
-    private int _fontColor;
+    private MyColor _fontColor;
 
     private String _boardSizeText;
     private Interact _buttons[];

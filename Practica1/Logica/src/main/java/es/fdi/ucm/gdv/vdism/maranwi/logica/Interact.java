@@ -8,7 +8,7 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Image;
 import sun.util.resources.cldr.ext.CurrencyNames_te;
 
 public class Interact {
-    public Interact(String id, int baseColor, int x, int y, int rad, int boardX, int boardY){
+    public Interact(String id, MyColor baseColor, int x, int y, int rad, int boardX, int boardY){
         _id = id;
         _baseColor = baseColor;
         _xPos = x;
@@ -52,7 +52,7 @@ public class Interact {
     }
     public int getBoardX() { return _boardX; }
     public int getBoardY() { return _boardY; }
-    public void setBaseColor(int bC) { _baseColor = bC; }
+    public void setBaseColor(MyColor bC) { _baseColor = bC; }
     public void setBottomCircle(boolean b){ _hasBottomCircle = false; }
     public void setShowImg(boolean s) { _showImg = s; }
     public void setHasAnimation(boolean a){ _hasAnimation = a;}
@@ -65,7 +65,7 @@ public class Interact {
         _hasImg = true;
     }
 
-    public void setText(String text, Font font, int fontColor){
+    public void setText(String text, Font font, MyColor fontColor){
         _text = text;
         _hasText = true;
         _font = font;
@@ -76,7 +76,7 @@ public class Interact {
 
     private String _text;
     private Font _font;
-    private int _fontColor;
+    private MyColor _fontColor;
     private boolean _hasText;
 
     private Image _image;
@@ -89,7 +89,7 @@ public class Interact {
     private int _radius;
     private int _xPos;
     private int _yPos;
-    private int _baseColor;
+    private MyColor _baseColor;
     private boolean _hasBottomCircle;
 
     private int _boardX;

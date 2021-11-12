@@ -9,6 +9,11 @@ public class MyColor implements Color {
         _green = g;
         _blue = b;
         _alpha = alpha;
+        RGBA_FromInts();
+    }
+    public MyColor(int rgba){
+        _rgba=rgba;
+        intsFrom_RGBA();
     }
 
     @Override
@@ -36,7 +41,7 @@ public class MyColor implements Color {
         return _alpha;
     }
 
-    public void setRGBA(int rgba){ _rgba = rgba; RGBA_FromInts(); };
+    public void setRGBA(int rgba){ _rgba = rgba; intsFrom_RGBA(); };
     public void setRed(int red){ _red = red; RGBA_FromInts();}
     public void setGreen(int green){ _green = green; RGBA_FromInts();};
     public void setBlue(int blue){ _blue = blue; RGBA_FromInts();};
@@ -52,10 +57,10 @@ public class MyColor implements Color {
     }
 
     private void intsFrom_RGBA(){
-        _red = 0xFF000000 &_rgba;
-        _green = 0x00FF0000 &_rgba;
-        _blue = 0x0000FF00 &_rgba;
-        _alpha = 0x000000FF &_rgba;
+        _red=(_rgba & 0xFF000000) >> 24; //Shift red 16-bits and mask out other stuff
+        _green= (_rgba & 0x00FF0000) >> 16; //Shift Green 8-bits and mask out other stuff
+        _blue= (_rgba & 0x0000FF00) >> 8; //Mask out anything not blue.
+        _alpha = _rgba & 0x000000FF;
     }
 
 

@@ -1,20 +1,20 @@
 package es.fdi.ucm.gdv.vdism.maranwi.logica;
 
-import es.fdi.ucm.gdv.vdism.maranwi.engine.Color;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Font;
 
 //                  0     1      2
 enum TipoCelda {Azul, Rojo, Blanco}
 
 public class Celda {
-    Celda(int id, boolean esFicha, TipoCelda tipo, int neighbours, int x, int y, int rad, int BOARD_LOGIC_OFFSET_X, int BOARD_LOGIC_OFFSET_Y, Font font, int fontColor) {
+    Celda(int id, boolean esFicha, TipoCelda tipo, int neighbours, int x, int y, int rad, int BOARD_LOGIC_OFFSET_X, int BOARD_LOGIC_OFFSET_Y, Font font, MyColor fontColor) {
         _esFicha = esFicha;
         _tipo = tipo;
         _requiredNeighbours = neighbours;
 
         int xPos = (x * rad) + BOARD_LOGIC_OFFSET_X;
         int yPos = (y * rad) + BOARD_LOGIC_OFFSET_Y;
-        _button = new Interact(id + "", getColorFromInt(tipo), xPos, yPos, rad, x, y);
+        _color=newColorFromType(tipo);
+        _button = new Interact(id + "", _color, xPos, yPos, rad, x, y);
         if (neighbours != -1) {
             _button.setText(neighbours + "", font, fontColor);
         }
@@ -34,7 +34,8 @@ public class Celda {
 
             if (_tipo == TipoCelda.Blanco) returnCode = 2;
 
-            _button.setBaseColor(getColorFromInt(_tipo));
+            transformColor(_tipo);
+            _button.setBaseColor(_color);
             return returnCode;
         }
         return returnCode;
@@ -56,7 +57,6 @@ public class Celda {
         return _requiredNeighbours;
     }
 
-    public int getLastColor() { return getColorFromInt(_lastType); }
 
     public void setTipo(TipoCelda tipo) {
         _tipo = tipo;
@@ -66,16 +66,27 @@ public class Celda {
         return _button;
     }
 
-    private int getColorFromInt(TipoCelda Colorid) {
+    private void transformColor(TipoCelda Colorid) {
+
         if (Colorid == TipoCelda.Azul)
-            return 0x0FF0FF;
+            _color.setRGBA(0x0FF0FFFF);
         else if (Colorid == TipoCelda.Rojo)
-            return 0xFF0000;
+            _color.setRGBA(0xFF0000FF);
         else if (Colorid == TipoCelda.Blanco)
-            return 0xECE1DE;
-        return -1;
+            _color.setRGBA(0xECE1DEFF);
+    }
+    private MyColor newColorFromType(TipoCelda Colorid) {
+
+        if (Colorid == TipoCelda.Azul)
+            return  new MyColor(0x0FF0FFFF);
+        else if (Colorid == TipoCelda.Rojo)
+            return new MyColor(0xFF0000FF);
+        else if (Colorid == TipoCelda.Blanco)
+            return  new MyColor(0xECE1DEFF);
+        else return  new MyColor(0);
     }
 
+    private MyColor _color;
     private TipoCelda _tipo;
     private TipoCelda _lastType;
     private Interact _button;
