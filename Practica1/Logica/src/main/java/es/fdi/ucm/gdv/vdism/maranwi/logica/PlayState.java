@@ -49,6 +49,8 @@ public class PlayState implements GameState {
         _buttons[2] = new Interact("Hints", _fontColor, xPos, yPos, hintsImg.getWidth() / 4, 0, 0);
         _buttons[2].setImage(hintsImg, hintsImg.getWidth() / 2, hintsImg.getHeigth() / 2, true);
         _buttons[2].setBottomCircle(false);
+
+        _animator = new Animator(_board);
     }
 
     @Override
@@ -86,9 +88,7 @@ public class PlayState implements GameState {
            y >= BOARD_LOGIC_OFFSET_Y && y <= BOARD_LOGIC_OFFSET_Y + (_buttonRadius * _rows)){
             int row = (x - BOARD_LOGIC_OFFSET_X) / _buttonRadius;
             int col = (y - BOARD_LOGIC_OFFSET_Y) / _buttonRadius;
-            if(_board.getMatrizJuego()[row][col].getEsFicha())
-                _board.nextColor(row, col);
-            else _board.showLockImgs();
+            _animator.addAnimationElement(row, col, false);
             //System.out.println("Event x :" + x + " Event y: " + y + " ButtonRadius: " + _buttonRadius);
             //System.out.println("Row x :" + row + " Col y: " + col);
         }
@@ -101,13 +101,19 @@ public class PlayState implements GameState {
         }
         else if(clickOnButton(x, y, _buttons[1])){ //UNDO
             System.out.println("UNDO");
-            _board.restoreMove();
+            Celda c = _board.restoreMove();
+            if(c!= null){
+                _animator.addAnimationElement(c.getButton().getBoardX(), c.getButton().getBoardY(), true);
+            }
         }
         else if(clickOnButton(x, y, _buttons[2])){ // HINTS
             System.out.println("HINTS");
             Pista hint = _board.getAHint();
             if(hint.getHintType() != Pista.HintType.NONE)    {
                 _hintText = hint.getCurrentHint();
+                int row = hint.getPos()[0];
+                int col = hint.getPos()[1];
+                _animator.addAnimationElement(row, col, false);
                 //update variables para animaciones
             }
         }
@@ -142,6 +148,8 @@ public class PlayState implements GameState {
 
     private Font _hintFont;
     private String _hintText;
+
+    Animator _animator;
 
     private int _buttonRadius;
     private int _rows;

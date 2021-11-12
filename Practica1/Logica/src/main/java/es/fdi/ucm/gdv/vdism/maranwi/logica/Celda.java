@@ -25,6 +25,7 @@ public class Celda {
     public int cambiarFicha(boolean siguiente) {
         int returnCode = 0;
         if (_esFicha) {
+            _lastType = _tipo;
             if (_tipo == TipoCelda.Blanco) returnCode = 1;
 
             if (siguiente) _tipo = TipoCelda.values()[(_tipo.ordinal() + 1) % 3];
@@ -54,6 +55,8 @@ public class Celda {
         return _requiredNeighbours;
     }
 
+    public int getLastColor() { return getColorFromInt(_lastType); }
+
     public void setTipo(TipoCelda tipo) {
         _tipo = tipo;
     }
@@ -73,6 +76,7 @@ public class Celda {
     }
 
     private TipoCelda _tipo;
+    private TipoCelda _lastType;
     private Interact _button;
     private int _requiredNeighbours;
     private boolean _esFicha;

@@ -9,7 +9,7 @@ enum AnimationType { FadeIn, FadeOut, FastMove, SlowMove}
 
 public class Animations {
 
-    public Animations(Interact target, AnimationType type, long velocity, long durationTime){
+    public Animations(Celda target, AnimationType type, long velocity, long durationTime){
         _target = target;
         _type = type;
         _velocity = velocity;
@@ -32,6 +32,28 @@ public class Animations {
         _colorMoveAnimation = color;
         _durationTime = duration;
         _velocity = velocity;
+    }
+
+    //Return false if animation end, true other wise
+    public boolean update(double deltaTime){
+        if (_type != AnimationType.SlowMove && (deltaTime - _startTime >= _durationTime))
+            return false;
+        else if(System.nanoTime() - _lastAnimationTime >= _velocity){
+            _doAnimation = true;
+
+            if(_type == AnimationType.FastMove || _type == AnimationType.SlowMove){
+                //_radius = _radius + _increment;
+                _increment += _direction;
+
+                if(_increment <= -OFFSET_SIZE || _increment >= OFFSET_SIZE){
+                    _direction *= -1;
+                }
+            }
+
+            _lastAnimationTime = deltaTime;
+        }
+
+        return true;
     }
 
     public void render(Graphics g){
@@ -70,27 +92,6 @@ public class Animations {
         }
     }
 
-    public boolean update(double deltaTime){
-        if (_type != AnimationType.SlowMove && (deltaTime - _startTime >= _durationTime))
-            return false;
-        else if(System.nanoTime() - _lastAnimationTime >= _velocity){
-            _doAnimation = true;
-
-            if(_type == AnimationType.FastMove || _type == AnimationType.SlowMove){
-                //_radius = _radius + _increment;
-                _increment += _direction;
-
-                if(_increment <= -OFFSET_SIZE || _increment >= OFFSET_SIZE){
-                    _direction *= -1;
-                }
-            }
-
-            _lastAnimationTime = deltaTime;
-        }
-
-        return true;
-    }
-
     private int getIntFromColor(int Red, int Green, int Blue){
         int R = Math.round(255 * Red);
         int G = Math.round(255 * Green);
@@ -114,7 +115,7 @@ public class Animations {
     public String getId() { return _id;}
 
     private String _id;
-    private Interact _target;
+    private Celda _target;
     private AnimationType _type;
 
     private boolean _doAnimation;

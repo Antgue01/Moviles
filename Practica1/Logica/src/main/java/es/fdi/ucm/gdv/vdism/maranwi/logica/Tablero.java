@@ -404,18 +404,20 @@ public class Tablero {
         checkResult(_matrizJuego[row][col].cambiarFicha(true));
     }
 
-    public void restoreMove(){
+    public Celda restoreMove(){
         if (!_moves.empty()) {
             Move last=_moves.pop();
             checkResult(_matrizJuego[last.getX()][last.getY()].cambiarFicha(false));
             System.out.println("Move restored: " + last.getX() + "," + last.getY() + " with value: " + last.getType() + " Numblancas: " + _numFichasBlancas);
+            return _matrizJuego[last.getX()][last.getY()];
         }
+        return null;
     }
 
-    public void setColor(int X, int Y, TipoCelda tipo) {
-        if (X >= 0 && X < _matrizJuego[0].length && Y >= 0 && Y < _matrizJuego.length && _matrizJuego[Y][X].getEsFicha()) {
-            boolean wasWhite = _matrizJuego[Y][X].getTipoCelda() == TipoCelda.Blanco;
-            _matrizJuego[Y][X].setTipo(tipo);
+    public void setColor(int col, int row, TipoCelda tipo) {
+        if (col >= 0 && col < _matrizJuego[0].length && row >= 0 && row < _matrizJuego.length && _matrizJuego[row][col].getEsFicha()) {
+            boolean wasWhite = _matrizJuego[row][col].getTipoCelda() == TipoCelda.Blanco;
+            _matrizJuego[row][col].setTipo(tipo);
             if (wasWhite && tipo != TipoCelda.Blanco)
                 _numFichasBlancas--;
             else if (!wasWhite && tipo == TipoCelda.Blanco)
