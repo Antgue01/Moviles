@@ -3,7 +3,7 @@ package es.fdi.ucm.gdv.vdism.maranwi.logica;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Color;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 
-enum AnimationType { FadeIn, FadeOut, FastMove, SlowMove}
+enum AnimationType { Fade, FastMove, SlowMove}
 
 public class Animations {
 
@@ -16,7 +16,7 @@ public class Animations {
         _doAnimation = false;
     }
 
-    public void setFadeAnimation(AnimationType type, Color in, Color out, float blendingFactor, double duration, double velocity){
+    public void newFadeAnimation(AnimationType type, Color in, Color out, float blendingFactor, double duration, double velocity){
         _type = type;
         _colorIn = in;
         _colorOut = out;
@@ -25,7 +25,7 @@ public class Animations {
         _velocity = velocity;
     }
 
-    public void setMove(AnimationType type, int color, double duration, double velocity ){
+    public void setMoveAnimation(AnimationType type, int color, double duration, double velocity ){
         _type = type;
         _colorMoveAnimation = color;
         _durationTime = duration;
@@ -55,22 +55,18 @@ public class Animations {
 
     public void render(Graphics g){
         if(_doAnimation){
-            if(_type == AnimationType.FadeIn || _type == AnimationType.FadeOut){
+            if(_type == AnimationType.Fade){
                 Color x,y; //set by you
                 float blending;//set by you
 
                 float inverse_blending = 1 - _colorBlendingFactor;
 
                 float red = 0, green = 0, blue = 0;
-                if(_type == AnimationType.FadeIn){
+                if(_type == AnimationType.Fade){
                     red =   _colorOut.getRed()   * _colorBlendingFactor +   _colorIn.getRed()   * inverse_blending;
                     green = _colorOut.getGreen() * _colorBlendingFactor +   _colorIn.getGreen() * inverse_blending;
                     blue =  _colorOut.getBlue()  * _colorBlendingFactor +   _colorIn.getBlue()  * inverse_blending;
 
-                }else if(_type == AnimationType.FadeOut){
-                    red =   _colorIn.getRed()   * _colorBlendingFactor +   _colorOut.getRed()   * inverse_blending;
-                    green = _colorIn.getGreen() * _colorBlendingFactor +   _colorOut.getGreen() * inverse_blending;
-                    blue =  _colorIn.getBlue()  * _colorBlendingFactor +   _colorOut.getBlue()  * inverse_blending;
                 }
 
                 //Color blended = new Color (red / 255, green / 255, blue / 255);

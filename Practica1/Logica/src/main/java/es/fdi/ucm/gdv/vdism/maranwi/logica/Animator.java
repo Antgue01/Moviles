@@ -11,14 +11,19 @@ public class Animator {
         _animations = new HashMap<String, Animations>();
     }
 
-    public void addAnimationElement(int row, int col, boolean isRestoreMove){
+    public void addAnimationElement(int row, int col, boolean isRestoreMove, boolean isHint){
         Celda c = _board.getMatrizJuego()[row][col];
         if(c.getEsFicha() && !isRestoreMove){
             //_animations.put()
             _board.nextColor(row, col);
+        }else if(c.getEsFicha() && isRestoreMove){
+
         }
-        else if(!c.getEsFicha()){
+        else if(!c.getEsFicha() && !isHint){
+            //Fast Move Animation
             _board.showLockImgs();
+        }else if(!c.getEsFicha() && isHint){
+            //Slow Move Aimation
         }
     }
 
