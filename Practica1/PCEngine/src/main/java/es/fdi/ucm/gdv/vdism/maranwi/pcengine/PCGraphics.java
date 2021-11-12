@@ -100,11 +100,12 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
         do {
             do {
-               try{ _myGraphics = _strategy.getDrawGraphics();}
-               catch (Exception e){
-                   System.err.println("This frame won't render due to resizing");
-                   return;
-               }
+                try {
+                    _myGraphics = _strategy.getDrawGraphics();
+                } catch (Exception e) {
+                    System.err.println("This frame won't render due to resizing");
+                    return;
+                }
                 if (_myGraphics != null) {
                     Graphics2D g = (Graphics2D) _myGraphics;
                     clearAll(app.getBackgroundColor());
@@ -179,6 +180,23 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     public void setColor(int color) {
         if (color != -1)
             _myGraphics.setColor(new Color(color));
+    }
+
+    @Override
+    public void setColor(int r, int g, int b, int a) {
+        if (r > -1 && r < 256 && g > -1 && g < 256 && b > -1 && b < 256 && a > -1 && a < 256)
+            _myGraphics.setColor(new Color(r, g, b, a));
+    }
+
+    @Override
+    public void setColor(es.fdi.ucm.gdv.vdism.maranwi.engine.Color color) {
+        int r = color.getRed();
+        int b = color.getBlue();
+        int g = color.getGreen();
+        int a = color.getAlpha();
+        if (r > -1 && r < 256 && g > -1 && g < 256 && b > -1 && b < 256 && a > -1 && a < 256) {
+            _myGraphics.setColor(new Color(r, g, b, a));
+        }
     }
 
     @Override

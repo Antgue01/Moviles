@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 
+import es.fdi.ucm.gdv.vdism.maranwi.engine.Color;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Font;
 
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Image;
@@ -104,7 +105,7 @@ public class AndroidGraphics implements Graphics {
         if (img != null) {
 
             Bitmap sprite = ((AndroidImage) (img)).getBitmap();
-            Rect dest = new Rect(x, y, x+width, y+height);
+            Rect dest = new Rect(x, y, x + width, y + height);
             _canvas.drawBitmap(sprite, null, dest, _paint);
         }
 
@@ -112,11 +113,28 @@ public class AndroidGraphics implements Graphics {
     }
 
 
-
-
     @Override
     public void setColor(int color) {
         _paint.setColor(0xff000000 | color);
+    }
+
+    @Override
+    public void setColor(int r, int g, int b, int a) {
+        if (r > -1 && r < 256 && g > -1 && g < 256 && b > -1 && b < 256 && a > -1 && a < 256) {
+            _paint.setColor(android.graphics.Color.argb(a, r, g, b));
+
+        }
+    }
+
+    @Override
+    public void setColor(Color color) {
+        int r = color.getRed();
+        int b = color.getBlue();
+        int g = color.getGreen();
+        int a = color.getAlpha();
+        if (r > -1 && r < 256 && g > -1 && g < 256 && b > -1 && b < 256 && a > -1 && a < 256) {
+            _paint.setColor(android.graphics.Color.argb(a, r, g, b));
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
