@@ -78,7 +78,7 @@ public class PlayState implements GameState {
     public void update(double deltaTime) {
         //_hints.aplicar(_board,true);
         //_hintText = _hints.getCurrentHint();
-        _board.compruebaSolucion();
+        //_board.compruebaSolucion();
     }
 
     @Override

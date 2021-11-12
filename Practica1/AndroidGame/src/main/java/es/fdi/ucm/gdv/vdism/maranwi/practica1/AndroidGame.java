@@ -11,9 +11,9 @@ public class AndroidGame extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        _ohno=new OhNo();
+        _ohno = new OhNo();
         _manager = new ExecutionThreadManager(_ohno, this,getAssets());
-        AndroidGraphics g=(AndroidGraphics)_manager.getEngine().getGraphics();
+        AndroidGraphics g = (AndroidGraphics)_manager.getEngine().getGraphics();
         setContentView(g.getView());
     }
 

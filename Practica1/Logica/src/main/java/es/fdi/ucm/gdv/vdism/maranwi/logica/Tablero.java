@@ -24,13 +24,62 @@ public class Tablero {
 
         _lockTokensList = new LinkedList<Celda>();
         _showLockImgs = false;
+
+        //generaTablero();
+    }
+
+    public Celda[][] getMatrizJuego() {
+        return _matrizJuego;
     }
 
     /**
-     * Comprobar limites
+     * Obtiene una pista aleatoria, en caso de error del jugador, devolvera una pista de error primero
      */
-    private boolean validPos(int x, int y){
-        return (x >= 0 && x < _matrizJuego[0].length) && (y >= 0 && y < _matrizJuego[1].length);
+    public Pista getAHint(){
+
+        updateHintsList();
+
+        //No hay pistas
+        if(_hintsList.isEmpty()) return new Pista(Pista.HintType.NONE,-1,-1);
+
+        //Si el jugador comete un error, es la primera pista que se da
+        if(_playerError){
+            return _hintsList.get(_hintsList.size()-1);
+        }
+        //Si no, escoge una aleatoria
+        else {
+            Random rand = new Random();
+            return _hintsList.get(rand.nextInt(_hintsList.size()));
+        }
+    }
+
+    public void setLockImg(Image img) { _lockImg = img;}
+
+    public void generaTablero(){
+        boolean valid = false;
+        while (!valid){
+            //Genera una _matrizJuego ocultando casillas aleatorias y una _matrizSolucion con los colores azul y rojo que deberian ir en todas las casillas
+
+            //Intenta resolverlo mediante pistas
+            Pista p = getAHint();
+            //Se podria comprobar tambien si ha sido relleno para evitar que se quede atascado en el bucle dando pistas.
+            while (p.getHintType()!= Pista.HintType.NONE){
+                //Se aplican a _matrizJuego
+                applyHint(p);
+                p = getAHint();
+            }
+
+            //Si se consigue resolver, comparar _matrizJuego con _matrizSolucion
+            boolean iguales = true;
+            for (int i = 0; i < _matrizJuego[0].length && iguales; ++i) {
+                for (int j = 0; j < _matrizJuego[1].length && iguales; ++j) {
+                    if(_matrizJuego[i][j].getTipoCeldaAsInt() != _matrizSolucion[i][j])
+                        iguales = false;
+                }
+            }
+            //Si son iguales, es valida
+            valid = iguales ? true : false;
+        }
     }
 
     /**
@@ -65,22 +114,6 @@ public class Tablero {
     }
 
     /**
-     * Calcula las fichas azules (sin espacios en blanco) en una direccion
-     */
-    private int countBluesAtDir(int x, int y, int[] dir){
-        int blues = 0;
-        int currentPosX = x + dir[0];
-        int currentPosY = y + dir[1];
-
-        while (validPos(currentPosX,currentPosY) && _matrizJuego[currentPosX][currentPosY].getTipoCelda() == TipoCelda.Azul){
-            blues++;
-            currentPosX += dir[0];
-            currentPosY += dir[1];
-        }
-
-        return blues;
-    }
-    /**
      * Calcula y devuelve la informacion para la pista 2
      * @return arr {CumplePista,PosXAplicar,PosYAplicar}
      */
@@ -112,27 +145,6 @@ public class Tablero {
     }
 
     /**
-     * Cuenta cuantas fichas posibles hay en una direccion (azules y blancas) hasta una pared o limite, dada una posicion
-     */
-    private int possibleInDirection(int x, int y, int[] dir){
-        int count = 0;
-
-        int currentPosX = x + dir[0];
-        int currentPosY = y + dir[1];
-
-        while (validPos(currentPosX,currentPosY)){
-            if(_matrizJuego[currentPosX][currentPosY].getTipoCelda() == TipoCelda.Rojo){
-                break;
-            }
-            count++;
-            currentPosX += dir[0];
-            currentPosY += dir[1];
-        }
-
-        return count;
-    }
-
-    /**
      * Calcula y devuelve la informacion para la pista 3
      * @return arr {CumplePista,PosXAplicar,PosYAplicar}
      */
@@ -144,7 +156,7 @@ public class Tablero {
 
         //Array para contar en todas las direcciones
         for (int i = 0; i<countDirs.length; i++){
-            countDirs[i] = possibleInDirection(x,y,_dirs[i]);
+            countDirs[i] = possiblesAtDir(x,y,_dirs[i]);
             total += countDirs[i];
         }
 
@@ -173,6 +185,51 @@ public class Tablero {
     }
 
     /**
+     * Comprobar limites
+     */
+    private boolean validPos(int x, int y){
+        return (x >= 0 && x < _columnas) && (y >= 0 && y < _filas);
+    }
+
+    /**
+     * Calcula las fichas azules (sin saltos de espacios en blanco) en una direccion
+     */
+    private int countBluesAtDir(int x, int y, int[] dir){
+        int blues = 0;
+        int currentPosX = x + dir[0];
+        int currentPosY = y + dir[1];
+
+        while (validPos(currentPosX,currentPosY) && _matrizJuego[currentPosX][currentPosY].getTipoCelda() == TipoCelda.Azul){
+            blues++;
+            currentPosX += dir[0];
+            currentPosY += dir[1];
+        }
+
+        return blues;
+    }
+
+    /**
+     * Cuenta cuantas fichas posibles hay en una direccion (azules y blancas) hasta una pared o limite, dada una posicion
+     */
+    private int possiblesAtDir(int x, int y, int[] dir){
+        int count = 0;
+
+        int currentPosX = x + dir[0];
+        int currentPosY = y + dir[1];
+
+        while (validPos(currentPosX,currentPosY)){
+            if(_matrizJuego[currentPosX][currentPosY].getTipoCelda() == TipoCelda.Rojo){
+                break;
+            }
+            count++;
+            currentPosX += dir[0];
+            currentPosY += dir[1];
+        }
+
+        return count;
+    }
+
+    /**
      * Comprueba si esta posicion esta cerrada por paredes y limites
      */
     private boolean isClosed(int x, int y){
@@ -187,7 +244,7 @@ public class Tablero {
     }
 
     /**
-     * Actualiza la lista de pistas, revisa en el tablero que pistas se añaden
+     * Actualiza la lista de pistas, revisa en el tablero de juego que pistas se añaden
      */
     private void updateHintsList(){
         _hintsList.clear();
@@ -236,29 +293,9 @@ public class Tablero {
                 else if(currentCelda.getRequiredNeighbours()==-1 && currentCelda.getTipoCelda() != TipoCelda.Rojo && isClosed(i,j)){
                     //PISTA 6 y 7
                     Pista p = (currentCelda.getTipoCelda()==TipoCelda.Blanco) ? new Pista(Pista.HintType.SIX,i,j):new Pista(Pista.HintType.SEVEN,i,j);
+                    _hintsList.add(p);
                 }
             }
-        }
-    }
-
-    /**
-     * Obtiene una pista aleatoria, en caso de error del jugador, devolvera una pista de error primero
-     */
-    public Pista getAHint(){
-
-        updateHintsList();
-
-        //No hay pistas
-        if(_hintsList.isEmpty()) return new Pista(Pista.HintType.NONE,-1,-1);
-
-        //Si el jugador comete un error, es la primera pista que se da
-        if(_playerError){
-            return _hintsList.get(_hintsList.size()-1);
-        }
-        //Si no, escoge una aleatoria
-        else {
-            Random rand = new Random();
-            return _hintsList.get(rand.nextInt(_hintsList.size()));
         }
     }
 
@@ -321,37 +358,6 @@ public class Tablero {
         }
     }
 
-
-    public void generaTablero(){
-        boolean valid = false;
-        while (!valid){
-            //Genera una _matrizJuego ocultando casillas aleatorias y una _matrizSolucion con los colores azul y rojo que deberian ir en todas las casillas
-
-            //Intenta resolverlo mediante pistas
-            Pista p = getAHint();
-            //Se podria comprobar tambien si ha sido relleno para evitar que se quede atascado en el bucle dando pistas.
-            while (p.getHintType()!= Pista.HintType.NONE){
-                //Se aplican a _matrizJuego
-                applyHint(p);
-                p = getAHint();
-            }
-
-            //Si se consigue resolver, comparar _matrizJuego con _matrizSolucion
-            boolean iguales = true;
-            for (int i = 0; i < _matrizJuego[0].length && iguales; ++i) {
-                for (int j = 0; j < _matrizJuego[1].length && iguales; ++j) {
-                    if(_matrizJuego[i][j].getTipoCeldaAsInt() != _matrizSolucion[i][j])
-                        iguales = false;
-                }
-            }
-            //Si son iguales, es valida
-            valid = iguales ? true : false;
-        }
-    }
-    /*
-    0 = Azul
-    1 = Rojo
-    */
     public void rellenaMatrizResueltaRandom(int RAD, int BOARD_LOGIC_OFFSET_X, int BOARD_LOGIC_OFFSET_Y, Font font, MyColor fontColor) {
         java.util.Random r = new Random();
         for (int x = 0; x < _matrizSolucion[0].length; ++x) {
@@ -385,19 +391,6 @@ public class Tablero {
             }
         }
     }
-//prueba pista 2
-//            _matrizJuego[1][1] = new Celda(false, TipoCelda.Azul, 1);
-//            _matrizJuego[1][2] = new Celda(true, TipoCelda.Blanco, -1);
-//            _matrizJuego[2][1] = new Celda(true, TipoCelda.Blanco, -1);
-//            _matrizJuego[1][3] = new Celda(true, TipoCelda.Azul, -1);
-//            _matrizJuego[3][1] = new Celda(true, TipoCelda.Azul, -1);
-
-//pruebas pistas 6 y 7
-//            _matrizJuego[1][1]=new Celda(true,TipoCelda.Azul,-1);
-//            _matrizJuego[0][1]=new Celda(true,TipoCelda.Rojo,-1);
-//            _matrizJuego[1][0]=new Celda(true,TipoCelda.Rojo,-1);
-//            _matrizJuego[1][2]=new Celda(true,TipoCelda.Rojo,-1);
-//            _matrizJuego[2][1]=new Celda(true,TipoCelda.Rojo,-1);
 
     public void nextColor(int row, int col){
         _moves.push(new Move(row, col, _matrizJuego[row][col].getTipoCelda()));
@@ -414,17 +407,6 @@ public class Tablero {
         return null;
     }
 
-    public void setColor(int col, int row, TipoCelda tipo) {
-        if (col >= 0 && col < _matrizJuego[0].length && row >= 0 && row < _matrizJuego.length && _matrizJuego[row][col].getEsFicha()) {
-            boolean wasWhite = _matrizJuego[row][col].getTipoCelda() == TipoCelda.Blanco;
-            _matrizJuego[row][col].setTipo(tipo);
-            if (wasWhite && tipo != TipoCelda.Blanco)
-                _numFichasBlancas--;
-            else if (!wasWhite && tipo == TipoCelda.Blanco)
-                _numFichasBlancas++;
-        }
-    }
-
     public void showLockImgs(){
         _showLockImgs = !_showLockImgs;
         for(int x = 0; x<_lockTokensList.size(); ++x){
@@ -432,7 +414,15 @@ public class Tablero {
         }
     }
 
-    public boolean compruebaSolucion() {
+    private void checkResult(int result){
+        //Result = 0 -> no changes
+        //Result = 1 ->  -white token
+        //Result = 2 ->  +white token
+        if(result == 1) --_numFichasBlancas;
+        else if(result == 2) ++_numFichasBlancas;
+    }
+
+    /*public boolean compruebaSolucion() {
         if (_numFichasBlancas > 0)
             return false;
         boolean esSolucion = true;
@@ -443,21 +433,18 @@ public class Tablero {
             }
         }
         return esSolucion;
-    }
+    }*/
 
-    public Celda[][] getMatrizJuego() {
-        return _matrizJuego;
-    }
-
-    public void setLockImg(Image img) { _lockImg = img;}
-
-    private void checkResult(int result){
-        //Result = 0 -> no changes
-        //Result = 1 ->  -white token
-        //Result = 2 ->  +white token
-        if(result == 1) --_numFichasBlancas;
-        else if(result == 2) ++_numFichasBlancas;
-    }
+    /*public void setColor(int col, int row, TipoCelda tipo) {
+        if (col >= 0 && col < _matrizJuego[0].length && row >= 0 && row < _matrizJuego.length && _matrizJuego[row][col].getEsFicha()) {
+            boolean wasWhite = _matrizJuego[row][col].getTipoCelda() == TipoCelda.Blanco;
+            _matrizJuego[row][col].setTipo(tipo);
+            if (wasWhite && tipo != TipoCelda.Blanco)
+                _numFichasBlancas--;
+            else if (!wasWhite && tipo == TipoCelda.Blanco)
+                _numFichasBlancas++;
+        }
+    }*/
 
     //La matriz solucíón solo guarda los colores de cada posición
     private int _matrizSolucion[][];
@@ -472,7 +459,7 @@ public class Tablero {
     private List<Pista> _hintsList;
     private boolean _playerError = false;
 
-    //derch, abajo, izq, arriba
+    /** Direcciones en el tablero {Derecha, Abajo, Izquierda, Arriba} */
     private int[][] _dirs = {{1,0},{0,-1},{-1,0},{0,1}};
 
     LinkedList<Celda> _lockTokensList;

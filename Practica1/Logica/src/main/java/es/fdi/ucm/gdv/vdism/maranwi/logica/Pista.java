@@ -37,7 +37,26 @@ public class Pista {
         }
     }
 
-    public void aplicar(Tablero t, boolean playing) {
+
+    public String getCurrentHint() { return _currentHint;}
+    public HintType getHintType() { return _type;}
+
+    public int[] getPos(){
+        int[] pos = {_row, _col};
+        return pos;
+    }
+
+    public int[] getWhereToApply(){
+        int[] pos = {_rowToApply, _colToApply};
+        return pos;
+    }
+
+    public void setWhereToApply(int x, int y){
+        _rowToApply = x;
+        _colToApply = y;
+    }
+
+    /*public void aplicar(Tablero t, boolean playing) {
         _currentHint = "";
         Celda[][] tablero = t.getMatrizJuego();
         //todo encontrar la clase pair, si es que existe
@@ -171,10 +190,23 @@ public class Pista {
 
             }
         }
-    }
+    }*/
+    /*private boolean isClosed(Celda[][] tablero, int X, int Y, int[][] dirs) {
+        int closedSides = 0;
+        for (int k = 0; k < dirs.length; k++) {
+            int targetX = X + dirs[k][0];
+            int targetY = Y + dirs[k][1];
+            //si me salgo
+            if (targetX < 0 || targetX >= tablero[0].length || targetY < 0 || targetY >= tablero.length
+                    //o mi adyacente es roja estoy cerrado en esa dirección
+                    || tablero[targetY][targetX].getTipoCelda() == TipoCelda.Rojo)
+                closedSides += 1;
 
 
-    private int countTargetColor(Celda[][] tablero, int X, int Y, int dirX, int dirY, TipoCelda target, boolean equals) {
+        }
+        return closedSides == 4;
+    }*/
+    /*private int countTargetColor(Celda[][] tablero, int X, int Y, int dirX, int dirY, TipoCelda target, boolean equals) {
         boolean counted = false;
         int number = 0;
         int myX = X, myY = Y;
@@ -193,49 +225,17 @@ public class Pista {
             }
         }
         return number;
-    }
+    }*/
 
-    private boolean isClosed(Celda[][] tablero, int X, int Y, int[][] dirs) {
-        int closedSides = 0;
-        for (int k = 0; k < dirs.length; k++) {
-            int targetX = X + dirs[k][0];
-            int targetY = Y + dirs[k][1];
-            //si me salgo
-            if (targetX < 0 || targetX >= tablero[0].length || targetY < 0 || targetY >= tablero.length
-                    //o mi adyacente es roja estoy cerrado en esa dirección
-                    || tablero[targetY][targetX].getTipoCelda() == TipoCelda.Rojo)
-                closedSides += 1;
-
-
-        }
-        return closedSides == 4;
-    }
-
-
-    public String getCurrentHint() { return _currentHint;}
-    public HintType getHintType() { return _type;}
-
-    public void setWhereToApply(int x, int y){
-        _rowToApply = x;
-        _colToApply = y;
-    }
-
-    public int[] getPos(){
-        int[] pos = {_row, _col};
-        return pos;
-    }
-
-    public int[] getWhereToApply(){
-        int[] pos = {_rowToApply, _colToApply};
-        return pos;
-    }
-
+    /** Descripcion de la pista */
     private String _currentHint;
-
+    /** Posiciones en el tablero */
     private int _row, _col;
-    //Posiciones donde se deberia colocar una ficha si fuese el caso.
+    /** Posiciones donde se deberia colocar una ficha si fuese el caso */
     private int _rowToApply, _colToApply;
 
     HintType _type = HintType.NONE;
+
+
 }
 
