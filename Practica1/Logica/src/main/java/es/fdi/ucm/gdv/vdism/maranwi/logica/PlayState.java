@@ -15,7 +15,7 @@ public class PlayState implements GameState {
 
 
         _hintText = "";
-        _hintFont = g.newFont("Molle-Regular.ttf", 30, true);
+        _hintFont = g.newFont("Molle-Regular.ttf", 20, true);
 
         //BOARD SET UP
         _board = new Tablero(_rows, _cols);
@@ -76,8 +76,6 @@ public class PlayState implements GameState {
     @Override
     public void update(double deltaTime) {
         _animator.update(deltaTime);
-        //_hints.aplicar(_board,true);
-        //_hintText = _hints.getCurrentHint();
         //_board.compruebaSolucion();
     }
 
@@ -88,11 +86,11 @@ public class PlayState implements GameState {
            y >= BOARD_LOGIC_OFFSET_Y && y <= BOARD_LOGIC_OFFSET_Y + (_buttonRadius * _rows)){
             int row = (x - BOARD_LOGIC_OFFSET_X) / _buttonRadius;
             int col = (y - BOARD_LOGIC_OFFSET_Y) / _buttonRadius;
-            if(_board.getMatrizJuego()[row][col].getEsFicha())
-                _board.nextColor(row, col);
-            else
-                _board.showLockImgs();
-            //_animator.addAnimationElement(row, col, false, false);
+//            if(_board.getMatrizJuego()[row][col].getEsFicha())
+//                _board.nextColor(row, col);
+//            else
+//                _board.showLockImgs();
+            _animator.addAnimationElement(row, col, false, false);
             //System.out.println("Event x :" + x + " Event y: " + y + " ButtonRadius: " + _buttonRadius);
             //System.out.println("Row x :" + row + " Col y: " + col);
         }
@@ -107,7 +105,7 @@ public class PlayState implements GameState {
             System.out.println("UNDO");
             Celda c = _board.restoreMove();
             if(c!= null){
-                //_animator.addAnimationElement(c.getButton().getBoardX(), c.getButton().getBoardY(), true, false);
+                _animator.addAnimationElement(c.getButton().getBoardX(), c.getButton().getBoardY(), true, false);
             }
         }
         else if(clickOnButton(x, y, _buttons[2])){ // HINTS
@@ -117,7 +115,7 @@ public class PlayState implements GameState {
                 _hintText = hint.getHintMessage();
                 int row = hint.getPos()[0];
                 int col = hint.getPos()[1];
-                //_animator.addAnimationElement(row, col, false, true);
+                _animator.addAnimationElement(row, col, false, true);
             }
         }
     }

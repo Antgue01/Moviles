@@ -182,7 +182,7 @@ public class Tablero {
         if (!_moves.empty()) {
             Move last=_moves.pop();
             checkResult(_matrizJuego[last.getX()][last.getY()].cambiarFicha(false));
-            System.out.println("Move restored: " + last.getX() + "," + last.getY() + " with value: " + last.getType() + " Numblancas: " + _numFichasBlancas);
+            //System.out.println("Move restored: " + last.getX() + "," + last.getY() + " with value: " + last.getType() + " Numblancas: " + _numFichasBlancas);
             return _matrizJuego[last.getX()][last.getY()];
         }
         return null;

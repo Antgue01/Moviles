@@ -14,6 +14,7 @@ public class Celda {
         int xPos = (x * rad) + BOARD_LOGIC_OFFSET_X;
         int yPos = (y * rad) + BOARD_LOGIC_OFFSET_Y;
         _color=newColorFromType(tipo);
+        _lastColor = newColorFromType(tipo);
         _button = new Interact(id + "", _color, xPos, yPos, rad, x, y);
         if (neighbours != -1) {
             _button.setText(neighbours + "", font, fontColor);
@@ -26,7 +27,7 @@ public class Celda {
     public int cambiarFicha(boolean siguiente) {
         int returnCode = 0;
         if (_esFicha) {
-            _lastColor = _color;
+            _lastColor = newColorFromType(_tipo);
             if (_tipo == TipoCelda.Blanco) returnCode = 1;
 
             if (siguiente) _tipo = TipoCelda.values()[(_tipo.ordinal() + 1) % 3];
