@@ -79,6 +79,7 @@ public class AndroidEngine implements Engine, Runnable {
             _myApp.onUpdate(elapsedTime);
             _graphics.draw(_myApp);
         }
+        _myApp.onExit();
 
         release();
     }

@@ -13,19 +13,21 @@ public class MenuState implements GameState {
         _onMainMenu = true;
 
         //Main menu => 1 Button : Play
-        int xPos = BUTTON_RAD / 2, yPos = BUTTON_RAD;
-        _buttons = new Interact[5];
+        _buttons = new Interact[7];
         _buttons[0] = new Interact("Play", new MyColor(0), (_mainApp.getLogicWidth()/2), (_mainApp.getLogicHeight()/2) , 0, 0, 0);
         _buttons[0].setText("Click on screen to start", _font, _fontColor);
 
+        int buttonsOffset = 10;
+        int xPos = (BUTTON_RAD / 2) - buttonsOffset, yPos = BUTTON_RAD;
         //Sub menu => Board size selection buttons: 1 button per size
         for(int x = 1; x < _buttons.length; ++x){
-            _buttons[x] = new Interact(x+"", new MyColor(0x00FF00FF), xPos, yPos, BUTTON_RAD, x + 3, x + 3);
-            _buttons[x].setText((x + 3) + "x" + (x + 3), _font, _fontColor);
-            xPos += BUTTON_RAD * 2;
+            MyColor color = (x%2==0) ? new MyColor(0xFF3C4CFF) : new MyColor(0x20C4E4FF);
+            _buttons[x] = new Interact(x+"", color, xPos, yPos, BUTTON_RAD, x + 3, x + 3);
+            _buttons[x].setText(Integer.toString(x + 3), _font, new MyColor(0xFFFFFFFF));
+            xPos += BUTTON_RAD + buttonsOffset;
             if(xPos + BUTTON_RAD > _mainApp.getLogicWidth()){
-                xPos = BUTTON_RAD / 2;
-                yPos += BUTTON_RAD * 2;
+                xPos = (BUTTON_RAD / 2) - buttonsOffset;
+                yPos += BUTTON_RAD + buttonsOffset;
             }
         }
     }

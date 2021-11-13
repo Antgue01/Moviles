@@ -33,11 +33,10 @@ public class PCEngine implements Engine {
             _myApp.onUpdate(elapsedTime);
             _graphics.draw(_myApp);
 
-            if (_graphics.getClosed()){
-                _myApp.onExit();
-                _running = false;
-            }
+            if (_graphics.getClosed()) _running = false;
+
         }
+        _myApp.onExit();
 
         release();
     }

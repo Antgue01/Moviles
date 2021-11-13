@@ -139,6 +139,12 @@ public class Tablero {
 
     public void rellenaMatrizResueltaRandom(int RAD, int BOARD_LOGIC_OFFSET_X, int BOARD_LOGIC_OFFSET_Y, Font font, MyColor fontColor) {
         java.util.Random r = new Random();
+
+        int celdaOffset = 2;
+        int xPos = BOARD_LOGIC_OFFSET_X - (celdaOffset * (_matrizSolucion[0].length - 1));
+        int yPos = BOARD_LOGIC_OFFSET_Y;
+
+
         for (int x = 0; x < _matrizSolucion[0].length; ++x) {
             for (int j = 0; j < _matrizSolucion[1].length; ++j) {
                 //0 = Azul, 1 = Rojo
@@ -152,12 +158,12 @@ public class Tablero {
                 int id = x * _matrizJuego[0].length + j;
 
                 if (esFicha) {
-                    c = new Celda(id,esFicha,TipoCelda.values()[_matrizSolucion[x][j]],-1,x,j,RAD,BOARD_LOGIC_OFFSET_X,BOARD_LOGIC_OFFSET_Y,font,fontColor);
+                    c = new Celda(id,esFicha,TipoCelda.values()[_matrizSolucion[x][j]],-1,x,j,RAD,xPos,yPos,font,fontColor);
                     ++_numFichasBlancas;
                 } else {
                     //Si no es ficha se calculan los posibles vecinos y se instancia la celda
                     int neigbours = _matrizSolucion[x][j] == 0 ? r.nextInt(3) + 1 : -1;
-                    c = new Celda(id, esFicha, TipoCelda.values()[_matrizSolucion[x][j]], neigbours, x, j, RAD, BOARD_LOGIC_OFFSET_X, BOARD_LOGIC_OFFSET_Y, font, fontColor);
+                    c = new Celda(id, esFicha, TipoCelda.values()[_matrizSolucion[x][j]], neigbours, x, j, RAD, xPos, yPos, font, fontColor);
 
                     //Si no es azul numérica(no tiene vecinos) es candado, se configura su imágen y se añade a la lista de tokens
                     if(neigbours == -1){
@@ -165,9 +171,11 @@ public class Tablero {
                         _lockTokensList.add(c);
                     }
                 }
-
+                xPos += RAD + celdaOffset;
                 _matrizJuego[x][j] = c;
             }
+            xPos = BOARD_LOGIC_OFFSET_X - celdaOffset * (_matrizSolucion[0].length - 1);
+            yPos += RAD + celdaOffset;
         }
 
         _hintsManager.setBoard(_matrizJuego);
