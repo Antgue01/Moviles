@@ -2,6 +2,7 @@ package es.fdi.ucm.gdv.vdism.maranwi.logica;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 
 public class Animator {
@@ -13,43 +14,51 @@ public class Animator {
 
     public void addAnimationElement(int row, int col, boolean isRestoreMove, boolean isHint){
         Celda c = _board.getMatrizJuego()[row][col];
+        Animations a = new Animations(c);
         if(c.getEsFicha() && !isRestoreMove){
-            //_animations.put()
+            //Fade Animation
             _board.nextColor(row, col);
-        }else if(c.getEsFicha() && isRestoreMove){
-
+            MyColor cOut = c.getLastColor();
+            MyColor cIn = c.getColor();
+            a.startFadeAnimation(cIn, cOut);
+        }
+        else if(c.getEsFicha() && isRestoreMove){
+            //Fade Animation
+            _board.nextColor(row, col);
+            MyColor cIn = c.getLastColor();
+            MyColor cOut = c.getColor();
+            a.startFadeAnimation(cIn, cOut);
         }
         else if(!c.getEsFicha() && !isHint){
             //Fast Move Animation
             _board.showLockImgs();
-        }else if(!c.getEsFicha() && isHint){
-            //Slow Move Aimation
+            a.startFastMoveAnimation();
         }
+        else if(isHint){
+            //Slow Move Animation
+            MyColor borderColor = new MyColor(0x000000FF);
+            a.startSlowMoveAnimation(borderColor);
+        }
+        _animations.put(c.getButton().getId(), a);
     }
 
-    public void update(float deltaTime){
+    public void update(double deltaTime){
         for (Map.Entry<String, Animations> elem : _animations.entrySet()) {
-            if(!elem.getValue().update(deltaTime))
-                _animations.remove(elem);
+            if(!elem.getValue().update(deltaTime)){
+                //_animations.remove(elem);
+                System.out.println("Animation in element " + elem.getValue().getId() + " end.");
+            }
         }
     }
 
     public void render(Graphics g){
+        //System.out.println(_animations.size() + " ");
         for (Map.Entry<String, Animations> elem : _animations.entrySet()) {
+            //System.out.println("ENTRA");
             elem.getValue().render(g);
         }
     }
 
-
     Map<String, Animations> _animations;
     Tablero _board;
-    private static final double FADE_IN_TIME = 0;
-    private static final double FADE_OUT_TIME = 0;
-    private static final double FAST_MOVE_TIME = 0;
-    private static final double SLOW_MOVE_TIME = 0;
-
-    private static final double FADE_IN_VELOCITY = 0;
-    private static final double FADE_OUT_VELOCITY = 0;
-    private static final double FAST_MOVE_VELOCITY = 0;
-    private static final double SLOW_MOVE_VELOCITY = 0;
 }

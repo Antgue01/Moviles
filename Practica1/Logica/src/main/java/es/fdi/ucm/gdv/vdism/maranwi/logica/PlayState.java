@@ -55,7 +55,6 @@ public class PlayState implements GameState {
 
     @Override
     public void render(Graphics g) {
-
         g.setColor(_fontColor);
         if(_hintText == "") {
             g.setFont(_font);
@@ -65,17 +64,18 @@ public class PlayState implements GameState {
             g.drawText(_hintText,BOARD_LOGIC_OFFSET_X,BOARD_LOGIC_OFFSET_Y - 40);
         }
 
+        _animator.render(g);
 
-       for (int x = 0; x < _rows; x++)
+        for (int x = 0; x < _rows; x++)
            for (int y = 0; y < _cols; y++)
                _board.getMatrizJuego()[x][y].getButton().render(g);
 
-       for(Interact b: _buttons)  b.render(g);
-
+        for(Interact b: _buttons)  b.render(g);
     }
 
     @Override
     public void update(double deltaTime) {
+        _animator.update(deltaTime);
         //_hints.aplicar(_board,true);
         //_hintText = _hints.getCurrentHint();
         //_board.compruebaSolucion();
@@ -114,7 +114,6 @@ public class PlayState implements GameState {
                 int row = hint.getPos()[0];
                 int col = hint.getPos()[1];
                 _animator.addAnimationElement(row, col, false, true);
-                //update variables para animaciones
             }
         }
     }

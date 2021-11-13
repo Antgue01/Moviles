@@ -26,7 +26,7 @@ public class Celda {
     public int cambiarFicha(boolean siguiente) {
         int returnCode = 0;
         if (_esFicha) {
-            _lastType = _tipo;
+            _lastColor = _color;
             if (_tipo == TipoCelda.Blanco) returnCode = 1;
 
             if (siguiente) _tipo = TipoCelda.values()[(_tipo.ordinal() + 1) % 3];
@@ -66,8 +66,11 @@ public class Celda {
         return _button;
     }
 
-    private void transformColor(TipoCelda Colorid) {
+    public MyColor getColor(){ return _color;}
 
+    public MyColor getLastColor() { return _lastColor;}
+
+    private void transformColor(TipoCelda Colorid) {
         if (Colorid == TipoCelda.Azul)
             _color.setRGBA(0x0FF0FFFF);
         else if (Colorid == TipoCelda.Rojo)
@@ -76,7 +79,6 @@ public class Celda {
             _color.setRGBA(0xECE1DEFF);
     }
     private MyColor newColorFromType(TipoCelda Colorid) {
-
         if (Colorid == TipoCelda.Azul)
             return  new MyColor(0x0FF0FFFF);
         else if (Colorid == TipoCelda.Rojo)
@@ -87,8 +89,8 @@ public class Celda {
     }
 
     private MyColor _color;
+    private MyColor _lastColor;
     private TipoCelda _tipo;
-    private TipoCelda _lastType;
     private Interact _button;
     private int _requiredNeighbours;
     private boolean _esFicha;
