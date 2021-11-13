@@ -73,19 +73,19 @@ public class Celda {
 
     private void transformColor(TipoCelda Colorid) {
         if (Colorid == TipoCelda.Azul)
-            _color.setRGBA(0x0FF0FFFF);
+            _color.setRGBA(0x20C4E4FF);
         else if (Colorid == TipoCelda.Rojo)
-            _color.setRGBA(0xFF0000FF);
+            _color.setRGBA(0xFF3C4CFF);
         else if (Colorid == TipoCelda.Blanco)
-            _color.setRGBA(0xECE1DEFF);
+            _color.setRGBA(0xF0ECECFF);
     }
     private MyColor newColorFromType(TipoCelda Colorid) {
         if (Colorid == TipoCelda.Azul)
-            return  new MyColor(0x0FF0FFFF);
+            return  new MyColor(0x20C4E4FF);
         else if (Colorid == TipoCelda.Rojo)
-            return new MyColor(0xFF0000FF);
+            return new MyColor(0xFF3C4CFF);
         else if (Colorid == TipoCelda.Blanco)
-            return  new MyColor(0xECE1DEFF);
+            return  new MyColor(0xF0ECECFF);
         else return  new MyColor(0);
     }
 
