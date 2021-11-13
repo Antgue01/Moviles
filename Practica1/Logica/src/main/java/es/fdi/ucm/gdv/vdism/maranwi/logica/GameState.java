@@ -1,4 +1,7 @@
-package es.fdi.ucm.gdv.vdism.maranwi.engine;
+package es.fdi.ucm.gdv.vdism.maranwi.logica;
+
+import es.fdi.ucm.gdv.vdism.maranwi.engine.Application;
+import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 
 public interface GameState {
     void start(Graphics g);
