@@ -77,26 +77,29 @@ public class Animations {
                 blue =  (_colorOut.getBlue()  * BLENDING_FACTOR) +   (_colorIn.getBlue()  * inverse_blending);
 
             }
-//            System.out.println("Color in. R: " + _colorIn.getRed() + " G: " + _colorIn.getGreen() + " B: " + _colorIn.getBlue());
-//            System.out.println("Color out. R: " + _colorOut.getRed() + " G: " + _colorOut.getGreen() + " B: " + _colorOut.getBlue());
-//            System.out.println("Fade with colors -> Red: " + red + " Green:" + green + " Blue: " + blue);
             g.setColor((int) red, (int) green, (int) blue, 255);
             g.fillCircle(_target.getButton().getXPos(), _target.getButton().getYPos(), _target.getButton().getRadius());
         }
         else if(_type == AnimationType.FastMove){
-            g.setColor(_baseColor);
-            int xPos = _target.getButton().getXPos() - (_incrementMoveAnimation / 2);
-            int yPos = _target.getButton().getYPos() - (_incrementMoveAnimation / 2);
+            int positionFactor = _incrementMoveAnimation / 2;
+            int xPos = _target.getButton().getXPos() - positionFactor;
+            int yPos = _target.getButton().getYPos() - positionFactor;
             int rad = _target.getButton().getRadius() + _incrementMoveAnimation;
+
+            g.setColor(_baseColor);
             g.fillCircle(xPos, yPos, rad);
-        }
-        else if( _type == AnimationType.SlowMove){
+
+        }else if(_type == AnimationType.SlowMove){ int positionFactor = _incrementMoveAnimation / 2;
+            int xPos = _target.getButton().getXPos() - positionFactor;
+            int yPos = _target.getButton().getYPos() - positionFactor;
+            int rad = _target.getButton().getRadius() + _incrementMoveAnimation;
+
             g.setColor(_borderColor);
-            g.fillCircle(_target.getButton().getXPos(), _target.getButton().getYPos(), _target.getButton().getRadius() + _incrementMoveAnimation);
+            g.fillCircle(xPos, yPos, rad);
+
             g.setColor(_baseColor);
             g.fillCircle(_target.getButton().getXPos(), _target.getButton().getYPos(), _target.getButton().getRadius());
         }
-
     }
 
     public String getId() { return _id;}
@@ -129,5 +132,5 @@ public class Animations {
     private static final double FAST_MOVE_VELOCITY = 0.005;
 
     private static final double SLOW_MOVE_TIME = 1;
-    private static final double SLOW_MOVE_VELOCITY = 1;
+    private static final double SLOW_MOVE_VELOCITY = 0.2;
 }
