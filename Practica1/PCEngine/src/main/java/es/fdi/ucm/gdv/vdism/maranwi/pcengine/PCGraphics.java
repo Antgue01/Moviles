@@ -1,5 +1,6 @@
 package es.fdi.ucm.gdv.vdism.maranwi.pcengine;
 
+import java.awt.AlphaComposite;
 import java.awt.Dimension;
 
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Font;
@@ -10,10 +11,14 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Image;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Color;
 
+import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,44 +27,10 @@ import java.util.HashMap;
 import javax.swing.JFrame;
 
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Application;
+import sun.awt.ComponentFactory;
 
 
 public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics {
-
-    private class MyJFrame extends JFrame implements ComponentListener {
-
-        public MyJFrame(String title) {
-            super(title);
-            getContentPane().addComponentListener(this);
-        }
-
-        public boolean getResized() {
-            if (resized) {
-                resized = false;
-                return true;
-            }
-            return false;
-        }
-
-        @Override
-        public void componentResized(ComponentEvent componentEvent) {
-            resized = true;
-        }
-
-        @Override
-        public void componentMoved(ComponentEvent componentEvent) {
-        }
-
-        @Override
-        public void componentShown(ComponentEvent componentEvent) {
-        }
-
-        @Override
-        public void componentHidden(ComponentEvent componentEvent) {
-        }
-
-        private boolean resized = false;
-    }
 
     public PCGraphics(String windowName, int logicWidth, int logicHeight) {
         _logicWidth = logicWidth;
@@ -69,12 +40,31 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     }
 
     private void init(String windowName) {
-        _frame = new MyJFrame(windowName);
+        _frame = new JFrame(windowName);
         _frame.setSize(_logicWidth, _logicHeight);
 
         _frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         _frame.setIgnoreRepaint(true);
         _frame.setVisible(true);
+
+        /** Evento de reescalado */
+        _frame.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                _resized = true;
+            }
+        });
+        /** Evento de cierre de ventana */
+        _frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                System.out.println("CLOSING WINDOW");
+                _windowClosed = true;
+            }
+        });
+
         _fonts = new HashMap<String, PCFont>();
 
         int intentos = 100;
@@ -95,7 +85,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
     public void draw(Application app) {
 
-        if (_frame.getResized())
+        if (getResized())
             adjustToScreen();
 
         do {
@@ -182,9 +172,27 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     ///si nos da widht o height -1 se considera que ese parametro es full
     @Override
     public void drawImage(Image img, int x, int y, int width, int height) {
-        if (img != null)
+        if (img != null){
             _myGraphics.drawImage(((PCImage) (img)).getAwtImage(), x, y, width, height, _frame);
+        }
     }
+
+    @Override
+    public void drawImage(Image img, int x, int y, int width, int height, float alpha) {
+        if (img != null){
+            //Apply alpha
+            AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
+            Graphics2D g = (Graphics2D) _myGraphics;
+            g.setComposite(ac);
+
+            _myGraphics.drawImage(((PCImage) (img)).getAwtImage(), x, y, width, height, _frame);
+
+            //Reset alpha
+            ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f);
+            g.setComposite(ac);
+        }
+    }
+
 
     @Override
     public void setColor(int rgba) {
@@ -198,7 +206,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     }
 
     @Override
-    public void setColor(es.fdi.ucm.gdv.vdism.maranwi.engine.Color color) {
+    public void setColor(Color color) {
         int r = color.getRed();
         int b = color.getBlue();
         int g = color.getGreen();
@@ -292,6 +300,18 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
     }
 
+    private boolean getResized() {
+        if (_resized) {
+            _resized = false;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean getClosed(){
+        return _windowClosed;
+    }
+
     double _translationX = 0;
     double _translationY = 0;
     double _scaleX = 1;
@@ -303,6 +323,8 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     private int _logicHeight;
     private double _canvasWidth;
     private double _canvasHeight;
-    private MyJFrame _frame;
+    private JFrame _frame;
     private java.awt.image.BufferStrategy _strategy;
+    private boolean _resized = false;
+    private boolean _windowClosed = false;
 }

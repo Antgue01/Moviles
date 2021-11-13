@@ -35,8 +35,8 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
     }
 
     @Override
-    public boolean onExit() {
-        return true;
+    public void onExit() {
+
     }
 
     @Override

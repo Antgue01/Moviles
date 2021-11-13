@@ -7,6 +7,6 @@ public class PCGame {
     public static void main(String[] args) {
         OhNo myGame = new OhNo();
         PCEngine engine = new PCEngine(myGame, "OhNo!");
-        engine.Play();
+        engine.engineLoop();
     }
 }

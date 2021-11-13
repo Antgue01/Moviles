@@ -161,7 +161,7 @@ public class Tablero {
 
                     //Si no es azul numérica(no tiene vecinos) es candado, se configura su imágen y se añade a la lista de tokens
                     if(neigbours == -1){
-                        c.getButton().setImage(_lockImg, _lockImg.getWidth() / 2, _lockImg.getHeigth() / 2, false);
+                        c.getButton().setImage(_lockImg, _lockImg.getWidth() / 2, _lockImg.getHeigth() / 2, false, 0.2f);
                         _lockTokensList.add(c);
                     }
                 }

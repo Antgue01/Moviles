@@ -10,10 +10,10 @@ public class PCEngine implements Engine {
     public PCEngine(Application a, String applicationName){
         _myAppName = applicationName;
         _myGame = a;
-        Init();
+        init();
     }
 
-    private void Init(){
+    private void init(){
         _input = new PCInput();
         _graphics = new PCGraphics(_myAppName, _myGame.getLogicWidth(), _myGame.getLogicHeight());
         _graphics.addMouseListener(_input);
@@ -22,7 +22,7 @@ public class PCEngine implements Engine {
     }
 
 
-    public void Play(){
+    public void engineLoop(){
         boolean play = true;
 
         long lastFrameTime = System.nanoTime();
@@ -33,13 +33,24 @@ public class PCEngine implements Engine {
             lastFrameTime = currentTime;
             double elapsedTime = (double) nanoElapsedTime / 1.0E9;
 
-            //_graphics.adjustToScreen(_myGame);
             _myGame.onInput(_input);
             _myGame.onUpdate(elapsedTime);
             _graphics.draw(_myGame);
-            if(!_myGame.onExit()) play = false;
+
+            if (_graphics.getClosed()){
+                _myGame.onExit();
+                play = false;
+            }
         }
+
+        release();
+    }
+
+    private void release(){
         _myGame.onRelease();
+        _myGame = null;
+        _input = null;
+        _graphics = null;
     }
 
     @Override
