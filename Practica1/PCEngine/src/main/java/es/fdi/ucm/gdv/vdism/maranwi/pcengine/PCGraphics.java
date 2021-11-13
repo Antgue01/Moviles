@@ -223,7 +223,12 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
     @Override
     public void drawText(String text, int x, int y) {
-        _myGraphics.drawString(text, x, y);
+        String[] lines = text.split("\n");
+        int verticalOffset = _myGraphics.getFontMetrics().getHeight();
+
+        for (int i = 0; i<lines.length; ++i){
+            _myGraphics.drawString(lines[i],x,y + (verticalOffset * i));
+        }
     }
 
     @Override

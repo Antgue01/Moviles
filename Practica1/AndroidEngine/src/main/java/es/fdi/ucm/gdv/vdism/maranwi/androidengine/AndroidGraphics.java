@@ -177,7 +177,12 @@ public class AndroidGraphics implements Graphics {
 
     @Override
     public void drawText(String text, int x, int y) {
-        _canvas.drawText(text, x, y, _paint);
+        String[] lines = text.split("\n");
+        int verticalOffset = (int)_paint.descent() - (int)_paint.ascent();
+
+        for (int i = 0; i<lines.length; ++i){
+            _canvas.drawText(lines[i], x, y + (verticalOffset * i), _paint);
+        }
     }
 
     @Override
@@ -229,7 +234,6 @@ public class AndroidGraphics implements Graphics {
 
         double newH = _logicHeight * frameW / _logicWidth;
         double newW = _logicWidth * frameH / _logicHeight;
-        double newPosX = 0.0f, newPosY = 0.0f;
 
         //Si escalando la Y no cabríamos
 

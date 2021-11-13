@@ -15,7 +15,7 @@ public class PlayState implements GameState {
 
 
         _hintText = "";
-        _hintFont = g.newFont("Molle-Regular.ttf", 20, true);
+        _hintFont = g.newFont("JosefinSans-Bold.ttf", 25, true);
 
         //BOARD SET UP
         _board = new Tablero(_rows, _cols);
@@ -58,10 +58,10 @@ public class PlayState implements GameState {
         g.setColor(_fontColor);
         if(_hintText == "") {
             g.setFont(_font);
-            g.drawText(_boardSizeText,(_mainApp.getLogicWidth() / 2) - 40,BOARD_LOGIC_OFFSET_Y - 40);
+            g.drawText(_boardSizeText,(_mainApp.getLogicWidth() / 2) - 50,BOARD_LOGIC_OFFSET_Y - 40);
         }else{
             g.setFont(_hintFont);
-            g.drawText(_hintText,BOARD_LOGIC_OFFSET_X,BOARD_LOGIC_OFFSET_Y - 40);
+            g.drawText(_hintText,(_mainApp.getLogicWidth() / 9),BOARD_LOGIC_OFFSET_Y - 60);
         }
 
         _animator.render(g);
@@ -155,6 +155,6 @@ public class PlayState implements GameState {
     private int _buttonRadius;
     private int _rows;
     private int _cols;
-    private static final int BOARD_LOGIC_OFFSET_Y = 150;
+    private static final int BOARD_LOGIC_OFFSET_Y = 120;
     private int BOARD_LOGIC_OFFSET_X;
 }

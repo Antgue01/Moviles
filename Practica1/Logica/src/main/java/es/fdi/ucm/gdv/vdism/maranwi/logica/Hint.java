@@ -20,8 +20,7 @@ public class Hint {
                         "in all solutions imaginable";
                 break;
             case FOUR:
-                _hintMessage = "This number sees a bit too\n" +
-                        "much";
+                _hintMessage = "This number sees a bit too much";
                 break;
             case FIVE:
                 _hintMessage = "This number can't see enough";
