@@ -7,28 +7,23 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Font;
 
 import java.awt.Graphics2D;
 
-import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Image;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Color;
 
 import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
+
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+
 import java.util.HashMap;
 
 import javax.swing.JFrame;
 
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Application;
-import sun.awt.ComponentFactory;
 
 
 public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics {
