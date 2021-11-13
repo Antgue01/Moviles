@@ -31,18 +31,18 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 public class AndroidGraphics implements Graphics {
     public AndroidGraphics(Context context, AssetManager assets, int logicWidth, int logicHeight) {
         _view = new SurfaceView(context);
-
         _holder = _view.getHolder();
-        _paint = new Paint();
-        _assets = assets;
-        _fonts = new HashMap<String, Typeface>();
         _logicWidth = logicWidth;
         _logicHeight = logicHeight;
+        _assets = assets;
+
+        _paint = new Paint();
+        _fonts = new HashMap<String, Typeface>();
     }
 
     public void draw(Application app) {
+        // Pintamos el frame
         while (!_holder.getSurface().isValid())
-            //Espera activa
             ;
         _canvas = _holder.lockCanvas();
         clearAll(app.getBackgroundColor());

@@ -1,4 +1,4 @@
-package es.fdi.ucm.gdv.vdism.maranwi.practica1;
+/*package es.fdi.ucm.gdv.vdism.maranwi.practica1;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -44,4 +44,4 @@ public class ExecutionThreadManager {
 
     private AndroidEngine _engine;
     private Thread _thread;
-}
+}*/

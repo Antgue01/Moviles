@@ -35,12 +35,15 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     public PCGraphics(String windowName, int logicWidth, int logicHeight) {
         _logicWidth = logicWidth;
         _logicHeight = logicHeight;
-        //averiguamos tamaño pantalla
-        init(windowName);
+
+        _frame = new JFrame(windowName);
+        _fonts = new HashMap<String, PCFont>();
+
+        init();
     }
 
-    private void init(String windowName) {
-        _frame = new JFrame(windowName);
+    private void init() {
+
         _frame.setSize(_logicWidth, _logicHeight);
 
         _frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,8 +67,6 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
                 _windowClosed = true;
             }
         });
-
-        _fonts = new HashMap<String, PCFont>();
 
         int intentos = 100;
         while (intentos-- > 0) {
@@ -154,7 +155,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
         _myGraphics.fillRect(0, 0, _logicWidth, _logicHeight);
     }
 
-
+    @Override
     public void translate(double x, double y) {
         Graphics2D g2d = (Graphics2D) _myGraphics;
         if (g2d != null)
@@ -193,7 +194,6 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
             g.setComposite(ac);
         }
     }
-
 
     @Override
     public void setColor(int rgba) {
