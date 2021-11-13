@@ -36,7 +36,7 @@ public class Interact {
         }
         if(_hasImg && _showImg){
             g.drawImage(_image, _xPos + (_radius / 2) - (_imageWidth / 2), _yPos + (_radius / 2) - (_imageHeight / 2),
-                    _imageWidth, _imageHeight);
+                    _imageWidth, _imageHeight, _imageAlpha);
         }
     }
 
@@ -57,12 +57,13 @@ public class Interact {
     public void setShowImg(boolean s) { _showImg = s; }
     public void setHasAnimation(boolean a){ _hasAnimation = a;}
 
-    public void setImage(Image img, int imgW, int imgH, boolean showImg){
+    public void setImage(Image img, int imgW, int imgH, boolean showImg, float alpha){
         _image = img;
         _imageWidth = imgW;
         _imageHeight = imgH;
         _showImg = showImg;
         _hasImg = true;
+        _imageAlpha = alpha;
     }
 
     public void setText(String text, Font font, MyColor fontColor){
@@ -83,6 +84,7 @@ public class Interact {
     private int _imageWidth;
     private int _imageHeight;
     private boolean _hasImg;
+    private float _imageAlpha;
     private boolean _hasAnimation;
     private boolean _showImg;
 
