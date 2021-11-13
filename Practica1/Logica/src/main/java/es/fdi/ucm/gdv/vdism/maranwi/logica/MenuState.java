@@ -8,14 +8,16 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 public class MenuState implements GameState {
     @Override
     public void start(Graphics g) {
+        _titleText = "Oh no";
         _fontColor = new MyColor(0x000000FF);
-        _font = g.newFont("JosefinSans-Bold.ttf", 50, true);
+        _font = g.newFont("Molle-Regular.ttf", 70, true);
+        _numbersFont = g.newFont("JosefinSans-Bold.ttf",50, true);
         _onMainMenu = true;
 
         //Main menu => 1 Button : Play
         _buttons = new Interact[7];
-        _buttons[0] = new Interact("Play", new MyColor(0), (_mainApp.getLogicWidth()/2), (_mainApp.getLogicHeight()/2) , 0, 0, 0);
-        _buttons[0].setText("Click on screen to start", _font, _fontColor);
+        _buttons[0] = new Interact("Play", new MyColor(0), (_mainApp.getLogicWidth()/3) + 10, (_mainApp.getLogicHeight()/3) + 10, 0, 0, 0);
+        _buttons[0].setText("Touch\n  To\nPlay", _font, _fontColor);
 
         int buttonsOffset = 10;
         int xPos = (BUTTON_RAD / 2) - buttonsOffset, yPos = BUTTON_RAD;
@@ -23,7 +25,7 @@ public class MenuState implements GameState {
         for(int x = 1; x < _buttons.length; ++x){
             MyColor color = (x%2==0) ? new MyColor(0xFF3C4CFF) : new MyColor(0x20C4E4FF);
             _buttons[x] = new Interact(x+"", color, xPos, yPos, BUTTON_RAD, x + 3, x + 3);
-            _buttons[x].setText(Integer.toString(x + 3), _font, new MyColor(0xFFFFFFFF));
+            _buttons[x].setText(Integer.toString(x + 3), _numbersFont, new MyColor(0xFFFFFFFF));
             xPos += BUTTON_RAD + buttonsOffset;
             if(xPos + BUTTON_RAD > _mainApp.getLogicWidth()){
                 xPos = (BUTTON_RAD / 2) - buttonsOffset;
@@ -35,7 +37,11 @@ public class MenuState implements GameState {
     @Override
     public void render(Graphics g) {
         g.setFont(_font);
-        if(_onMainMenu)_buttons[0].render(g);
+        if(_onMainMenu){
+            g.setColor(_fontColor);
+            g.drawText(_titleText, (_mainApp.getLogicWidth()/3) - 35, _mainApp.getLogicHeight()/5);
+            _buttons[0].render(g);
+        }
         else for(int x = 1; x< _buttons.length; ++x) _buttons[x].render(g);
     }
 
@@ -86,8 +92,10 @@ public class MenuState implements GameState {
     private Interact _buttons[];
     private Application _mainApp;
     private Font _font;
+    private Font _numbersFont;
     private MyColor _fontColor;
     private boolean _onMainMenu;
+    private String _titleText;
     private static final int BUTTON_RAD = 100;
 }
 
