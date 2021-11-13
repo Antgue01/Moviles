@@ -57,7 +57,7 @@ public class Interact {
     public void setShowImg(boolean s) { _showImg = s; }
     public void setHasAnimation(boolean a){ _hasAnimation = a;}
 
-    public void setImage(Image img, int imgW, int imgH, boolean showImg, float alpha){
+    public void setImage(Image img, int imgW, int imgH, boolean showImg, int alpha){
         _image = img;
         _imageWidth = imgW;
         _imageHeight = imgH;
@@ -84,7 +84,7 @@ public class Interact {
     private int _imageWidth;
     private int _imageHeight;
     private boolean _hasImg;
-    private float _imageAlpha;
+    private int _imageAlpha;
     private boolean _hasAnimation;
     private boolean _showImg;
 

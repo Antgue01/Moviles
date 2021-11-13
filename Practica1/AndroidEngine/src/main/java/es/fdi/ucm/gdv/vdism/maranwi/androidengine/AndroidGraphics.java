@@ -122,6 +122,16 @@ public class AndroidGraphics implements Graphics {
         }
     }
 
+    @Override
+    public void drawImage(Image img, int x, int y, int width, int height, int alpha) {
+        if (img != null) {
+            _paint.setAlpha(alpha);
+            Bitmap sprite = ((AndroidImage) img).getBitmap();
+            Rect dest = new Rect(x, y, x + width, y + height);
+            _canvas.drawBitmap(sprite, null, dest, _paint);
+            _paint.setAlpha(255);
+        }
+    }
 
     @Override
     public void setColor(int rgba) {

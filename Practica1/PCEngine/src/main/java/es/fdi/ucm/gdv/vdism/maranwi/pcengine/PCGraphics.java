@@ -178,10 +178,11 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     }
 
     @Override
-    public void drawImage(Image img, int x, int y, int width, int height, float alpha) {
+    public void drawImage(Image img, int x, int y, int width, int height, int alpha) {
         if (img != null){
             //Apply alpha
-            AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
+            float a = (float)alpha / 255f;
+            AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, a);
             Graphics2D g = (Graphics2D) _myGraphics;
             g.setComposite(ac);
 
