@@ -57,7 +57,7 @@ public class Animations {
                 //_radius = _radius + _increment;
                 _incrementMoveAnimation += (INCREMENT_ANIMATIONS_SIZE * _directionMoveAnimation);
 
-                if(_incrementMoveAnimation <= -OFFSET_MOVES_ANIMATIONS_SIZE || _incrementMoveAnimation >= OFFSET_MOVES_ANIMATIONS_SIZE){
+                if(_incrementMoveAnimation <= 0 || _incrementMoveAnimation >= OFFSET_MOVES_ANIMATIONS_SIZE){
                     _directionMoveAnimation *= -1;
                 }
             }
@@ -85,7 +85,10 @@ public class Animations {
         }
         else if(_type == AnimationType.FastMove){
             g.setColor(_baseColor);
-            g.fillCircle(_target.getButton().getXPos(), _target.getButton().getYPos(), _target.getButton().getRadius());
+            int xPos = _target.getButton().getXPos() - (_incrementMoveAnimation / 2);
+            int yPos = _target.getButton().getYPos() - (_incrementMoveAnimation / 2);
+            int rad = _target.getButton().getRadius() + _incrementMoveAnimation;
+            g.fillCircle(xPos, yPos, rad);
         }
         else if( _type == AnimationType.SlowMove){
             g.setColor(_borderColor);
