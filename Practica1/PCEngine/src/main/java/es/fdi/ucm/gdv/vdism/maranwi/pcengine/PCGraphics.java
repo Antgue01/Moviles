@@ -11,6 +11,7 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Image;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Color;
 
+import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -101,6 +102,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
                     Graphics2D g = (Graphics2D) _myGraphics;
                     clearAll(app.getBackgroundColor());
                     if (g != null) {
+                        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                         translate(_translationX, _translationY);
                         scale(_scaleX, _scaleY);
                     }
@@ -273,32 +275,27 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
     private void adjustToScreen() {
         Dimension size = _frame.getSize();
+
         //Hacemos la regla de tres para ver si cabría
+        double newW = _logicWidth * size.height / _logicHeight;
+        double newH = _logicHeight * size.width / _logicWidth;
 
-        double newY = _logicHeight * size.width / _logicWidth;
-        double newX = _logicWidth * size.height / _logicHeight;
-        double newPosX = 0.0f, newPosY = 0.0f;
-        //Si escalando la Y no cabríamos
-
-        if (newY > size.height) {
-            _scaleX = newX / _logicWidth;
-            _scaleY = _scaleX;
-            double centerX = size.width / 2;
-            newPosX = centerX - (newX / 2);
-            _translationX = newPosX;
-            _translationY = 0;
-        } else if (newX > size.width) {
-            _scaleY = newY / _logicHeight;
+        if (newH >= size.height) {
+            //Factor de escala
+            _scaleY = (double)size.height / (double)_logicHeight;
             _scaleX = _scaleY;
-            double centerY = size.height / 2;
-            newPosY = centerY - (newY / 2);
-            _translationX = 0;
-            _translationY = newPosY;
         }
-        _canvasWidth = _scaleX * _logicWidth;
-        _canvasHeight = _scaleY * _logicHeight;
-        //app.setApplicationZone(_width, _height, size.getWidth(), size.getHeight());
+        else if (newW >= size.width) {
+            //Factor de escala
+            _scaleX = (double)size.width / (double)_logicWidth;
+            _scaleY = _scaleX;
+        }
 
+        _canvasWidth = _scaleX * (double)_logicWidth;
+        _canvasHeight = _scaleY * (double)_logicHeight;
+
+        _translationX = ((double)size.width - _canvasWidth)/2;
+        _translationY = ((double)size.height - _canvasHeight)/2;
     }
 
     private boolean getResized() {

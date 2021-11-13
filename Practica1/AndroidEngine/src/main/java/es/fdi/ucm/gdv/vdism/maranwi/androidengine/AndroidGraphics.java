@@ -23,7 +23,6 @@ import androidx.annotation.RequiresApi;
 
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Application;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
@@ -38,6 +37,8 @@ public class AndroidGraphics implements Graphics {
 
         _paint = new Paint();
         _fonts = new HashMap<String, Typeface>();
+
+        _adjustRequest = true;
     }
 
     public void draw(Application app) {
@@ -45,10 +46,18 @@ public class AndroidGraphics implements Graphics {
         while (!_holder.getSurface().isValid())
             ;
         _canvas = _holder.lockCanvas();
+
         clearAll(app.getBackgroundColor());
-        adjustToScreen();
+
+        if(_adjustRequest){
+            adjustToScreen();
+            _adjustRequest = false;
+        }
+        translate(_translationX,_translationY);
+        scale(_scaleX,_scaleY);
 
         app.onRender(this);
+
         _holder.unlockCanvasAndPost(_canvas);
     }
 
@@ -218,36 +227,36 @@ public class AndroidGraphics implements Graphics {
         int frameH = _view.getHeight();
         //Hacemos la regla de tres para ver si cabría
 
-        double newY = _logicHeight * frameW / _logicWidth;
-        double newX = _logicWidth * frameH / _logicHeight;
+        double newH = _logicHeight * frameW / _logicWidth;
+        double newW = _logicWidth * frameH / _logicHeight;
         double newPosX = 0.0f, newPosY = 0.0f;
-        double scaleX = 1, scaleY = 1;
+
         //Si escalando la Y no cabríamos
 
-        if (newY > frameH) {
-            scaleX = newX / _logicWidth;
-            scaleY = frameH / (double) _logicHeight;
-            double centerX = frameW / 2;
-            newPosX = centerX - (newX / 2);
-            translate(newPosX, 0);
-            scale(scaleX, scaleY);
-        } else if (newX > frameW) {
-            scaleX = frameW / (double) _logicWidth;
-            scaleY = newY / _logicHeight;
-            double centerY = frameH / 2;
-            newPosY = centerY - (newY / 2);
-            translate(0, newPosY);
-            scale(scaleX, scaleY);
+        if (newH >= frameH) {
+            //Factor de escala
+            _scaleY = frameH / (double) _logicHeight;
+            _scaleX = _scaleY;
+        } else if (newW >= frameW) {
+            //Factor de escala
+            _scaleX = frameW / (double) _logicWidth;
+            _scaleY = _scaleX;
         }
-        _canvasWidth = scaleX * _logicWidth;
-        _canvasHeight = scaleY * _logicHeight;
-        //app.setApplicationZone(_width, _height, size.getWidth(), size.getHeight());
+        _canvasWidth = _scaleX * _logicWidth;
+        _canvasHeight = _scaleY * _logicHeight;
+
+        _translationX = ((double)frameW - _canvasWidth)/2;
+        _translationY = ((double)frameH - _canvasHeight)/2;
     }
 
     public SurfaceView getView() {
         return _view;
     }
 
+    double _translationX = 0;
+    double _translationY = 0;
+    double _scaleX = 1;
+    double _scaleY = 1;
     private HashMap<String, Typeface> _fonts;
     private SurfaceView _view;
     private SurfaceHolder _holder;
@@ -258,4 +267,5 @@ public class AndroidGraphics implements Graphics {
     private int _logicHeight;
     private double _canvasWidth;
     private double _canvasHeight;
+    private boolean _adjustRequest;
 }
