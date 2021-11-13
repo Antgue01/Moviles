@@ -11,6 +11,8 @@ public class PlayState implements GameState {
     @Override
     public void start(Graphics g) {
         _font = g.newFont("JosefinSans-Bold.ttf", 48, true);
+        int numbersFontSize = (_cols > 6) ? 28 : 42;
+        _numbersFont = g.newFont("JosefinSans-Bold.ttf", numbersFontSize, true);
         _fontColor = new MyColor(0x000000FF);
 
 
@@ -21,7 +23,7 @@ public class PlayState implements GameState {
         _board = new Tablero(_rows, _cols);
         Image lockImg = g.newImage("lock.png");
         _board.setLockImg(lockImg);
-        _board.rellenaMatrizResueltaRandom(_buttonRadius, BOARD_LOGIC_OFFSET_X, BOARD_LOGIC_OFFSET_Y, _font, new MyColor(0xFFFFFFFF));
+        _board.rellenaMatrizResueltaRandom(_buttonRadius, BOARD_LOGIC_OFFSET_X, BOARD_LOGIC_OFFSET_Y, _numbersFont, new MyColor(0xFFFFFFFF));
 
         //BUTTONS
         _buttons = new Interact[3];
@@ -141,6 +143,7 @@ public class PlayState implements GameState {
 
     private Application _mainApp;
     private Font _font;
+    private Font _numbersFont;
     private MyColor _fontColor;
 
     private String _boardSizeText;
