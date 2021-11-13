@@ -6,11 +6,13 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Font;
 enum TipoCelda {Azul, Rojo, Blanco}
 
 public class Celda {
-    Celda(int id, boolean esFicha, TipoCelda tipo, int neighbours, int x, int y, int rad, int xPos, int yPos, Font font, MyColor fontColor) {
+    Celda(int id, boolean esFicha, TipoCelda tipo, int neighbours, int x, int y, int rad, int BOARD_LOGIC_OFFSET_X, int BOARD_LOGIC_OFFSET_Y, Font font, MyColor fontColor) {
         _esFicha = esFicha;
         _tipo = tipo;
         _requiredNeighbours = neighbours;
 
+        int xPos = (x * rad) + BOARD_LOGIC_OFFSET_X;
+        int yPos = (y * rad) + BOARD_LOGIC_OFFSET_Y;
         _color=newColorFromType(tipo);
         _lastColor = newColorFromType(tipo);
         _button = new Interact(id + "", _color, xPos, yPos, rad, x, y);
