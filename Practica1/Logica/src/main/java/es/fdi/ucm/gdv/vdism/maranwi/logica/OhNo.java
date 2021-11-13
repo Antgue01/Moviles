@@ -11,16 +11,16 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Input;
         - Application: ok
         - Font: ok
     Engines: ok
-        - Android: todo algunos metodos
+        - Android: ok
         - Pc: ok
     Logica
         - Tablero    :  todo FALTA GENERACIÓN DE TABLERO
         - Celdas    :  ok
-        - Pistas    : todo Falta terminar la 3
+        - Pistas    : ok
         - Renderer  : ok
         - States: todo Hints -> posicionamiento texto + Imágenes
     "Mains / Lanzadores"
-        - Android: todo algunas cosas
+        - Android: ok
         - PC: ok
     Bucle principal: ok
 
