@@ -1,7 +1,6 @@
 package es.fdi.ucm.gdv.vdism.maranwi.androidengine;
 
 import android.graphics.Typeface;
-import android.graphics.fonts.FontStyle;
 
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Font;
 

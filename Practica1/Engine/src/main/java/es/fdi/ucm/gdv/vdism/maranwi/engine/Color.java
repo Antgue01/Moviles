@@ -1,9 +1,9 @@
 package es.fdi.ucm.gdv.vdism.maranwi.engine;
 
 public interface Color {
-    public int getRGBA();
-    public int getRed();
-    public int getGreen();
-    public int getBlue();
-    public int getAlpha();
+    int getRGBA();
+    int getRed();
+    int getGreen();
+    int getBlue();
+    int getAlpha();
 }

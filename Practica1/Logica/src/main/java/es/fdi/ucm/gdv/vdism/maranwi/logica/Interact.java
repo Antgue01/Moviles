@@ -1,11 +1,8 @@
 package es.fdi.ucm.gdv.vdism.maranwi.logica;
 
-import org.graalvm.compiler.nodes.extended.PluginFactory_RawLoadNode;
-
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Font;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Image;
-import sun.util.resources.cldr.ext.CurrencyNames_te;
 
 public class Interact {
     public Interact(String id, MyColor baseColor, int x, int y, int rad, int boardX, int boardY){

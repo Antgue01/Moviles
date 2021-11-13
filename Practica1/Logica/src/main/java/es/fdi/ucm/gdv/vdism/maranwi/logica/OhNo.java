@@ -18,7 +18,7 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Input;
         - Celdas    :  ok
         - Pistas    : ok
         - Renderer  : ok
-        - States: todo Hints -> posicionamiento texto + Imágenes
+        - States: ok
     "Mains / Lanzadores"
         - Android: ok
         - PC: ok

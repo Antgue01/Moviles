@@ -27,20 +27,21 @@ public class PlayState implements GameState {
 
         //BUTTONS
         _buttons = new Interact[3];
-        int xOffset = _mainApp.getLogicWidth() / 6;
+        int xOffset = (_mainApp.getLogicWidth() / 6) - 4;
+        int yOffset = _mainApp.getLogicHeight() / 8;
         int xPos = xOffset;
-        int yPos = /*BoardOffset*/ BOARD_LOGIC_OFFSET_Y + /*BoardSize*/ (_buttonRadius * _rows)  + /*Additional Offset*/(_buttonRadius / 2) ;
+        int yPos = _mainApp.getLogicHeight() - yOffset;
 
         //Exit button
         Image playImg = g.newImage("close.png");
-        _buttons[0] = new Interact("Exit", _fontColor, xPos, yPos, playImg.getWidth() / 4, 0, 0);
+        _buttons[0] = new Interact("Exit", _fontColor, xPos, yPos, playImg.getWidth() / 2, 0, 0);
         _buttons[0].setImage(playImg, playImg.getWidth() / 2, playImg.getHeigth() / 2, true, 100);
         _buttons[0].setBottomCircle(false);
 
         //Undo button
         xPos += xOffset * 2;
         Image undoImg = g.newImage("history.png");
-        _buttons[1] = new Interact("Undo", _fontColor, xPos, yPos, undoImg.getWidth() / 4, 0, 0);
+        _buttons[1] = new Interact("Undo", _fontColor, xPos, yPos, undoImg.getWidth() / 2, 0, 0);
 
         _buttons[1].setImage(undoImg, undoImg.getWidth() / 2, undoImg.getHeigth() / 2, true, 100);
         _buttons[1].setBottomCircle(false);
@@ -48,7 +49,7 @@ public class PlayState implements GameState {
         //Hints button
         xPos += xOffset * 2;
         Image hintsImg = g.newImage("eye.png");
-        _buttons[2] = new Interact("Hints", _fontColor, xPos, yPos, hintsImg.getWidth() / 4, 0, 0);
+        _buttons[2] = new Interact("Hints", _fontColor, xPos, yPos, hintsImg.getWidth() / 2, 0, 0);
         _buttons[2].setImage(hintsImg, hintsImg.getWidth() / 2, hintsImg.getHeigth() / 2, true, 100);
         _buttons[2].setBottomCircle(false);
 

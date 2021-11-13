@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Queue;
 
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
-import sun.awt.image.ImageWatched;
 
 public class Animator {
 
