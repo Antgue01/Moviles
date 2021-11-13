@@ -9,25 +9,31 @@ public class Hint {
 
         switch (type){
             case ONE:
-                _hintMessage = "Hay que cerrar la casilla";
+                _hintMessage = "This number can see all its dots";
                 break;
             case TWO:
-                _hintMessage = "Mirar mas lejos en una direccion excederia el numero";
+                _hintMessage = "Looking further in one direction\n" +
+                        "would exceed this number";
                 break;
             case THREE:
-                _hintMessage = "Un punto esta en todas las posibles soluciones";
+                _hintMessage = "One specific dot is included\n" +
+                        "in all solutions imaginable";
                 break;
             case FOUR:
-                _hintMessage = "Ve demasiados azules";
+                _hintMessage = "This number sees a bit too\n" +
+                        "much";
                 break;
             case FIVE:
-                _hintMessage = "No ve suficientes azules";
+                _hintMessage = "This number can't see enough";
                 break;
             case SIX:
-                _hintMessage = "Celda vacia cerrada debe ser roja";
+                _hintMessage = "This one should be easy...";
                 break;
             case SEVEN:
-                _hintMessage = "Celda azul cerrada debe ser roja";
+                _hintMessage = "This one should be easy...";
+                break;
+            default:
+                _hintMessage = "";
                 break;
 
         }
