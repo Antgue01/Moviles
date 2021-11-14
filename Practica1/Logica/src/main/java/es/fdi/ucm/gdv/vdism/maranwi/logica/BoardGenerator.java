@@ -60,8 +60,10 @@ public class BoardGenerator {
                 int neigbours = tryNewBlueNumeric(newRow, newCol);
                 if(neigbours != -1){
                     //todo establecer como numérica con valor neigbours y cerrar con rojos en todas las direcciones
+                    _gameMatrix[newRow][newCol] = neigbours;
                 }else{
                    //todo establecer como ficha roja
+                    _gameMatrix[newRow][newCol] = -1;
                 }
                 _procesed[newRow][newCol] = true;
             }
@@ -79,6 +81,8 @@ public class BoardGenerator {
         int randNeigbours = _rand.nextInt(maxNeigbours); //nextInt = exclusive in last valor
         randNeigbours += 1; //We want a random number in range [1, maxNeigbours]
 
+
+        //Fill blues
         int dir = 0, totalNeigbours = 0;
         int []usedDirs = new int[4];
         Arrays.fill(usedDirs, -1); //-1 = DIR NOT USED / CHECKED
@@ -100,9 +104,11 @@ public class BoardGenerator {
                     //If it is exceeded, discard the dir
                     if(totalNeigbours + n > randNeigbours){
                         //todo  TIENE QUE SER UN ROJO (PORQUE SE HA EXCEDIDO SI PONE UN AZUL EN ESA DIRECCIÓN)
+                        _gameMatrix[candidateRow][candidateCol] = -1;
                     }
                     else{
                         //todo  SI NO SE DESCARTA ESTABLECER LA CELDA (candidateRow,candidateCol) COMO AZUL y ES FICHA
+                        _gameMatrix[candidateRow][candidateCol] = 0;
                         totalNeigbours += n;
                     }
                     _procesed[candidateRow][candidateCol] = true;
@@ -125,7 +131,16 @@ public class BoardGenerator {
 
     private int getNeigboursInDir(int row, int col, int[] dir){
         int total = 0;
-        //todo CONTAR LAS AZULES ADYACENTES EN ESTA DIRECCIÓN (no tener en cuenta la posicion row/col, SOLO los siguientes)
+        int newRow = row + dir[0];
+        int newCol = col + dir[1];
+
+        while (validPos(newRow, newCol)){
+            if(_gameMatrix[newRow][newCol] != 0) break;
+            total++;
+            newRow = row + dir[0];
+            newCol = col + dir[1];
+        }
+
         return total;
     }
 
@@ -152,6 +167,8 @@ public class BoardGenerator {
     }
 
     private int[][] _dirs;
+    // BLANCO, ROJO, AZUL, AZUL CON NEIGHBOURS
+    // {-2, -1 , 0, neighbours}
     private int[][] _gameMatrix;
     boolean _procesed[][];
     private java.util.Random _rand;

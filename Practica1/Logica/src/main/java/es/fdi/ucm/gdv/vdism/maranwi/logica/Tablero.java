@@ -1,6 +1,5 @@
 package es.fdi.ucm.gdv.vdism.maranwi.logica;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.Stack;
