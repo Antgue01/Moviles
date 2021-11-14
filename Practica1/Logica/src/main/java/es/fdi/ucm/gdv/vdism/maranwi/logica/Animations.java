@@ -50,8 +50,6 @@ public class Animations {
             _target.getButton().setHasAnimation(false);
             return false;
         }
-
-
         else if(_time - _lastAnimationTime >= _velocity){
             if(_type == AnimationType.FastMove || _type == AnimationType.SlowMove){
                 //_radius = _radius + _increment;

@@ -1,5 +1,6 @@
 package es.fdi.ucm.gdv.vdism.maranwi.logica;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.Stack;
@@ -23,6 +24,7 @@ public class Tablero {
 
         _hintsManager = new HintsManager();
 
+        _rand = new Random();
         //generaTablero();
     }
 
@@ -72,8 +74,8 @@ public class Tablero {
     /**
      * Comprobar limites
      */
-    private boolean validPos(int x, int y){
-        return (x >= 0 && x < _columnas) && (y >= 0 && y < _filas);
+    private boolean validPos(int row, int col){
+        return (row >= 0 && row < _filas) && (col >= 0 && col < _columnas);
     }
 
     /**
@@ -81,22 +83,21 @@ public class Tablero {
      */
     private void close(int x, int y){
         for(int[] d : _dirs){
-            int currentPosX = x + d[0];
-            int currentPosY = y + d[1];
-            while (validPos(currentPosX,currentPosY)){
+            int currentRow = x + d[0];
+            int currentCol = y + d[1];
+            while (validPos(currentRow,currentCol)){
                 //Si se encuentra una pared, deja de ir en esa direccion
-                if(_matrizJuego[currentPosX][currentPosY].getTipoCelda() == TipoCelda.Rojo){
+                if(_matrizJuego[currentRow][currentCol].getTipoCelda() == TipoCelda.Rojo){
                     break;
                 }
                 //Si se encuentra una celda Blanca en esa direccion, la hace roja y deja de ir en esa direccion
-                else if(_matrizJuego[currentPosX][currentPosY].getTipoCelda() == TipoCelda.Blanco){
-                    _matrizJuego[currentPosX][currentPosY].setTipo(TipoCelda.Rojo);
+                else if(_matrizJuego[currentRow][currentCol].getTipoCelda() == TipoCelda.Blanco){
+                    _matrizJuego[currentRow][currentCol].setTipo(TipoCelda.Rojo);
                     break;
                 }
-                currentPosX += d[0];
-                currentPosY += d[1];
+                currentRow += d[0];
+                currentCol += d[1];
             }
-
         }
     }
 
@@ -201,7 +202,7 @@ public class Tablero {
         else if(result == 2) ++_numFichasBlancas;
     }
 
-    /*public boolean compruebaSolucion() {
+    public boolean compruebaSolucion() {
         if (_numFichasBlancas > 0)
             return false;
         boolean esSolucion = true;
@@ -212,18 +213,11 @@ public class Tablero {
             }
         }
         return esSolucion;
-    }*/
+    }
 
-    /*public void setColor(int col, int row, TipoCelda tipo) {
-        if (col >= 0 && col < _matrizJuego[0].length && row >= 0 && row < _matrizJuego.length && _matrizJuego[row][col].getEsFicha()) {
-            boolean wasWhite = _matrizJuego[row][col].getTipoCelda() == TipoCelda.Blanco;
-            _matrizJuego[row][col].setTipo(tipo);
-            if (wasWhite && tipo != TipoCelda.Blanco)
-                _numFichasBlancas--;
-            else if (!wasWhite && tipo == TipoCelda.Blanco)
-                _numFichasBlancas++;
-        }
-    }*/
+    private void generateNewBoard(){
+
+    }
 
     //La matriz solucíón solo guarda los colores de cada posición
     private int _matrizSolucion[][];
@@ -232,6 +226,7 @@ public class Tablero {
     private int _columnas;
     private  int _numFichasBlancas;
     private Stack<Move> _moves;
+    java.util.Random _rand;
 
     private Image _lockImg;
 
