@@ -3,6 +3,7 @@ package es.fdi.ucm.gdv.vdism.maranwi.logica;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Application;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Font;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
+import es.fdi.ucm.gdv.vdism.maranwi.engine.Image;
 
 public class MenuState implements GameState {
     @Override
@@ -15,7 +16,7 @@ public class MenuState implements GameState {
         _onMainMenu = true;
 
         //Main menu => 1 Button : Play
-        _buttons = new Interact[7];
+        _buttons = new Interact[8];
         _buttons[0] = new Interact("Play", new MyColor(0), (_mainApp.getLogicWidth()/3) + 10, (_mainApp.getLogicHeight()/3) + 10, 0, 0, 0);
         _buttons[0].setText("Touch\n  To\nPlay", _font70, _fontColor);
 
@@ -32,6 +33,15 @@ public class MenuState implements GameState {
                 yPos += BUTTON_RAD + buttonsOffset;
             }
         }
+
+        //Exit button
+        Image playImg = g.newImage("close.png");
+        xPos = (_mainApp.getLogicWidth() / 2) - (playImg.getWidth() / 2);
+        yPos = (_mainApp.getLogicHeight()) - (playImg.getHeigth() + (playImg.getHeigth() / 2));
+        int rad = playImg.getWidth() / 2;
+        _buttons[_buttons.length - 1] = new Interact("Exit", _fontColor, xPos , yPos, rad, 0, 0);
+        _buttons[_buttons.length - 1].setImage(playImg, playImg.getWidth(), playImg.getHeigth() , true, 100);
+        _buttons[_buttons.length - 1].setBottomCircle(false);
     }
 
     @Override
@@ -85,6 +95,7 @@ public class MenuState implements GameState {
 
     private void lookForButtonAction(Interact b){
         if(b.getId() == "Play") _onMainMenu = false;
+        else if(b.getId() == "Exit") _onMainMenu = true;
             //System.out.println("Play Button Clicked");
         else{
             OhNo o = (OhNo) _mainApp;
