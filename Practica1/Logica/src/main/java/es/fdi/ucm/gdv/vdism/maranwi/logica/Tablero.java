@@ -27,7 +27,6 @@ public class Tablero {
 
         _isCompleted = false;
         generateNewBoard();
-        //generaTablero();
     }
 
     public Celda[][] getMatrizJuego() {
@@ -48,32 +47,32 @@ public class Tablero {
         _lockImg = img;
     }
 
-    public void generaTablero() {
-        boolean valid = false;
-        while (!valid) {
-            //Genera una _matrizJuego ocultando casillas aleatorias y una _matrizSolucion con los colores azul y rojo que deberian ir en todas las casillas
-
-            //Intenta resolverlo mediante pistas
-            Hint h = getAHint();
-            //Se podria comprobar tambien si ha sido relleno para evitar que se quede atascado en el bucle dando pistas.
-            while (h.getHintType() != HintsManager.HintType.NONE) {
-                //Se aplican a _matrizJuego
-                applyHint(h);
-                h = getAHint();
-            }
-
-            //Si se consigue resolver, comparar _matrizJuego con _matrizSolucion
-            boolean iguales = true;
-            for (int i = 0; i < _matrizJuego[0].length && iguales; ++i) {
-                for (int j = 0; j < _matrizJuego[1].length && iguales; ++j) {
-                    if (_matrizJuego[i][j].getTipoCeldaAsInt() != _matrizSolucion[i][j])
-                        iguales = false;
-                }
-            }
-            //Si son iguales, es valida
-            valid = iguales ? true : false;
-        }
-    }
+//    public void generaTablero() {
+//        boolean valid = false;
+//        while (!valid) {
+//            //Genera una _matrizJuego ocultando casillas aleatorias y una _matrizSolucion con los colores azul y rojo que deberian ir en todas las casillas
+//
+//            //Intenta resolverlo mediante pistas
+//            Hint h = getAHint();
+//            //Se podria comprobar tambien si ha sido relleno para evitar que se quede atascado en el bucle dando pistas.
+//            while (h.getHintType() != HintsManager.HintType.NONE) {
+//                //Se aplican a _matrizJuego
+//                applyHint(h);
+//                h = getAHint();
+//            }
+//
+//            //Si se consigue resolver, comparar _matrizJuego con _matrizSolucion
+//            boolean iguales = true;
+//            for (int i = 0; i < _matrizJuego[0].length && iguales; ++i) {
+//                for (int j = 0; j < _matrizJuego[1].length && iguales; ++j) {
+//                    if (_matrizJuego[i][j].getTipoCeldaAsInt() != _matrizSolucion[i][j])
+//                        iguales = false;
+//                }
+//            }
+//            //Si son iguales, es valida
+//            valid = iguales ? true : false;
+//        }
+//    }
 
     /**
      * Comprobar limites
