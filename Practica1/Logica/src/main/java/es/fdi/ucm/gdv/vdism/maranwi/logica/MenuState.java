@@ -23,10 +23,10 @@ public class MenuState implements GameState {
         int buttonsOffset = 10;
         int xPos = (BUTTON_RAD / 2) - buttonsOffset, yPos = BUTTON_RAD + (_mainApp.getLogicHeight()/4);
         //Sub menu => Board size selection buttons: 1 button per size
-        for(int x = 1; x < _buttons.length; ++x){
+        for(int x = 1; x < _buttons.length - 1; ++x){
             MyColor color = (x%2==0) ? new MyColor(0xFF3C4CFF) : new MyColor(0x20C4E4FF);
-            _buttons[x] = new Interact(x+"", color, xPos, yPos, BUTTON_RAD, x + 3, x + 3);
-            _buttons[x].setText(Integer.toString(x + 3), _numbersFont, new MyColor(0xFFFFFFFF));
+            _buttons[x] = new Interact(x+"", color, xPos, yPos, BUTTON_RAD, x + FIRST_BOARD_SIZE, x + FIRST_BOARD_SIZE);
+            _buttons[x].setText(Integer.toString(x + FIRST_BOARD_SIZE), _numbersFont, new MyColor(0xFFFFFFFF));
             xPos += BUTTON_RAD + buttonsOffset;
             if(xPos + BUTTON_RAD > _mainApp.getLogicWidth()){
                 xPos = (BUTTON_RAD / 2) - buttonsOffset;
@@ -115,5 +115,6 @@ public class MenuState implements GameState {
     private boolean _onMainMenu;
     private String _titleText;
     private static final int BUTTON_RAD = 100;
+    private static final int FIRST_BOARD_SIZE =  3;
 }
 
