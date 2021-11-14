@@ -10,7 +10,7 @@ public class PlayState implements GameState {
     @Override
     public void start(Graphics g) {
         _font = g.newFont("JosefinSans-Bold.ttf", 48, true);
-        int numbersFontSize = (_cols > 6) ? 28 : 42;
+        int numbersFontSize = (_buttonRadius * 48)/80;
         _numbersFont = g.newFont("JosefinSans-Bold.ttf", numbersFontSize, true);
         _fontColor = new MyColor(0x000000FF);
 
