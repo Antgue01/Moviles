@@ -84,17 +84,12 @@ public class PlayState implements GameState {
     @Override
     public void identifyEvent(int x, int y) {
         if(_hintText != "") _hintText = "";
-        if(x >= BOARD_LOGIC_OFFSET_X && x <= BOARD_LOGIC_OFFSET_X + (_buttonRadius * _cols) &&
-           y >= BOARD_LOGIC_OFFSET_Y && y <= BOARD_LOGIC_OFFSET_Y + (_buttonRadius * _rows)){
-            int row = (x - BOARD_LOGIC_OFFSET_X) / _buttonRadius;
-            int col = (y - BOARD_LOGIC_OFFSET_Y) / _buttonRadius;
-//            if(_board.getMatrizJuego()[row][col].getEsFicha())
-//                _board.nextColor(row, col);
-//            else
-//                _board.showLockImgs();
-            _animator.addAnimationElement(row, col, false, false);
-            //System.out.println("Event x :" + x + " Event y: " + y + " ButtonRadius: " + _buttonRadius);
-            //System.out.println("Row x :" + row + " Col y: " + col);
+        if(x > BOARD_LOGIC_OFFSET_X  && x < BOARD_LOGIC_OFFSET_X + (_buttonRadius * _cols) &&
+           y > BOARD_LOGIC_OFFSET_Y && y < BOARD_LOGIC_OFFSET_Y + (_buttonRadius * _rows)){
+                int row = (x - BOARD_LOGIC_OFFSET_X) / _buttonRadius;
+                int col = (y - BOARD_LOGIC_OFFSET_Y) / _buttonRadius;
+                if(checkCorrectBoard(row, col))
+                _animator.addAnimationElement(row, col, false, false);
         }
         else if(clickOnButton(x, y, _buttons[0])){ //EXIT
             OhNo o = (OhNo) _mainApp;
@@ -117,7 +112,8 @@ public class PlayState implements GameState {
                 _hintText = hint.getHintMessage();
                 int row = hint.getPos()[0];
                 int col = hint.getPos()[1];
-                _animator.addAnimationElement(row, col, false, true);
+                if(checkCorrectBoard(row, col))
+                    _animator.addAnimationElement(row, col, false, true);
             }
         }
     }
@@ -140,6 +136,13 @@ public class PlayState implements GameState {
                 yEvent >= b.getYPos() && yEvent <= b.getYPos() + (b.getRadius())) return true;
         return false;
     }
+
+    private boolean checkCorrectBoard(int row, int col){
+        if(row >= 0 && row < _board.getMatrizJuego()[0].length && col >= 0 && col < _board.getMatrizJuego()[1].length)
+            return true;
+        return false;
+    }
+
 
     private Application _mainApp;
     private Font _font;
