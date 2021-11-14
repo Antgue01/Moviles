@@ -103,6 +103,7 @@ public class Animations {
     }
 
     public String getId() { return _id;}
+    public Celda getTarget() { return _target; }
 
     private String _id;
     private Celda _target;

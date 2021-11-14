@@ -103,7 +103,7 @@ public class PlayState implements GameState {
             Celda c = _board.restoreMove();
             if(c!= null){
                 _animator.addAnimationElement(c.getButton().getBoardX(), c.getButton().getBoardY(), true, false);
-            }
+            }else _animator.clickOutOfBoard();
         }
         else if(clickOnButton(x, y, _buttons[2])){ // HINTS
             System.out.println("HINTS");
@@ -116,6 +116,7 @@ public class PlayState implements GameState {
                     _animator.addAnimationElement(row, col, false, true);
             }
         }
+        else _animator.clickOutOfBoard();
     }
 
     @Override

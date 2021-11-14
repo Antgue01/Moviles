@@ -13,9 +13,12 @@ public class Animator {
         _board = board;
         _animations = new HashMap<String, Animations>();
         _queue = new LinkedList<String>();
+        _currentSlowMove = null;
     }
 
     public void addAnimationElement(int row, int col, boolean isRestoreMove, boolean isHint){
+        clearSlowMove();
+
         Celda c = _board.getMatrizJuego()[row][col];
         Animations a = new Animations(c);
         if(c.getEsFicha() && !isRestoreMove){
@@ -43,6 +46,7 @@ public class Animator {
             //Slow Move Animation
             MyColor borderColor = new MyColor(0x000000FF);
             a.startSlowMoveAnimation(borderColor);
+            _currentSlowMove = a;
         }
         _animations.put(a.getId(), a);
     }
@@ -67,8 +71,20 @@ public class Animator {
         }
     }
 
+    public void clickOutOfBoard(){
+        clearSlowMove();
+    }
 
-    Queue<String> _queue;
-    Map<String, Animations> _animations;
-    Tablero _board;
+    private void clearSlowMove(){
+        if(_currentSlowMove != null){
+            _currentSlowMove.getTarget().getButton().setHasAnimation(false);
+            _animations.remove(_currentSlowMove.getId());
+            _currentSlowMove = null;
+        }
+    }
+
+    private Animations _currentSlowMove;
+    private Queue<String> _queue;
+    private Map<String, Animations> _animations;
+    private Tablero _board;
 }
