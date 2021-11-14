@@ -20,6 +20,12 @@ public class MenuState implements GameState {
         _buttons[0] = new Interact("Play", new MyColor(0), (_mainApp.getLogicWidth()/3) + 10, (_mainApp.getLogicHeight()/3) + 10, 0, 0, 0);
         _buttons[0].setText("Touch\n  To\nPlay", _font70, _fontColor);
 
+        //Logo button
+        _logoImg = g.newImage("q42.png");
+        _xLogoPos = (_mainApp.getLogicWidth() / 2) - (LOGO_WIDTH / 2);
+        _yLogoPos = (_mainApp.getLogicHeight()) - (LOGO_HEIGHT + (LOGO_HEIGHT / 2));
+
+
         int buttonsOffset = 10;
         int xPos = (BUTTON_RAD / 2) - buttonsOffset, yPos = BUTTON_RAD + (_mainApp.getLogicHeight()/4);
         //Sub menu => Board size selection buttons: 1 button per size
@@ -51,6 +57,8 @@ public class MenuState implements GameState {
         if(_onMainMenu){
             g.drawText(_titleText, (_mainApp.getLogicWidth()/3) - 35, _mainApp.getLogicHeight()/5);
             _buttons[0].render(g);
+
+            g.drawImage(_logoImg, _xLogoPos, _yLogoPos, LOGO_WIDTH, LOGO_HEIGHT);
         }
         else{
             g.drawText(_titleText, (_mainApp.getLogicWidth()/3) - 35, _mainApp.getLogicHeight()/5);
@@ -107,6 +115,9 @@ public class MenuState implements GameState {
     }
 
     private Interact _buttons[];
+    private Image _logoImg;
+    private int _xLogoPos;
+    private int _yLogoPos;
     private Application _mainApp;
     private Font _font70;
     private Font _font38;
@@ -116,5 +127,7 @@ public class MenuState implements GameState {
     private String _titleText;
     private static final int BUTTON_RAD = 100;
     private static final int FIRST_BOARD_SIZE =  3;
+    private static final int LOGO_WIDTH = 60;
+    private static final int LOGO_HEIGHT = 90;
 }
 
