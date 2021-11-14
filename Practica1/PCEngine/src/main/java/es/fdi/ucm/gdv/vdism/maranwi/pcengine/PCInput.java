@@ -5,8 +5,10 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.fdi.ucm.gdv.vdism.maranwi.engine.Input;
 
-public class PCInput implements MouseListener, MouseMotionListener,es.fdi.ucm.gdv.vdism.maranwi.engine.Input {
+
+public class PCInput implements Input, MouseListener, MouseMotionListener {
 
 
     public PCInput(){

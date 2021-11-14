@@ -233,8 +233,6 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
             g2d.drawOval(cx, cy, rx, ry);
             g2d.setStroke(new BasicStroke(1));
         }
-
-
     }
 
     @Override
@@ -282,6 +280,10 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
         _frame.addMouseMotionListener(mml);
     }
 
+    /**
+     * Limpia el fondo entero con un color
+     * @param color
+     */
     private void clearAll(int color) {
         if (color != -1) {
             _myGraphics.setColor(new java.awt.Color(color));
@@ -289,6 +291,9 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
         }
     }
 
+    /**
+     * Calculos para ajustar la translacion y escala
+     */
     private void adjustToScreen() {
         Dimension size = _frame.getSize();
 
