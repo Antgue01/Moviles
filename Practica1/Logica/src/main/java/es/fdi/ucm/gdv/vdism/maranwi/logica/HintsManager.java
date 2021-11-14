@@ -136,6 +136,7 @@ public class HintsManager {
             //Si en esa direccion hay una blanca, la cuenta como azul y sigue contando en esa direccion
             if(validPos(currentPosX,currentPosY) && _board[currentPosX][currentPosY].getTipoCelda() == TipoCelda.Blanco){
                 blues++;
+                continue;
             }
 
             blues += countBluesAtDir(currentPosX, currentPosY, d);
