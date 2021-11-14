@@ -1,6 +1,7 @@
 package es.fdi.ucm.gdv.vdism.maranwi.pcengine;
 
 import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.Dimension;
 
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Font;
@@ -115,12 +116,15 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
     @Override
     public Image newImage(String name) {
+
         java.awt.Image sprite = null;
+
         try {
             sprite = javax.imageio.ImageIO.read(new java.io.File("images/" + name));
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return sprite != null ? new PCImage(sprite.getWidth(_frame), sprite.getHeight(_frame), sprite) : null;
     }
 
@@ -130,6 +134,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
         PCFont font = _fonts.get(id);
         if (font == null) {
             font = new PCFont("fonts/" + filename, size, isBold);
+            _fonts.put(id,font);
         }
         return font;
     }
@@ -216,10 +221,18 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     }
 
     @Override
-    public void fillCircle(int cx, int cy, int r) {
-        if (_myGraphics != null)
-            _myGraphics.fillOval(cx, cy, r, r);
-        else System.out.println("No hay graphics xhaval");
+    public void fillOval(int cx, int cy, int rx, int ry) {
+        _myGraphics.fillOval(cx, cy, rx, ry);
+    }
+
+    @Override
+    public void drawOval(int cx, int cy, int rx, int ry, float strokeWidth) {
+        Graphics2D g2d = (Graphics2D) _myGraphics;
+        if (g2d != null){
+            g2d.setStroke(new BasicStroke(strokeWidth));
+            g2d.drawOval(cx, cy, rx, ry);
+            g2d.setStroke(new BasicStroke(1));
+        }
     }
 
     @Override
@@ -233,12 +246,12 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     }
 
     @Override
-    public int getWindowsWidth() {
+    public int getWindowWidth() {
         return _frame.getWidth();
     }
 
     @Override
-    public int getWindowsHeight() {
+    public int getWindowHeight() {
         return _frame.getHeight();
     }
 
@@ -254,7 +267,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
     @Override
     public void setFont(Font font) {
-        java.awt.Font f = ((PCFont) (font)).getJavaFont();
+        java.awt.Font f = ((PCFont) font).getJavaFont();
         if (f != null) _myGraphics.setFont(f);
     }
 
@@ -267,6 +280,10 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
         _frame.addMouseMotionListener(mml);
     }
 
+    /**
+     * Limpia el fondo entero con un color
+     * @param color
+     */
     private void clearAll(int color) {
         if (color != -1) {
             _myGraphics.setColor(new java.awt.Color(color));
@@ -274,6 +291,9 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
         }
     }
 
+    /**
+     * Calculos para ajustar la translacion y escala
+     */
     private void adjustToScreen() {
         Dimension size = _frame.getSize();
 
@@ -316,7 +336,6 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     double _scaleX = 1;
     double _scaleY = 1;
     HashMap<String, PCFont> _fonts;
-    HashMap<String, java.awt.Image> _images;
     private java.awt.Graphics _myGraphics;
     private int _logicWidth;
     private int _logicHeight;

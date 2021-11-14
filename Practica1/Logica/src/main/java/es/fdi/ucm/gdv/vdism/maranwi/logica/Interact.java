@@ -21,7 +21,7 @@ public class Interact {
     public void render(Graphics g){
         if(!_hasAnimation && _hasBottomCircle){
             g.setColor(_baseColor);
-            g.fillCircle(_xPos , _yPos , _radius);
+            g.fillOval(_xPos , _yPos , _radius, _radius);
         }
         if(_hasText){
             if(_font != null) g.setFont(_font);

@@ -19,7 +19,7 @@ public class AndroidEngine implements Engine, Runnable {
 
         _myApp.onInit(this);
     }
-
+    /** Reanudar el bucle del motor */
     public void resume() {
         if (!_running) {
             // Solo hacemos algo si no nos estábamos ejecutando ya
@@ -32,9 +32,8 @@ public class AndroidEngine implements Engine, Runnable {
             _thread.start();
         } // if (!_running)
     }
-
+    /** Pausar el bucle del motor */
     public void pause() {
-
         if (_running) {
             _running = false;
             while (true) {
@@ -49,22 +48,20 @@ public class AndroidEngine implements Engine, Runnable {
         } // if (_running)
 
     }
-
+    /** Ejecutado por Hilo del motor para hacer el bucle principal */
     @Override
     public void run() {
 
         if (_thread != Thread.currentThread()) {
-            // ¿¿Quién es el tuercebotas que está llamando al
-            // run() directamente?? Programación defensiva
-            // otra vez, con excepción, por merluzo.
+
             throw new RuntimeException("run() should not be called directly");
         }
 
         // Antes de saltar a la simulación, confirmamos que tenemos
         // un tamaño mayor que 0. Si la hebra se pone en marcha
         // muy rápido, la vista podría todavía no estar inicializada.
-        while(_running && _graphics.getWindowsWidth() == 0)
-            // Espera activa. Sería más elegante al menos dormir un poco.
+        while(_running && _graphics.getWindowWidth() == 0)
+            // Espera activa.
             ;
 
         long lastFrameTime = System.nanoTime();
@@ -81,13 +78,13 @@ public class AndroidEngine implements Engine, Runnable {
             _graphics.draw(_myApp);
         }
     }
-
+    /** Finalizar el motor */
     public void destroy(){
         _myApp.onExit();
 
         release();
     }
-
+    /** Liberacion de recursos */
     public void release(){
         _myApp.onRelease();
         _myApp = null;

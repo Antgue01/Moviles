@@ -4,7 +4,9 @@ package es.fdi.ucm.gdv.vdism.maranwi.engine;
 import java.util.List;
 
 public interface Input {
-
+    /**
+     * Informacion de eventos
+     */
     class TouchEvent {
         public TouchEvent(TouchType type,int posX,int posY, int id){
             _type=type;
@@ -33,8 +35,11 @@ public interface Input {
         private int _posX;
         private int _posY;
         private int _id;
-
-
     }
+
+    /**
+     * Obtener la lista de eventos
+     * @return
+     */
     List<TouchEvent> getTouchEvents();
 }
