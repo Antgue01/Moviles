@@ -1,19 +1,20 @@
 package es.fdi.ucm.gdv.vdism.maranwi.logica;
+
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 
-enum AnimationType { Fade, FastMove, SlowMove}
+enum AnimationType {Fade, FastMove, SlowMove}
 
 public class Animations {
 
-    public Animations(Celda target){
+    public Animations(Celda target) {
         _target = target;
         _startTime = -1;
         _time = 0;
         _id = target.getButton().getId();
-       _target.getButton().setHasAnimation(true);
+        _target.getButton().setHasAnimation(true);
     }
 
-    public void startFadeAnimation(MyColor in, MyColor out){
+    public void startFadeAnimation(MyColor in, MyColor out) {
         _type = AnimationType.Fade;
         _colorIn = in;
         _colorOut = out;
@@ -21,7 +22,7 @@ public class Animations {
         _velocity = FADE_VELOCITY;
     }
 
-    public void startFastMoveAnimation(){
+    public void startFastMoveAnimation() {
         _type = AnimationType.FastMove;
         _durationTime = FAST_MOVE_TIME;
         _velocity = FAST_MOVE_VELOCITY;
@@ -31,7 +32,7 @@ public class Animations {
         _incrementMoveAnimation = INCREMENT_ANIMATIONS_SIZE;
     }
 
-    public void startSlowMoveAnimation(MyColor c){
+    public void startSlowMoveAnimation(MyColor c) {
         _type = AnimationType.SlowMove;
         _durationTime = SLOW_MOVE_TIME;
         _velocity = SLOW_MOVE_VELOCITY;
@@ -42,22 +43,19 @@ public class Animations {
     }
 
     //Return false if animation end, true other wise
-    public boolean update(double deltaTime){
-        if(_startTime == -1) _startTime = deltaTime;
+    public boolean update(double deltaTime) {
+        if (_startTime == -1) _startTime = deltaTime;
         _time += deltaTime;
 
-        if (_type != AnimationType.SlowMove && (_time - _startTime >= _durationTime)){
+        if (_type != AnimationType.SlowMove && (_time - _startTime >= _durationTime)) {
             _target.getButton().setHasAnimation(false);
             return false;
-        }
-
-
-        else if(_time - _lastAnimationTime >= _velocity){
-            if(_type == AnimationType.FastMove || _type == AnimationType.SlowMove){
+        } else if (_time - _lastAnimationTime >= _velocity) {
+            if (_type == AnimationType.FastMove || _type == AnimationType.SlowMove) {
                 //_radius = _radius + _increment;
                 _incrementMoveAnimation += (INCREMENT_ANIMATIONS_SIZE * _directionMoveAnimation);
 
-                if(_incrementMoveAnimation <= 0 || _incrementMoveAnimation >= OFFSET_MOVES_ANIMATIONS_SIZE){
+                if (_incrementMoveAnimation <= 0 || _incrementMoveAnimation >= OFFSET_MOVES_ANIMATIONS_SIZE) {
                     _directionMoveAnimation *= -1;
                 }
             }
@@ -66,44 +64,49 @@ public class Animations {
         return true;
     }
 
-    public void render(Graphics g){
-        if(_type == AnimationType.Fade){
+    public void render(Graphics g) {
+        if (_type == AnimationType.Fade) {
             double inverse_blending = 1 - BLENDING_FACTOR;
 
             double red = 0, green = 0, blue = 0;
-            if(_type == AnimationType.Fade){
-                red =   (_colorOut.getRed()   * BLENDING_FACTOR) +   (_colorIn.getRed()   * inverse_blending);
-                green = (_colorOut.getGreen() * BLENDING_FACTOR) +   (_colorIn.getGreen() * inverse_blending);
-                blue =  (_colorOut.getBlue()  * BLENDING_FACTOR) +   (_colorIn.getBlue()  * inverse_blending);
+            if (_type == AnimationType.Fade) {
+                red = (_colorOut.getRed() * BLENDING_FACTOR) + (_colorIn.getRed() * inverse_blending);
+                green = (_colorOut.getGreen() * BLENDING_FACTOR) + (_colorIn.getGreen() * inverse_blending);
+                blue = (_colorOut.getBlue() * BLENDING_FACTOR) + (_colorIn.getBlue() * inverse_blending);
 
             }
             g.setColor((int) red, (int) green, (int) blue, 255);
-            g.fillCircle(_target.getButton().getXPos(), _target.getButton().getYPos(), _target.getButton().getRadius());
-        }
-        else if(_type == AnimationType.FastMove){
+            g.fillCircle(_target.getButton().getXPos(), _target.getButton().getYPos(), _target.getButton().getRadius() - _target.getButton().getOffset());
+        } else if (_type == AnimationType.FastMove) {
             int positionFactor = _incrementMoveAnimation / 2;
             int xPos = _target.getButton().getXPos() - positionFactor;
             int yPos = _target.getButton().getYPos() - positionFactor;
-            int rad = _target.getButton().getRadius() + _incrementMoveAnimation;
+            int rad = _target.getButton().getRadius() - _target.getButton().getOffset() + _incrementMoveAnimation;
 
             g.setColor(_baseColor);
             g.fillCircle(xPos, yPos, rad);
 
-        }else if(_type == AnimationType.SlowMove){ int positionFactor = _incrementMoveAnimation / 2;
+        } else if (_type == AnimationType.SlowMove) {
+            int positionFactor = _incrementMoveAnimation / 2;
             int xPos = _target.getButton().getXPos() - positionFactor;
             int yPos = _target.getButton().getYPos() - positionFactor;
-            int rad = _target.getButton().getRadius() + _incrementMoveAnimation;
+            int rad = _target.getButton().getRadius() - _target.getButton().getOffset() + _incrementMoveAnimation;
 
             g.setColor(_borderColor);
             g.fillCircle(xPos, yPos, rad);
 
             g.setColor(_baseColor);
-            g.fillCircle(_target.getButton().getXPos(), _target.getButton().getYPos(), _target.getButton().getRadius());
+            g.fillCircle(_target.getButton().getXPos(), _target.getButton().getYPos(), _target.getButton().getRadius() - _target.getButton().getOffset());
         }
     }
 
-    public String getId() { return _id;}
-    public Celda getTarget() { return _target; }
+    public String getId() {
+        return _id;
+    }
+
+    public Celda getTarget() {
+        return _target;
+    }
 
     private String _id;
     private Celda _target;

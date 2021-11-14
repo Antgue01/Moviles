@@ -5,7 +5,7 @@ import es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Image;
 
 public class Interact {
-    public Interact(String id, MyColor baseColor, int x, int y, int rad, int boardX, int boardY){
+    public Interact(String id, MyColor baseColor, int x, int y, int rad, int boardX, int boardY, int offset) {
         _id = id;
         _baseColor = baseColor;
         _xPos = x;
@@ -16,45 +16,78 @@ public class Interact {
         _hasText = false;
         _hasImg = false;
         _hasBottomCircle = true;
+        _offset = offset;
     }
 
-    public void render(Graphics g){
-        if(!_hasAnimation && _hasBottomCircle){
+    public void render(Graphics g) {
+        if (!_hasAnimation && _hasBottomCircle) {
             g.setColor(_baseColor);
-            g.fillCircle(_xPos , _yPos , _radius);
+            g.fillCircle(_xPos, _yPos, _radius - _offset);
         }
-        if(_hasText){
-            if(_font != null) g.setFont(_font);
+        if (_hasText) {
+            int offsetX = _offset > 0 ? (_radius / 2 - (_offset / 2)) : (_radius / 2) ;
+            int offsetY = _offset > 0 ? (_radius / 2 - (_offset / 2)) : (_radius / 2) ;
+
+            if (_font != null) g.setFont(_font);
             g.setColor(_fontColor);
-            if(_text.length() > 2)
-                g.drawText(_text, _xPos + (_radius / 2) - ((_font.getSize() / 2) + 10), _yPos + (_radius / 2) + (_font.getSize()/4));
+            if (_text.length() > 2)
+                g.drawText(_text, _xPos + offsetX -((_font.getSize() / 2) + 10), _yPos + offsetY + (_font.getSize() / 4));
             else
-                g.drawText(_text, _xPos + (_radius / 2) - _font.getSize() / 4, _yPos + (_radius / 2) + _font.getSize() / 4);
+                g.drawText(_text, _xPos + offsetX - _font.getSize() / 4, _yPos +offsetY + _font.getSize() / 4);
         }
-        if(_hasImg && _showImg){
-            g.drawImage(_image, _xPos + (_radius / 2) - (_imageWidth / 2), _yPos + (_radius / 2) - (_imageHeight / 2),
+        if (_hasImg && _showImg) {
+            int offsetX = _offset > 0 ? (_radius / 2 - (_offset / 2)) -(_imageWidth/2) : (_radius / 2) - (_imageWidth / 2);
+            int offsetY = _offset > 0 ? (_radius / 2 - (_offset / 2)) -(_imageHeight/2): (_radius / 2) - (_imageHeight / 2);
+            g.drawImage(_image, _xPos + offsetX, _yPos + offsetY,
                     _imageWidth, _imageHeight, _imageAlpha);
         }
     }
 
-    public String getId(){ return _id; }
+    public String getId() {
+        return _id;
+    }
+
     public int getRadius() {
         return _radius;
     }
+
     public int getXPos() {
         return _xPos;
     }
+
     public int getYPos() {
         return _yPos;
     }
-    public int getBoardX() { return _boardX; }
-    public int getBoardY() { return _boardY; }
-    public void setBaseColor(MyColor bC) { _baseColor = bC; }
-    public void setBottomCircle(boolean b){ _hasBottomCircle = false; }
-    public void setShowImg(boolean s) { _showImg = s; }
-    public void setHasAnimation(boolean a){ _hasAnimation = a;}
 
-    public void setImage(Image img, int imgW, int imgH, boolean showImg, int alpha){
+    public int getBoardX() {
+        return _boardX;
+    }
+
+    public int getBoardY() {
+        return _boardY;
+    }
+
+    public int getOffset() {
+        return _offset;
+    }
+
+    public void setBaseColor(MyColor bC) {
+        _baseColor = bC;
+    }
+
+    public void setBottomCircle(boolean b) {
+        _hasBottomCircle = false;
+    }
+
+    public void setShowImg(boolean s) {
+        _showImg = s;
+    }
+
+    public void setHasAnimation(boolean a) {
+        _hasAnimation = a;
+    }
+
+    public void setImage(Image img, int imgW, int imgH, boolean showImg, int alpha) {
         _image = img;
         _imageWidth = imgW;
         _imageHeight = imgH;
@@ -63,7 +96,7 @@ public class Interact {
         _imageAlpha = alpha;
     }
 
-    public void setText(String text, Font font, MyColor fontColor){
+    public void setText(String text, Font font, MyColor fontColor) {
         _text = text;
         _hasText = true;
         _font = font;
@@ -88,9 +121,12 @@ public class Interact {
     private int _radius;
     private int _xPos;
     private int _yPos;
+    private int _offset;
     private MyColor _baseColor;
     private boolean _hasBottomCircle;
 
     private int _boardX;
     private int _boardY;
+
+
 }

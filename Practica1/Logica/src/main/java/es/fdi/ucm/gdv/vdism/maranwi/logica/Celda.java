@@ -13,9 +13,9 @@ public class Celda {
 
         int xPos = (x * rad) + BOARD_LOGIC_OFFSET_X;
         int yPos = (y * rad) + BOARD_LOGIC_OFFSET_Y;
-        _color=newColorFromType(tipo);
+        _color = newColorFromType(tipo);
         _lastColor = newColorFromType(tipo);
-        _button = new Interact(id + "", _color, xPos, yPos, rad, x, y);
+        _button = new Interact(id + "", _color, xPos, yPos, rad, x, y, (int) (rad * .1));
         if (neighbours != -1) {
             _button.setText(neighbours + "", font, fontColor);
         }
@@ -67,9 +67,13 @@ public class Celda {
         return _button;
     }
 
-    public MyColor getColor(){ return _color;}
+    public MyColor getColor() {
+        return _color;
+    }
 
-    public MyColor getLastColor() { return _lastColor;}
+    public MyColor getLastColor() {
+        return _lastColor;
+    }
 
     private void transformColor(TipoCelda Colorid) {
         if (Colorid == TipoCelda.Azul)
@@ -79,14 +83,15 @@ public class Celda {
         else if (Colorid == TipoCelda.Blanco)
             _color.setRGBA(0xF0ECECFF);
     }
+
     private MyColor newColorFromType(TipoCelda Colorid) {
         if (Colorid == TipoCelda.Azul)
-            return  new MyColor(0x20C4E4FF);
+            return new MyColor(0x20C4E4FF);
         else if (Colorid == TipoCelda.Rojo)
             return new MyColor(0xFF3C4CFF);
         else if (Colorid == TipoCelda.Blanco)
-            return  new MyColor(0xF0ECECFF);
-        else return  new MyColor(0);
+            return new MyColor(0xF0ECECFF);
+        else return new MyColor(0);
     }
 
     private MyColor _color;

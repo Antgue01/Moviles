@@ -17,7 +17,7 @@ public class MenuState implements GameState {
 
         //Main menu => 1 Button : Play
         _buttons = new Interact[8];
-        _buttons[0] = new Interact("Play", new MyColor(0), (_mainApp.getLogicWidth()/3) + 10, (_mainApp.getLogicHeight()/3) + 10, 0, 0, 0);
+        _buttons[0] = new Interact("Play", new MyColor(0), (_mainApp.getLogicWidth()/3) + 10, (_mainApp.getLogicHeight()/3) + 10, 0, 0, 0,0);
         _buttons[0].setText("Touch\n  To\nPlay", _font70, _fontColor);
 
         //Logo button
@@ -31,7 +31,7 @@ public class MenuState implements GameState {
         //Sub menu => Board size selection buttons: 1 button per size
         for(int x = 1; x < _buttons.length - 1; ++x){
             MyColor color = (x%2==0) ? new MyColor(0xFF3C4CFF) : new MyColor(0x20C4E4FF);
-            _buttons[x] = new Interact(x+"", color, xPos, yPos, BUTTON_RAD, x + FIRST_BOARD_SIZE, x + FIRST_BOARD_SIZE);
+            _buttons[x] = new Interact(x+"", color, xPos, yPos, BUTTON_RAD, x + FIRST_BOARD_SIZE, x + FIRST_BOARD_SIZE,0);
             _buttons[x].setText(Integer.toString(x + FIRST_BOARD_SIZE), _numbersFont, new MyColor(0xFFFFFFFF));
             xPos += BUTTON_RAD + buttonsOffset;
             if(xPos + BUTTON_RAD > _mainApp.getLogicWidth()){
@@ -45,7 +45,7 @@ public class MenuState implements GameState {
         xPos = (_mainApp.getLogicWidth() / 2) - (playImg.getWidth() / 2);
         yPos = (_mainApp.getLogicHeight()) - (playImg.getHeigth() + (playImg.getHeigth() / 2));
         int rad = playImg.getWidth();
-        _buttons[_buttons.length - 1] = new Interact("Exit", _fontColor, xPos , yPos, rad, 0, 0);
+        _buttons[_buttons.length - 1] = new Interact("Exit", _fontColor, xPos , yPos, rad, 0, 0,0);
         _buttons[_buttons.length - 1].setImage(playImg, playImg.getWidth(), playImg.getHeigth() , true, 100);
         _buttons[_buttons.length - 1].setBottomCircle(false);
     }

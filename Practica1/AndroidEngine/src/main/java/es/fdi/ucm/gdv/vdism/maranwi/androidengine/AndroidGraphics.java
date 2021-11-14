@@ -115,7 +115,6 @@ public class AndroidGraphics implements Graphics {
         _canvas.scale((float) x, (float) y);
     }
 
-    ///If width or height are -1 then it will draw the image with its original width or height
     @Override
     public void drawImage(Image img, int x, int y, int width, int height) {
         if (img != null) {
@@ -173,7 +172,6 @@ public class AndroidGraphics implements Graphics {
     public void drawText(String text, int x, int y) {
         String[] lines = text.split("\n");
         int verticalOffset = (int)_paint.descent() - (int)_paint.ascent();
-
         for (int i = 0; i<lines.length; ++i){
             _canvas.drawText(lines[i], x, y + (verticalOffset * i), _paint);
         }

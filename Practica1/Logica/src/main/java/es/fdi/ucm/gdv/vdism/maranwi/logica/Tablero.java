@@ -159,7 +159,10 @@ public class Tablero {
 
                     //Si no es azul numérica(no tiene vecinos) es candado, se configura su imágen y se añade a la lista de tokens
                     if(neigbours == -1){
-                        c.getButton().setImage(_lockImg, _lockImg.getWidth() / 2, _lockImg.getHeigth() / 2, false, 30);
+                        int newRadius = c.getButton().getRadius() - c.getButton().getOffset();
+                        int l = (int)Math.sqrt(Math.pow(newRadius, 2) + Math.pow(newRadius, 2));
+
+                        c.getButton().setImage(_lockImg, l / 2, l / 2, false, 30);
                         _lockTokensList.add(c);
                     }
                 }
