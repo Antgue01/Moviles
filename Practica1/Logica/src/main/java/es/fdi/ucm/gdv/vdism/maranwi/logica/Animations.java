@@ -81,7 +81,7 @@ public class Animations {
 
             }
             g.setColor((int) red, (int) green, (int) blue, 255);
-            g.fillOval(_target.getButton().getXPos(), _target.getButton().getYPos(), _target.getButton().getRadius()-_target.getButton().getRadius(), _target.getButton().getRadius()- _target.getButton().getOffset());
+            g.fillOval(_target.getButton().getXPos(), _target.getButton().getYPos(), _target.getButton().getRadius()-_target.getButton().getOffset(), _target.getButton().getRadius()- _target.getButton().getOffset());
         }
         else if(_type == AnimationType.FastMove){
             int positionFactor = _incrementMoveAnimation / 2;
