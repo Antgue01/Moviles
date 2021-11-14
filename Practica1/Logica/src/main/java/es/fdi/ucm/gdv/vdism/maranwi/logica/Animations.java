@@ -41,7 +41,11 @@ public class Animations {
         _incrementMoveAnimation = INCREMENT_ANIMATIONS_SIZE;
     }
 
-    //Return false if animation end, true other wise
+    /**
+     * Return false if animation end, true other wise
+     * @param deltaTime
+     * @return
+     */
     public boolean update(double deltaTime){
         if(_startTime == -1) _startTime = deltaTime;
         _time += deltaTime;
@@ -78,7 +82,7 @@ public class Animations {
 
             }
             g.setColor((int) red, (int) green, (int) blue, 255);
-            g.fillCircle(_target.getButton().getXPos(), _target.getButton().getYPos(), _target.getButton().getRadius());
+            g.fillOval(_target.getButton().getXPos(), _target.getButton().getYPos(), _target.getButton().getRadius(), _target.getButton().getRadius());
         }
         else if(_type == AnimationType.FastMove){
             int positionFactor = _incrementMoveAnimation / 2;
@@ -87,7 +91,7 @@ public class Animations {
             int rad = _target.getButton().getRadius() + _incrementMoveAnimation;
 
             g.setColor(_baseColor);
-            g.fillCircle(xPos, yPos, rad);
+            g.fillOval(xPos, yPos, rad, rad);
 
         }else if(_type == AnimationType.SlowMove){ int positionFactor = _incrementMoveAnimation / 2;
             int xPos = _target.getButton().getXPos() - positionFactor;
@@ -95,10 +99,10 @@ public class Animations {
             int rad = _target.getButton().getRadius() + _incrementMoveAnimation;
 
             g.setColor(_borderColor);
-            g.fillCircle(xPos, yPos, rad);
+            g.fillOval(xPos, yPos, rad, rad);
 
             g.setColor(_baseColor);
-            g.fillCircle(_target.getButton().getXPos(), _target.getButton().getYPos(), _target.getButton().getRadius());
+            g.fillOval(_target.getButton().getXPos(), _target.getButton().getYPos(), _target.getButton().getRadius(), _target.getButton().getRadius());
         }
     }
 

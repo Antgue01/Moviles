@@ -60,7 +60,7 @@ public class AndroidEngine implements Engine, Runnable {
         // Antes de saltar a la simulación, confirmamos que tenemos
         // un tamaño mayor que 0. Si la hebra se pone en marcha
         // muy rápido, la vista podría todavía no estar inicializada.
-        while(_running && _graphics.getWindowsWidth() == 0)
+        while(_running && _graphics.getWindowWidth() == 0)
             // Espera activa.
             ;
 

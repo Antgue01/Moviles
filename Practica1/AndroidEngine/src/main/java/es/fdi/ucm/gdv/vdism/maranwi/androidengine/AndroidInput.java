@@ -9,10 +9,10 @@ import java.util.List;
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Input;
 
 public class AndroidInput implements Input, View.OnTouchListener {
+
     public AndroidInput() {
         _events = new ArrayList<TouchEvent>();
     }
-
 
     @Override
     public List<TouchEvent> getTouchEvents() {
@@ -23,7 +23,6 @@ public class AndroidInput implements Input, View.OnTouchListener {
         }
         return auxEvents;
     }
-
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {

@@ -41,8 +41,12 @@ public class AndroidGraphics implements Graphics {
         _adjustRequest = true;
     }
 
+    /**
+     * Pintado de frame
+     * @param app
+     */
     public void draw(Application app) {
-        // Pintamos el frame
+
         while (!_holder.getSurface().isValid())
             ;
         _canvas = _holder.lockCanvas();
@@ -165,8 +169,16 @@ public class AndroidGraphics implements Graphics {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public void fillCircle(int cx, int cy, int r) {
-        _canvas.drawOval(cx, cy, cx + r, cy + r, _paint);
+    public void fillOval(int cx, int cy, int rx, int ry) {
+        _paint.setStyle(Paint.Style.FILL);
+        _canvas.drawOval(cx, cy, cx + rx, cy + ry, _paint);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void drawOval(int cx, int cy, int rx, int ry) {
+        _paint.setStyle(Paint.Style.STROKE);
+        _canvas.drawOval(cx, cy, cx + rx, cy + ry, _paint);
     }
 
     @Override
@@ -180,12 +192,12 @@ public class AndroidGraphics implements Graphics {
     }
 
     @Override
-    public int getWindowsWidth() {
+    public int getWindowWidth() {
         return _view.getWidth();
     }
 
     @Override
-    public int getWindowsHeight() {
+    public int getWindowHeight() {
         return _view.getHeight();
     }
 
@@ -215,6 +227,10 @@ public class AndroidGraphics implements Graphics {
         _view.setOnTouchListener(listener);
     }
 
+    /**
+     * Limpia el fondo entero con un color
+     * @param color
+     */
     private void clearAll(int color) {
         int argb = (color & 0xFFFFFF00) >>> 8;
         int alpha = (color & 0x000000FF) << 24;
@@ -222,6 +238,9 @@ public class AndroidGraphics implements Graphics {
         _canvas.drawColor(argb);
     }
 
+    /**
+     * Calculos para ajustar la translacion y escala
+     */
     private void adjustToScreen() {
         int frameW = _view.getWidth();
         int frameH = _view.getHeight();
