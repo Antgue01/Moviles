@@ -117,7 +117,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     public Image newImage(String name) {
         java.awt.Image sprite = null;
         try {
-            sprite = javax.imageio.ImageIO.read(new java.io.File(name));
+            sprite = javax.imageio.ImageIO.read(new java.io.File("images/" + name));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -129,7 +129,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
         String id = filename + size + isBold + "";
         PCFont font = _fonts.get(id);
         if (font == null) {
-            font = new PCFont(filename, size, isBold);
+            font = new PCFont("fonts/" + filename, size, isBold);
         }
         return font;
     }

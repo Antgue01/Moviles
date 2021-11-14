@@ -65,7 +65,7 @@ public class AndroidGraphics implements Graphics {
     public Image newImage(String name) {
         Bitmap sprite = null;
         //esto debería cerrar el archivo si fallara al abrir
-        try (InputStream is = _assets.open(name)) {
+        try (InputStream is = _assets.open("images/" + name)) {
             sprite = BitmapFactory.decodeStream(is);
         } catch (Exception e) {
             e.printStackTrace();
@@ -82,7 +82,7 @@ public class AndroidGraphics implements Graphics {
         Typeface font = _fonts.get(filename);
         if (font == null) {
 
-            font = Typeface.createFromAsset(_assets, filename);
+            font = Typeface.createFromAsset(_assets, "fonts/" + filename);
             _fonts.put(filename, font);
         }
 
