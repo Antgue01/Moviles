@@ -23,13 +23,18 @@ public class AndroidGame extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         _engine.resume();
-
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         _engine.pause();
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        _engine.destroy();
     }
 
     AndroidEngine _engine;

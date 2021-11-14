@@ -16,6 +16,8 @@ public class AndroidEngine implements Engine, Runnable {
         _graphics = new AndroidGraphics(context, assets, _myApp.getLogicWidth(), _myApp.getLogicHeight());
 
         _graphics.setTouchListener(_input);
+
+        _myApp.onInit(this);
     }
 
     public void resume() {
@@ -67,7 +69,6 @@ public class AndroidEngine implements Engine, Runnable {
 
         long lastFrameTime = System.nanoTime();
 
-        _myApp.onInit(this);
         //MAIN LOOP
         while (_running) {
             long currentTime = System.nanoTime();
@@ -79,12 +80,15 @@ public class AndroidEngine implements Engine, Runnable {
             _myApp.onUpdate(elapsedTime);
             _graphics.draw(_myApp);
         }
+    }
+
+    public void destroy(){
         _myApp.onExit();
 
         release();
     }
 
-    private void release(){
+    public void release(){
         _myApp.onRelease();
         _myApp = null;
         _input = null;
