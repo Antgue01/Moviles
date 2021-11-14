@@ -1,23 +1,37 @@
 package es.fdi.ucm.gdv.vdism.maranwi.logica;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Random;
 
 public class BoardGenerator {
 
-    public BoardGenerator(int rows, int cols, int [][]gameMatrix, int[][] dirs){
+    public BoardGenerator(int rows, int cols, int[][] gameMatrix, int[][] dirs) {
         _rows = rows;
         _cols = cols;
         _gameMatrix = gameMatrix;
         _dirs = dirs;
         _rand = new Random();
         _procesed = new boolean[_rows][_cols];
-        Arrays.fill(_procesed, false);
+        _advancedInDir = new int[4];
+        _freePositions = new HashMap<Integer, int[]>();
+        for (int i = 0; i < gameMatrix.length; i++)
+            for (int j = 0; j < gameMatrix[0].length; j++) {
+                int[] pos = {i, j};
+                _freePositions.put(i * gameMatrix.length + j, pos);
+                _procesed[i][j] = false;
+            }
+
         //TODO instanciar y rellenar el map con las ids aqui
         newBoard();
     }
 
-    private void newBoard(){
+    public int[][] getGeneratedBoard() {
+        return _gameMatrix;
+    }
+
+    private void newBoard() {
 
         int newRow = 0;
         int newCol = 0;
@@ -25,16 +39,16 @@ public class BoardGenerator {
         boolean isEnd = false;
         boolean found = false;
 
-        while(!isEnd){
+        while (!isEnd) {
             //Try a random position
             found = false;
             cont = 0;
-            while(cont < 3 && !found){
+            while (cont < 3 && !found) {
                 newRow = _rand.nextInt(_rows);
                 newCol = _rand.nextInt(_cols);
-                if(validPos(newRow, newCol) && !_procesed[newRow][newCol]){
+                if (validPos(newRow, newCol) && !_procesed[newRow][newCol]) {
                     found = true;
-                }else ++cont;
+                } else ++cont;
             }
 
             //If we cant get a random position find the first one not processed
@@ -42,39 +56,38 @@ public class BoardGenerator {
             //TODO ES DECIR AÑADIR UNA VARIABLE AUXILIAR MÁS QUE SEA EL MAP Y QUE SE RELLENE CON LOS IDS DE TODAS LAS CELDAS DEL TABLERO
             //TODO PARA PODER HACER ESTE CAMBIO CUANDO SE PROCESE (mas abajo) UNA CELDA HAY QUE SACARLA DEL MAP
             //TODO ASI PODEMOS COGER EL PRIMERO DEL MAP Y NO HAY QUE HACER 1 RECORRIDO CADA VEZ QUE SE QUIERE COGER UNA
-            if(!found){
-                for(int row = 0; row < _procesed[0].length && !found; ++row){
-                    for(int col = 0; col < _procesed[1].length && !found; ++col){
-                        if(!_procesed[row][col]){
-                            found = true;
-                            newRow = row;
-                            newCol = col;
-                        }
-                    }
-                }
+            //me da una libre pero los hashmap no garantizan orden
+            if (!found) {
+                int[] position = _freePositions.entrySet().iterator().next().getValue();
+                newRow = position[0];
+                newCol = position[1];
+
             }
 
             //If we cant get a not proccesed target, board is full, otherwise procese it
-            if(!found) isEnd = true;
-            else{
+            if (!found) isEnd = true;
+            else {
+
                 int neigbours = tryNewBlueNumeric(newRow, newCol);
-                if(neigbours != -1){
+                if (neigbours != -1) {
                     //todo establecer como numérica con valor neigbours y cerrar con rojos en todas las direcciones
                     _gameMatrix[newRow][newCol] = neigbours;
-                }else{
-                   //todo establecer como ficha roja
+                } else {
+                    //todo establecer como ficha roja
                     _gameMatrix[newRow][newCol] = -1;
                 }
                 _procesed[newRow][newCol] = true;
+                _freePositions.remove(newRow * _gameMatrix.length + newCol);
             }
         }
     }
 
-    private int tryNewBlueNumeric(int row, int col){
+    private int tryNewBlueNumeric(int row, int col) {
+        Arrays.fill(_advancedInDir, 0);
         int maxNeigbours = _cols;
 
         //if totalNeigbours > maxNeigbours -> red case
-        if(getTotalNeigbours(row, col) > maxNeigbours)
+        if (getTotalNeigbours(row, col) > maxNeigbours)
             return -1;
 
         //Random neigbours
@@ -84,95 +97,101 @@ public class BoardGenerator {
 
         //Fill blues
         int dir = 0, totalNeigbours = 0;
-        int []usedDirs = new int[4];
+        int[] usedDirs = new int[4];
         Arrays.fill(usedDirs, -1); //-1 = DIR NOT USED / CHECKED
         boolean existNewPossibleNeigbours = true;
 
-        while(existNewPossibleNeigbours){
+        while (existNewPossibleNeigbours) {
+
+
             dir = getRandomDir(usedDirs);
-
             //If exist not checked dir
-            if(dir != -1){
-                usedDirs[dir] = 0; //Now this dir is checked
-                int candidateRow = row + _dirs[dir][0];
-                int candidateCol = col + _dirs[dir][1];
+            if (dir != -1) {
+                int candidateRow = row + (_dirs[dir][0] * (_advancedInDir[dir] + 1));
+                int candidateCol = col + (_dirs[dir][1] * (_advancedInDir[dir] + 1));
 
-                if(validPos(candidateRow, candidateCol) && !_procesed[candidateRow][candidateCol]){
+                if (validPos(candidateRow, candidateCol) && !_procesed[candidateRow][candidateCol]) {
                     //Calculate how many blue are in this direction
                     int n = getNeigboursInDir(candidateRow, candidateCol, _dirs[dir]);
-
+                    System.out.println(n);
                     //If it is exceeded, discard the dir
-                    if(totalNeigbours + n > randNeigbours){
+                    if (totalNeigbours + n + 1 > randNeigbours) {
                         //todo  TIENE QUE SER UN ROJO (PORQUE SE HA EXCEDIDO SI PONE UN AZUL EN ESA DIRECCIÓN)
                         _gameMatrix[candidateRow][candidateCol] = -1;
-                    }
-                    else{
+                        usedDirs[dir] = 0;//Now this dir is checked
+                    } else {
                         //todo  SI NO SE DESCARTA ESTABLECER LA CELDA (candidateRow,candidateCol) COMO AZUL y ES FICHA
                         _gameMatrix[candidateRow][candidateCol] = 0;
-                        totalNeigbours += n;
+                        totalNeigbours ++;
+                        _advancedInDir[dir]++;
                     }
                     _procesed[candidateRow][candidateCol] = true;
+                    _freePositions.remove(candidateRow*_gameMatrix.length+candidateCol);
                 }
-            }
-            else{
+                else usedDirs[dir]=0;
+            } else {
                 existNewPossibleNeigbours = false;
             }
         }
         return totalNeigbours;
     }
 
-    private int getTotalNeigbours(int row, int col){
+    private int getTotalNeigbours(int row, int col) {
         int total = 0;
-        for(int[] d : _dirs){
-            total += getNeigboursInDir(row, col, d);
+        for (int i = 0; i < _dirs.length; i++) {
+            _advancedInDir[i] = getNeigboursInDir(row, col, _dirs[i]);
+            total += _advancedInDir[i];
         }
         return total;
     }
 
-    private int getNeigboursInDir(int row, int col, int[] dir){
+    private int getNeigboursInDir(int row, int col, int[] dir) {
         int total = 0;
         int newRow = row + dir[0];
         int newCol = col + dir[1];
 
-        while (validPos(newRow, newCol)){
-            if(_gameMatrix[newRow][newCol] != 0) break;
+        while (validPos(newRow, newCol)) {
+            if (_gameMatrix[newRow][newCol] != 0) break;
             total++;
-            newRow = row + dir[0];
-            newCol = col + dir[1];
+            newRow = newRow + dir[0];
+            newCol = newCol + dir[1];
         }
 
         return total;
     }
 
-    private int getRandomDir(int[] usedDirs){
+    private int getRandomDir(int[] usedDirs) {
         //Try random dir
         int cont = 0;
         int dir = 0;
         boolean existNewDir = false;
 
-        while(cont < 4 && !existNewDir){
+        while (cont < 4 && !existNewDir) {
             dir = _rand.nextInt(_dirs.length); //Random dir
-            if(usedDirs[dir] == -1) existNewDir = true; //If this dir is not used we got a new dir
+            if (usedDirs[dir] == -1) existNewDir = true;
+            cont++;//If this dir is not used we got a new dir
         }
         //If we cant get a random dir try to get the first one not used
-        if(!existNewDir){
-            for(dir = 0; dir < usedDirs.length && !existNewDir; ++dir)
-                if(usedDirs[dir] == -1) existNewDir = true;
+        if (!existNewDir) {
+            for (dir = 0; dir < usedDirs.length && !existNewDir; dir++)
+                if (usedDirs[dir] == -1) existNewDir = true;
         }
-        return (existNewDir) ? dir : -1;
+        return (existNewDir) ? dir-1 : -1;
     }
 
-    private boolean validPos(int row, int col){
+    private boolean validPos(int row, int col) {
         return (row >= 0 && row < _rows) && (col >= 0 && col < _cols);
     }
 
     private int[][] _dirs;
-    // BLANCO, ROJO, AZUL, AZUL CON NEIGHBOURS
-    // {-2, -1 , 0, neighbours}
+    // ROJO, AZUL, AZUL CON NEIGHBOURS
+    // { -1 , 0, neighbours}
     private int[][] _gameMatrix;
-    boolean _procesed[][];
+    private int[] _advancedInDir;
+    private boolean _procesed[][];
     private java.util.Random _rand;
     private int _rows;
     private int _cols;
+    private HashMap<Integer, int[]> _freePositions;
 
 }
