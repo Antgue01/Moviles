@@ -9,6 +9,8 @@ public class PlayState implements GameState {
 
     @Override
     public void start(Graphics g) {
+        _finishState = false;
+
         _font = g.newFont("JosefinSans-Bold.ttf", 48, true);
         int numbersFontSize = (_buttonRadius * 48)/80;
         _numbersFont = g.newFont("JosefinSans-Bold.ttf", numbersFontSize, true);
@@ -60,7 +62,11 @@ public class PlayState implements GameState {
     @Override
     public void render(Graphics g) {
         g.setColor(_fontColor);
-        if(_hintText == "") {
+        if(_finishState){
+            g.setFont(_hintFont);
+            g.drawText(_hintText,(_mainApp.getLogicWidth() / 4) - 30,BOARD_LOGIC_OFFSET_Y - 40);
+        }
+        else if(_hintText == "") {
             g.setFont(_font);
             g.drawText(_boardSizeText,(_mainApp.getLogicWidth() / 2) - 50,BOARD_LOGIC_OFFSET_Y - 40);
         }else{
@@ -80,11 +86,23 @@ public class PlayState implements GameState {
     @Override
     public void update(double deltaTime) {
         _animator.update(deltaTime);
+
+        if (!_finishState && _board.isBoardCompleted()){
+            _finishState = true;
+            _hintText = "Completed! Tap to restart";
+        }
         //_board.compruebaSolucion();
     }
 
     @Override
     public void identifyEvent(int x, int y) {
+        if(_finishState){
+            OhNo o = (OhNo) _mainApp;
+            if (o!= null){
+                System.out.println("Loading MenuState");
+                if (o!= null) o.goToMenuState();;
+            }
+        }
         if(_hintText != "") _hintText = "";
         if(x > BOARD_LOGIC_OFFSET_X  && x < BOARD_LOGIC_OFFSET_X + (_buttonRadius * _cols) &&
            y > BOARD_LOGIC_OFFSET_Y && y < BOARD_LOGIC_OFFSET_Y + (_buttonRadius * _rows)){
@@ -166,4 +184,6 @@ public class PlayState implements GameState {
     private int _cols;
     private static final int BOARD_LOGIC_OFFSET_Y = 120;
     private int BOARD_LOGIC_OFFSET_X;
+
+    private boolean _finishState;
 }

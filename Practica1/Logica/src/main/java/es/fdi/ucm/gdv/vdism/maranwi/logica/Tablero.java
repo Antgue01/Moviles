@@ -24,6 +24,8 @@ public class Tablero {
         _hintsManager = new HintsManager();
 
         _rand = new Random();
+
+        _isCompleted = false;
         //generaTablero();
     }
 
@@ -221,6 +223,10 @@ public class Tablero {
 
     }
 
+    public boolean isBoardCompleted(){
+        return _isCompleted;
+    }
+
     //La matriz solucíón solo guarda los colores de cada posición
     private int _matrizSolucion[][];
     private Celda _matrizJuego[][];
@@ -236,6 +242,8 @@ public class Tablero {
     boolean _showLockImgs;
 
     HintsManager _hintsManager;
+
+    boolean _isCompleted;
 
     /** Direcciones en el tablero {Derecha, Abajo, Izquierda, Arriba} */
     private int[][] _dirs = {{1,0},{0,-1},{-1,0},{0,1}};
