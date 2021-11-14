@@ -60,10 +60,12 @@ public class BoardGenerator {
             //TODO ASI PODEMOS COGER EL PRIMERO DEL MAP Y NO HAY QUE HACER 1 RECORRIDO CADA VEZ QUE SE QUIERE COGER UNA
             //me da una libre pero los hashmap no garantizan orden
             if (!found) {
-                int[] position = _freePositions.entrySet().iterator().next().getValue();
-                newRow = position[0];
-                newCol = position[1];
-
+                if(!_freePositions.isEmpty()){
+                    int[] position = _freePositions.entrySet().iterator().next().getValue();
+                    newRow = position[0];
+                    newCol = position[1];
+                    found = true;
+                }
             }
 
             //If we cant get a not proccesed target, board is full, otherwise procese it
@@ -74,6 +76,16 @@ public class BoardGenerator {
                 if (neigbours != -1) {
                     //todo establecer como numérica con valor neigbours y cerrar con rojos en todas las direcciones
                     _gameMatrix[newRow][newCol] = neigbours;
+                    for(int x = 0; x < _dirs.length; x++){
+                        int newRedRow = newRow + (_dirs[x][0] * (_advancedInDir[x] + 1));
+                        int newRedCol = newCol + (_dirs[x][1] * (_advancedInDir[x] + 1));
+
+                        if(validPos(newRedRow, newRedCol) && _gameMatrix[newRedRow][newRedCol] == -2){
+                            _gameMatrix[newRedRow][newRedCol] = -1;
+                            _procesed[newRedRow][newRedCol] = true;
+                            _freePositions.remove(newRedRow * _gameMatrix.length + newRedCol);
+                        }
+                    }
                 } else {
                     //todo establecer como ficha roja
                     _gameMatrix[newRow][newCol] = -1;
@@ -107,10 +119,11 @@ public class BoardGenerator {
 
         while (existNewPossibleNeigbours) {
             dir = getRandomDir(usedDirs);
+            int candidateRow = 0, candidateCol = 0;
             //If exist not checked dir
             if (dir != -1) {
-                int candidateRow = row + (_dirs[dir][0] * (_advancedInDir[dir] + 1));
-                int candidateCol = col + (_dirs[dir][1] * (_advancedInDir[dir] + 1));
+                candidateRow = row + (_dirs[dir][0] * (_advancedInDir[dir] + 1));
+                candidateCol = col + (_dirs[dir][1] * (_advancedInDir[dir] + 1));
 
                 if (validPos(candidateRow, candidateCol) && !_procesed[candidateRow][candidateCol]) {
                     //Calculate how many blue are in this direction
@@ -124,7 +137,7 @@ public class BoardGenerator {
                         //todo  SI NO SE DESCARTA ESTABLECER LA CELDA (candidateRow,candidateCol) COMO AZUL y ES FICHA
                         _gameMatrix[candidateRow][candidateCol] = 0;
                         totalNeigbours += n + 1;
-                        _advancedInDir[dir]++;
+                        _advancedInDir[dir] += n + 1;
                     }
                     _procesed[candidateRow][candidateCol] = true;
                     _freePositions.remove(candidateRow*_gameMatrix.length+candidateCol);
@@ -177,7 +190,6 @@ public class BoardGenerator {
             for (dir = 0; dir < usedDirs.length && !existNewDir; dir++)
                 if (usedDirs[dir] == -1) existNewDir = true;
         }
-        System.out.print("Direccion utilizada :" + dir);
         return (existNewDir) ? dir-1 : -1;
     }
 
