@@ -60,7 +60,6 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
             @Override
             public void windowClosing(WindowEvent e) {
                 super.windowClosing(e);
-                System.out.println("CLOSING WINDOW");
                 _windowClosed = true;
             }
         });

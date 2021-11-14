@@ -21,26 +21,26 @@ public class Animator {
 
         Celda c = _board.getMatrizJuego()[row][col];
         Animations a = new Animations(c);
-        if(c.getEsFicha() && !isRestoreMove){
+        if(c.getEsFicha() && !isRestoreMove && !isHint){
             //Fade Animation
             _board.nextColor(row, col);
             MyColor cOut = c.getLastColor();
             MyColor cIn = c.getColor();
             a.startFadeAnimation(cIn, cOut);
-            System.out.println("Fade in row: " + c.getButton().getBoardX() + " col: " + c.getButton().getBoardY());
+            //System.out.println("Fade in row: " + c.getButton().getBoardX() + " col: " + c.getButton().getBoardY());
         }
-        else if(c.getEsFicha() && isRestoreMove){
+        else if(c.getEsFicha() && isRestoreMove && !isHint){
             //Fade Animation
             MyColor cIn = c.getLastColor();
             MyColor cOut = c.getColor();
             a.startFadeAnimation(cIn, cOut);
-            System.out.println("Fade out row: " + c.getButton().getBoardX() + " col: " + c.getButton().getBoardY());
+            //System.out.println("Fade out row: " + c.getButton().getBoardX() + " col: " + c.getButton().getBoardY());
         }
         else if(!c.getEsFicha() && !isHint){
             //Fast Move Animation
             _board.showLockImgs();
             a.startFastMoveAnimation();
-            System.out.println("FastMove in row: " + c.getButton().getBoardX() + " col: " + c.getButton().getBoardY());
+            //System.out.println("FastMove in row: " + c.getButton().getBoardX() + " col: " + c.getButton().getBoardY());
         }
         else if(isHint){
             //Slow Move Animation
@@ -55,7 +55,7 @@ public class Animator {
         for (Map.Entry<String, Animations> elem : _animations.entrySet()) {
             if(!elem.getValue().update(deltaTime)){
                 _queue.add(elem.getKey());
-                System.out.println("Animation in element " + elem.getValue().getId() + " end.");
+                //System.out.println("Animation in element " + elem.getValue().getId() + " end.");
             }
         }
         while(!_queue.isEmpty()){
