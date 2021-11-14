@@ -47,8 +47,8 @@ public class OhNo implements es.fdi.ucm.gdv.vdism.maranwi.engine.Application {
     public void onInput(Input input) {
         for (Input.TouchEvent t : input.getTouchEvents()) {
             if (t != null && t.get_type() == Input.TouchEvent.TouchType.pulsacion){
-                double windowsWidth = _engine.getGraphics().getWindowsWidth();
-                double windowsHeigth = _engine.getGraphics().getWindowsHeight();
+                double windowsWidth = _engine.getGraphics().getWindowWidth();
+                double windowsHeigth = _engine.getGraphics().getWindowHeight();
                 double canvasWidth = _engine.getGraphics().getCanvasWidth();
                 double canvasHeight = _engine.getGraphics().getCanvasHeight();
                 double xLeftLimitBox  = (windowsWidth - canvasWidth) / 2;

@@ -220,10 +220,13 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     }
 
     @Override
-    public void fillCircle(int cx, int cy, int r) {
-        if (_myGraphics != null)
-            _myGraphics.fillOval(cx, cy, r, r);
-        else System.out.println("No hay graphics xhaval");
+    public void fillOval(int cx, int cy, int rx, int ry) {
+        _myGraphics.fillOval(cx, cy, rx, ry);
+    }
+
+    @Override
+    public void drawOval(int cx, int cy, int rx, int ry) {
+        _myGraphics.drawOval(cx, cy, rx, ry);
     }
 
     @Override
@@ -237,12 +240,12 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     }
 
     @Override
-    public int getWindowsWidth() {
+    public int getWindowWidth() {
         return _frame.getWidth();
     }
 
     @Override
-    public int getWindowsHeight() {
+    public int getWindowHeight() {
         return _frame.getHeight();
     }
 

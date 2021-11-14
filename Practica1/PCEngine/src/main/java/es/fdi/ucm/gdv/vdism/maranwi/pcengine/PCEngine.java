@@ -19,9 +19,10 @@ public class PCEngine implements Engine {
     public void engineLoop(){
         _running = true;
 
+        _myApp.onInit(this);
+
         long lastFrameTime = System.nanoTime();
 
-        _myApp.onInit(this);
         //MAIN LOOP
         while(_running){
             long currentTime = System.nanoTime();

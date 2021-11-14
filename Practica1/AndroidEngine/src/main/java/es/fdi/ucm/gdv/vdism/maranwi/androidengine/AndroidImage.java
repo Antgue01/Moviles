@@ -12,8 +12,6 @@ public class AndroidImage implements Image {
         _bitmap=bitmap;
     }
 
-
-
     @Override
     public int getWidth() {
         return _width;
@@ -23,9 +21,11 @@ public class AndroidImage implements Image {
     public int getHeigth() {
         return _height;
     }
+
     public  Bitmap getBitmap(){
         return  _bitmap;
     }
+
     int _height;
     int _width;
     Bitmap _bitmap;

@@ -22,7 +22,7 @@ public class Interact {
     public void render(Graphics g) {
         if (!_hasAnimation && _hasBottomCircle) {
             g.setColor(_baseColor);
-            g.fillCircle(_xPos, _yPos, _radius - _offset);
+            g.fillOval(_xPos , _yPos , _radius, _radius- _offset);
         }
         if (_hasText) {
             int offsetX = _offset > 0 ? (_radius / 2 - (_offset / 2)) : (_radius / 2) ;

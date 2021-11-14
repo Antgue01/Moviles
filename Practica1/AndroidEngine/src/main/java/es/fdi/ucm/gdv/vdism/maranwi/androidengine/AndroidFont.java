@@ -28,12 +28,6 @@ public class AndroidFont implements Font {
         return _font;
     }
 
-    public void setSize(int size) {
-        if (size > 0)
-            _size = size;
-        else _size = 10;
-    }
-
     private int _size;
     private boolean _isBold;
     private Typeface _font;
