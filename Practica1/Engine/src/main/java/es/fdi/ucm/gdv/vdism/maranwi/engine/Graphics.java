@@ -78,8 +78,9 @@ public interface Graphics {
      * @param cy posicion respecto a la esquina superior izquierda del ovalo
      * @param rx radio en x
      * @param ry radio en y
+     * @param strokeWidth anchura de dibujado
      */
-    void drawOval(int cx, int cy, int rx, int ry);
+    void drawOval(int cx, int cy, int rx, int ry, float strokeWidth);
 
     /**
      * Pinta un texto con la fuente establecida
