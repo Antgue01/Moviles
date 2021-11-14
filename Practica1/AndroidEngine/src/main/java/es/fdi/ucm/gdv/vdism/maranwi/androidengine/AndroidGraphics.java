@@ -175,9 +175,12 @@ public class AndroidGraphics implements Graphics {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public void drawOval(int cx, int cy, int rx, int ry) {
+    public void drawOval(int cx, int cy, int rx, int ry, float strokeWidth) {
         _paint.setStyle(Paint.Style.STROKE);
+        _paint.setStrokeWidth(strokeWidth);
         _canvas.drawOval(cx, cy, cx + rx, cy + ry, _paint);
+        _paint.setStrokeWidth(1);
+        _paint.setStyle(Paint.Style.FILL);
     }
 
     @Override

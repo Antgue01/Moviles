@@ -1,6 +1,7 @@
 package es.fdi.ucm.gdv.vdism.maranwi.pcengine;
 
 import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.Dimension;
 
 import es.fdi.ucm.gdv.vdism.maranwi.engine.Font;
@@ -225,8 +226,13 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     }
 
     @Override
-    public void drawOval(int cx, int cy, int rx, int ry) {
-        _myGraphics.drawOval(cx, cy, rx, ry);
+    public void drawOval(int cx, int cy, int rx, int ry, float strokeWidth) {
+        Graphics2D g2d = (Graphics2D) _myGraphics;
+        if (g2d != null){
+            g2d.setStroke(new BasicStroke(strokeWidth));
+            g2d.drawOval(cx, cy, rx, ry);
+            g2d.setStroke(new BasicStroke(1));
+        }
     }
 
     @Override
@@ -274,6 +280,10 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
         _frame.addMouseMotionListener(mml);
     }
 
+    /**
+     * Limpia el fondo entero con un color
+     * @param color
+     */
     private void clearAll(int color) {
         if (color != -1) {
             _myGraphics.setColor(new java.awt.Color(color));
@@ -281,6 +291,9 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
         }
     }
 
+    /**
+     * Calculos para ajustar la translacion y escala
+     */
     private void adjustToScreen() {
         Dimension size = _frame.getSize();
 
