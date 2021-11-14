@@ -9,17 +9,18 @@ public class MenuState implements GameState {
     public void start(Graphics g) {
         _titleText = "Oh no";
         _fontColor = new MyColor(0x000000FF);
-        _font = g.newFont("Molle-Regular.ttf", 70, true);
-        _numbersFont = g.newFont("JosefinSans-Bold.ttf",50, true);
+        _font70 = g.newFont("Molle-Regular.ttf", 70, true);
+        _font38 = g.newFont("JosefinSans-Bold.ttf", 38, true);
+        _numbersFont = g.newFont("JosefinSans-Bold.ttf",48, true);
         _onMainMenu = true;
 
         //Main menu => 1 Button : Play
         _buttons = new Interact[7];
         _buttons[0] = new Interact("Play", new MyColor(0), (_mainApp.getLogicWidth()/3) + 10, (_mainApp.getLogicHeight()/3) + 10, 0, 0, 0);
-        _buttons[0].setText("Touch\n  To\nPlay", _font, _fontColor);
+        _buttons[0].setText("Touch\n  To\nPlay", _font70, _fontColor);
 
         int buttonsOffset = 10;
-        int xPos = (BUTTON_RAD / 2) - buttonsOffset, yPos = BUTTON_RAD;
+        int xPos = (BUTTON_RAD / 2) - buttonsOffset, yPos = BUTTON_RAD + (_mainApp.getLogicHeight()/4);
         //Sub menu => Board size selection buttons: 1 button per size
         for(int x = 1; x < _buttons.length; ++x){
             MyColor color = (x%2==0) ? new MyColor(0xFF3C4CFF) : new MyColor(0x20C4E4FF);
@@ -35,13 +36,19 @@ public class MenuState implements GameState {
 
     @Override
     public void render(Graphics g) {
-        g.setFont(_font);
+        g.setFont(_font70);
+        g.setColor(_fontColor);
         if(_onMainMenu){
-            g.setColor(_fontColor);
             g.drawText(_titleText, (_mainApp.getLogicWidth()/3) - 35, _mainApp.getLogicHeight()/5);
             _buttons[0].render(g);
         }
-        else for(int x = 1; x< _buttons.length; ++x) _buttons[x].render(g);
+        else{
+            g.drawText(_titleText, (_mainApp.getLogicWidth()/3) - 35, _mainApp.getLogicHeight()/5);
+            for(int x = 1; x< _buttons.length; ++x) _buttons[x].render(g);
+            g.setFont(_font38);
+            g.setColor(_fontColor);
+            g.drawText("Select a size to play...", (_mainApp.getLogicWidth()/10), _mainApp.getLogicHeight()/3);
+        }
     }
 
     @Override
@@ -90,7 +97,8 @@ public class MenuState implements GameState {
 
     private Interact _buttons[];
     private Application _mainApp;
-    private Font _font;
+    private Font _font70;
+    private Font _font38;
     private Font _numbersFont;
     private MyColor _fontColor;
     private boolean _onMainMenu;
