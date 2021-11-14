@@ -53,12 +53,7 @@ public class BoardGenerator {
                 } else ++cont;
             }
 
-            //If we cant get a random position find the first one not processed
-            //todo CAMBIAR ESTE RECORRIDO POR UN MAP QUE SEA DE STRINGS Y QUE CADA ID SEA ROW+COL (SIN BORRAR EL ARRAY DE BOOLEANOS!)
-            //TODO ES DECIR AÑADIR UNA VARIABLE AUXILIAR MÁS QUE SEA EL MAP Y QUE SE RELLENE CON LOS IDS DE TODAS LAS CELDAS DEL TABLERO
-            //TODO PARA PODER HACER ESTE CAMBIO CUANDO SE PROCESE (mas abajo) UNA CELDA HAY QUE SACARLA DEL MAP
-            //TODO ASI PODEMOS COGER EL PRIMERO DEL MAP Y NO HAY QUE HACER 1 RECORRIDO CADA VEZ QUE SE QUIERE COGER UNA
-            //me da una libre pero los hashmap no garantizan orden
+            //If we cant get a random position find the first one not processed in the map
             if (!found) {
                 if(!_freePositions.isEmpty()){
                     int[] position = _freePositions.entrySet().iterator().next().getValue();
@@ -112,13 +107,21 @@ public class BoardGenerator {
 
         //Fill blues
         int dir = 0;
-        int[] usedDirs = new int[4];
-        Arrays.fill(usedDirs, -1); //-1 = DIR NOT USED / CHECKED
+        int[] validDirs = new int[4];
+        //dirs 0 = invalid dir /// dirs 1 = valid dir
+        for(int x = 0; x < _dirs.length; ++x){
+            if(validPos(row + _dirs[x][0], col + _dirs[x][1])){
+                if(_gameMatrix[row][col] == -1) validDirs[x] = 0;
+                else validDirs[x] = 1;
+            }else{
+                validDirs[x] = 0;
+            }
+        }
+
         boolean existNewPossibleNeigbours = true;
 
-
         while (existNewPossibleNeigbours) {
-            dir = getRandomDir(usedDirs);
+            dir = getRandomDir(validDirs);
             int candidateRow = 0, candidateCol = 0;
             //If exist not checked dir
             if (dir != -1) {
@@ -132,7 +135,7 @@ public class BoardGenerator {
                     if (totalNeigbours + n + 1 > randNeigbours) {
                         //todo  TIENE QUE SER UN ROJO (PORQUE SE HA EXCEDIDO SI PONE UN AZUL EN ESA DIRECCIÓN)
                         _gameMatrix[candidateRow][candidateCol] = -1;
-                        usedDirs[dir] = 0;//Now this dir is checked
+                        validDirs[dir] = 0;//Now this dir is checked
                     } else {
                         //todo  SI NO SE DESCARTA ESTABLECER LA CELDA (candidateRow,candidateCol) COMO AZUL y ES FICHA
                         _gameMatrix[candidateRow][candidateCol] = 0;
@@ -142,7 +145,7 @@ public class BoardGenerator {
                     _procesed[candidateRow][candidateCol] = true;
                     _freePositions.remove(candidateRow*_gameMatrix.length+candidateCol);
                 }
-                else usedDirs[dir]=0;
+                else validDirs[dir]=0;
             } else {
                 existNewPossibleNeigbours = false;
             }
@@ -182,15 +185,18 @@ public class BoardGenerator {
 
         while (cont < 4 && !existNewDir) {
             dir = _rand.nextInt(_dirs.length); //Random dir
-            if (usedDirs[dir] == -1) existNewDir = true;
+            if (usedDirs[dir] == 1) existNewDir = true;
             cont++;//If this dir is not used we got a new dir
         }
         //If we cant get a random dir try to get the first one not used
         if (!existNewDir) {
-            for (dir = 0; dir < usedDirs.length && !existNewDir; dir++)
-                if (usedDirs[dir] == -1) existNewDir = true;
+            for (int x = 0; x < usedDirs.length && !existNewDir; x++)
+                if (usedDirs[x] == 1){
+                    existNewDir = true;
+                    dir = x;
+                }
         }
-        return (existNewDir) ? dir-1 : -1;
+        return (existNewDir) ? dir : -1;
     }
 
     private boolean validPos(int row, int col) {

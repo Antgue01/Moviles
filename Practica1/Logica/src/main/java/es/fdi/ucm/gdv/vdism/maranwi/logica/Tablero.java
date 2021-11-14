@@ -214,13 +214,16 @@ public class Tablero {
     public boolean compruebaSolucion() {
         if (_numFichasBlancas > 0)
             return false;
+
         boolean esSolucion = true;
         for (int x = 0; x < _matrizSolucion[0].length && esSolucion; ++x) {
             for (int j = 0; j < _matrizSolucion[1].length; ++j) {
-                if (_matrizJuego[x][j].getEsFicha() && _matrizJuego[x][j].getTipoCeldaAsInt() != _matrizSolucion[x][j])
+                int code = _matrizSolucion[x][j] < 0 ? 1 : 0;
+                if (_matrizJuego[x][j].getTipoCeldaAsInt() != code)
                     esSolucion = false;
             }
         }
+        if(esSolucion) _isCompleted = true;
         return esSolucion;
     }
 

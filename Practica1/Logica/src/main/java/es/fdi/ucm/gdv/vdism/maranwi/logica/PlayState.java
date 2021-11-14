@@ -91,7 +91,7 @@ public class PlayState implements GameState {
             _finishState = true;
             _hintText = "Completed! Tap to restart";
         }
-        //_board.compruebaSolucion();
+        _board.compruebaSolucion();
     }
 
     @Override
