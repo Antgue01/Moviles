@@ -38,7 +38,7 @@ public class MenuState implements GameState {
         Image playImg = g.newImage("close.png");
         xPos = (_mainApp.getLogicWidth() / 2) - (playImg.getWidth() / 2);
         yPos = (_mainApp.getLogicHeight()) - (playImg.getHeigth() + (playImg.getHeigth() / 2));
-        int rad = playImg.getWidth() / 2;
+        int rad = playImg.getWidth();
         _buttons[_buttons.length - 1] = new Interact("Exit", _fontColor, xPos , yPos, rad, 0, 0);
         _buttons[_buttons.length - 1].setImage(playImg, playImg.getWidth(), playImg.getHeigth() , true, 100);
         _buttons[_buttons.length - 1].setBottomCircle(false);
