@@ -225,9 +225,8 @@ public class Tablero {
     }
 
     private void generateNewBoard() {
-        BoardGenerator bg = new BoardGenerator(_filas, _columnas, _matrizSolucion, _dirs);
+        BoardGenerator bg = new BoardGenerator(_filas, _columnas, _dirs);
         _matrizSolucion = bg.getGeneratedBoard();
-
     }
 
     public boolean isBoardCompleted(){

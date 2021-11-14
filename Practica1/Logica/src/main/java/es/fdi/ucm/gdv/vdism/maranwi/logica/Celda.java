@@ -16,7 +16,7 @@ public class Celda {
         _color = newColorFromType(tipo);
         _lastColor = newColorFromType(tipo);
         _button = new Interact(id + "", _color, xPos, yPos, rad, x, y, (int) (rad * .1));
-        if (neighbours != -1) {
+        if (neighbours > 0) {
             _button.setText(neighbours + "", font, fontColor);
         }
     }

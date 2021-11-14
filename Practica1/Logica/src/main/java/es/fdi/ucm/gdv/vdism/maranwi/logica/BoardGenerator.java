@@ -7,20 +7,22 @@ import java.util.Random;
 
 public class BoardGenerator {
 
-    public BoardGenerator(int rows, int cols, int[][] gameMatrix, int[][] dirs) {
+    public BoardGenerator(int rows, int cols, int[][] dirs) {
         _rows = rows;
         _cols = cols;
-        _gameMatrix = gameMatrix;
+        _gameMatrix = new int[rows][cols];
         _dirs = dirs;
         _rand = new Random();
         _procesed = new boolean[_rows][_cols];
         _advancedInDir = new int[4];
         _freePositions = new HashMap<Integer, int[]>();
-        for (int i = 0; i < gameMatrix.length; i++)
-            for (int j = 0; j < gameMatrix[0].length; j++) {
+
+        for (int i = 0; i < _gameMatrix.length; i++)
+            for (int j = 0; j < _gameMatrix[0].length; j++) {
                 int[] pos = {i, j};
-                _freePositions.put(i * gameMatrix.length + j, pos);
+                _freePositions.put(i * _gameMatrix.length + j, pos);
                 _procesed[i][j] = false;
+                _gameMatrix[i][j] = -2;
             }
 
         //TODO instanciar y rellenar el map con las ids aqui
@@ -87,7 +89,8 @@ public class BoardGenerator {
         int maxNeigbours = _cols;
 
         //if totalNeigbours > maxNeigbours -> red case
-        if (getTotalNeigbours(row, col) > maxNeigbours)
+        int totalNeigbours = getTotalNeigbours(row, col);
+        if (totalNeigbours > maxNeigbours)
             return -1;
 
         //Random neigbours
@@ -96,14 +99,13 @@ public class BoardGenerator {
 
 
         //Fill blues
-        int dir = 0, totalNeigbours = 0;
+        int dir = 0;
         int[] usedDirs = new int[4];
         Arrays.fill(usedDirs, -1); //-1 = DIR NOT USED / CHECKED
         boolean existNewPossibleNeigbours = true;
 
+
         while (existNewPossibleNeigbours) {
-
-
             dir = getRandomDir(usedDirs);
             //If exist not checked dir
             if (dir != -1) {
@@ -113,7 +115,6 @@ public class BoardGenerator {
                 if (validPos(candidateRow, candidateCol) && !_procesed[candidateRow][candidateCol]) {
                     //Calculate how many blue are in this direction
                     int n = getNeigboursInDir(candidateRow, candidateCol, _dirs[dir]);
-                    System.out.println(n);
                     //If it is exceeded, discard the dir
                     if (totalNeigbours + n + 1 > randNeigbours) {
                         //todo  TIENE QUE SER UN ROJO (PORQUE SE HA EXCEDIDO SI PONE UN AZUL EN ESA DIRECCIÓN)
@@ -122,7 +123,7 @@ public class BoardGenerator {
                     } else {
                         //todo  SI NO SE DESCARTA ESTABLECER LA CELDA (candidateRow,candidateCol) COMO AZUL y ES FICHA
                         _gameMatrix[candidateRow][candidateCol] = 0;
-                        totalNeigbours ++;
+                        totalNeigbours += n + 1;
                         _advancedInDir[dir]++;
                     }
                     _procesed[candidateRow][candidateCol] = true;
@@ -151,7 +152,7 @@ public class BoardGenerator {
         int newCol = col + dir[1];
 
         while (validPos(newRow, newCol)) {
-            if (_gameMatrix[newRow][newCol] != 0) break;
+            if (_gameMatrix[newRow][newCol] < 0) break;
             total++;
             newRow = newRow + dir[0];
             newCol = newCol + dir[1];
@@ -176,6 +177,7 @@ public class BoardGenerator {
             for (dir = 0; dir < usedDirs.length && !existNewDir; dir++)
                 if (usedDirs[dir] == -1) existNewDir = true;
         }
+        System.out.print("Direccion utilizada :" + dir);
         return (existNewDir) ? dir-1 : -1;
     }
 
