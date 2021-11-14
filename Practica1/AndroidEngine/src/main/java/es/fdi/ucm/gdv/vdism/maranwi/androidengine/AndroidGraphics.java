@@ -36,7 +36,7 @@ public class AndroidGraphics implements Graphics {
         _assets = assets;
 
         _paint = new Paint();
-        _fonts = new HashMap<String, Typeface>();
+        _fonts = new HashMap<String, AndroidFont>();
 
         _adjustRequest = true;
     }
@@ -63,8 +63,9 @@ public class AndroidGraphics implements Graphics {
 
     @Override
     public Image newImage(String name) {
+
         Bitmap sprite = null;
-        //esto debería cerrar el archivo si fallara al abrir
+
         try (InputStream is = _assets.open("images/" + name)) {
             sprite = BitmapFactory.decodeStream(is);
         } catch (Exception e) {
@@ -72,25 +73,19 @@ public class AndroidGraphics implements Graphics {
         }
 
         return sprite != null ? new AndroidImage(sprite.getWidth(), sprite.getHeight(), sprite) : null;
-
     }
 
     @Override
     public Font newFont(String filename, int size, boolean isBold) {
-        System.out.println("Empiezo a cargar la fuente " + filename);
-
-        Typeface font = _fonts.get(filename);
+        String id = filename + size + isBold + "";
+        AndroidFont font = _fonts.get(id);
         if (font == null) {
-
-            font = Typeface.createFromAsset(_assets, "fonts/" + filename);
-            _fonts.put(filename, font);
+            font = new AndroidFont("fonts/" + filename, size, isBold, _assets);
+            _fonts.put(id, font);
         }
 
-        AndroidFont newFont = new AndroidFont(filename, size, isBold, font);
-
-        return newFont;
+        return font;
     }
-
 
     @Override
     public void clear(int rgba) {
@@ -124,7 +119,6 @@ public class AndroidGraphics implements Graphics {
     @Override
     public void drawImage(Image img, int x, int y, int width, int height) {
         if (img != null) {
-
             Bitmap sprite = ((AndroidImage) (img)).getBitmap();
             Rect dest = new Rect(x, y, x + width, y + height);
             _canvas.drawBitmap(sprite, null, dest, _paint);
@@ -208,7 +202,8 @@ public class AndroidGraphics implements Graphics {
 
     @Override
     public void setFont(Font font) {
-        Typeface typeface = _fonts.get(font.getId());
+        Typeface typeface = ((AndroidFont) font).getAndroidFont();
+
         if (typeface != null) {
             _paint.setTypeface(typeface);
             _paint.setTextSize(font.getSize());
@@ -261,7 +256,7 @@ public class AndroidGraphics implements Graphics {
     double _translationY = 0;
     double _scaleX = 1;
     double _scaleY = 1;
-    private HashMap<String, Typeface> _fonts;
+    private HashMap<String, AndroidFont> _fonts;
     private SurfaceView _view;
     private SurfaceHolder _holder;
     private Canvas _canvas;

@@ -115,12 +115,15 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
     @Override
     public Image newImage(String name) {
+
         java.awt.Image sprite = null;
+
         try {
             sprite = javax.imageio.ImageIO.read(new java.io.File("images/" + name));
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return sprite != null ? new PCImage(sprite.getWidth(_frame), sprite.getHeight(_frame), sprite) : null;
     }
 
@@ -130,6 +133,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
         PCFont font = _fonts.get(id);
         if (font == null) {
             font = new PCFont("fonts/" + filename, size, isBold);
+            _fonts.put(id,font);
         }
         return font;
     }
@@ -254,7 +258,7 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
 
     @Override
     public void setFont(Font font) {
-        java.awt.Font f = ((PCFont) (font)).getJavaFont();
+        java.awt.Font f = ((PCFont) font).getJavaFont();
         if (f != null) _myGraphics.setFont(f);
     }
 
@@ -316,7 +320,6 @@ public class PCGraphics implements es.fdi.ucm.gdv.vdism.maranwi.engine.Graphics 
     double _scaleX = 1;
     double _scaleY = 1;
     HashMap<String, PCFont> _fonts;
-    HashMap<String, java.awt.Image> _images;
     private java.awt.Graphics _myGraphics;
     private int _logicWidth;
     private int _logicHeight;
