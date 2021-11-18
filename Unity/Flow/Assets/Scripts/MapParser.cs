@@ -29,7 +29,7 @@ public class MapParser
         int i = 4;
         while(i < header.Length)
         {
-            if(i == 4) _map.setBridges(System.Array.ConvertAll(header[i].Split(':'), int.Parse)); //SI FUNCIONA BORRAR MÉTODO readBridges, SI NO UTILIZAR MÉTODO
+            if(i == 4) _map.setBridges(System.Array.ConvertAll(header[i].Split(':'), int.Parse)); //SI FUNCIONA BORRAR MÃ‰TODO readBridges, SI NO UTILIZAR MÃ‰TODO
             //if (i == 4) _map.setBridges(readBridges(header[i]));
             else if (i == 5) _map.setHollows(readHollows(header[i]));
             else if (i == 6) _map.setWalls(readWalls(header[i])); 
@@ -76,7 +76,7 @@ public class MapParser
     private int[][] readFlows(string[] data)
     {
         int[][] flows = new int[_flows][];
-        for (int x = 1; x < data.Length; ++x)
+        for (int x = 1; x < _flows + 1; ++x)
             flows[x - 1] = System.Array.ConvertAll(data[x].Split(','), int.Parse);
         return flows;
     }
