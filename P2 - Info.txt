@@ -1,3 +1,27 @@
+1 FICHERO PARA TODAS LAS SECCIONES
+nombreSeccion1;color;nombreLote1;nombreLot2;nombreLote3;
+nombreSeccion2;color;nombreLote1;nombreLot2;nombreLote3;
+nombreSeccion3;color;nombreLote1;nombreLot2;nombreLote3;
+
+1FICHERO PROGRESO POR LOTE
+5 3 7 8 5 1 0 0 0 0 0 0
+
+1FICHERO DE REPRESENTACIÓN POR LOTE
+map1
+map2
+map3
+map4
+
+MENU PRINCIPAL
+	- Fichero (provisional): Una línea por sección
+	- Cada sección debe contener:
+		1.- Nombre
+		2.- Color
+		3.- Lote, nombreFichero(?)
+	- Scroll dinámico
+	- Ajuste al tamaño de pantalla
+	- Incluir las categorías mencionadas a continuación.
+
 CATEGORÍAS A INCLUIR: INTRO, MANÍAS Y RECTANGLES
 	- Cada categoría tiene un color asociado (se utiliza en la interfaz)
 	- Cada categoría posee un conjunto de lotes de niveles
@@ -14,11 +38,11 @@ CARGA
 	- Cada línea de un fichero serializa un nivel
 	
 
-FORMATO DE CARGA: CAMPOS CABECERA
+FORMATO DE CARGA. NIVEL SERIALIZADO EN UNA LINEA
 	- Cada número hace referencia a una celda. Celda 0 = arriba a la izquierda
 	- Los CAMPOS de una línea están SEPARADOS por PUNTO Y COMA.
 	- Para un mismo campo, los VALORES de un campo están SEPARADOS por una COMA.
-	- El primer campo siempre será la cabecera que tendrá los valores:
+	- El primer campo siempre será la CABECERA que tendrá los valores:
 		1- Tamaño: N (si es cuadrado) N:M (si no es cuadrado, N = ancho y M = alto)
 		2- Reservado: Siempre 0
 	 	3- Nº nivel dentro de su página (botones de pantalla de selección de nivel)
@@ -28,23 +52,29 @@ FORMATO DE CARGA: CAMPOS CABECERA
 		7- Muros: (opcional) M1|M3:M7|M9.. (muro1 de la celda 1 a la 3, muro2 de la celda 7 a la 9. MUROS SEPARADOS POR :)
 	- Los siguientes "F" campos serán los flujos.
 
-INTERFAZ DE JUEGO
-	- Nº flujos conectados hasta el momento
-	- % Tuberías creadas
-	- Mejor conseguido hasta el momento (mejor qué? xD la mejor marca en movimientos???)
-	- Nº movimientos
+PARTIDA: INTERFAZ DE JUEGO
+	- Nivel
+	- Tamaño
 	- Mostrar "estrella" o "marca" si el nivel se ha jugado anteriormente, en función de la resolución óptima
-	- Permitir reiniciar el nivel
+	- Mostrar anuncios con Unity Ads
+	- Nº flujos conectados hasta el momento
+	- Nº movimientos	
+	- Mejor conseguido hasta el momento (mejor qué? xD la mejor marca en movimientos???)
+	- % Tuberías creadas	
+	- Botón volver	
 	- Permitir moverse al nivel anterior->  SIN TENER QUE IR AL MENÚ
-	- Permitir moverse al nivel siguiente (si está desbloqueado) ->  SIN TENER QUE IR AL MENÚ
+	- Permitir reiniciar el nivel
+	- Permitir moverse al nivel siguiente (si está desbloqueado) ->  SIN TENER QUE IR AL MENÚ	
+	- Botón ayuda (bombillita) con el nº de veces que está disponible
+	
 
 
-COLORES
+PARTIDA: COLORES
 	- Los colores de las tuberías dependen del tema del color activado
 	- El juego proporciona varios temas de serie 
 	- Se pueden adquierir temas nuevos
 
-MOVIMIENTOS
+PARTIDA: MOVIMIENTOS
 
 	- Nuevo movimiento: Se contará como un movimiento nuevo cuando se mueva una tubería de un color que no se había movido en
 	el anterior movimiento y además, se suelte en un sitio diferente.
@@ -54,9 +84,7 @@ MOVIMIENTOS
 	- Al mover una tubería, si pasa por encima de otra, hará el efecto de cortarla pero no se cortará realmente hasta que no
 	se suelte el ratón y realmente se produzca un corte (se realiza una simulación hasta soltar el ratón).
 
-
-
-AYUDAS
+PARTIDA: AYUDAS
 	- Se consigue una AYUDA (pista) como recompensa de ver un video "Rewarded videos"
 	- Una pista consiste en COLOCAR uno de los flujos y marcando sus extremos con una estrella
 	- Colocar una pista puede romper flujos ya puestos previamente (que obviamente, estarán mal)
@@ -64,7 +92,7 @@ AYUDAS
 	- Al romper una pista se quitarán las estrellas de los extremos
 	- Si se recoloca de nuevo el flujo de forma correcta volverán a aparecer las estrellas
 
-PROGRESO
+PARTIDA: PROGRESO
 	- Guardar niveles superados y los movimientos realizados en dichos niveles
 	- Algunos lotes tienen sus niveles bloqueados(salvo el primero), de modo que para jugar en los niveles superiores hay que superar los anteriores
 
