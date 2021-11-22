@@ -3,8 +3,13 @@ nombreSeccion1;color;nombreLote1;nombreLot2;nombreLote3;
 nombreSeccion2;color;nombreLote1;nombreLot2;nombreLote3;
 nombreSeccion3;color;nombreLote1;nombreLot2;nombreLote3;
 
+1 FICHERO PROGRESO "TOTAL" DE TODAS LAS SECCIONES: 1 LINEA POR SECCION Y SEPARADOS POR ; LOS DESBLOQUEADOS DE CADA LOTE EN ORDEN
+3 150; 2 200; 7 180;
+7 180;
+
+
 1FICHERO PROGRESO POR LOTE
-5 3 7 8 5 1 0 0 0 0 0 0
+5 3 7 8 5 0 0 0 1 0 0 0
 
 1FICHERO DE REPRESENTACIÓN POR LOTE
 map1
