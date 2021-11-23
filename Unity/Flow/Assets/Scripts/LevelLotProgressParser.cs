@@ -12,12 +12,11 @@ public class LevelLotProgressParser
         public int playedLevels;
     }
     /// <summary>
-    /// Tries to parse a level progress and fills the level variable
+    /// Tries to read a level progress and store the data internally
     /// </summary>
-    /// <param name="levelPackName">The name of the pack. The path will be completed automatically</param>
-    /// <param name="levels">the variable to fill. If an error occurred, it will be filled with some default values </param>
+    /// <param name="filename">The name of the file where the progress is stored</param>
     /// <returns>True on success, False otherwhise</returns>
-    public bool TryParse(string filename, out LevelLot[] levels)
+    public bool TryRead(string filename)
     {
         bool returnValue = true;
         if (File.Exists(filename))
@@ -27,45 +26,43 @@ public class LevelLotProgressParser
             StreamReader reader = new StreamReader(filename);
             string[] separators = { "\n", "\r", "\r\n", "\n\r" };
             //we read the full file
-            string[] progressString = reader.ReadToEnd().Split(separators, System.StringSplitOptions.RemoveEmptyEntries);
-            if (!int.TryParse(progressString[0], out int numLots))
-            {
-                returnValue = false;
-                Debug.LogWarning("Number of lots format is incorrect");
-                //invalid value
-                levels = new LevelLot[0];
-            }
-            else
-            {
+            _data = reader.ReadToEnd().Split(separators, System.StringSplitOptions.RemoveEmptyEntries);
 
-                levels = new LevelLot[numLots];
-                //for every line
-                for (int i = 1; i < progressString.Length; i++)
-                {
-                    string[] lot = progressString[i].Split(';');
-                    for (int j = 0; j < lot.Length; j++)
-                    {
-                        string[] data = lot[j].Split(' ');
-                        if (!int.TryParse(data[0], out levels[(i - 1) * lot.Length + j].playedLevels))
-                        {
-                            returnValue = false;
-                            Debug.LogWarning("incorrect played levels");
-                        }
-                        if (!int.TryParse(data[1], out levels[(i - 1) * lot.Length + j].maxLevels))
-                        {
-                            returnValue = false;
-                            Debug.LogWarning("incorrect max levels");
-                        }
-                    }
-                }
-            }
             reader.Close();
             return returnValue;
         }
-        else
-        {
-            levels = new LevelLot[0];
-            return false;
-        }
+        else return false;
     }
+    /// <summary>
+    /// Tries to parse the level progression for one section
+    /// </summary>
+    /// <param name="sectionIndex">the section index in the menu</param>
+    /// <param name="levels">the level lots of the section where we will store the info. If an error ocurs some data could not be
+    /// filled</param>
+    /// <returns>True on success, False otherwhise</returns>
+    public bool TryParse(int sectionIndex, ref LevelLot[] levels)
+    {
+        bool returnValue = true;
+        //we get the section data
+        string[] lots = _data[sectionIndex].Split(';');
+        for (int i = 0; i < lots.Length; i++)
+        {
+
+            string[] levelLotData = lots[i].Split(' ');
+            //we fill the fields
+            if (!int.TryParse(levelLotData[0], out levels[i].playedLevels))
+            {
+                returnValue = false;
+                Debug.LogWarning("incorrect played levels");
+            }
+            if (!int.TryParse(levelLotData[1], out levels[i].maxLevels))
+            {
+                returnValue = false;
+                Debug.LogWarning("incorrect max levels");
+            }
+        }
+        return returnValue;
+
+    }
+    private string[] _data;
 }

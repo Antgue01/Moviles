@@ -15,16 +15,15 @@ public class LevelSelectorParser
     /// <summary>
     /// Tries to parse a level lot selector and fills the sections variable
     /// </summary>
-    /// <param name="filename"> file where the sections info is</param>
+    /// <param name="sectionFilename"> file where the sections info is</param>
     /// <param name="sections"> variable to fill the info. If an error occurs during parsing, there will be default values in it</param>
     /// <returns>True if the parsing was successfull, False if an error occurred</returns>
-    public bool TryParse(string filename, out Section[] sections)
+    public bool TryParse(string sectionFilename, out Section[] sections)
     {
-        LevelLotProgressParser levelLotProgressParser = new LevelLotProgressParser();
-        if (File.Exists(filename))
+        if (File.Exists(sectionFilename))
         {
 
-            StreamReader reader = new StreamReader(filename);
+            StreamReader reader = new StreamReader(sectionFilename);
             string[] separators = { "\n", "\r", "\r\n", "\n\r" };
             //we read the full file
             string[] sectionsString = reader.ReadToEnd().Split(separators, System.StringSplitOptions.RemoveEmptyEntries);
@@ -32,7 +31,7 @@ public class LevelSelectorParser
             sections = new Section[sectionsString.Length];
             for (int i = 0; i < sections.Length; i++)
             {
-                //we set the name an color
+                //we set the name, color and level lots names
                 Section s = new Section();
                 string[] line = sectionsString[i].Split(';');
                 s.name = line[0];
@@ -42,18 +41,12 @@ public class LevelSelectorParser
                     s.themeColor = new Color();
                     Debug.LogWarning("Invalid color format");
                 }
-                //we fill the level lots
-                if (!levelLotProgressParser.TryParse(Application.persistentDataPath+ "/Levels/SectionsProgress.txt", out s.levelLots))
+                s.levelLots = new LevelLotProgressParser.LevelLot[line.Length - 2];
+                for (int j = 0; j < s.levelLots.Length; j++)
                 {
-                    returnValue = false;
-                    Debug.LogWarning("LevelLot incorrect format");
-                }
-                for (int j = 0; j < line.Length-2; j++)
-                {
-                    s.levelLots[i*(line.Length-2)+j].name = line[j + 2];
+                    s.levelLots[j].name = line[2 + j];
                 }
                 sections[i] = s;
-
             }
             reader.Close();
             return returnValue;
