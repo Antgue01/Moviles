@@ -8,7 +8,7 @@ public class HeaderManager : MonoBehaviour
     [SerializeField] Image _myLine;
     Image _myImage;
     [SerializeField] Text _myName;
-    private void Start()
+    private void Awake()
     {
         _myImage = GetComponent<Image>();
     }
