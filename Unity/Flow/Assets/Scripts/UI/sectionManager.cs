@@ -10,42 +10,34 @@ public class sectionManager : MonoBehaviour
     [SerializeField] GameObject _levelLotPrefab;
     void Start()
     {
-        //we crate the parsers
-        LevelSelectorParser levelSelectorParser = new LevelSelectorParser();
-        LevelLotProgressParser levelLotProgressParser = new LevelLotProgressParser();
+        float totalHeight = 0;
 
-        LevelSelectorParser.Section[] sections;
-        //we read the level lots info
-        if (!levelLotProgressParser.TryRead(Application.persistentDataPath + "/Levels/SectionsProgress.txt"))
+        Section[] sections = GameManager.instance.GetSections();
+        for (int i = 0; i < sections.Length; i++)
         {
-            Debug.LogWarning("LevelLot doesn't exists");
-        }
-        //we fill the sections info
-        if (!levelSelectorParser.TryParse(Application.persistentDataPath + "/Levels/Sections.txt", out sections))
-        {
-            Debug.LogError("sections couldn't be parsed");
-        }
-        else
-        {
-            for (int i = 0; i < sections.Length; i++)
+            //we instantiate the header of the section
+            GameObject header = Instantiate<GameObject>(_headerPrefab, _layoutZone);
+            HeaderManager headerManager = header.GetComponent<HeaderManager>();
+            totalHeight += header.GetComponent<RectTransform>().rect.yMax;
+            headerManager.setName(sections[i].SectionName);
+            headerManager.setTheme(sections[i].themeColor);
+            //we fill the progress data for each level lot and then we instantiate them
+            string[] separators = { "\n", "\r", "\r\n", "\n\r" };
+            foreach (LevelLot levellot in sections[i].levelLots)
             {
-                GameObject header = Instantiate<GameObject>(_headerPrefab, _layoutZone);
-                HeaderManager headerManager = header.GetComponent<HeaderManager>();
-                headerManager.setName(sections[i].name);
-                headerManager.setTheme(sections[i].themeColor);
-                if (!levelLotProgressParser.TryParse(i,ref sections[i].levelLots))
-                    Debug.LogWarning("Level lot couldn't be parsed");
-                foreach (LevelLotProgressParser.LevelLot levelLot in sections[i].levelLots)
-                {
-                    GameObject levelLotObject = Instantiate(_levelLotPrefab, _layoutZone);
-                    LevelLotVisuals levelLotVisuals = levelLotObject.GetComponent<LevelLotVisuals>();
-                    levelLotVisuals.setColor(sections[i].themeColor);
-                    levelLotVisuals.setName(levelLot.name);
-                    levelLotVisuals.setLevelsInfo(levelLot.maxLevels, levelLot.playedLevels);
-                }
+                GameObject levelLotObject = Instantiate(_levelLotPrefab, _layoutZone);
+                LevelLotVisuals levelLotVisuals = levelLotObject.GetComponent<LevelLotVisuals>();
+                totalHeight += levelLotObject.GetComponent<RectTransform>().rect.yMax;
+                levelLotVisuals.setColor(sections[i].themeColor);
+                levelLotVisuals.setName(levellot.LevelLotName);
+                //todo CUANDO SEPAMOS GUARDAR EL PROGRESO QUE SE MIRE AQUI
+
+                levelLotVisuals.setLevelsInfo(levellot.LevelLotFile.ToString().Split(separators,System.StringSplitOptions.RemoveEmptyEntries).Length, /*levelLot.playedLevels*/0);
             }
         }
+        //_scrollTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, totalHeight);
     }
-
-
 }
+
+
+
