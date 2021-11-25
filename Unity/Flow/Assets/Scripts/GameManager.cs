@@ -24,11 +24,16 @@ public class GameManager : MonoBehaviour
     public void goToLevelSelection(LevelLot myLevelLot, Section mySection)
     {
         _selectedSection = mySection;
-        _selectorLevelLot = myLevelLot;
+        _selectedLevelLot = myLevelLot;
     }
     public void ChangeScene(int sceneIndex)
     {
         SceneManager.LoadScene(sceneIndex);
+    }
+
+    public LevelLot getSelectedLot()
+    {
+        return _selectedLevelLot;
     }
 
     public Section[] GetSections() { return _sections; }
@@ -36,7 +41,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] Section[] _sections;
     [SerializeField] Skin[] _skins;
     public static GameManager instance { get; private set; } = null;
-    LevelLot _selectorLevelLot;
+    LevelLot _selectedLevelLot;
     Section _selectedSection;
-
 }

@@ -3,23 +3,21 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
-public class Board : MonoBehaviour
+public class BoardManager : MonoBehaviour
 {
-   
-
     [SerializeField]
     public GameObject gameBoxPrefab;
 
     // Start is called before the first frame update
     void Start()
     {
-       // _current = BoxType.Empty;
+        // _current = BoxType.Empty;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void setMap(Map p)
@@ -32,17 +30,17 @@ public class Board : MonoBehaviour
 
     private void configureBoard()
     {
-        for(int x = 0; x < _mapSize; x++)
+        for (int x = 0; x < _mapSize; x++)
         {
             GameObject go = Instantiate(gameBoxPrefab, new Vector3((float)0, 0, 0), Quaternion.identity) as GameObject;
             go.transform.localScale = Vector3.one;
-            _boxes[x] = go;            
+            _boxes[x] = go;
         }
     }
 
     private void checkBridges()
     {
-        for(int x = 0; x < _map.getBridges().Length; x++)
+        for (int x = 0; x < _map.getBridges().Length; x++)
         {
 
         }
