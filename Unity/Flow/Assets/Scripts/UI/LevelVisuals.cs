@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class LevelVisuals : MonoBehaviour
 {
-    public enum LevelVisualElement { Background, Border, Tick, Lock }
+    public enum LevelVisualElement { Background, Border, Tick, Lock, Number }
 
     /// <summary>
     /// sets an element's visibility
     /// </summary>
     /// <param name="elem">the element to affect</param>
     /// <param name="visible">true if we want to see it, false otherwhise</param>
-    public void setVisualVisible(LevelVisualElement elem,bool visible)
+    public void setVisualVisible(LevelVisualElement elem, bool visible)
     {
         switch (elem)
         {
@@ -27,6 +27,9 @@ public class LevelVisuals : MonoBehaviour
                 break;
             case LevelVisualElement.Lock:
                 _lock.gameObject.SetActive(visible);
+                break;
+            case LevelVisualElement.Number:
+                _number.gameObject.SetActive(visible);
                 break;
             default:
                 Debug.LogWarning("Invalid elem passed");
@@ -54,6 +57,9 @@ public class LevelVisuals : MonoBehaviour
             case LevelVisualElement.Lock:
                 _lock.color = color;
                 break;
+            case LevelVisualElement.Number:
+                _number.color = color;
+                break;
             default:
                 Debug.LogWarning("Invalid elem passed");
                 break;
@@ -73,5 +79,5 @@ public class LevelVisuals : MonoBehaviour
     [SerializeField] Image _tick;
     [SerializeField] Image _lock;
     [SerializeField] Text _number;
-    
+
 }
