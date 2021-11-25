@@ -31,10 +31,21 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(sceneIndex);
     }
 
+    public Section getSelectedSection()
+    {
+        return _selectedSection;
+    }
+
     public LevelLot getSelectedLot()
     {
         return _selectedLevelLot;
     }
+
+    public int getSelectedLevel()
+    {
+        return _selectedLevel;
+    }
+
 
     public Section[] GetSections() { return _sections; }
     public Skin[] GetSkins() { return _skins; }
@@ -43,4 +54,5 @@ public class GameManager : MonoBehaviour
     public static GameManager instance { get; private set; } = null;
     LevelLot _selectedLevelLot;
     Section _selectedSection;
+    int _selectedLevel;
 }

@@ -13,7 +13,8 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        boardManager.setLevelManager(this);
+        boardManager.setLotAndLevel(gameManager.getSelectedLot(), gameManager.getSelectedLevel());
     }
 
     // Update is called once per frame
