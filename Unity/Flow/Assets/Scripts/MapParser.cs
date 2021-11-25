@@ -6,36 +6,40 @@ using UnityEngine;
 
 public class MapParser
 {    
-    public MapParser(StreamReader file)
+    public Map createLevelMap(string codeMap)
     {
         //Map map = new global::Map();
-        _map = new Map();
-        string[] data = file.ReadLine().Split(';');
+        Map map = new Map();
+        string[] data = codeMap.Split(';');
         string[] header = data[0].Split(',');
-
 
         //HEAD FORMAT: ROWS[:COLS], RESERVED, LEVEL, HOWMANYFLOWS [,[BRIDGE[:BRIDGE]]] [,[HOLLOWS[:HOLLOWS]]] [,[WALL|WALL[:WALL|WALL]]];
         //LEVEL FORMAT: HEAD; FLOW(1); FLOW(2); FLOW(HOWMANYFLOWS-1);
-        if (header[0].Length == 1){
-            _map.setCols(int.Parse(header[0]));
-            _map.setRows(_map.getCols());
-        }else{
-            _map.setCols((int)(header[0][0] - 0));
-            _map.setRows((int)(header[0][2] - 0));
+        if (header[0].Length == 1)
+        {
+            map.setCols(int.Parse(header[0]));
+            map.setRows(map.getCols());
+        }
+        else
+        {
+            map.setCols((int)(header[0][0] - 0));
+            map.setRows((int)(header[0][2] - 0));
         }
 
-        _map.setLevel(int.Parse(header[2]));
+        map.setLevel(int.Parse(header[2]));
         _flows = int.Parse(header[3]);
         int i = 4;
-        while(i < header.Length)
+        while (i < header.Length)
         {
-            if(i == 4) _map.setBridges(System.Array.ConvertAll(header[i].Split(':'), int.Parse)); //SI FUNCIONA BORRAR MÉTODO readBridges, SI NO UTILIZAR MÉTODO
+            if (i == 4) map.setBridges(System.Array.ConvertAll(header[i].Split(':'), int.Parse)); //SI FUNCIONA BORRAR MÉTODO readBridges, SI NO UTILIZAR MÉTODO
             //if (i == 4) _map.setBridges(readBridges(header[i]));
-            else if (i == 5) _map.setHollows(readHollows(header[i]));
-            else if (i == 6) _map.setWalls(readWalls(header[i])); 
-        }     
+            else if (i == 5) map.setHollows(readHollows(header[i]));
+            else if (i == 6) map.setWalls(readWalls(header[i]));
+        }
 
-        _map.setFlows(readFlows(data));
+        map.setFlows(readFlows(data));
+
+        return map;
     }
 
     private int[] readBridges(string data)
@@ -81,6 +85,5 @@ public class MapParser
         return flows;
     }
 
-    Map _map;
     private int _flows;   
 }

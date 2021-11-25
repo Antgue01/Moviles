@@ -16,6 +16,7 @@ public class Map
     public int getCols() { return _cols; }
     public int getLevel() { return _levelNumber; }
     public int[][] getFlows() { return _flows; }
+    public int getTotalFlows() { return _totalFlows; }
     public int[] getBridges() { return _bridges; }
     public int[] getHollows() { return _hollows; }
     public KeyValuePair<int, int>[] getWalls() { return _walls; }
@@ -24,6 +25,7 @@ public class Map
     private int _cols;
     private int _levelNumber;
     private int[][] _flows;
+    private int _totalFlows;
     private int[] _bridges;
     private int[] _hollows;
     private KeyValuePair<int, int>[] _walls;

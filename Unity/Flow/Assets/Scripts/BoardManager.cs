@@ -8,66 +8,65 @@ public class BoardManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // _current = BoxType.Empty;
+      
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (_levelDone) return;
 
+        if(_flowsConnected == _map.getTotalFlows())
+        {
+            _levelDone = true;
+            _levelManager.levelDone();
+        }
     }
 
-    public void setLevelManager(LevelManager lvlMan)
+    public void setLevelManager(LevelManager lvlManager)
     {
-        _lvlManager = lvlMan;
+        _levelManager = lvlManager;
     }
 
-
-
-    public void changeLevel(int level)
+    public void loadMap(Map m)
     {
-
+        _map = m;
+        resetInfo();
         configureBoard();
     }
 
+
     public void resetLevel()
     {
-        for(int x = 0; x< _mapSize; ++x)
-        {
-            _board[x].GetComponent<GameBox>().reset();
-        }
+        for(int x = 0; x< _map.getRows(); ++x)
+            for(int j = 0; j<_map.getCols(); ++j)
+                _board[x,j].GetComponent<GameBox>().reset();
+
+
+        //Reset info
+        resetInfo();
     }
 
     public void useHint()
     {
-
-    }
-
-
-    public void setLotAndLevel(LevelLot lot, int level)
-    {
-        Map p = new Map();
-        _map = p;
-        _mapSize = _map.getRows() * _map.getCols();
-        _board = new GameObject[_mapSize];
-        configureBoard();
-    }
-
-    public int getFlowsConnected() { return _flowsConnected; }
-    public int getMovements() { return _movements; }
-    public int getBestMovements() { return _bestMovements; }
-    public int getPipe() { return _pipe; }
-    public int getRemainingHints() { return _remainingHints; }
-
+        //Do hint
+    }    
 
     private void configureBoard()
     {
-        for (int x = 0; x < _mapSize; x++)
+        _board = new GameObject[_map.getRows(), _map.getCols()];
+        for (int row = 0; row < _map.getRows(); ++row)
         {
-            GameObject go = Instantiate(gameBoxPrefab, new Vector3((float)0, 0, 0), Quaternion.identity) as GameObject;
-            go.transform.localScale = Vector3.one;
-            _board[x] = go;
+            for(int col = 0; col<_map.getCols(); ++col)
+            {
+                GameObject go = Instantiate(gameBoxPrefab, new Vector3((float)0, 0, 0), Quaternion.identity) as GameObject;
+                go.transform.localScale = Vector3.one;
+                _board[row,col] = go;
+            }            
         }
+
+        checkHollows();
+        checkBridges();
     }
 
     private void checkBridges()
@@ -86,16 +85,27 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+    private void resetInfo()
+    {
+        _levelDone = false;
+        _movements = 0;
+        _flowsConnected = 0;
+        _pipe = 0;
+    }
+
 
     [SerializeField] Image[] _sprites;
     [SerializeField] GameObject gameBoxPrefab;
-    private LevelManager _lvlManager;
-    private GameObject[] _board;
+    private LevelManager _levelManager;
+
+    private string[] _lot;
+    private int _currentLevel;
+    
     private Map _map;
-    private int _mapSize;
+    private GameObject[,] _board;
+
     private int _flowsConnected;
     private int _movements;
-    private int _bestMovements;
     private int _pipe;
-    private int _remainingHints;    
+    private bool _levelDone;
 }
