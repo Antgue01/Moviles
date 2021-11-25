@@ -3,12 +3,19 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
-public class GameBox
+public class GameBox: MonoBehaviour
 {
-    [SerializeField]
-    public GameObject gameBox;
+    public enum BoxType { Bridge, Hollow, Flow, Empty }
 
-    
+    public void setInitType(BoxType t)
+    {
+        _initType = t;
+        _type = t;
+    }
+    public void setType(BoxType t)
+    {
+        _type = t;
+    }
 
     public bool isBridge()
     {
@@ -23,7 +30,7 @@ public class GameBox
     public void setImage(Sprite s)
     {
         _img = s;
-        gameBox.GetComponent<Image>().sprite = _img;
+        _gameBox.GetComponent<Image>().sprite = _img;
     }
 
     public void setColor(Color c)
@@ -34,12 +41,23 @@ public class GameBox
     public void setPos(Vector2 p)
     {
         _position = p;
-        gameBox.transform.position = _position;
+        _gameBox.transform.position = _position;
+    }
+
+    public void reset()
+    {
+        if(_type != BoxType.Hollow)
+        {
+            _type = _initType;
+        }
     }
 
     private Color _color;
     private Sprite _img;
     private Vector2 _position;
     private BoxType _type;
-    private enum BoxType { Bridge, Hollow, Flow, Empty }
+    private BoxType _initType;
+    
+    [SerializeField] GameObject _gameBox;
 }
+

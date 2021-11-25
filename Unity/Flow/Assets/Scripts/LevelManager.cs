@@ -4,17 +4,11 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    [SerializeField]
-    public GameManager gameManager;
-    [SerializeField]
-    public BoardManager boardManager;
-
-
     // Start is called before the first frame update
     void Start()
     {
-        boardManager.setLevelManager(this);
-        boardManager.setLotAndLevel(gameManager.getSelectedLot(), gameManager.getSelectedLevel());
+        _boardManager.setLevelManager(this);
+        _boardManager.setLotAndLevel(_gameManager.getSelectedLot(), _gameManager.getSelectedLevel());
     }
 
     // Update is called once per frame
@@ -22,4 +16,7 @@ public class LevelManager : MonoBehaviour
     {
         
     }
+
+    [SerializeField] GameManager _gameManager;
+    [SerializeField] BoardManager _boardManager;
 }
