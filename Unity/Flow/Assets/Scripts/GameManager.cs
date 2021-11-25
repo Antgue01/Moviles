@@ -38,9 +38,13 @@ public class GameManager : MonoBehaviour
 
     public Section[] GetSections() { return _sections; }
     public Skin[] GetSkins() { return _skins; }
+    public int getSelectedLevel() { return _selectedLevel; }
+    public void setSelectedLevel(int lvl) { _selectedLevel = lvl; }
     [SerializeField] Section[] _sections;
     [SerializeField] Skin[] _skins;
     public static GameManager instance { get; private set; } = null;
     LevelLot _selectedLevelLot;
     Section _selectedSection;
+    int _selectedLevel;
+
 }

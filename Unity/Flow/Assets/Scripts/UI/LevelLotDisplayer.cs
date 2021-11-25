@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelLotDisplayer : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+{
+    const int _width = 5;
+    const int _height = 6;
+    private void Start()
     {
-        
+    }
+    void display()
+    {
+
     }
 }
