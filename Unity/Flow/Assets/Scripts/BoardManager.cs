@@ -20,11 +20,23 @@ public class BoardManager : MonoBehaviour
 
     }
 
-    public void setMap(Map p)
+    public void setLevelManager(LevelManager lvlMan)
     {
+        _lvlManager = lvlMan;
+    }
+
+    public void setLotAndLevel(LevelLot lot, int level)
+    {
+        Map p = new Map();
         _map = p;
         _mapSize = _map.getRows() * _map.getCols();
         _boxes = new GameObject[_mapSize];
+        configureBoard();
+    }
+
+    public void changeLevel(int level)
+    {
+
         configureBoard();
     }
 
@@ -55,7 +67,7 @@ public class BoardManager : MonoBehaviour
     }
 
     //private BoxType _current;
-    private int[] _board;
+    private LevelManager _lvlManager;
     private Map _map;
     private int _mapSize;
     private GameObject[] _boxes;
