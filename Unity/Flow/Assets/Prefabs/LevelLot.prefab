@@ -93,6 +93,7 @@ GameObject:
   - component: {fileID: 5700368819555273329}
   - component: {fileID: 5700368819555273328}
   - component: {fileID: 4252717126504705393}
+  - component: {fileID: 1077931303822639924}
   m_Layer: 5
   m_Name: LevelLot
   m_TagString: Untagged
@@ -202,7 +203,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5700368819555273330}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1077931303822639924}
+        m_TargetAssemblyTypeName: LevelLotSelector, Assembly-CSharp
+        m_MethodName: select
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &5700368819555273328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,6 +256,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _myName: {fileID: 5700368820020377566}
   _myResults: {fileID: 5700368818639571880}
+--- !u!114 &1077931303822639924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5700368819555273342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45710b7cffc6f314d973894008378658, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5700368820020377564
 GameObject:
   m_ObjectHideFlags: 0

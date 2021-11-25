@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HeaderManager : MonoBehaviour
+public class HeaderVisuals : MonoBehaviour
 {
     [SerializeField] Image _myLine;
     Image _myImage;
