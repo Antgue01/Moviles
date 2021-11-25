@@ -6,6 +6,9 @@ public class LevelManager : MonoBehaviour
 {
     [SerializeField]
     public GameManager gameManager;
+    [SerializeField]
+    public BoardManager boardManager;
+
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +21,4 @@ public class LevelManager : MonoBehaviour
     {
         
     }
-
-
 }
