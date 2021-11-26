@@ -5,10 +5,7 @@ using UnityEngine.UI;
 
 public class sectionManager : MonoBehaviour
 {
-    [SerializeField] RectTransform _scrollContentTransform;
-    [SerializeField] RectTransform _layoutZone;
-    [SerializeField] GameObject _headerPrefab;
-    [SerializeField] GameObject _levelLotPrefab;
+
     void Start()
     {
         Section[] sections = GameManager.instance.GetSections();
@@ -50,7 +47,11 @@ public class sectionManager : MonoBehaviour
         _scrollContentTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, totalHeight);
 
     }
-  
+    [SerializeField] RectTransform _scrollContentTransform;
+    [SerializeField] RectTransform _layoutZone;
+    [SerializeField] GameObject _headerPrefab;
+    [SerializeField] GameObject _levelLotPrefab;
+
 }
 
 
