@@ -951,7 +951,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sprites: []
   gameBoxPrefab: {fileID: 2728892914733788471, guid: efb032bd83f15d04593279073f9a6b08, type: 3}
-  _grid: {fileID: 802356739}
+  _grid: {fileID: 802356738}
 --- !u!4 &628285579
 Transform:
   m_ObjectHideFlags: 0
@@ -2139,6 +2139,22 @@ PrefabInstance:
     - target: {fileID: 3325660691212683683, guid: 1acc711948a7b854c900824b6d18a8b1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5948886224295659870, guid: 1acc711948a7b854c900824b6d18a8b1, type: 3}
+      propertyPath: m_Spacing.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5948886224295659870, guid: 1acc711948a7b854c900824b6d18a8b1, type: 3}
+      propertyPath: m_Constraint
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5948886224295659870, guid: 1acc711948a7b854c900824b6d18a8b1, type: 3}
+      propertyPath: m_ChildAlignment
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5948886224295659870, guid: 1acc711948a7b854c900824b6d18a8b1, type: 3}
+      propertyPath: m_ConstraintCount
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5983548398354287771, guid: 1acc711948a7b854c900824b6d18a8b1, type: 3}
       propertyPath: m_Name

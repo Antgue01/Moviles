@@ -19,10 +19,6 @@ public class GameManager : MonoBehaviour
             instance._levelManager = _levelManager;
             Destroy(this.gameObject);            
         }
-
-        #if UNITY_EDITOR
-                instance._levelManager.startGame(selectedLevelLotDebug.ToString(), selectedLevelDebug);
-        #endif
     }
 
     public void goToLevelSelection(LevelLot myLevelLot, Section mySection)
@@ -37,16 +33,25 @@ public class GameManager : MonoBehaviour
 
     public Section getSelectedSection()
     {
+        #if UNITY_EDITOR
+            _selectedSection = selectedSectionDebug;
+        #endif
         return _selectedSection;
     }
 
     public LevelLot getSelectedLot()
     {
+        #if UNITY_EDITOR
+            _selectedLevelLot = selectedLevelLotDebug;
+        #endif
         return _selectedLevelLot;
     }
 
     public int getSelectedLevel()
     {
+        #if UNITY_EDITOR
+            _selectedLevel = selectedLevelDebug;
+        #endif
         return _selectedLevel;
     }
 

@@ -53,39 +53,47 @@ public class BoardManager : MonoBehaviour
     }    
 
     private void configureBoard()
-    {
-        
-
-
-        _board = new GameObject[_map.getRows(), _map.getCols()];
-        for (int row = 0; row < _map.getRows(); ++row)
+    {    
+        if(_map != null && _grid != null)
         {
-            for(int col = 0; col<_map.getCols(); ++col)
+            if (_grid != null)
             {
-                GameObject go = Instantiate(gameBoxPrefab, new Vector3((float)0, 0, 0), Quaternion.identity) as GameObject;
-                go.transform.localScale = Vector3.one;
-                _board[row,col] = go;
-            }            
-        }
+                _grid.GetComponent<GridLayoutGroup>().constraintCount = _map.getCols();
+            }
 
-        checkHollows();
-        checkBridges();
+            _board = new GameObject[_map.getRows(), _map.getCols()];
+            for (int row = 0; row < _map.getRows(); ++row)
+            {
+                for (int col = 0; col < _map.getCols(); ++col)
+                {
+                    GameObject go = Instantiate(gameBoxPrefab, _grid.transform) as GameObject;
+                    go.transform.localScale = Vector3.one; //Si da problemas quitar
+                    _board[row, col] = go;
+                }
+            }
+
+            checkHollows();
+            checkBridges();
+        }
+       
     }
 
     private void checkBridges()
     {
-        for (int x = 0; x < _map.getBridges().Length; x++)
-        {
+        if (_map.getHollows() != null)
+            for (int x = 0; x < _map.getBridges().Length; x++)
+            {
 
-        }
+            }
     }
 
     private void checkHollows()
     {
-        for (int x = 0; x < _map.getHollows().Length; x++)
-        {
+        if(_map.getHollows() != null)
+            for (int x = 0; x < _map.getHollows().Length; x++)
+            {
 
-        }
+            }
     }
 
     private void resetInfo()
@@ -99,7 +107,7 @@ public class BoardManager : MonoBehaviour
 
     [SerializeField] Image[] _sprites;
     [SerializeField] GameObject gameBoxPrefab;
-    [SerializeField] RectTransform _grid;
+    [SerializeField] GameObject _grid;
     private LevelManager _levelManager;
 
     private string[] _lot;
