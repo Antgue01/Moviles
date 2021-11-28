@@ -27,21 +27,30 @@ public class GameBox: MonoBehaviour
         return _type == BoxType.Hollow;
     }
 
-    public void setImage(Sprite s)
+    public void setFigureSprite(Sprite s)
     {
-        _img = s;
-        _gameBox.GetComponent<Image>().sprite = _img;
+        if (s == null)
+		{
+            _figureImage.SetActive(false);
+        }
+		else
+		{
+            if(!_figureImage.activeSelf)
+                _figureImage.SetActive(true);
+            _figureImage.GetComponent<Image>().sprite = s;
+        }
+            
     }
 
-    public void setColor(Color c)
+    public void setFigureColor(Color c)
     {
-        _color = c;
+        _figureImage.GetComponent<Image>().color = c;
     }
 
     public void setPos(Vector2 p)
     {
         _position = p;
-        _gameBox.transform.position = _position;
+        transform.position = _position;
     }
 
     public void reset()
@@ -52,12 +61,10 @@ public class GameBox: MonoBehaviour
         }
     }
 
-    private Color _color;
-    private Sprite _img;
     private Vector2 _position;
     private BoxType _type;
     private BoxType _initType;
-    
-    [SerializeField] GameObject _gameBox;
+
+    [SerializeField] private GameObject _figureImage;
 }
 

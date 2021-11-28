@@ -62,25 +62,61 @@ public class BoardManager : MonoBehaviour
             }
 
             _board = new GameObject[_map.getRows(), _map.getCols()];
+            Color sectionColor = GameManager.instance.getSelectedSection().themeColor;
             for (int row = 0; row < _map.getRows(); ++row)
             {
                 for (int col = 0; col < _map.getCols(); ++col)
                 {
                     GameObject go = Instantiate(gameBoxPrefab, _grid.transform) as GameObject;
-                    go.transform.localScale = Vector3.one; //Si da problemas quitar
+                    go.GetComponent<Image>().color = sectionColor;
                     _board[row, col] = go;
                 }
             }
 
+            createFlowPoints();
             checkHollows();
             checkBridges();
         }
        
     }
+    /// <summary>
+    /// Create the start and end point for every color flow.
+    /// </summary>
+    private void createFlowPoints()
+	{
+        int[][] flows = _map.getFlows();
+        if(flows != null)
+		{
+            int colorIndex = 0;
+            foreach(int[] flowColor in flows)
+			{
+                //Start index
+                int index = flowColor[0];
+                int row = index / _map.getCols();
+                int column = index % _map.getCols();
+                GameObject auxOb = _board[row, column];
+                GameBox gb = auxOb.GetComponent<GameBox>();
+				gb.setFigureSprite(_sprites[0]);
+                gb.setFigureColor(GameManager.instance.getSelectedSkin().colors[colorIndex]);
+
+
+                //Final index
+                index = flowColor[flowColor.Length - 1];
+                row = index / _map.getCols();
+                column = index % _map.getCols();
+                auxOb = _board[row, column];
+                gb = auxOb.GetComponent<GameBox>();
+                gb.setFigureSprite(_sprites[0]);
+                gb.setFigureColor(GameManager.instance.getSelectedSkin().colors[colorIndex]);
+
+                colorIndex++;
+            }
+		}
+	}
 
     private void checkBridges()
     {
-        if (_map.getHollows() != null)
+        if (_map.getBridges() != null)
             for (int x = 0; x < _map.getBridges().Length; x++)
             {
 
@@ -105,7 +141,7 @@ public class BoardManager : MonoBehaviour
     }
 
 
-    [SerializeField] Image[] _sprites;
+    [SerializeField] Sprite[] _sprites;
     [SerializeField] GameObject gameBoxPrefab;
     [SerializeField] GameObject _grid;
     private LevelManager _levelManager;

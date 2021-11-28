@@ -55,6 +55,16 @@ public class GameManager : MonoBehaviour
         return _selectedLevel;
     }
 
+    public Skin getSelectedSkin()
+	{
+
+        #if UNITY_EDITOR
+        _currentSkin = selectedSkinDebug;
+        #endif
+
+        return _currentSkin;
+    }
+
 
     public Section[] GetSections() { return _sections; }
     public Skin[] GetSkins() { return _skins; }
@@ -66,11 +76,12 @@ public class GameManager : MonoBehaviour
     LevelLot _selectedLevelLot;
     Section _selectedSection;
     int _selectedLevel;
-
+    Skin _currentSkin;
 
     #if UNITY_EDITOR
         [SerializeField] Section selectedSectionDebug;
         [SerializeField] LevelLot selectedLevelLotDebug;
         [SerializeField] int selectedLevelDebug;
+        [SerializeField] Skin selectedSkinDebug;
     #endif
 }
