@@ -16,7 +16,7 @@ public class BoardManager : MonoBehaviour
     {
         if (_levelDone) return;
 
-        if(_flowsConnected == _map.getTotalFlows())
+        if(_map != null && _flowsConnected == _map.getTotalFlows())
         {
             _levelDone = true;
             _levelManager.levelDone();
@@ -54,6 +54,9 @@ public class BoardManager : MonoBehaviour
 
     private void configureBoard()
     {
+        
+
+
         _board = new GameObject[_map.getRows(), _map.getCols()];
         for (int row = 0; row < _map.getRows(); ++row)
         {
@@ -96,6 +99,7 @@ public class BoardManager : MonoBehaviour
 
     [SerializeField] Image[] _sprites;
     [SerializeField] GameObject gameBoxPrefab;
+    [SerializeField] RectTransform _grid;
     private LevelManager _levelManager;
 
     private string[] _lot;

@@ -7,20 +7,7 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _boardManager.setLevelManager(this);
-        _mapParser = new MapParser();
-
-        _lot = _gameManager.getSelectedLot().ToString().Split('\n');
-        _currentLevel = _gameManager.getSelectedLevel();
-        if (_currentLevel >= 0 && _currentLevel < _lot.Length)
-        {
-            Map m = _mapParser.createLevelMap(_lot[_currentLevel]);
-            _boardManager.loadMap(m);
-            updateButtonsInfo(m);
-            checkLevelCompleted();
-        }
-        
-        _isLevelDone = false;
+        _boardManager.setLevelManager(this);       
     }
 
     // Update is called once per frame
@@ -34,7 +21,23 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    /**-- */
+    public void startGame(string selectedLot, int selectedLevel)
+    {
+        _mapParser = new MapParser();
 
+        _lot = selectedLot.Split('\n');
+        _currentLevel = selectedLevel;
+        if (_currentLevel >= 0 && _currentLevel < _lot.Length)
+        {
+            Map m = _mapParser.createLevelMap(_lot[_currentLevel]);
+            _boardManager.loadMap(m);
+            updateButtonsInfo(m);
+            checkLevelCompleted();
+        }
+
+        _isLevelDone = false;
+    }
 
     /* ------------------------------------------------------ UINTERFACE INFO ---------------------------------------------------*/
     public void setFlowsText(int howManyFlows)
@@ -130,7 +133,6 @@ public class LevelManager : MonoBehaviour
         }       
     }
 
-    [SerializeField] GameManager _gameManager;
     [SerializeField] BoardManager _boardManager;
     private MapParser _mapParser;
 

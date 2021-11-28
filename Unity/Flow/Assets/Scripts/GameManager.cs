@@ -16,9 +16,13 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-
-            Destroy(this.gameObject);
+            instance._levelManager = _levelManager;
+            Destroy(this.gameObject);            
         }
+
+        #if UNITY_EDITOR
+                instance._levelManager.startGame(selectedLevelLotDebug.ToString(), selectedLevelDebug);
+        #endif
     }
 
     public void goToLevelSelection(LevelLot myLevelLot, Section mySection)
@@ -52,8 +56,16 @@ public class GameManager : MonoBehaviour
     public void setSelectedLevel(int lvl) { _selectedLevel = lvl; }
     [SerializeField] Section[] _sections;
     [SerializeField] Skin[] _skins;
+    [SerializeField] LevelManager _levelManager;
     public static GameManager instance { get; private set; } = null;
     LevelLot _selectedLevelLot;
     Section _selectedSection;
     int _selectedLevel;
+
+
+    #if UNITY_EDITOR
+        [SerializeField] Section selectedSectionDebug;
+        [SerializeField] LevelLot selectedLevelLotDebug;
+        [SerializeField] int selectedLevelDebug;
+    #endif
 }
