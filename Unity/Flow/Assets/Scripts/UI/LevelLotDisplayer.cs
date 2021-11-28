@@ -9,8 +9,10 @@ public class LevelLotDisplayer : MonoBehaviour
 
     private void Start()
     {
+#if (!DEBUG)
         LevelLot lvlLot = GameManager.instance.getSelectedLot();
         Section section = GameManager.instance.getSelectedSection();
+#endif
         display(lvlLot, section);
     }
     void display(LevelLot lvlLot, Section section)
@@ -26,9 +28,11 @@ public class LevelLotDisplayer : MonoBehaviour
         for (int i = 0; i < numPages; i++)
         {
             Vector3 dir = new Vector3(1, 0, 0);
+            Vector3 pospos = new Vector3( i * 224+ _startPoint.anchoredPosition.x,
+                _startPoint.anchoredPosition.y, 0);
             Vector3 pos = _scroll.position +
-                (Vector3.right * i * _canvasTransform.rect.width) + _startPoint.position.x * Vector3.right
-               /* + Vector3.up*_startPoint.position.y*/;
+                (Vector3.right * i *224) + _startPoint.position.x * Vector3.right
+                + Vector3.down*_startPoint.position.y;
             GameObject levelGridObject = Instantiate<GameObject>(_levelPagePrefab, pos, _scroll.rotation, _scroll);
             LevelDisplayer lvlDisplayer = levelGridObject.GetComponent<LevelDisplayer>();
             lvlDisplayer.Display(lvlLot, i);
@@ -46,4 +50,8 @@ public class LevelLotDisplayer : MonoBehaviour
     [SerializeField] Text _sectionName;
     [SerializeField] RectTransform _scroll;
     [SerializeField] RectTransform _startPoint;
+#if UNITY_EDITOR
+    [SerializeField] LevelLot lvlLot;
+    [SerializeField] Section section;
+#endif
 }
