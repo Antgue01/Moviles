@@ -104,7 +104,7 @@ public class LevelManager : MonoBehaviour
         //do watch video
 
         _remainingHints++;
-        _saveData.numHints = _remainingHints;
+        //_saveData.numHints = _remainingHints;
     }
 
     public void resetLevel()
@@ -139,7 +139,7 @@ public class LevelManager : MonoBehaviour
         if (_remainingHints > 0)
         {
             _remainingHints--;
-            _saveData.numHints = _remainingHints;
+            //_saveData.numHints = _remainingHints;
             _boardManager.useHint();
             setRemainingHintsText();
         }       

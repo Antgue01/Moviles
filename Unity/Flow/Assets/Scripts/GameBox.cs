@@ -27,6 +27,11 @@ public class GameBox: MonoBehaviour
         return _type == BoxType.Hollow;
     }
 
+    public void setFigureImageSize(float w, float h)
+    {
+        _figureImage.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, w);
+        _figureImage.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, h);
+    }
     public void setFigureSprite(Sprite s)
     {
         if (s == null)

@@ -54,10 +54,24 @@ public class BoardManager : MonoBehaviour
     }    
 
     private void configureBoard()
-    {    
+    {
         if(_map != null && _grid != null)
-        {           
+        {
+            //float boxWidth = _grid.GetComponent<RectTransform>().rect.width / _map.getCols();
+            //float boxHeight = _grid.GetComponent<RectTransform>().rect.width / _map.getRows();
+            
             _grid.GetComponent<GridLayoutGroup>().constraintCount = _map.getCols();
+            
+            if(_map.getCols() >= _map.getRows())
+            {
+                float scale = _canvasRT.rect.width / (_grid.GetComponent<GridLayoutGroup>().cellSize.x * _map.getCols());
+                _grid.GetComponent<RectTransform>().localScale =new Vector3(scale, scale, 1);
+
+                float height = _map.getRows() * _grid.GetComponent<GridLayoutGroup>().cellSize.y;
+                RectTransform gridRT = _grid.GetComponent<RectTransform>();
+                gridRT.position = new Vector3(gridRT.position.x, gridRT.position.y - height / 4, gridRT.position.z);
+            }
+                
            
             _board = new GameObject[_map.getRows(), _map.getCols()];
             Color sectionColor = GameManager.instance.getSelectedSection().themeColor;
@@ -67,6 +81,7 @@ public class BoardManager : MonoBehaviour
                 {
                     GameObject go = Instantiate(gameBoxPrefab, _grid.transform) as GameObject;
                     go.GetComponent<Image>().color = sectionColor;
+                    //go.GetComponent<GameBox>().setFigureImageSize(boxWidth, boxHeight);
                     _board[row, col] = go;
                 }
             }
@@ -75,7 +90,7 @@ public class BoardManager : MonoBehaviour
             checkHollows();
             checkBridges();
         }
-       
+        
     }
     /// <summary>
     /// Create the start and end point for every color flow.
@@ -150,6 +165,7 @@ public class BoardManager : MonoBehaviour
 
     [SerializeField] Sprite[] _sprites;
     [SerializeField] GameObject gameBoxPrefab;
+    [SerializeField] RectTransform _canvasRT;
     [SerializeField] GameObject _grid;
     private LevelManager _levelManager;
 
