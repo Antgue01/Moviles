@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            _saveData = new SaveDataManager();
+            Application.wantsToQuit += _saveData.save;
             DontDestroyOnLoad(this.gameObject);
         }
         else
@@ -25,6 +27,7 @@ public class GameManager : MonoBehaviour
     {
         _selectedSection = mySection;
         _selectedLevelLot = myLevelLot;
+        
     }
     public void ChangeScene(int sceneIndex)
     {
@@ -77,9 +80,10 @@ public class GameManager : MonoBehaviour
     Section _selectedSection;
     int _selectedLevel;
     Skin _currentSkin;
+    SaveDataManager _saveData;
 
-    #if UNITY_EDITOR
-        [SerializeField] Section selectedSectionDebug;
+#if UNITY_EDITOR
+    [SerializeField] Section selectedSectionDebug;
         [SerializeField] LevelLot selectedLevelLotDebug;
         [SerializeField] int selectedLevelDebug;
         [SerializeField] Skin selectedSkinDebug;
