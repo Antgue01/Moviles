@@ -8,6 +8,7 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         _boardManager.setLevelManager(this);
         _mapParser = new MapParser();
 
@@ -76,7 +77,7 @@ public class LevelManager : MonoBehaviour
 
     private void checkLevelCompleted()
     {
-        //Comprobar si el _currentLevel estaba ya completo y mostrar estrella, si no está completado y la estrella está visible ocultarla      
+        //Comprobar si el _currentLevel estaba ya completo y mostrar estrella, si no estï¿½ completado y la estrella estï¿½ visible ocultarla      
     }
     private void setRemainingHintsText()
     {
@@ -103,6 +104,7 @@ public class LevelManager : MonoBehaviour
         //do watch video
 
         _remainingHints++;
+        _saveData.numHints = _remainingHints;
     }
 
     public void resetLevel()
@@ -136,7 +138,8 @@ public class LevelManager : MonoBehaviour
     {
         if (_remainingHints > 0)
         {
-            _remainingHints--;                     
+            _remainingHints--;
+            _saveData.numHints = _remainingHints;
             _boardManager.useHint();
             setRemainingHintsText();
         }       
@@ -150,7 +153,6 @@ public class LevelManager : MonoBehaviour
     [SerializeField] Text _bestText;
     [SerializeField] Text _pipeText;
     [SerializeField] Text _hintText;
-
     private MapParser _mapParser;
 
     private string[] _lot;
