@@ -19,7 +19,7 @@ public class BoardManager : MonoBehaviour
         if(_map != null && _flowsConnected == _map.getTotalFlows())
         {
             _levelDone = true;
-            _levelManager.levelDone();
+            _levelManager.setLevelDone(true);
         }
     }
 
@@ -55,12 +55,9 @@ public class BoardManager : MonoBehaviour
     private void configureBoard()
     {    
         if(_map != null && _grid != null)
-        {
-            if (_grid != null)
-            {
-                _grid.GetComponent<GridLayoutGroup>().constraintCount = _map.getCols();
-            }
-
+        {           
+            _grid.GetComponent<GridLayoutGroup>().constraintCount = _map.getCols();
+           
             _board = new GameObject[_map.getRows(), _map.getCols()];
             Color sectionColor = GameManager.instance.getSelectedSection().themeColor;
             for (int row = 0; row < _map.getRows(); ++row)
@@ -138,6 +135,7 @@ public class BoardManager : MonoBehaviour
         _movements = 0;
         _flowsConnected = 0;
         _pipe = 0;
+        _levelManager.setLevelDone(false);
     }
 
 

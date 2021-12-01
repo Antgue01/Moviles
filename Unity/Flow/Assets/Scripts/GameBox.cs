@@ -38,8 +38,7 @@ public class GameBox: MonoBehaviour
             if(!_figureImage.activeSelf)
                 _figureImage.SetActive(true);
             _figureImage.GetComponent<Image>().sprite = s;
-        }
-            
+        }            
     }
 
     public void setFigureColor(Color c)

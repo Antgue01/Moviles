@@ -50,9 +50,9 @@ public class LevelManager : MonoBehaviour
         /*pipe.text = howMany;*/
     }
 
-    public void levelDone()
+    public void setLevelDone(bool isDone)
     {
-        _isLevelDone = true;
+        _isLevelDone = isDone;
     }
 
     private void checkLevelCompleted()
@@ -111,8 +111,8 @@ public class LevelManager : MonoBehaviour
     {
         if (_currentLevel > 0)
         {
-            Map m = _mapParser.createLevelMap(_lot[_currentLevel]);
             _currentLevel--;
+            Map m = _mapParser.createLevelMap(_lot[_currentLevel]);            
             _boardManager.loadMap(_mapParser.createLevelMap(_lot[_currentLevel]));
             updateButtonsInfo(m);
         }       
