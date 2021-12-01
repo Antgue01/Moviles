@@ -33,6 +33,7 @@ public class BoardManager : MonoBehaviour
         _map = m;
         resetInfo();
         configureBoard();
+        setUIinfo();
     }
 
 
@@ -136,6 +137,14 @@ public class BoardManager : MonoBehaviour
         _flowsConnected = 0;
         _pipe = 0;
         _levelManager.setLevelDone(false);
+    }
+
+    private void setUIinfo()
+    {
+        _levelManager.setSizeText(_map.getRows(), _map.getCols());
+        _levelManager.setFlowsText(0, _map.getTotalFlows());        
+        _levelManager.setPipeText(_pipe);
+        _levelManager.setMovementsText(_movements);
     }
 
 

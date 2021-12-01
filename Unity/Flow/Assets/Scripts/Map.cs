@@ -8,6 +8,7 @@ public class Map
     public void setCols(int c) { _cols = c; }
     public void setLevel(int l) { _levelNumber = l; }
     public void setFlows(int[][] f) { _flows = f; }
+    public void setTotalFlows(int f) { _totalFlows = f; }
     public void setBridges(int[] b) { _bridges = b; }
     public void setHollows(int[] h) {  _hollows = h; }
     public void setWalls(KeyValuePair<int, int>[] w) { _walls = w; }

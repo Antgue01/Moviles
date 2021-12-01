@@ -27,7 +27,8 @@ public class MapParser
         }
 
         map.setLevel(int.Parse(header[2]));
-        _flows = int.Parse(header[3]);
+        _totalFlows = int.Parse(header[3]);
+        map.setTotalFlows(_totalFlows);
         int i = 4;
         while (i < header.Length)
         {
@@ -79,11 +80,11 @@ public class MapParser
 
     private int[][] readFlows(string[] data)
     {
-        int[][] flows = new int[_flows][];
-        for (int x = 1; x < _flows + 1; ++x)
-            flows[x - 1] = System.Array.ConvertAll(data[x].Split(','), int.Parse);
+        int[][] flows = new int[_totalFlows][];
+        for (int x = 0; x < _totalFlows; ++x)
+            flows[x] = System.Array.ConvertAll(data[x + 1].Split(','), int.Parse);
         return flows;
     }
 
-    private int _flows;   
+    private int _totalFlows;   
 }

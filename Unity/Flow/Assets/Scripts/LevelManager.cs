@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
 {
@@ -16,11 +17,12 @@ public class LevelManager : MonoBehaviour
         {
             Map m = _mapParser.createLevelMap(_lot[_currentLevel]);
             _boardManager.loadMap(m);
-            updateButtonsInfo(m);
+            updateButtonsInfo();
             checkLevelCompleted();
         }
 
         _isLevelDone = false;
+        _bestMovements = 0;
     }
 
     // Update is called once per frame
@@ -35,19 +37,36 @@ public class LevelManager : MonoBehaviour
     }
 
     /* ------------------------------------------------------ UINTERFACE INFO ---------------------------------------------------*/
-    public void setFlowsText(int howManyFlows)
+    public void setLevelText()
     {
-        /*flows.text = howManyFlows + "/" + _totalFlows;*/ 
+        _levelText.text = "Level " + _currentLevel;
+    }
+
+    public void setSizeText(int rows, int cols)
+    {
+        _sizeText.text = rows + "x" + cols;
+    }
+    
+    public void setFlowsText(int howManyFlows, int totalFlows)
+    {
+        _flowText.text = "flows: " + howManyFlows + "/" + totalFlows;
     }
 
     public void setMovementsText(int howManyMov)
     {
-        /*movemments.text = howManyMov;*/
+        _moveText.text = "moves: " + howManyMov +"";
     }    
+
+    public void setBestMovementsText()
+    {
+        if (_bestMovements == 0)
+            _bestText.text = "best: -";
+        else _bestText.text = "best: " + _bestMovements;
+    }
 
     public void setPipeText(int howMany)
     {
-        /*pipe.text = howMany;*/
+        _pipeText.text = "pipe: " + howMany + "%";
     }
 
     public void setLevelDone(bool isDone)
@@ -61,18 +80,13 @@ public class LevelManager : MonoBehaviour
     }
     private void setRemainingHintsText()
     {
-        /*pistas.text = _remainingHints;;*/
+        _hintText.text = _remainingHints + "X";
     }
 
-    private void updateButtonsInfo(Map m)
+    private void updateButtonsInfo()
     {
-        /*name.text = nombreDelLote*/
-        /*nivel.text = _currentLevel;*/
-        //bestMovements.text = comprobar en el progreso los mejroes movimientos
-        _totalFlows = m.getTotalFlows();
-        setFlowsText(0);
-        setPipeText(0);
-        setMovementsText(0);
+        setLevelText();
+        setBestMovementsText();
         setRemainingHintsText();
         checkLevelCompleted();
     }
@@ -103,7 +117,7 @@ public class LevelManager : MonoBehaviour
             _currentLevel++;
             Map m = _mapParser.createLevelMap(_lot[_currentLevel]);
             _boardManager.loadMap(_mapParser.createLevelMap(_lot[_currentLevel]));
-            updateButtonsInfo(m);
+            updateButtonsInfo();
         }
     }
 
@@ -114,7 +128,7 @@ public class LevelManager : MonoBehaviour
             _currentLevel--;
             Map m = _mapParser.createLevelMap(_lot[_currentLevel]);            
             _boardManager.loadMap(_mapParser.createLevelMap(_lot[_currentLevel]));
-            updateButtonsInfo(m);
+            updateButtonsInfo();
         }       
     }
 
@@ -129,11 +143,19 @@ public class LevelManager : MonoBehaviour
     }
 
     [SerializeField] BoardManager _boardManager;
+    [SerializeField] Text _levelText;
+    [SerializeField] Text _sizeText;
+    [SerializeField] Text _flowText;
+    [SerializeField] Text _moveText;
+    [SerializeField] Text _bestText;
+    [SerializeField] Text _pipeText;
+    [SerializeField] Text _hintText;
+
     private MapParser _mapParser;
 
     private string[] _lot;
     private bool _isLevelDone;
     private int _currentLevel;
-    private int _totalFlows;
+    private int _bestMovements;
     private int _remainingHints;
 }
