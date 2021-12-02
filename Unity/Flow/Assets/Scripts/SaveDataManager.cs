@@ -9,12 +9,14 @@ public class SaveDataManager
 {
     public struct LevelLotData
     {
+        public string name;
         public int lastUnlockedLevel;
-        public int[] bestMovesPerLevel;
+        public List<int> bestMovesPerLevel;
 
     }
     public struct sectionData
     {
+
         public string name;
         public LevelLotData[] levelLots;
     }
@@ -36,13 +38,12 @@ public class SaveDataManager
         for (int i = 0; i < sections.Length; i++)
         {
             sections[i].levelLots = new LevelLotData[sections[i].levelLots.Length];
+            sections[i].name = gameManagerSections[i].SectionName;
             for (int j = 0; j < sections[i].levelLots.Length; j++)
             {
-                sections[i].name = gameManagerSections[i].SectionName;
+                sections[i].levelLots[j].name = gameManagerSections[i].levelLots[j].LevelLotName;
                 sections[i].levelLots[j].lastUnlockedLevel = 0;
-                string[] separators = { "\n", "\r", "\r\n", "\n\r" };
-                int levels = gameManagerSections[i].levelLots[j].LevelLotFile.ToString().Split(separators, System.StringSplitOptions.RemoveEmptyEntries).Length;
-                sections[i].levelLots[j].bestMovesPerLevel = new int[levels];
+                sections[i].levelLots[j].bestMovesPerLevel = new List<int>();
 
             }
         }

@@ -73,6 +73,8 @@ public class LevelManager : MonoBehaviour
     public void setLevelDone(bool isDone)
     {
         _isLevelDone = isDone;
+        GameManager.instance.UpdateLevel(_bestMovements);
+            
     }
 
     private void checkLevelCompleted()
@@ -104,7 +106,8 @@ public class LevelManager : MonoBehaviour
         //do watch video
 
         _remainingHints++;
-        //_saveData.numHints = _remainingHints;
+        GameManager.instance.updateNumHints(_remainingHints);
+
     }
 
     public void resetLevel()
@@ -139,7 +142,7 @@ public class LevelManager : MonoBehaviour
         if (_remainingHints > 0)
         {
             _remainingHints--;
-            //_saveData.numHints = _remainingHints;
+            GameManager.instance.updateNumHints(_remainingHints);
             _boardManager.useHint();
             setRemainingHintsText();
         }       

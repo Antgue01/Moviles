@@ -31,7 +31,7 @@ public class LevelLotDisplayer : MonoBehaviour
                 _startPoint.anchoredPosition.y/5, 0);
             GameObject levelGridObject = Instantiate<GameObject>(_levelPagePrefab, pos, _scroll.rotation, _scroll);
             LevelDisplayer lvlDisplayer = levelGridObject.GetComponent<LevelDisplayer>();
-            lvlDisplayer.Display(lvlLot, i);
+            lvlDisplayer.Display(lvlLot,section, i);
             levelTransform = levelGridObject.GetComponent<RectTransform>();
             levelTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _scroll.rect.width);
             levelTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, _scroll.rect.height);
