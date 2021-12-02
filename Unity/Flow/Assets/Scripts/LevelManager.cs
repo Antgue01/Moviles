@@ -73,8 +73,8 @@ public class LevelManager : MonoBehaviour
     public void setLevelDone(bool isDone)
     {
         _isLevelDone = isDone;
-        GameManager.instance.UpdateLevel(_bestMovements);
-            
+        if(isDone)
+            GameManager.instance.UpdateLevel(_bestMovements);            
     }
 
     private void checkLevelCompleted()

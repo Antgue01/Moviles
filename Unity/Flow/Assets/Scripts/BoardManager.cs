@@ -67,6 +67,17 @@ public class BoardManager : MonoBehaviour
                 float scale = _canvasRT.rect.width / (_grid.GetComponent<GridLayoutGroup>().cellSize.x * _map.getCols());
                 _grid.GetComponent<RectTransform>().localScale =new Vector3(scale, scale, 1);
 
+                //Hay que cambiar esta parte para reposicionar porque el cellsize después de escalar sigue valiendo lo mismo que antes de escalar
+                float height = _map.getRows() * _grid.GetComponent<GridLayoutGroup>().cellSize.y;
+                RectTransform gridRT = _grid.GetComponent<RectTransform>();
+                gridRT.position = new Vector3(gridRT.position.x, gridRT.position.y - height / 4, gridRT.position.z);
+            }
+            else
+            {
+                float scale = _canvasRT.rect.height / (_grid.GetComponent<GridLayoutGroup>().cellSize.y * _map.getRows());
+                _grid.GetComponent<RectTransform>().localScale = new Vector3(scale, scale, 1);
+
+                //Hay que cambiar esta parte para reposicionar porque el cellsize después de escalar sigue valiendo lo mismo que antes de escalar
                 float height = _map.getRows() * _grid.GetComponent<GridLayoutGroup>().cellSize.y;
                 RectTransform gridRT = _grid.GetComponent<RectTransform>();
                 gridRT.position = new Vector3(gridRT.position.x, gridRT.position.y - height / 4, gridRT.position.z);
