@@ -21,6 +21,16 @@ public class BoardManager : MonoBehaviour
             _levelDone = true;
             _levelManager.setLevelDone(true);
         }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Debug.Log("Pressed primary button.");
+            Debug.Log(Input.mousePosition);
+            _pruebaCoordenadas.text = "x: " + Input.mousePosition.x + ", y: " + Input.mousePosition.y;
+
+            _pruebaCanvasSize.text = _canvasRT.rect.width + "," + _canvasRT.rect.height;
+         }
+            
     }
 
     public void setLevelManager(LevelManager lvlManager)
@@ -59,31 +69,7 @@ public class BoardManager : MonoBehaviour
         {
             //float boxWidth = _grid.GetComponent<RectTransform>().rect.width / _map.getCols();
             //float boxHeight = _grid.GetComponent<RectTransform>().rect.width / _map.getRows();
-            
-            _grid.GetComponent<GridLayoutGroup>().constraintCount = _map.getCols();
-            
-            if(_map.getCols() >= _map.getRows())
-            {
-                float scale = _canvasRT.rect.width / (_grid.GetComponent<GridLayoutGroup>().cellSize.x * _map.getCols());
-                _grid.GetComponent<RectTransform>().localScale =new Vector3(scale, scale, 1);
 
-                //Hay que cambiar esta parte para reposicionar porque el cellsize después de escalar sigue valiendo lo mismo que antes de escalar
-                float height = _map.getRows() * _grid.GetComponent<GridLayoutGroup>().cellSize.y;
-                RectTransform gridRT = _grid.GetComponent<RectTransform>();
-                gridRT.position = new Vector3(gridRT.position.x, gridRT.position.y - height / 4, gridRT.position.z);
-            }
-            else
-            {
-                float scale = _canvasRT.rect.height / (_grid.GetComponent<GridLayoutGroup>().cellSize.y * _map.getRows());
-                _grid.GetComponent<RectTransform>().localScale = new Vector3(scale, scale, 1);
-
-                //Hay que cambiar esta parte para reposicionar porque el cellsize después de escalar sigue valiendo lo mismo que antes de escalar
-                float height = _map.getRows() * _grid.GetComponent<GridLayoutGroup>().cellSize.y;
-                RectTransform gridRT = _grid.GetComponent<RectTransform>();
-                gridRT.position = new Vector3(gridRT.position.x, gridRT.position.y - height / 4, gridRT.position.z);
-            }
-                
-           
             _board = new GameObject[_map.getRows(), _map.getCols()];
             Color sectionColor = GameManager.instance.getSelectedSection().themeColor;
             for (int row = 0; row < _map.getRows(); ++row)
@@ -100,6 +86,29 @@ public class BoardManager : MonoBehaviour
             createFlowPoints();
             checkHollows();
             checkBridges();
+
+            _grid.GetComponent<GridLayoutGroup>().constraintCount = _map.getCols();
+
+            if (_map.getCols() >= _map.getRows())
+            {
+                float scale = _canvasRT.rect.width / (_grid.GetComponent<GridLayoutGroup>().cellSize.x * _map.getCols());
+                _grid.GetComponent<RectTransform>().localScale = new Vector3(scale, scale, 1);
+
+                //Hay que cambiar esta parte para reposicionar porque el cellsize después de escalar sigue valiendo lo mismo que antes de escalar
+                float height = _map.getRows() * _grid.GetComponent<GridLayoutGroup>().cellSize.y * scale;
+                //RectTransform gridRT = _grid.GetComponent<RectTransform>();
+                //gridRT.transform.position = new Vector3(gridRT.position.x, height / 2 , gridRT.position.z);
+            }
+            else
+            {
+                float scale = _canvasRT.rect.height / (_grid.GetComponent<GridLayoutGroup>().cellSize.y * _map.getRows());
+                _grid.GetComponent<RectTransform>().localScale = new Vector3(scale, scale, 1);
+
+                //Hay que cambiar esta parte para reposicionar porque el cellsize después de escalar sigue valiendo lo mismo que antes de escalar
+                float height = _map.getRows() * _grid.GetComponent<GridLayoutGroup>().cellSize.y;
+                RectTransform gridRT = _grid.GetComponent<RectTransform>();
+                gridRT.position = new Vector3(gridRT.position.x, 500, gridRT.position.z);
+            }
         }
         
     }
@@ -179,6 +188,9 @@ public class BoardManager : MonoBehaviour
     [SerializeField] RectTransform _canvasRT;
     [SerializeField] GameObject _grid;
     private LevelManager _levelManager;
+
+    [SerializeField] Text _pruebaCoordenadas;
+    [SerializeField] Text _pruebaCanvasSize;
 
     private string[] _lot;
     private int _currentLevel;
