@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class SaveDataManager
 {
+    [System.Serializable]
     public struct LevelLotData
     {
         public string name;
@@ -14,6 +15,7 @@ public class SaveDataManager
         public List<int> bestMovesPerLevel;
 
     }
+    [System.Serializable]
     public struct sectionData
     {
 
@@ -23,7 +25,7 @@ public class SaveDataManager
 
     public SaveDataManager()
     {
-        if (!File.Exists(Application.persistentDataPath + "savedata.json"))
+        if (!File.Exists(Application.persistentDataPath + "/savedata.json"))
             createNewData();
         else
             load();
@@ -37,7 +39,7 @@ public class SaveDataManager
         sections = new sectionData[gameManagerSections.Length];
         for (int i = 0; i < sections.Length; i++)
         {
-            sections[i].levelLots = new LevelLotData[sections[i].levelLots.Length];
+            sections[i].levelLots = new LevelLotData[gameManagerSections[i].levelLots.Length];
             sections[i].name = gameManagerSections[i].SectionName;
             for (int j = 0; j < sections[i].levelLots.Length; j++)
             {
@@ -58,13 +60,12 @@ public class SaveDataManager
         string json = JsonUtility.ToJson(this);
         //we add the pepper
         json += "Q:c8!r7pb2L)<6~A";
-        SHA256 sha = SHA256.Create();
         //we generate the hash
-        hash = sha.ComputeHash(Encoding.UTF8.GetBytes(json)).ToString();
+        hash = hashFunction(json);
         //we generate the true json with the hash
         json = JsonUtility.ToJson(this);
         //we save the json
-        StreamWriter file = new StreamWriter(Application.persistentDataPath + "savedata.json");
+        StreamWriter file = new StreamWriter(Application.persistentDataPath + "/savedata.json");
         file.Write(json);
         file.Close();
         return true;
@@ -75,7 +76,7 @@ public class SaveDataManager
     void load()
     {
         //we read the json
-        StreamReader file = new StreamReader(Application.persistentDataPath + "savedata.json");
+        StreamReader file = new StreamReader(Application.persistentDataPath + "/savedata.json");
         string json = file.ReadLine();
         file.Close();
         //we deserialize the json
@@ -86,14 +87,26 @@ public class SaveDataManager
         //we serialize the object without the hash and add the pepper
         json = JsonUtility.ToJson(this);
         json += "Q:c8!r7pb2L)<6~A";
-        SHA256 sha = SHA256.Create();
         //if the hash we stored previously and the hash we just generated aren't equal, it means the user 
         //tried to cheat, so we delete the progress
-        if (sha.ComputeHash(Encoding.UTF8.GetBytes(json)).ToString() != auxHash)
+        if (hashFunction(json) != auxHash)
         {
             File.Delete(Application.persistentDataPath + "savedata.json");
             createNewData();
         }
+    }
+    string hashFunction(string input)
+    {
+        SHA256 sha256Hash = SHA256.Create();
+        byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
+
+        // Convert byte array to a string   
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < bytes.Length; i++)
+        {
+            builder.Append(bytes[i].ToString("x2"));
+        }
+        return builder.ToString();
     }
     public int numHints;
     public string hash = "";
