@@ -25,10 +25,13 @@ public class BoardManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Debug.Log("Pressed primary button.");
-            Debug.Log(Input.mousePosition);
+           // Debug.Log(Input.mousePosition);
             _pruebaCoordenadas.text = "x: " + Input.mousePosition.x + ", y: " + Input.mousePosition.y;
+            //Debug.Log(_cam.ScreenToWorldPoint(Input.mousePosition));
 
-            _pruebaCanvasSize.text = _canvasRT.rect.width + "," + _canvasRT.rect.height;
+           // Debug.Log("Screen Height : " + Screen.height);
+
+            _pruebaCanvasSize.text = "W: " + _canvasRT.rect.width + ", H: " + _canvasRT.rect.height;
          }
             
     }
@@ -40,7 +43,7 @@ public class BoardManager : MonoBehaviour
 
     public void loadMap(Map m)
     {
-        _map = m;
+        _map = m;        
         resetInfo();
         configureBoard();
         setUIinfo();
@@ -189,9 +192,6 @@ public class BoardManager : MonoBehaviour
     [SerializeField] GameObject _grid;
     private LevelManager _levelManager;
 
-    [SerializeField] Text _pruebaCoordenadas;
-    [SerializeField] Text _pruebaCanvasSize;
-
     private string[] _lot;
     private int _currentLevel;
     
@@ -202,4 +202,9 @@ public class BoardManager : MonoBehaviour
     private int _movements;
     private int _pipe;
     private bool _levelDone;
+
+    //PRUEBAS, BORRAR AL TERMINAR
+    [SerializeField] Text _pruebaCoordenadas;
+    [SerializeField] Text _pruebaCanvasSize;
+    [SerializeField] Camera _cam;
 }
