@@ -9,10 +9,8 @@ public class LevelLotDisplayer : MonoBehaviour
 
     private void Start()
     {
-#if (!DEBUG)
         LevelLot lvlLot = GameManager.instance.getSelectedLot();
         Section section = GameManager.instance.getSelectedSection();
-#endif
         display(lvlLot, section);
     }
     void display(LevelLot lvlLot, Section section)
@@ -46,8 +44,4 @@ public class LevelLotDisplayer : MonoBehaviour
     [SerializeField] Text _sectionName;
     [SerializeField] RectTransform _scroll;
     [SerializeField] RectTransform _startPoint;
-#if UNITY_EDITOR
-    [SerializeField] LevelLot lvlLot;
-    [SerializeField] Section section;
-#endif
 }

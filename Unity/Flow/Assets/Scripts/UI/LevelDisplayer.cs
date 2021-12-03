@@ -51,8 +51,10 @@ public class LevelDisplayer : MonoBehaviour
             levelObject = Instantiate<GameObject>(_levelPrefab, _gridTransform);
             visuals = levelObject.GetComponent<LevelVisuals>();
             visuals.setVisualVisible(LevelVisuals.LevelVisualElement.Lock, true);
+            visuals.setVisualColor(LevelVisuals.LevelVisualElement.Lock, _lockColor);
             visuals.setVisualColor(LevelVisuals.LevelVisualElement.Border, _lockedBorderColor);
             visuals.setVisualColor(LevelVisuals.LevelVisualElement.Border, _lockedBackGroundColor);
+            visuals.setVisualColor(LevelVisuals.LevelVisualElement.Number, _lockedNumberColor);
             visuals.setLevel((gridNumber * _numLevels) + i + 1);
         }
     }
@@ -66,6 +68,8 @@ public class LevelDisplayer : MonoBehaviour
     [SerializeField] Color _unlockedBorderColor;
     [SerializeField] Color _lockedBackGroundColor;
     [SerializeField] Color _unlockedBackGroundColor;
+    [SerializeField] Color _lockColor;
+    [SerializeField] Color _lockedNumberColor;
     [SerializeField] GameObject _levelPrefab;
     [SerializeField] RectTransform _gridTransform;
     [SerializeField] RectTransform _Transform;
