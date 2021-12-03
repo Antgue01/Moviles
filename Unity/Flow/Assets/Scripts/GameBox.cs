@@ -42,13 +42,13 @@ public class GameBox: MonoBehaviour
 		{
             if(!_figureImage.activeSelf)
                 _figureImage.SetActive(true);
-            _figureImage.GetComponent<Image>().sprite = s;
+            _figureImage.GetComponent<SpriteRenderer>().sprite = s;
         }            
     }
 
     public void setFigureColor(Color c)
     {
-        _figureImage.GetComponent<Image>().color = c;
+        _figureImage.GetComponent<SpriteRenderer>().color = c;
     }
 
     public void setPos(Vector2 p)

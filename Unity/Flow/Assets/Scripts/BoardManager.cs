@@ -79,38 +79,42 @@ public class BoardManager : MonoBehaviour
             {
                 for (int col = 0; col < _map.getCols(); ++col)
                 {
-                    GameObject go = Instantiate(gameBoxPrefab, _grid.transform) as GameObject;
-                    go.GetComponent<Image>().color = sectionColor;
+                    GameObject go = Instantiate(gameBoxPrefab, new Vector3(col,row,0),Quaternion.identity,_grid.transform) as GameObject;
+                    go.GetComponent<SpriteRenderer>().color = sectionColor;
                     //go.GetComponent<GameBox>().setFigureImageSize(boxWidth, boxHeight);
                     _board[row, col] = go;
+                    
                 }
             }
+
+            //float scale = Camera.main.ScreenToWorldPoint(Vector3.right*_canvasRT.rect.width / (float)_map.getRows()).x;
+            Debug.Log(scale);
+            _grid.transform.localScale = Vector3.one * scale;
 
             createFlowPoints();
             checkHollows();
             checkBridges();
 
-            _grid.GetComponent<GridLayoutGroup>().constraintCount = _map.getCols();
 
             if (_map.getCols() >= _map.getRows())
             {
-                float scale = _canvasRT.rect.width / (_grid.GetComponent<GridLayoutGroup>().cellSize.x * _map.getCols());
-                _grid.GetComponent<RectTransform>().localScale = new Vector3(scale, scale, 1);
+                //float scale = _canvasRT.rect.width / (_grid.GetComponent<GridLayoutGroup>().cellSize.x * _map.getCols());
+                //_grid.GetComponent<RectTransform>().localScale = new Vector3(scale, scale, 1);
 
-                //Hay que cambiar esta parte para reposicionar porque el cellsize después de escalar sigue valiendo lo mismo que antes de escalar
+                //Hay que cambiar esta parte para reposicionar porque el cellsize despuï¿½s de escalar sigue valiendo lo mismo que antes de escalar
                 float height = _map.getRows() * _grid.GetComponent<GridLayoutGroup>().cellSize.y * scale;
                 //RectTransform gridRT = _grid.GetComponent<RectTransform>();
                 //gridRT.transform.position = new Vector3(gridRT.position.x, height / 2 , gridRT.position.z);
             }
             else
             {
-                float scale = _canvasRT.rect.height / (_grid.GetComponent<GridLayoutGroup>().cellSize.y * _map.getRows());
-                _grid.GetComponent<RectTransform>().localScale = new Vector3(scale, scale, 1);
+                //float scale = _canvasRT.rect.height / (_grid.GetComponent<GridLayoutGroup>().cellSize.y * _map.getRows());
+                //_grid.GetComponent<RectTransform>().localScale = new Vector3(scale, scale, 1);
 
-                //Hay que cambiar esta parte para reposicionar porque el cellsize después de escalar sigue valiendo lo mismo que antes de escalar
-                float height = _map.getRows() * _grid.GetComponent<GridLayoutGroup>().cellSize.y;
-                RectTransform gridRT = _grid.GetComponent<RectTransform>();
-                gridRT.position = new Vector3(gridRT.position.x, 500, gridRT.position.z);
+                ////Hay que cambiar esta parte para reposicionar porque el cellsize despuï¿½s de escalar sigue valiendo lo mismo que antes de escalar
+                //float height = _map.getRows() * _grid.GetComponent<GridLayoutGroup>().cellSize.y;
+                //RectTransform gridRT = _grid.GetComponent<RectTransform>();
+                //gridRT.position = new Vector3(gridRT.position.x, 500, gridRT.position.z);
             }
         }
         
@@ -206,5 +210,4 @@ public class BoardManager : MonoBehaviour
     //PRUEBAS, BORRAR AL TERMINAR
     [SerializeField] Text _pruebaCoordenadas;
     [SerializeField] Text _pruebaCanvasSize;
-    [SerializeField] Camera _cam;
 }
