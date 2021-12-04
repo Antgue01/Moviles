@@ -179,9 +179,9 @@ public class BoardManager : MonoBehaviour
     {
         float height = Camera.main.orthographicSize * 2;
         float width = (height * Camera.main.aspect);
-        //we lessen 1 because of the origin point
-        float topSize = (1 - _UITop.anchorMin.y) * height;
-        float botSize = (1 - (1 - _UIBot.anchorMax.y)) * height;
+        //we substract 1 because of the origin point
+        float topSize = (1 - _UITop.anchorMin.y) * height + _topOffset;
+        float botSize = (1 - (1 - _UIBot.anchorMax.y)) * height + _botOffset;
         //we calculate the height by substracting the top lowest point and the bottom upper point from the original height
         float gridHeight = height - botSize - topSize;
         Debug.Log("top: " + topSize);
@@ -189,28 +189,30 @@ public class BoardManager : MonoBehaviour
         Debug.Log("h: " + gridHeight);
         //Hacemos la regla de tres para ver si cabría
 
-        //double newH = _logicHeight * frameW / _logicWidth;
-        //double newW = _logicWidth * frameH / _logicHeight;
-
+        double newH = _map.getRows() * width / _map.getCols();
+        double newW = _map.getCols() * gridHeight / _map.getRows();
+        float translationX = 0;
+        float translationY = 0;
         ////Si escalando la Y no cabríamos
-
-        //if (newH >= frameH)
-        //{
-        //    //Factor de escala
-        //    _scaleY = frameH / (double)_logicHeight;
-        //    _scaleX = _scaleY;
-        //}
-        //else if (newW >= frameW)
-        //{
-        //    //Factor de escala
-        //    _scaleX = frameW / (double)_logicWidth;
-        //    _scaleY = _scaleX;
-        //}
-        //_canvasWidth = _scaleX * _logicWidth;
-        //_canvasHeight = _scaleY * _logicHeight;
-
-        //_translationX = ((double)frameW - _canvasWidth) / 2;
-        //_translationY = ((double)frameH - _canvasHeight) / 2;
+        float scale = 1;
+        if (newH >= gridHeight)
+        {
+            //Factor de escala
+            scale = gridHeight / _map.getRows();
+            translationX = (_map.getCols() * scale) / 2;
+            translationY = gridHeight / 2;
+        }
+        else if (newW >= width)
+        {
+            scale = width / _map.getCols();
+            translationX = width/ 2;
+            translationY = (_map.getRows() * scale) / 2;
+            //Factor de escala
+        }
+        /*todo probar con un tablero en horizontal. Tengo la corazonada de que en ese caso habría que intercambiar translationx
+        y translationY*/
+        _grid.transform.localScale = Vector3.one * scale;
+        _grid.transform.Translate(new Vector3(-translationX, translationY, 0));
     }
     private void resetInfo()
     {
@@ -236,6 +238,8 @@ public class BoardManager : MonoBehaviour
     [SerializeField] GameObject _grid;
     [SerializeField] RectTransform _UITop;
     [SerializeField] RectTransform _UIBot;
+    [SerializeField] float _topOffset;
+    [SerializeField] float _botOffset;
     private LevelManager _levelManager;
 
     private string[] _lot;
