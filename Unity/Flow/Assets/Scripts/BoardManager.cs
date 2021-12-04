@@ -87,7 +87,7 @@ public class BoardManager : MonoBehaviour
                 }
             }
 
-            //float scale = Camera.main.ScreenToWorldPoint(Vector3.right*_canvasRT.rect.width / (float)_map.getRows()).x;
+            float scale = Camera.main.ScreenToWorldPoint(Vector3.right * _canvasRT.rect.width / (float)_map.getRows()).x;
             Debug.Log(scale);
             _grid.transform.localScale = Vector3.one * scale;
 
