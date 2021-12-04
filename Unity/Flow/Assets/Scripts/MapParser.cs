@@ -22,8 +22,9 @@ public class MapParser
         }
         else
         {
-            map.setCols((int)(header[0][0] - '0'));
-            map.setRows((int)(header[0][2] - '0'));
+            string []dims = header[0].Split(':');
+            map.setCols(int.Parse(dims[0]));
+            map.setRows(int.Parse(dims[1]));
         }
 
         map.setLevel(int.Parse(header[2]));
