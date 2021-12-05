@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameBox : MonoBehaviour
 {
     public enum BoxType { Bridge, Hollow, Flow, Empty }
+    public enum PathType { Top, Bottom, Left, Right, None }
 
     public void setInitType(BoxType t)
     {
@@ -64,6 +65,37 @@ public class GameBox : MonoBehaviour
             _type = _initType;
         }
     }
+
+    public void setPathFrom(PathType pT)
+	{
+        if(pT == PathType.None)
+		{
+            _pathImage.SetActive(false);
+            return;
+		}
+
+        _pathImage.SetActive(true);
+
+        switch (pT)
+		{
+            case PathType.Top:
+                _pathImage.transform.localPosition = new Vector3(0, 0.5f, 0);
+                _pathImage.transform.localEulerAngles = new Vector3(0, 0, -90);
+                break;
+            case PathType.Bottom:
+                _pathImage.transform.localPosition = new Vector3(0, -0.5f, 0);
+                _pathImage.transform.localEulerAngles = new Vector3(0, 0, 90);
+                break;
+            case PathType.Left:
+                _pathImage.transform.localPosition = new Vector3(-0.5f, 0, 0);
+                _pathImage.transform.localEulerAngles = new Vector3(0, 0, 0);
+                break;
+            case PathType.Right:
+                _pathImage.transform.localPosition = new Vector3(0.5f, 0, 0);
+                _pathImage.transform.localEulerAngles = new Vector3(0, 0, 180);
+                break;
+        }
+	}
     //public void setIndex(int ind)
     //{
     //    if (_type == BoxType.Flow && ind > -1 && ind < NumFlows)
@@ -80,5 +112,6 @@ public class GameBox : MonoBehaviour
     const int NumFlows = 16;
 
     [SerializeField] private GameObject _figureImage;
+    [SerializeField] private GameObject _pathImage;
 }
 

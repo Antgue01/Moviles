@@ -14,8 +14,19 @@ public class InputTransformer
     /// <returns>the coordinates in the object local space. The (0,0) is top left and it increases from left to right and from top to bot</returns>
     public Vector2 getInputPos(Vector3 originalInputPos,Transform relativeObject)
     {
-        Vector2 transformed =relativeObject.worldToLocalMatrix.MultiplyPoint3x4(Camera.main.ScreenToWorldPoint(originalInputPos));
+        Vector2 transformed = relativeObject.worldToLocalMatrix.MultiplyPoint3x4(Camera.main.ScreenToWorldPoint(originalInputPos));
         transformed.y = -transformed.y;
        return transformed;
     }
+
+	public Vector2 getTilePos(Transform relativeObject, int maxRows, int maxCols)
+	{
+        Vector2 gridPosition = getInputPos(Input.mousePosition, relativeObject);
+
+        if (gridPosition.x >= maxCols || gridPosition.x < 0 || gridPosition.y >= maxRows || gridPosition.y < 0)
+            return Vector2.one * -1;
+
+        Vector2 tileRowCol = new Vector2((int)gridPosition.y, (int)gridPosition.x);
+		return tileRowCol;
+	}
 }

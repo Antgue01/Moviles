@@ -22,15 +22,14 @@ public class BoardManager : MonoBehaviour
             _levelManager.setLevelDone(true);
         }
 #if UNITY_EDITOR
-        Vector2 input = Vector2.zero;
         if (Input.GetMouseButtonDown(0))
         {
-            input = _transformer.getInputPos(Input.mousePosition, _grid.transform);
+            _inputTilePos = _transformer.getTilePos(_grid.transform, Rows, Cols);
         }
 #else
-        Vector2 input= _transformer.getInputPos(Input.GetTouch(0);
+        Vector2 input = _transformer.getInputPos(Input.touches[0].position,_grid.transform);
 #endif
-        _pruebaCoordenadas.text = "x: " + input.x + ", y: " + input.y;
+        _pruebaCoordenadas.text = "row: " + _inputTilePos.x + ", col: " + _inputTilePos.y;
         _pruebaCanvasSize.text = "W: " + _canvasRT.rect.width + ", H: " + _canvasRT.rect.height;
 
     }
@@ -197,6 +196,9 @@ public class BoardManager : MonoBehaviour
     [SerializeField] RectTransform _canvasRT;
     [SerializeField] GameObject _grid;
     private LevelManager _levelManager;
+
+    Vector2 _inputTilePos = Vector2.zero;
+
 
     private string[] _lot;
     private int _currentLevel;

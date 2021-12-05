@@ -129,6 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _figureImage: {fileID: 1175781138991309727}
+  _pathImage: {fileID: 9108570539266884680}
 --- !u!212 &582011050028481449
 SpriteRenderer:
   m_ObjectHideFlags: 0
