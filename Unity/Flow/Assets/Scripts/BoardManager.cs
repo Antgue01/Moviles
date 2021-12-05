@@ -203,6 +203,7 @@ public class BoardManager : MonoBehaviour
 
     private Map _map;
     private GameObject[,] _board;
+    private List<Vector2>[] _flows;
 
     private int _flowsConnected;
     private int _movements;
