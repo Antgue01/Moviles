@@ -27,11 +27,11 @@ public class GameBox : MonoBehaviour
         return _type == BoxType.Hollow;
     }
 
-    public void setFigureImageSize(float w, float h)
-    {
-        _figureImage.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, w);
-        _figureImage.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, h);
-    }
+    //public void setFigureImageSize(float w, float h)
+    //{
+    //    _figureImage.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, w);
+    //    _figureImage.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, h);
+    //}
     public void setFigureSprite(Sprite s)
     {
         if (s == null)
@@ -51,11 +51,11 @@ public class GameBox : MonoBehaviour
         _figureImage.GetComponent<SpriteRenderer>().color = c;
     }
 
-    public void setPos(Vector2 p)
-    {
-        _position = p;
-        transform.position = _position;
-    }
+    //public void setPos(Vector2 p)
+    //{
+    //    _position = p;
+    //    transform.position = _position;
+    //}
 
     public void reset()
     {
@@ -64,15 +64,15 @@ public class GameBox : MonoBehaviour
             _type = _initType;
         }
     }
-    public void setIndex(int ind)
-    {
-        if (_type == BoxType.Flow && ind > -1 && ind < NumFlows)
-            _flowIndex = ind;
-    }
-    public int getIndex()
-    {
-        return _flowIndex;
-    }
+    //public void setIndex(int ind)
+    //{
+    //    if (_type == BoxType.Flow && ind > -1 && ind < NumFlows)
+    //        _flowIndex = ind;
+    //}
+    //public int getIndex()
+    //{
+    //    return _flowIndex;
+    //}
     private Vector2 _position;
     int _flowIndex;
     private BoxType _type;
