@@ -8,7 +8,7 @@ public class BoardManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        _transformer = new InputTransformer();
     }
 
     // Update is called once per frame
@@ -21,18 +21,17 @@ public class BoardManager : MonoBehaviour
             _levelDone = true;
             _levelManager.setLevelDone(true);
         }
-
+#if UNITY_EDITOR
+        Vector2 input = Vector2.zero;
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("Pressed primary button.");
-            // Debug.Log(Input.mousePosition);
-            _pruebaCoordenadas.text = "x: " + Input.mousePosition.x + ", y: " + Input.mousePosition.y;
-            //Debug.Log(_cam.ScreenToWorldPoint(Input.mousePosition));
-
-            // Debug.Log("Screen Height : " + Screen.height);
-
-            _pruebaCanvasSize.text = "W: " + _canvasRT.rect.width + ", H: " + _canvasRT.rect.height;
+            input = _transformer.getInputPos(Input.mousePosition, _grid.transform);
         }
+#else
+        Vector2 input= _transformer.getInputPos(Input.GetTouch(0);
+#endif
+        _pruebaCoordenadas.text = "x: " + input.x + ", y: " + input.y;
+        _pruebaCanvasSize.text = "W: " + _canvasRT.rect.width + ", H: " + _canvasRT.rect.height;
 
     }
 
@@ -72,12 +71,13 @@ public class BoardManager : MonoBehaviour
         {
             //float boxWidth = _grid.GetComponent<RectTransform>().rect.width / _map.getCols();
             //float boxHeight = _grid.GetComponent<RectTransform>().rect.width / _map.getRows();
-
-            _board = new GameObject[_map.getRows(), _map.getCols()];
+            Rows = _map.getRows();
+            Cols = _map.getCols();
+            _board = new GameObject[Rows, Cols];
             Color sectionColor = GameManager.instance.getSelectedSection().themeColor;
-            for (int row = 0; row < _map.getRows(); ++row)
+            for (int row = 0; row < Rows; ++row)
             {
-                for (int col = 0; col < _map.getCols(); ++col)
+                for (int col = 0; col < Cols; ++col)
                 {
                     GameObject go = Instantiate(gameBoxPrefab, _grid.transform) as GameObject;
                     go.transform.localPosition = new Vector3(col + .5f, -row - .5f, 0);
@@ -87,13 +87,12 @@ public class BoardManager : MonoBehaviour
 
                 }
             }
-            adjustToScreen();
             createFlowPoints();
             checkHollows();
             checkBridges();
 
 
-            if (_map.getCols() >= _map.getRows())
+            if (Cols >= Rows)
             {
                 //float scale = _canvasRT.rect.width / (_grid.GetComponent<GridLayoutGroup>().cellSize.x * _map.getCols());
                 //_grid.GetComponent<RectTransform>().localScale = new Vector3(scale, scale, 1);
@@ -135,8 +134,8 @@ public class BoardManager : MonoBehaviour
             {
                 //Start index
                 int index = flowColor[0];
-                int row = index / _map.getCols();
-                int column = index % _map.getCols();
+                int row = index / Cols;
+                int column = index % Cols;
                 GameObject auxOb = _board[row, column];
                 GameBox gb = auxOb.GetComponent<GameBox>();
                 gb.setFigureSprite(_sprites[0]);
@@ -145,8 +144,8 @@ public class BoardManager : MonoBehaviour
 
                 //Final index
                 index = flowColor[flowColor.Length - 1];
-                row = index / _map.getCols();
-                column = index % _map.getCols();
+                row = index / Cols;
+                column = index % Cols;
                 auxOb = _board[row, column];
                 gb = auxOb.GetComponent<GameBox>();
                 gb.setFigureSprite(_sprites[0]);
@@ -174,46 +173,7 @@ public class BoardManager : MonoBehaviour
 
             }
     }
-    //todo esto ira en otra clase para ajustarlo cuando se cambie el size
-    private void adjustToScreen()
-    {
-        float height = Camera.main.orthographicSize * 2;
-        float width = (height * Camera.main.aspect);
-        //we substract 1 because of the origin point
-        float topSize = (1 - _UITop.anchorMin.y) * height + _topOffset;
-        float botSize = (1 - (1 - _UIBot.anchorMax.y)) * height + _botOffset;
-        //we calculate the height by substracting the top lowest point and the bottom upper point from the original height
-        float gridHeight = height - botSize - topSize;
-        Debug.Log("top: " + topSize);
-        Debug.Log("bot: " + botSize);
-        Debug.Log("h: " + gridHeight);
-        //Hacemos la regla de tres para ver si cabría
 
-        double newH = _map.getRows() * width / _map.getCols();
-        double newW = _map.getCols() * gridHeight / _map.getRows();
-        float translationX = 0;
-        float translationY = 0;
-        ////Si escalando la Y no cabríamos
-        float scale = 1;
-        if (newH >= gridHeight)
-        {
-            //Factor de escala
-            scale = gridHeight / _map.getRows();
-            translationX = (_map.getCols() * scale) / 2;
-            translationY = gridHeight / 2;
-        }
-        else if (newW >= width)
-        {
-            scale = width / _map.getCols();
-            translationX = width/ 2;
-            translationY = (_map.getRows() * scale) / 2;
-            //Factor de escala
-        }
-        /*todo probar con un tablero en horizontal. Tengo la corazonada de que en ese caso habría que intercambiar translationx
-        y translationY*/
-        _grid.transform.localScale = Vector3.one * scale;
-        _grid.transform.Translate(new Vector3(-translationX, translationY, 0));
-    }
     private void resetInfo()
     {
         _levelDone = false;
@@ -225,7 +185,7 @@ public class BoardManager : MonoBehaviour
 
     private void setUIinfo()
     {
-        _levelManager.setSizeText(_map.getRows(), _map.getCols());
+        _levelManager.setSizeText(Rows, Cols);
         _levelManager.setFlowsText(0, _map.getTotalFlows());
         _levelManager.setPipeText(_pipe);
         _levelManager.setMovementsText(_movements);
@@ -236,10 +196,6 @@ public class BoardManager : MonoBehaviour
     [SerializeField] GameObject gameBoxPrefab;
     [SerializeField] RectTransform _canvasRT;
     [SerializeField] GameObject _grid;
-    [SerializeField] RectTransform _UITop;
-    [SerializeField] RectTransform _UIBot;
-    [SerializeField] float _topOffset;
-    [SerializeField] float _botOffset;
     private LevelManager _levelManager;
 
     private string[] _lot;
@@ -252,6 +208,9 @@ public class BoardManager : MonoBehaviour
     private int _movements;
     private int _pipe;
     private bool _levelDone;
+    private InputTransformer _transformer;
+    public int Rows { get; private set; }
+    public int Cols { get; private set; }
 
     //PRUEBAS, BORRAR AL TERMINAR
     [SerializeField] Text _pruebaCoordenadas;

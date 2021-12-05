@@ -16,8 +16,9 @@ public class LevelManager : MonoBehaviour
         _currentLevel = GameManager.instance.getSelectedLevel();
         if (_currentLevel >= 0 && _currentLevel < _lot.Length)
         {
-            Map m = _mapParser.createLevelMap(_lot[_currentLevel]);
-            _boardManager.loadMap(m);
+            _map = _mapParser.createLevelMap(_lot[_currentLevel]);
+            _boardManager.loadMap(_map);
+            AdjustGridToScreen();
             updateButtonsInfo();
             checkLevelCompleted();
         }
@@ -32,7 +33,7 @@ public class LevelManager : MonoBehaviour
         if (_isLevelDone)
         {
             //Block buttons
-            
+
             //Show win pannel menu
         }
     }
@@ -47,7 +48,7 @@ public class LevelManager : MonoBehaviour
     {
         _sizeText.text = rows + "x" + cols;
     }
-    
+
     public void setFlowsText(int howManyFlows, int totalFlows)
     {
         _flowText.text = "flows: " + howManyFlows + "/" + totalFlows;
@@ -55,8 +56,8 @@ public class LevelManager : MonoBehaviour
 
     public void setMovementsText(int howManyMov)
     {
-        _moveText.text = "moves: " + howManyMov +"";
-    }    
+        _moveText.text = "moves: " + howManyMov + "";
+    }
 
     public void setBestMovementsText()
     {
@@ -73,8 +74,8 @@ public class LevelManager : MonoBehaviour
     public void setLevelDone(bool isDone)
     {
         _isLevelDone = isDone;
-        if(isDone)
-            GameManager.instance.UpdateLevel(_bestMovements);            
+        if (isDone)
+            GameManager.instance.UpdateLevel(_bestMovements);
     }
 
     private void checkLevelCompleted()
@@ -112,7 +113,7 @@ public class LevelManager : MonoBehaviour
 
     public void resetLevel()
     {
-        _boardManager.resetLevel();       
+        _boardManager.resetLevel();
     }
 
     public void nextLevel()
@@ -120,21 +121,58 @@ public class LevelManager : MonoBehaviour
         if (_currentLevel < _lot.Length)
         {
             _currentLevel++;
-            Map m = _mapParser.createLevelMap(_lot[_currentLevel]);
-            _boardManager.loadMap(_mapParser.createLevelMap(_lot[_currentLevel]));
+            _map = _mapParser.createLevelMap(_lot[_currentLevel]);
+            _boardManager.loadMap(_map);
             updateButtonsInfo();
+
         }
     }
+    void AdjustGridToScreen()
+    {
 
+        float height = Camera.main.orthographicSize * 2;
+        float width = (height * Camera.main.aspect);
+        //we substract 1 because of the origin point
+        float topSize = (1 - _UITop.anchorMin.y) * height + _topOffset;
+        float botSize = (1 - (1 - _UIBot.anchorMax.y)) * height + _botOffset;
+        //we calculate the height by substracting the top lowest point and the bottom upper point from the original height
+        float gridHeight = height - botSize - topSize;
+        //we calculate the rule of threet to check if it would fit
+
+        double newH = _map.getRows() * width / _map.getCols();
+        double newW = _map.getCols() * gridHeight / _map.getRows();
+        float translationX = 0;
+        float translationY = 0;
+        //If scaling the Y it wouldn't fit
+        float scale = 1;
+        if (newH >= gridHeight)
+        {
+            //Scale factor
+            scale = gridHeight / _map.getRows();
+            translationX = (_map.getCols() * scale) / 2;
+            translationY = gridHeight / 2;
+        }
+        else if (newW >= width)
+        {
+            //Scale factor
+            scale = width / _map.getCols();
+            translationX = width / 2;
+            translationY = (_map.getRows() * scale) / 2;
+        }
+        /*todo probar con un tablero en horizontal. Tengo la corazonada de que en ese caso habría que intercambiar translationx
+        y translationY*/
+        _grid.transform.localScale = Vector3.one * scale;
+        _grid.transform.Translate(new Vector3(-translationX, translationY, 0));
+    }
     public void previousLevel()
     {
         if (_currentLevel > 0)
         {
             _currentLevel--;
-            Map m = _mapParser.createLevelMap(_lot[_currentLevel]);            
-            _boardManager.loadMap(_mapParser.createLevelMap(_lot[_currentLevel]));
+            _map = _mapParser.createLevelMap(_lot[_currentLevel]);
+            _boardManager.loadMap(_map);
             updateButtonsInfo();
-        }       
+        }
     }
 
     public void useHint()
@@ -145,7 +183,7 @@ public class LevelManager : MonoBehaviour
             GameManager.instance.updateNumHints(_remainingHints);
             _boardManager.useHint();
             setRemainingHintsText();
-        }       
+        }
     }
 
     [SerializeField] BoardManager _boardManager;
@@ -156,7 +194,13 @@ public class LevelManager : MonoBehaviour
     [SerializeField] Text _bestText;
     [SerializeField] Text _pipeText;
     [SerializeField] Text _hintText;
+    [SerializeField] RectTransform _UITop;
+    [SerializeField] RectTransform _UIBot;
+    [SerializeField] float _topOffset;
+    [SerializeField] float _botOffset;
+    [SerializeField] Transform _grid;
     private MapParser _mapParser;
+    Map _map;
 
     private string[] _lot;
     private bool _isLevelDone;

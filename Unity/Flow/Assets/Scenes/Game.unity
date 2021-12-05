@@ -617,7 +617,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: a6fd136daf99a8f4cb19ca6f523b2079, type: 2}
     - target: {fileID: 723185779894205650, guid: 0f6cb83db43a1734b863f68078fcb0de, type: 3}
       propertyPath: selectedLevelDebug
-      value: 0
+      value: 149
       objectReference: {fileID: 0}
     - target: {fileID: 723185779894205650, guid: 0f6cb83db43a1734b863f68078fcb0de, type: 3}
       propertyPath: selectedSectionDebug
@@ -950,10 +950,6 @@ MonoBehaviour:
   gameBoxPrefab: {fileID: 8161263463040058764, guid: efb032bd83f15d04593279073f9a6b08, type: 3}
   _canvasRT: {fileID: 1814495300}
   _grid: {fileID: 1450791940}
-  _UITop: {fileID: 866315814}
-  _UIBot: {fileID: 1137394774}
-  _topOffset: 0.2
-  _botOffset: 0
   _pruebaCoordenadas: {fileID: 1089186904}
   _pruebaCanvasSize: {fileID: 592273533}
 --- !u!4 &628285579
@@ -1312,7 +1308,7 @@ MonoBehaviour:
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: Debug text
 --- !u!222 &1089186905
@@ -2233,6 +2229,11 @@ MonoBehaviour:
   _bestText: {fileID: 401926470}
   _pipeText: {fileID: 1959061101}
   _hintText: {fileID: 924530131}
+  _UITop: {fileID: 866315814}
+  _UIBot: {fileID: 1137394774}
+  _topOffset: 0.2
+  _botOffset: 0
+  _grid: {fileID: 1450791941}
 --- !u!4 &2120471374
 Transform:
   m_ObjectHideFlags: 0

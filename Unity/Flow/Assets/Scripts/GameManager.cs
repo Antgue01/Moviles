@@ -19,6 +19,12 @@ public class GameManager : MonoBehaviour
         else
         {
             instance._levelManager = _levelManager;
+#if UNITY_EDITOR
+            instance.selectedLevelDebug = selectedLevelDebug;
+            instance.selectedLevelLotDebug = selectedLevelLotDebug;
+            instance.selectedSectionDebug = selectedSectionDebug;
+            instance.selectedSkinDebug = selectedSkinDebug;
+#endif
             Destroy(this.gameObject);
         }
     }
