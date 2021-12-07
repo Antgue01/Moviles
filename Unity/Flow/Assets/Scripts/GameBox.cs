@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class GameBox : MonoBehaviour
 {
-    public enum BoxType { Bridge, Hollow, Flow, Empty }
-    public enum PathType { Top, Bottom, Left, Right, None }
+    public enum BoxType { Bridge, Hollow, FlowPoint, Flow, Empty }
 
     public void setInitType(BoxType t)
     {
@@ -18,21 +17,11 @@ public class GameBox : MonoBehaviour
         _type = t;
     }
 
-    public bool isBridge()
-    {
-        return _type == BoxType.Bridge;
-    }
+    public BoxType getType()
+	{
+        return _type;
+	}
 
-    public bool isHollow()
-    {
-        return _type == BoxType.Hollow;
-    }
-
-    //public void setFigureImageSize(float w, float h)
-    //{
-    //    _figureImage.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, w);
-    //    _figureImage.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, h);
-    //}
     public void setFigureSprite(Sprite s)
     {
         if (s == null)
@@ -49,8 +38,16 @@ public class GameBox : MonoBehaviour
 
     public void setFigureColor(Color c)
     {
-        _figureImage.GetComponent<SpriteRenderer>().color = c;
+        _myColor = c;
+        _figureImage.GetComponent<SpriteRenderer>().color = _myColor;
+        if (_type == BoxType.Flow)
+            _pathImage.GetComponent<SpriteRenderer>().color = _myColor;
     }
+
+    public Color getFigureColor()
+	{
+        return _myColor;
+	}
 
     //public void setPos(Vector2 p)
     //{
@@ -64,37 +61,63 @@ public class GameBox : MonoBehaviour
         {
             _type = _initType;
         }
+        _pathImage.SetActive(false);
     }
 
-    public void setPathFrom(PathType pT)
+    public void setPathFrom(Vector2Int dir)
 	{
-        if(pT == PathType.None)
-		{
-            _pathImage.SetActive(false);
-            return;
-		}
-
         _pathImage.SetActive(true);
 
-        switch (pT)
+        switch (dir)
 		{
-            case PathType.Top:
+            case Vector2Int v when v.Equals(Vector2Int.up):
                 _pathImage.transform.localPosition = new Vector3(0, 0.5f, 0);
                 _pathImage.transform.localEulerAngles = new Vector3(0, 0, -90);
                 break;
-            case PathType.Bottom:
+            case Vector2Int v when v.Equals(Vector2Int.down):
                 _pathImage.transform.localPosition = new Vector3(0, -0.5f, 0);
                 _pathImage.transform.localEulerAngles = new Vector3(0, 0, 90);
                 break;
-            case PathType.Left:
+            case Vector2Int v when v.Equals(Vector2Int.right):
                 _pathImage.transform.localPosition = new Vector3(-0.5f, 0, 0);
                 _pathImage.transform.localEulerAngles = new Vector3(0, 0, 0);
                 break;
-            case PathType.Right:
+            case Vector2Int v when v.Equals(Vector2Int.left):
                 _pathImage.transform.localPosition = new Vector3(0.5f, 0, 0);
                 _pathImage.transform.localEulerAngles = new Vector3(0, 0, 180);
                 break;
         }
+	}
+
+    public void setNextGB(GameBox gb)
+	{
+        _nextGameBox = gb;
+	}
+
+    public GameBox getNextGB()
+	{
+        return _nextGameBox;
+	}
+
+    /// <summary>
+    /// Unlinks all the GameBox from this Tile
+    /// </summary>
+    public void cutFromThisTile()
+	{
+        GameBox aux = this;
+		while (aux.getNextGB() != null)
+		{
+            GameBox nextAux = aux.getNextGB();
+            aux.setNextGB(null);
+            nextAux.reset();
+            aux = nextAux;
+		}
+        if (_otherFlowPoint != null && _otherFlowPoint.getNextGB() != null) _otherFlowPoint.cutFromThisTile();
+	}
+
+    public void setOtherFlowPoint(GameBox other)
+	{
+        _otherFlowPoint = other;
 	}
     //public void setIndex(int ind)
     //{
@@ -105,10 +128,12 @@ public class GameBox : MonoBehaviour
     //{
     //    return _flowIndex;
     //}
-    private Vector2 _position;
-    int _flowIndex;
+    private Color _myColor = Color.white;
     private BoxType _type;
     private BoxType _initType;
+    private GameBox _nextGameBox = null;
+    //The other flow point of this color
+    private GameBox _otherFlowPoint = null;
     const int NumFlows = 16;
 
     [SerializeField] private GameObject _figureImage;

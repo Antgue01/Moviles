@@ -19,14 +19,22 @@ public class InputTransformer
        return transformed;
     }
 
-	public Vector2 getTilePos(Transform relativeObject, int maxRows, int maxCols)
+    /// <summary>
+    /// Transforms the input from screen coordinates to an object local coordinates as a grid with Rows and Cols
+    /// </summary>
+    /// <param name="relativeObject"></param>
+    /// <param name="maxRows"></param>
+    /// <param name="maxCols"></param>
+    /// <returns></returns>
+	public Vector2Int getTilePos(Vector3 originalInputPos, Transform relativeObject, int maxRows, int maxCols)
 	{
-        Vector2 gridPosition = getInputPos(Input.mousePosition, relativeObject);
+        Vector2 gridPosition = getInputPos(originalInputPos, relativeObject);
 
+        //Check if not valid
         if (gridPosition.x >= maxCols || gridPosition.x < 0 || gridPosition.y >= maxRows || gridPosition.y < 0)
-            return Vector2.one * -1;
+            return Vector2Int.one * -1;
 
-        Vector2 tileRowCol = new Vector2((int)gridPosition.y, (int)gridPosition.x);
+        Vector2Int tileRowCol = new Vector2Int((int)gridPosition.y, (int)gridPosition.x);
 		return tileRowCol;
 	}
 }
