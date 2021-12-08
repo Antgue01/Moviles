@@ -22,6 +22,15 @@ public class BoardManager : MonoBehaviour
             _levelManager.setLevelDone(true);
         }
 
+        HandleInput();
+
+        _pruebaCoordenadas.text = "row: " + _inputTilePos.x + ", col: " + _inputTilePos.y;
+        _pruebaCanvasSize.text = "W: " + _canvasRT.rect.width + ", H: " + _canvasRT.rect.height;
+
+    }
+
+    private void HandleInput()
+	{
         //Just pressed
         if (Input.GetMouseButtonDown(0) && !_pressed)
         {
@@ -38,26 +47,27 @@ public class BoardManager : MonoBehaviour
             {
                 _pressed = true;
                 _lastPressed = currentTile;
+
+                _lastFlowPointOrigin = (currentGameBox.getType() == GameBox.BoxType.FlowPoint) ? currentGameBox : currentGameBox.getOriginFlowPoint();
+                _lastFlowPointOrigin.disconfirmFlows();
                 currentGameBox.cutFromThisTile();
             }
         }
         else if (Input.GetMouseButtonUp(0) && _pressed)
         {
-            _pressed = false;
-            _lastPressed = null;
+            endInput();
         }
         //While dragging
         else if (_pressed)
-		{
+        {
             Vector2Int lastInputRowCol = _inputTileRowCol;
             GameObject currentTile = getTileFromInput();
             //Check if it is a valid Tile
             if (currentTile == null)
-			{
-                _pressed = false;
-                _lastPressed = null;
+            {
+                endInput();
                 return;
-			}
+            }
             //Check if it is not the same Tile
             if (currentTile == _lastPressed) return;
 
@@ -66,54 +76,60 @@ public class BoardManager : MonoBehaviour
 
             if (currentGameBox.getType() == GameBox.BoxType.Empty ||
                 currentGameBox.getType() == GameBox.BoxType.Bridge)
-			{
-                if(connectGameBox(lastGameBox, currentGameBox, lastInputRowCol))
-				{
+            {
+                if (connectGameBox(lastGameBox, currentGameBox, lastInputRowCol))
+                {
                     _lastPressed = currentTile;
                 }
-				else
-				{
-                    _pressed = false;
-                    _lastPressed = null;
+                else
+                {
+                    endInput();
                 }
-			}
-            else if(currentGameBox.getType() == GameBox.BoxType.Flow ||
+            }
+            else if (currentGameBox.getType() == GameBox.BoxType.Flow ||
                 currentGameBox.getType() == GameBox.BoxType.FlowPoint)
-			{
+            {
                 //GameBox with the same color
-                if (currentGameBox.getFigureColor() == lastGameBox.getFigureColor())
-				{
+                if (currentGameBox.getColor() == lastGameBox.getColor())
+                {
                     _lastPressed = currentTile;
                     //New start of this flow, cut from here and continue
                     if (currentGameBox.getNextGB() != null)
                         currentGameBox.cutFromThisTile();
                     //Connect to a flow point as final
-					else
-					{
+                    else
+                    {
                         //If we cannot connect GameBox
                         if (!connectGameBox(lastGameBox, currentGameBox, lastInputRowCol))
-						{
-                            _pressed = false;
-                            _lastPressed = null;
+                        {
+                            endInput();
                         }
                     }
                 }
-			}
-			else
-			{
-                _pressed = false;
-                _lastPressed = null;
-                return;
+            }
+            else
+            {
+                endInput();
             }
         }
-
-        _pruebaCoordenadas.text = "row: " + _inputTilePos.x + ", col: " + _inputTilePos.y;
-        _pruebaCanvasSize.text = "W: " + _canvasRT.rect.width + ", H: " + _canvasRT.rect.height;
-
     }
 
     /// <summary>
-    /// Tries to connect two tiles, treating diagonal case
+    /// Finish and reset input
+    /// </summary>
+    private void endInput()
+	{
+        _pressed = false;
+        _lastPressed = null;
+		if (_lastFlowPointOrigin != null)
+		{
+            _lastFlowPointOrigin.confirmFlows();
+            _lastFlowPointOrigin = null;
+        }
+    }
+
+    /// <summary>
+    /// Tries to connect two tiles by flows, treating diagonal case
     /// </summary>
     /// <param name="from"></param>
     /// <param name="to"></param>
@@ -171,8 +187,9 @@ public class BoardManager : MonoBehaviour
     public void linkGameBox(GameBox from, GameBox to, Vector2Int dir)
 	{
         from.setNextGB(to);
-        to.setType(GameBox.BoxType.Flow);
-        to.setFigureColor(from.getFigureColor());
+        if(to.getType()!=GameBox.BoxType.FlowPoint)
+            to.setType(GameBox.BoxType.Flow);
+        to.setColor(from.getColor());
         to.setPathFrom(dir);
     }
 
@@ -290,7 +307,7 @@ public class BoardManager : MonoBehaviour
                 GameBox gb = auxOb.GetComponent<GameBox>();
                 gb.setInitType(GameBox.BoxType.FlowPoint);
                 gb.setFigureSprite(_sprites[0]);
-                gb.setFigureColor(GameManager.instance.getSelectedSkin().colors[colorIndex]);
+                gb.setColor(GameManager.instance.getSelectedSkin().colors[colorIndex]);
 
                 GameBox tempGB = gb;
 
@@ -302,7 +319,7 @@ public class BoardManager : MonoBehaviour
                 gb = auxOb.GetComponent<GameBox>();
                 gb.setInitType(GameBox.BoxType.FlowPoint);
                 gb.setFigureSprite(_sprites[0]);
-                gb.setFigureColor(GameManager.instance.getSelectedSkin().colors[colorIndex]);
+                gb.setColor(GameManager.instance.getSelectedSkin().colors[colorIndex]);
 
                 gb.setOtherFlowPoint(tempGB);
                 tempGB.setOtherFlowPoint(gb);
@@ -372,6 +389,7 @@ public class BoardManager : MonoBehaviour
 
     private bool _pressed;
     private GameObject _lastPressed;
+    private GameBox _lastFlowPointOrigin;
     private Vector2Int _inputTileRowCol;
     public int Rows { get; private set; }
     public int Cols { get; private set; }

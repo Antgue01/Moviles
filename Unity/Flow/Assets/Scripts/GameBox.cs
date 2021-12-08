@@ -22,6 +22,11 @@ public class GameBox : MonoBehaviour
         return _type;
 	}
 
+    public void setBackgroundActive(bool b)
+	{
+        _backgroundImage.SetActive(b);
+	}
+
     public void setFigureSprite(Sprite s)
     {
         if (s == null)
@@ -36,15 +41,19 @@ public class GameBox : MonoBehaviour
         }
     }
 
-    public void setFigureColor(Color c)
+    public void setColor(Color c)
     {
         _myColor = c;
+        
         _figureImage.GetComponent<SpriteRenderer>().color = _myColor;
-        if (_type == BoxType.Flow)
-            _pathImage.GetComponent<SpriteRenderer>().color = _myColor;
+		_pathImage.GetComponent<SpriteRenderer>().color = _myColor;
+
+        Color colorAlphaReduced = _myColor;
+        colorAlphaReduced.a = 0.3f;
+        _backgroundImage.GetComponent<SpriteRenderer>().color = colorAlphaReduced;
     }
 
-    public Color getFigureColor()
+	public Color getColor()
 	{
         return _myColor;
 	}
@@ -61,7 +70,9 @@ public class GameBox : MonoBehaviour
         {
             _type = _initType;
         }
+        _backgroundImage.SetActive(false);
         _pathImage.SetActive(false);
+        _originFlowPoint = null;
     }
 
     public void setPathFrom(Vector2Int dir)
@@ -100,7 +111,7 @@ public class GameBox : MonoBehaviour
 	}
 
     /// <summary>
-    /// Unlinks all the GameBox from this Tile
+    /// Unlinks all the GameBox from this Tile onwards
     /// </summary>
     public void cutFromThisTile()
 	{
@@ -112,30 +123,70 @@ public class GameBox : MonoBehaviour
             nextAux.reset();
             aux = nextAux;
 		}
-        if (_otherFlowPoint != null && _otherFlowPoint.getNextGB() != null) _otherFlowPoint.cutFromThisTile();
+        //We cut also from the other flow point, in case we cut from one of them
+        if (_otherFlowPoint != null && _otherFlowPoint.getNextGB() != null)
+		{
+            _otherFlowPoint.disconfirmFlows();
+            _otherFlowPoint.cutFromThisTile();
+        }
 	}
+
+    public void setOriginFlowPoint(GameBox origin)
+	{
+        _originFlowPoint = origin;
+	}
+    public GameBox getOriginFlowPoint()
+    {
+        return _originFlowPoint;
+    }
+
+    /// <summary>
+    /// Called if this GameBox is a Flow Point
+    /// </summary>
+    public void confirmFlows()
+	{
+        GameBox aux = this;
+        setBackgroundActive(aux.getNextGB() != null);
+
+        while (aux.getNextGB() != null)
+        {
+            aux = aux.getNextGB();
+            aux.setOriginFlowPoint(this);
+            aux.setBackgroundActive(true);
+        }
+    }
+
+    /// <summary>
+    /// Called if this GameBox is a Flow Point
+    /// </summary>
+    public void disconfirmFlows()
+    {
+        GameBox aux = this;
+        setBackgroundActive(false);
+
+        while (aux.getNextGB() != null)
+        {
+            aux = aux.getNextGB();
+            aux.setBackgroundActive(false);
+        }
+    }
 
     public void setOtherFlowPoint(GameBox other)
 	{
         _otherFlowPoint = other;
 	}
-    //public void setIndex(int ind)
-    //{
-    //    if (_type == BoxType.Flow && ind > -1 && ind < NumFlows)
-    //        _flowIndex = ind;
-    //}
-    //public int getIndex()
-    //{
-    //    return _flowIndex;
-    //}
+
     private Color _myColor = Color.white;
     private BoxType _type;
     private BoxType _initType;
     private GameBox _nextGameBox = null;
-    //The other flow point of this color
+    //The origin flow point of this flow
+    private GameBox _originFlowPoint = null;
+    //Needs to know the other flow point in case this is one of them
     private GameBox _otherFlowPoint = null;
     const int NumFlows = 16;
 
+    [SerializeField] private GameObject _backgroundImage;
     [SerializeField] private GameObject _figureImage;
     [SerializeField] private GameObject _pathImage;
 }
