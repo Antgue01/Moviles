@@ -59,7 +59,7 @@ public class BoardManager : MonoBehaviour
 
             GameBox currentGameBox = currentTile.GetComponent<GameBox>();
             //Chcek if is flow or flow point, so we could drag
-            if (currentGameBox.getType() != GameBox.BoxType.Flow &&
+            if (!currentGameBox.getPathActive() &&
                 currentGameBox.getType() != GameBox.BoxType.FlowPoint) return;
             //Start dragging
             else
@@ -89,7 +89,7 @@ public class BoardManager : MonoBehaviour
                 endInput();
                 return;
             }
-            //Check if it is not the same Tile
+            //Check if it is the same Tile
             if (currentTile == _lastPressed) return;
 
             GameBox currentGameBox = currentTile.GetComponent<GameBox>();
@@ -97,22 +97,43 @@ public class BoardManager : MonoBehaviour
 
             GameBox.BoxType currentType = currentGameBox.getType();
 
-            if (currentType == GameBox.BoxType.Empty ||
-                currentType == GameBox.BoxType.Bridge)
+            if (currentType == GameBox.BoxType.Empty)
             {
-                if (connectGameBox(lastGameBox, currentGameBox, lastInputRowCol))
-                {
-                    _lastPressed = currentTile;
+                //No flow display in this Tile
+				if (!currentGameBox.getPathActive())
+				{
+                    if (connectGameBox(lastGameBox, currentGameBox, lastInputRowCol))
+                    {
+                        _lastPressed = currentTile;
+                    }
+                    else
+                    {
+                        endInput();
+                    }
                 }
-                else
-                {
-                    endInput();
+                //Path active in currentGameBox
+				else
+				{
+                    //GameBox flow with the same color
+                    if (currentGameBox.getPathColor() == lastGameBox.getPathColor())
+					{
+                        _lastPressed = currentTile;
+                        //New start of this flow, cut from here and continue
+                        if (currentGameBox.getNextGB() != null)
+                            currentGameBox.cutFromThisTile();
+                    }
+                    //GameBox flow with different color
+					else
+					{
+                        currentGameBox.hideConfirmedFromThisTile();
+                        connectGameBox(lastGameBox, currentGameBox, lastInputRowCol);
+                    }
                 }
             }
-            else if (currentType == GameBox.BoxType.Flow || currentType == GameBox.BoxType.FlowPoint)
+            else if (currentType == GameBox.BoxType.FlowPoint)
             {
-                //GameBox flow with the same color
-                if (currentGameBox.getColor() == lastGameBox.getColor())
+                //GameBox flow point with the same color
+                if (currentGameBox.getColor() == lastGameBox.getPathColor())
                 {
                     _lastPressed = currentTile;
                     //New start of this flow, cut from here and continue
@@ -121,17 +142,14 @@ public class BoardManager : MonoBehaviour
                     //Connect to a flow point as final
                     else
                     {
-                        //If we cannot connect GameBox
-                        if (!connectGameBox(lastGameBox, currentGameBox, lastInputRowCol))
-                        {
-                            endInput();
-                        }
+                        connectGameBox(lastGameBox, currentGameBox, lastInputRowCol);
+                        endInput();
                     }
                 }
-                //GameBox flow with different color
+                //GameBox flow point with different color
                 else
                 {
-
+                    endInput();
 				}
             }
             else
@@ -215,9 +233,7 @@ public class BoardManager : MonoBehaviour
     public void linkGameBox(GameBox from, GameBox to, Vector2Int dir)
 	{
         from.setNextGB(to);
-        if(to.getType()!=GameBox.BoxType.FlowPoint)
-            to.setType(GameBox.BoxType.Flow);
-        to.setColor(from.getColor());
+        to.setPathColor(from.getPathColor());
         to.setPathFrom(dir);
     }
 
@@ -247,7 +263,7 @@ public class BoardManager : MonoBehaviour
     {
         for (int x = 0; x < _map.getRows(); ++x)
             for (int j = 0; j < _map.getCols(); ++j)
-                _board[x, j].GetComponent<GameBox>().reset();
+                _board[x, j].GetComponent<GameBox>().restore();
 
 
         //Reset info
@@ -276,7 +292,7 @@ public class BoardManager : MonoBehaviour
                     GameObject go = Instantiate(gameBoxPrefab, _grid.transform) as GameObject;
                     go.transform.localPosition = new Vector3(col + .5f, -row - .5f, 0);
                     go.GetComponent<SpriteRenderer>().color = sectionColor;
-                    go.GetComponent<GameBox>().setInitType(GameBox.BoxType.Empty);
+                    go.GetComponent<GameBox>().setType(GameBox.BoxType.Empty);
                     //go.GetComponent<GameBox>().setFigureImageSize(boxWidth, boxHeight);
                     _board[row, col] = go;
 
@@ -333,7 +349,7 @@ public class BoardManager : MonoBehaviour
                 int column = index % Cols;
                 GameObject auxOb = _board[row, column];
                 GameBox gb = auxOb.GetComponent<GameBox>();
-                gb.setInitType(GameBox.BoxType.FlowPoint);
+                gb.setType(GameBox.BoxType.FlowPoint);
                 gb.setFigureSprite(_sprites[0]);
                 gb.setColor(GameManager.instance.getSelectedSkin().colors[colorIndex]);
 
@@ -345,7 +361,7 @@ public class BoardManager : MonoBehaviour
                 column = index % Cols;
                 auxOb = _board[row, column];
                 gb = auxOb.GetComponent<GameBox>();
-                gb.setInitType(GameBox.BoxType.FlowPoint);
+                gb.setType(GameBox.BoxType.FlowPoint);
                 gb.setFigureSprite(_sprites[0]);
                 gb.setColor(GameManager.instance.getSelectedSkin().colors[colorIndex]);
 

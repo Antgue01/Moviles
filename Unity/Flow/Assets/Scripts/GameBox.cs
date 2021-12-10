@@ -5,13 +5,9 @@ using UnityEngine;
 
 public class GameBox : MonoBehaviour
 {
-    public enum BoxType { Bridge, Hollow, FlowPoint, Flow, Empty }
+    //Non variable Tile Types
+    public enum BoxType { Bridge, Hollow, FlowPoint, Empty }
 
-    public void setInitType(BoxType t)
-    {
-        _initType = t;
-        _type = t;
-    }
     public void setType(BoxType t)
     {
         _type = t;
@@ -41,6 +37,11 @@ public class GameBox : MonoBehaviour
         }
     }
 
+    public void setPathActive(bool b)
+    {
+        _pathImage.SetActive(b);
+    }
+
     public void setColor(Color c)
     {
         _myColor = c;
@@ -53,33 +54,41 @@ public class GameBox : MonoBehaviour
         _backgroundImage.GetComponent<SpriteRenderer>().color = colorAlphaReduced;
     }
 
+    public void setPathColor(Color c)
+	{
+        _pathImage.GetComponent<SpriteRenderer>().color = c;
+    }
+
+    public Color getPathColor()
+	{
+        return _pathImage.GetComponent<SpriteRenderer>().color;
+	}
+
 	public Color getColor()
 	{
         return _myColor;
 	}
 
-    //public void setPos(Vector2 p)
-    //{
-    //    _position = p;
-    //    transform.position = _position;
-    //}
-
-    public void reset()
+    public void restore()
     {
-        if (_type != BoxType.Hollow)
-        {
-            _type = _initType;
+        //It was a confirmed Tile
+		if (_originFlowPoint != null)
+		{
+            _pathImage.SetActive(false);
+            _originFlowPoint.tryToRestoreFromOrigin();
+		}
+		else
+		{
+            _pathImage.SetActive(false);
         }
-        _backgroundImage.SetActive(false);
-        _pathImage.SetActive(false);
-        _originFlowPoint = null;
     }
 
     public void setPathFrom(Vector2Int dir)
 	{
+        _flowDir = dir;
         _pathImage.SetActive(true);
 
-        switch (dir)
+        switch (_flowDir)
 		{
             case Vector2Int v when v.Equals(Vector2Int.up):
                 _pathImage.transform.localPosition = new Vector3(0, 0.5f, 0);
@@ -110,6 +119,31 @@ public class GameBox : MonoBehaviour
         return _nextGameBox;
 	}
 
+    public void setNextConfirmedGB(GameBox gb)
+    {
+        _nextConfirmedGameBox = gb;
+    }
+
+    public GameBox getNextConfirmedGB()
+    {
+        return _nextConfirmedGameBox;
+    }
+
+    public void setConfirmedFlowDir(Vector2Int dir)
+	{
+        _confirmedFlowDir = dir;
+	}
+
+    public Vector2Int getConfirmedFlowDir()
+	{
+        return _confirmedFlowDir;
+	}
+
+    public Vector2Int getFlowDir()
+	{
+        return _flowDir;
+	}
+
     /// <summary>
     /// Unlinks all the GameBox from this Tile onwards
     /// </summary>
@@ -120,16 +154,27 @@ public class GameBox : MonoBehaviour
 		{
             GameBox nextAux = aux.getNextGB();
             aux.setNextGB(null);
-            nextAux.reset();
+            nextAux.restore();
             aux = nextAux;
 		}
-        //We cut also from the other flow point, in case we cut from one of them
-        if (_otherFlowPoint != null && _otherFlowPoint.getNextGB() != null)
-		{
-            _otherFlowPoint.disconfirmFlows();
-            _otherFlowPoint.cutFromThisTile();
-        }
 	}
+
+    public void hideConfirmedFromThisTile()
+	{
+        GameBox aux = this;
+        aux.setPathActive(false);
+        aux.setNextGB(null);
+        
+        while (aux.getNextConfirmedGB() != null)
+        {
+            aux = aux.getNextConfirmedGB();
+            if(getColor() == aux.getPathColor())
+			{
+                aux.setPathActive(false);
+                aux.setNextGB(null);
+            }
+        }
+    }
 
     public void setOriginFlowPoint(GameBox origin)
 	{
@@ -146,13 +191,37 @@ public class GameBox : MonoBehaviour
     public void confirmFlows()
 	{
         GameBox aux = this;
+        Color confirmedColor = getColor();
         setBackgroundActive(aux.getNextGB() != null);
 
         while (aux.getNextGB() != null)
         {
+            aux.setNextConfirmedGB(aux.getNextGB());
             aux = aux.getNextGB();
+			if (aux.getOriginFlowPoint() != null)
+			{
+                aux.disconfirmFromThisTile();
+			}
             aux.setOriginFlowPoint(this);
             aux.setBackgroundActive(true);
+            aux.setColor(confirmedColor);
+            aux.setConfirmedFlowDir(aux.getFlowDir());
+        }
+    }
+
+    public void disconfirmFromThisTile()
+	{
+        GameBox aux = this;
+        aux.setOriginFlowPoint(null);
+        aux.setBackgroundActive(false);
+
+        while (aux.getNextConfirmedGB() != null)
+        {
+            GameBox nextAux = aux.getNextConfirmedGB();
+            aux.setNextConfirmedGB(null);
+            aux = nextAux;
+            aux.setOriginFlowPoint(null);
+            aux.setBackgroundActive(false);
         }
     }
 
@@ -163,11 +232,50 @@ public class GameBox : MonoBehaviour
     {
         GameBox aux = this;
         setBackgroundActive(false);
-
-        while (aux.getNextGB() != null)
+        
+        while (aux.getNextConfirmedGB() != null)
         {
-            aux = aux.getNextGB();
+            GameBox nextAux = aux.getNextConfirmedGB();
+            aux.setNextConfirmedGB(null);
+            aux = nextAux;
+            aux.setOriginFlowPoint(null);
             aux.setBackgroundActive(false);
+        }
+
+        //We disconfirm and cut also from the other flow point, in case we disconfirm from one of them
+        if (_otherFlowPoint != null && _otherFlowPoint.getNextConfirmedGB() != null)
+        {
+            _otherFlowPoint.disconfirmFlows();
+            _otherFlowPoint.cutFromThisTile();
+        }
+    }
+    /// <summary>
+    /// Tries to restore confirmed tiles from origina, called if this GameBox is a Flow Point
+    /// </summary>
+    public void tryToRestoreFromOrigin()
+	{
+        GameBox aux = this;
+
+        while (aux.getNextConfirmedGB() != null)
+        {
+            if(aux.getNextConfirmedGB().getPathActive())
+			{
+                if(getColor() == aux.getNextConfirmedGB().getPathColor())
+				{
+                    aux = aux.getNextConfirmedGB();
+                }
+				else
+				{
+                    break;
+				}
+            }
+			else
+			{
+                aux.setNextGB(aux.getNextConfirmedGB());
+                aux = aux.getNextConfirmedGB();
+                aux.setPathColor(aux.getColor());
+                aux.setPathFrom(aux.getConfirmedFlowDir());
+            }
         }
     }
 
@@ -176,10 +284,18 @@ public class GameBox : MonoBehaviour
         _otherFlowPoint = other;
 	}
 
+    public bool getPathActive()
+	{
+        return _pathImage.activeSelf;
+	}
+
     private Color _myColor = Color.white;
     private BoxType _type;
-    private BoxType _initType;
     private GameBox _nextGameBox = null;
+    private GameBox _nextConfirmedGameBox = null;
+
+    private Vector2Int _flowDir;
+    private Vector2Int _confirmedFlowDir;
     //The origin flow point of this flow
     private GameBox _originFlowPoint = null;
     //Needs to know the other flow point in case this is one of them
