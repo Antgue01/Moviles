@@ -31,10 +31,29 @@ public class BoardManager : MonoBehaviour
 
     private void HandleInput()
 	{
+        Vector2 inputPosition;
+        bool justDown, justUp;
+#if UNITY_EDITOR
+        inputPosition = Input.mousePosition;
+        justDown = Input.GetMouseButtonDown(0);
+        justUp = Input.GetMouseButtonUp(0);
+#else
+        Touch myTouch = Input.GetTouch(0);
+        inputPosition = myTouch.position;
+        justDown = myTouch.phase == TouchPhase.Began;
+        justUp = myTouch.phase == TouchPhase.Ended;
+#endif
+
+        if (_cursor.activeSelf)
+		{
+            Vector2 inputPosToWorld = Camera.main.ScreenToWorldPoint(inputPosition);
+            _cursor.transform.position = inputPosToWorld;
+        }
+
         //Just pressed
-        if (Input.GetMouseButtonDown(0) && !_pressed)
+        if (justDown && !_pressed)
         {
-            GameObject currentTile = getTileFromInput();
+            GameObject currentTile = getTileFromInput(inputPosition);
             //Check if it is a valid Tile
             if (currentTile == null) return;
 
@@ -47,13 +66,15 @@ public class BoardManager : MonoBehaviour
             {
                 _pressed = true;
                 _lastPressed = currentTile;
+                _cursor.SetActive(true);
+                _cursor.GetComponent<SpriteRenderer>().color = currentGameBox.getColor();
 
                 _lastFlowPointOrigin = (currentGameBox.getType() == GameBox.BoxType.FlowPoint) ? currentGameBox : currentGameBox.getOriginFlowPoint();
                 _lastFlowPointOrigin.disconfirmFlows();
                 currentGameBox.cutFromThisTile();
             }
         }
-        else if (Input.GetMouseButtonUp(0) && _pressed)
+        else if (justUp && _pressed)
         {
             endInput();
         }
@@ -61,7 +82,7 @@ public class BoardManager : MonoBehaviour
         else if (_pressed)
         {
             Vector2Int lastInputRowCol = _inputTileRowCol;
-            GameObject currentTile = getTileFromInput();
+            GameObject currentTile = getTileFromInput(inputPosition);
             //Check if it is a valid Tile
             if (currentTile == null)
             {
@@ -74,8 +95,10 @@ public class BoardManager : MonoBehaviour
             GameBox currentGameBox = currentTile.GetComponent<GameBox>();
             GameBox lastGameBox = _lastPressed.GetComponent<GameBox>();
 
-            if (currentGameBox.getType() == GameBox.BoxType.Empty ||
-                currentGameBox.getType() == GameBox.BoxType.Bridge)
+            GameBox.BoxType currentType = currentGameBox.getType();
+
+            if (currentType == GameBox.BoxType.Empty ||
+                currentType == GameBox.BoxType.Bridge)
             {
                 if (connectGameBox(lastGameBox, currentGameBox, lastInputRowCol))
                 {
@@ -86,10 +109,9 @@ public class BoardManager : MonoBehaviour
                     endInput();
                 }
             }
-            else if (currentGameBox.getType() == GameBox.BoxType.Flow ||
-                currentGameBox.getType() == GameBox.BoxType.FlowPoint)
+            else if (currentType == GameBox.BoxType.Flow || currentType == GameBox.BoxType.FlowPoint)
             {
-                //GameBox with the same color
+                //GameBox flow with the same color
                 if (currentGameBox.getColor() == lastGameBox.getColor())
                 {
                     _lastPressed = currentTile;
@@ -106,6 +128,11 @@ public class BoardManager : MonoBehaviour
                         }
                     }
                 }
+                //GameBox flow with different color
+                else
+                {
+
+				}
             }
             else
             {
@@ -126,6 +153,7 @@ public class BoardManager : MonoBehaviour
             _lastFlowPointOrigin.confirmFlows();
             _lastFlowPointOrigin = null;
         }
+        if (_cursor.activeSelf) _cursor.SetActive(false);
     }
 
     /// <summary>
@@ -193,9 +221,9 @@ public class BoardManager : MonoBehaviour
         to.setPathFrom(dir);
     }
 
-    public GameObject getTileFromInput()
+    public GameObject getTileFromInput(Vector2 inputPosition)
 	{
-        _inputTilePos = _transformer.getTilePos(Input.mousePosition, _grid.transform, Rows, Cols);
+        _inputTilePos = _transformer.getTilePos(inputPosition, _grid.transform, Rows, Cols);
         if (_inputTilePos.x == -1 || _inputTilePos.y == -1) return null;
         _inputTileRowCol = _inputTilePos;
         return _board[_inputTileRowCol.x, _inputTileRowCol.y];
@@ -397,4 +425,5 @@ public class BoardManager : MonoBehaviour
     //PRUEBAS, BORRAR AL TERMINAR
     [SerializeField] Text _pruebaCoordenadas;
     [SerializeField] Text _pruebaCanvasSize;
+    [SerializeField] GameObject _cursor;
 }
