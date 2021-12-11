@@ -143,6 +143,7 @@ public class BoardManager : MonoBehaviour
                     else
                     {
                         connectGameBox(lastGameBox, currentGameBox, lastInputRowCol);
+                        Debug.Log("FLOW CONNECTED");
                         endInput();
                     }
                 }
