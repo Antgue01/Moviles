@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class LevelDisplayer : MonoBehaviour
 {
 
+   
     /// <summary>
     /// Creates all the levels from a level lot
     /// </summary>
@@ -15,6 +16,7 @@ public class LevelDisplayer : MonoBehaviour
     public void Display(LevelLot lvlot, Section section, int gridNumber)
     {
         _levelRange.text = (gridNumber * _numLevels + 1).ToString() + " - " + ((gridNumber + 1) * _numLevels).ToString();
+        _selector.setInitialLevel(gridNumber*_numLevels);
         int lastCompleted = GameManager.instance.getLastCompletedLevel(section, lvlot);
         GameObject levelObject = null;
         LevelVisuals visuals = null;
@@ -34,12 +36,12 @@ public class LevelDisplayer : MonoBehaviour
             tickColor.b -= deltaColor;
             visuals.setVisualColor(LevelVisuals.LevelVisualElement.Tick, tickColor);
             visuals.setLevel((gridNumber * _numLevels) + i + 1);
-
         }
         //we create the unlocked level
         levelObject = Instantiate<GameObject>(_levelPrefab, _gridTransform);
         visuals = levelObject.GetComponent<LevelVisuals>();
-
+        RectTransform levelTr = levelObject.GetComponent<RectTransform>();
+        _selector.setLevelsSize(levelTr.rect.width, levelTr.rect.height);
         visuals.setVisualColor(LevelVisuals.LevelVisualElement.Background, _unlockedBackGroundColor);
         visuals.setVisualColor(LevelVisuals.LevelVisualElement.Border, _unlockedBorderColor);
 
@@ -74,5 +76,6 @@ public class LevelDisplayer : MonoBehaviour
     [SerializeField] RectTransform _gridTransform;
     [SerializeField] RectTransform _Transform;
     [SerializeField] Text _levelRange;
+    [SerializeField] LevelSelector _selector;
 
 }

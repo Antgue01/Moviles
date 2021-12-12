@@ -18,6 +18,12 @@ public class InputTransformer
         transformed.y = -transformed.y;
        return transformed;
     }
+    public Vector2 getInputPos(Vector3 originalInputPos, RectTransform relativeObject)
+    {
+        Vector2 transformed = relativeObject.worldToLocalMatrix.MultiplyPoint3x4(originalInputPos);
+        transformed.y = -transformed.y;
+        return transformed;
+    }
 
     /// <summary>
     /// Transforms the input from screen coordinates to an object local coordinates as a grid with Rows and Cols
