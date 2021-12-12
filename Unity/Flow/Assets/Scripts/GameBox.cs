@@ -171,6 +171,7 @@ public class GameBox : MonoBehaviour
         setNextGB(null);
         while (aux != null)
         {
+            aux.setPreviusGB(null);
             aux.setPathActive(false);
             GameBox originFP = aux.getOriginFlowPoint();
             if (originFP != null)
@@ -309,6 +310,14 @@ public class GameBox : MonoBehaviour
             }
         }
     }
+    public void setPreviusGB(GameBox gameBox)
+    {
+        _previusGameBox = gameBox;
+    }
+    public GameBox getPreviusGB()
+    {
+        return _previusGameBox;
+    }
 
     public void restore()
     {
@@ -323,6 +332,7 @@ public class GameBox : MonoBehaviour
     private BoxType _type;
     //Used to link flows not confirmed yet
     private GameBox _nextGameBox = null;
+    private GameBox _previusGameBox = null;
     //Used to link flows and save the confirmed state of them
     private GameBox _nextConfirmedGameBox = null;
     //Current flow dir

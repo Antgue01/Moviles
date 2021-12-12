@@ -69,6 +69,7 @@ public class BoardManager : MonoBehaviour
             //Start dragging
             else
             {
+
                 _pressed = true;
                 _lastPressed = currentTile;
                 _cursor.SetActive(true);
@@ -129,6 +130,7 @@ public class BoardManager : MonoBehaviour
                     //GameBox flow with different color
                     else
                     {
+                        currentGameBox.getPreviusGB()?.GetComponent<GameBoxAnimController>().grow();
                         currentGameBox.hideConfirmedFromThisTile();
                         connectGameBox(lastGameBox, currentGameBox, lastInputRowCol);
                     }
@@ -240,6 +242,7 @@ public class BoardManager : MonoBehaviour
     public void linkGameBox(GameBox from, GameBox to, Vector2Int dir)
     {
         from.setNextGB(to);
+        to.setPreviusGB(from);
         to.setPathColor(from.getPathColor());
         to.setPathFrom(dir);
     }
