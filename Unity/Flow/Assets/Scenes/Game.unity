@@ -617,12 +617,12 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: a6fd136daf99a8f4cb19ca6f523b2079, type: 2}
     - target: {fileID: 723185779894205650, guid: 0f6cb83db43a1734b863f68078fcb0de, type: 3}
       propertyPath: selectedLevelDebug
-      value: 140
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 723185779894205650, guid: 0f6cb83db43a1734b863f68078fcb0de, type: 3}
       propertyPath: selectedSectionDebug
       value: 
-      objectReference: {fileID: 11400000, guid: 4678026913ac40f49a872c3adb5a4e63, type: 2}
+      objectReference: {fileID: 11400000, guid: 3305ca93fb077fc4c9437699e9ec3983, type: 2}
     - target: {fileID: 723185779894205650, guid: 0f6cb83db43a1734b863f68078fcb0de, type: 3}
       propertyPath: selectedLevelLotDebug
       value: 
