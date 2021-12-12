@@ -20,7 +20,7 @@ public class LevelLotDisplayer : MonoBehaviour
         string[] separators = { "\n", "\r", "\r\n", "\n\r" };
         string[] levels = lvlLot.LevelLotFile.ToString().Split(separators, System.StringSplitOptions.RemoveEmptyEntries);
         int numLevels = levels.Length;
-        int numPages = numLevels / 30;
+        int numPages = numLevels / levelsPerPage;
         float w = 0;
         RectTransform levelTransform = null;
         for (int i = 0; i < numPages; i++)
@@ -29,7 +29,7 @@ public class LevelLotDisplayer : MonoBehaviour
                 _startPoint.anchoredPosition.y/5, 0);
             GameObject levelGridObject = Instantiate<GameObject>(_levelPagePrefab, pos, _scroll.rotation, _scroll);
             LevelDisplayer lvlDisplayer = levelGridObject.GetComponent<LevelDisplayer>();
-            lvlDisplayer.Display(lvlLot,section, i);
+            lvlDisplayer.Display(lvlLot,section, i,levelsPerPage);
             levelTransform = levelGridObject.GetComponent<RectTransform>();
             levelTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _scroll.rect.width);
             levelTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, _scroll.rect.height);
@@ -44,4 +44,5 @@ public class LevelLotDisplayer : MonoBehaviour
     [SerializeField] Text _sectionName;
     [SerializeField] RectTransform _scroll;
     [SerializeField] RectTransform _startPoint;
+   public const int levelsPerPage= 30;
 }

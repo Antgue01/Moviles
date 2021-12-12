@@ -73,7 +73,6 @@ public class BoardManager : MonoBehaviour
                 _lastPressed = currentTile;
                 _cursor.SetActive(true);
                 _cursor.GetComponent<SpriteRenderer>().color = currentGameBox.getColor();
-
                 _lastFlowPointOrigin = (currentGameBox.getType() == GameBox.BoxType.FlowPoint) ? currentGameBox : currentGameBox.getOriginFlowPoint();
                 _lastFlowPointOrigin.disconfirmFlows();
                 currentGameBox.cutFromThisTile();
@@ -150,7 +149,6 @@ public class BoardManager : MonoBehaviour
                         connectGameBox(lastGameBox, currentGameBox, lastInputRowCol);
                         currentGameBox.GetComponent<GameBoxAnimController>().grow();
                         _flowsConnected++;
-                        currentGameBox.connected = true;
                         Debug.Log("FLOW CONNECTED");
                         endInput();
                     }

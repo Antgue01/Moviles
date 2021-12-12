@@ -10,6 +10,7 @@ public class LevelSelector : MonoBehaviour
         _tr = new InputTransformer();
         _rect = GetComponent<RectTransform>();
         _textSize = _textTr.rect.height;
+        _display = GetComponent<LevelDisplayer>();
     }
     void SelectLevel()
     {
@@ -29,7 +30,7 @@ public class LevelSelector : MonoBehaviour
             int x = inputNormX > 0 ? (int)((myInputPos.x - (_layout.spacing.x * inputNormX - 1)) / _levelsSizeX) : inputNormX;
             int y = inputNormY > 0 ? (int)((myInputPos.y - (_layout.spacing.y * inputNormY - 1)) / _levelsSizeY) : inputNormY;
             //print("x: " + x + ", y: " + y);
-            if (x >= 0 && x <= _layout.constraintCount - 1)
+            if (x >= 0 && x <= _layout.constraintCount - 1 && myInputPos.y >= 0 && y <= _display.getLevelsPerPage() / (_layout.constraintCount) - 1)
             {
 
                 _selectedLevel = _initialLevel + (y * _layout.constraintCount + x);
@@ -42,6 +43,7 @@ public class LevelSelector : MonoBehaviour
     float _levelsSizeX;
     float _levelsSizeY;
     float _textSize;
+
     public void setLevelsSize(float x, float y)
     {
         _levelsSizeX = Mathf.Abs(x);
@@ -56,4 +58,6 @@ public class LevelSelector : MonoBehaviour
     RectTransform _rect;
     [SerializeField] GridLayoutGroup _layout;
     [SerializeField] RectTransform _textTr;
+     LevelDisplayer _display;
+
 }

@@ -334,7 +334,6 @@ public class GameBox : MonoBehaviour
     //Needs to know the other flow point in case this is one of them
     private GameBox _otherFlowPoint = null;
     const int NumFlows = 16;
-    public bool connected = false;
 
     [SerializeField] private GameObject _backgroundImage;
     [SerializeField] private GameObject _figureImage;
