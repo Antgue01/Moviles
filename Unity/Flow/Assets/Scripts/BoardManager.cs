@@ -348,13 +348,16 @@ public class BoardManager : MonoBehaviour
     private void createFlowPoints()
     {
         int[][] flows = _map.getFlows();
-        _lists = new LinkedList<GameBox>[_map.getTotalFlows()];
+        int numFlows = _map.getTotalFlows();
+        Flow.setMapNumFlows((uint)numFlows);
+        _flows = new Flow[numFlows];
 
         if (flows != null)
         {
             int colorIndex = 0;
             foreach (int[] flowColor in flows)
             {
+                _flows[colorIndex] = new Flow();
                 //Start index
                 int index = flowColor[0];
                 int row = index / Cols;
@@ -366,7 +369,7 @@ public class BoardManager : MonoBehaviour
                 gb.setColor(GameManager.instance.getSelectedSkin().colors[colorIndex]);
                 _flowStartAndEndPoints[2 * colorIndex] = auxOb;
                 GameBox tempGB = gb;
-                _lists[colorIndex].AddLast(gb);
+                _flows[colorIndex].addFlowFixedPoint(gb);
 
                 //Final index
                 index = flowColor[flowColor.Length - 1];
@@ -378,12 +381,12 @@ public class BoardManager : MonoBehaviour
                 gb.setFigureSprite(_sprites[0]);
                 gb.setColor(GameManager.instance.getSelectedSkin().colors[colorIndex]);
                 _flowStartAndEndPoints[2 * colorIndex + 1] = auxOb;
-                _lists[colorIndex].AddLast(gb);
+                _flows[colorIndex].addFlowFixedPoint(gb);
 
                 gb.setOtherFlowPoint(tempGB);
                 tempGB.setOtherFlowPoint(gb);
-
                 colorIndex++;
+                
             }
         }
     }
@@ -457,5 +460,5 @@ public class BoardManager : MonoBehaviour
     [SerializeField] Text _pruebaCanvasSize;
     [SerializeField] GameObject _cursor;
     GameObject[] _flowStartAndEndPoints;
-    private LinkedList<GameBox>[] _lists;
+    private Flow[] _flows;
 }

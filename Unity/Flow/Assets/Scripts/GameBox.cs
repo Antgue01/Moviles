@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using System;
 
 public class GameBox : MonoBehaviour
 {
@@ -13,6 +14,15 @@ public class GameBox : MonoBehaviour
         _type = t;
     }
 
+    public void setFlow(Flow flow, LinkedListNode<GameBox> node)
+    {
+        _myFlow = flow;
+        _myNode = node;
+    }
+    public void setConfirmedNode(LinkedListNode<GameBox> confirmedNode)
+    {
+        _myConfirmedNode = confirmedNode;
+    }
     public BoxType getType()
     {
         return _type;
@@ -125,6 +135,11 @@ public class GameBox : MonoBehaviour
             _figureImage.GetComponent<SpriteRenderer>().sprite = s;
 
         }
+    }
+
+    public Flow getFlow()
+    {
+        return _myFlow;
     }
 
     public bool getPathActive()
@@ -318,7 +333,35 @@ public class GameBox : MonoBehaviour
     {
         return _previusGameBox;
     }
+    public void setAsFirst()
+    {
+        if (!_last)
+            _first = true;
+        else Debug.LogError("This gameBox is the last one of the flow. Can't be the first");
+    }
+    public bool isLast()
+    {
+        return _last;
+    }
+    public void setAsLast()
+    {
+        if (!_first)
+            _last = true;
+        else Debug.LogError("This gameBox is the first one of the flow. Can't be the last");
+    }
+    public bool isFirst()
+    {
+        return _first;
+    }
 
+    public LinkedListNode<GameBox> getNode()
+    {
+        return _myNode;
+    }
+    public LinkedListNode<GameBox> getConfirmedNode()
+    {
+        return _myConfirmedNode;
+    }
     public void restore()
     {
         setBackgroundActive(false);
@@ -344,10 +387,11 @@ public class GameBox : MonoBehaviour
     //Needs to know the other flow point in case this is one of them
     private GameBox _otherFlowPoint = null;
     const int NumFlows = 16;
-    private LinkedList<GameBox> _myList;
+    private Flow _myFlow;
     private LinkedListNode<GameBox> _myNode;
-    private bool _connected;
-    private int _constructionDir;
+    private LinkedListNode<GameBox> _myConfirmedNode;
+    bool _first = false;
+    bool _last = false;
 
     [SerializeField] private GameObject _backgroundImage;
     [SerializeField] private GameObject _figureImage;
