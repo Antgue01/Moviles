@@ -69,7 +69,6 @@ public class BoardManager : MonoBehaviour
             //Start dragging
             else
             {
-
                 _pressed = true;
                 _lastPressed = currentTile;
                 _cursor.SetActive(true);
@@ -349,6 +348,8 @@ public class BoardManager : MonoBehaviour
     private void createFlowPoints()
     {
         int[][] flows = _map.getFlows();
+        _lists = new LinkedList<GameBox>[_map.getTotalFlows()];
+
         if (flows != null)
         {
             int colorIndex = 0;
@@ -365,6 +366,7 @@ public class BoardManager : MonoBehaviour
                 gb.setColor(GameManager.instance.getSelectedSkin().colors[colorIndex]);
                 _flowStartAndEndPoints[2 * colorIndex] = auxOb;
                 GameBox tempGB = gb;
+                _lists[colorIndex].AddLast(gb);
 
                 //Final index
                 index = flowColor[flowColor.Length - 1];
@@ -376,6 +378,7 @@ public class BoardManager : MonoBehaviour
                 gb.setFigureSprite(_sprites[0]);
                 gb.setColor(GameManager.instance.getSelectedSkin().colors[colorIndex]);
                 _flowStartAndEndPoints[2 * colorIndex + 1] = auxOb;
+                _lists[colorIndex].AddLast(gb);
 
                 gb.setOtherFlowPoint(tempGB);
                 tempGB.setOtherFlowPoint(gb);
@@ -454,4 +457,5 @@ public class BoardManager : MonoBehaviour
     [SerializeField] Text _pruebaCanvasSize;
     [SerializeField] GameObject _cursor;
     GameObject[] _flowStartAndEndPoints;
+    private LinkedList<GameBox>[] _lists;
 }
