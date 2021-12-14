@@ -130,8 +130,8 @@ public class LevelManager : MonoBehaviour
     void AdjustGridToScreen()
     {
 
-        float height = Camera.main.orthographicSize * 2;
-        float width = (height * Camera.main.aspect);
+        float height = _cam.orthographicSize * 2;
+        float width = (height * _cam.aspect);
         //we substract 1 because of the origin point
         float topSize = (1 - _UITop.anchorMin.y) * height + _topOffset;
         float botSize = (1 - (1 - _UIBot.anchorMax.y)) * height + _botOffset;
@@ -199,6 +199,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] float _topOffset;
     [SerializeField] float _botOffset;
     [SerializeField] Transform _grid;
+    [SerializeField] Camera _cam;
     private MapParser _mapParser;
     Map _map;
 

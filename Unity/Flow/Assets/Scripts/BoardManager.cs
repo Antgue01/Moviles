@@ -51,7 +51,7 @@ public class BoardManager : MonoBehaviour
 
         if (_cursor.activeSelf)
         {
-            Vector2 inputPosToWorld = Camera.main.ScreenToWorldPoint(inputPosition);
+            Vector2 inputPosToWorld = _cam.ScreenToWorldPoint(inputPosition);
             _cursor.transform.position = inputPosToWorld;
         }
 
@@ -64,19 +64,17 @@ public class BoardManager : MonoBehaviour
 
             GameBox currentGameBox = currentTile.GetComponent<GameBox>();
             //Chcek if is flow or flow point, so we could drag
-            if (!currentGameBox.getPathActive() &&
-                currentGameBox.getType() != GameBox.BoxType.FlowPoint) return;
+            if (currentGameBox.getFlow() == null) return;
             //Start dragging
             else
             {
-
+                Flow currentFlow = currentGameBox.getFlow();
                 _pressed = true;
                 _lastPressed = currentTile;
                 _cursor.SetActive(true);
-                _cursor.GetComponent<SpriteRenderer>().color = currentGameBox.getColor();
-                _lastFlowPointOrigin = (currentGameBox.getType() == GameBox.BoxType.FlowPoint) ? currentGameBox : currentGameBox.getOriginFlowPoint();
-                _lastFlowPointOrigin.disconfirmFlows();
-                currentGameBox.cutFromThisTile();
+                _cursor.GetComponent<SpriteRenderer>().color = currentFlow.GetColor();
+                _lastFlowSelected = currentFlow;
+                _lastFlowSelected.startDragging(currentGameBox);
             }
         }
         else if (justUp && _pressed)
@@ -102,62 +100,18 @@ public class BoardManager : MonoBehaviour
 
             GameBox.BoxType currentType = currentGameBox.getType();
 
-            if (currentType == GameBox.BoxType.Empty)
+            if (currentType == GameBox.BoxType.Empty ||
+                currentType == GameBox.BoxType.FlowPoint)
             {
-                //No flow display in this Tile
-                if (!currentGameBox.getPathActive())
-                {
-                    if (connectGameBox(lastGameBox, currentGameBox, lastInputRowCol))
-                    {
-                        _lastPressed = currentTile;
-                    }
-                    else
-                    {
-                        endInput();
-                    }
-                }
-                //Path active in currentGameBox
-                else
-                {
-                    //GameBox flow with the same color
-                    if (currentGameBox.getPathColor() == lastGameBox.getPathColor())
-                    {
-                        _lastPressed = currentTile;
-                        //New start of this flow, cut from here and continue
-                        if (currentGameBox.getNextGB() != null)
-                            currentGameBox.cutFromThisTile();
-                    }
-                    //GameBox flow with different color
-                    else
-                    {
-                        currentGameBox.getPreviusGB()?.GetComponent<GameBoxAnimController>().grow();
-                        currentGameBox.hideConfirmedFromThisTile();
-                        connectGameBox(lastGameBox, currentGameBox, lastInputRowCol);
-                    }
-                }
-            }
-            else if (currentType == GameBox.BoxType.FlowPoint)
-            {
-                //GameBox flow point with the same color
-                if (currentGameBox.getColor() == lastGameBox.getPathColor())
-                {
+                Vector2Int direction = new Vector2Int(_inputTileRowCol.y - lastInputRowCol.y,
+                _inputTileRowCol.x - lastInputRowCol.x);
+
+                if (_lastFlowSelected.addTile(currentGameBox, lastInputRowCol, direction, _board))
+				{
                     _lastPressed = currentTile;
-                    //New start of this flow, cut from here and continue
-                    if (currentGameBox.getNextGB() != null)
-                        currentGameBox.cutFromThisTile();
-                    //Connect to a flow point as final
-                    else
-                    {
-                        connectGameBox(lastGameBox, currentGameBox, lastInputRowCol);
-                        currentGameBox.GetComponent<GameBoxAnimController>().grow();
-                        _flowsConnected++;
-                        Debug.Log("FLOW CONNECTED");
-                        endInput();
-                    }
                 }
-                //GameBox flow point with different color
-                else
-                {
+				else
+				{
                     endInput();
                 }
             }
@@ -175,76 +129,12 @@ public class BoardManager : MonoBehaviour
     {
         _pressed = false;
         _lastPressed = null;
-        if (_lastFlowPointOrigin != null)
+        if (_lastFlowSelected != null)
         {
-            _lastFlowPointOrigin.confirmFlows();
-            _lastFlowPointOrigin = null;
+            _lastFlowSelected.stopDragging();
+            _lastFlowSelected = null;
         }
         if (_cursor.activeSelf) _cursor.SetActive(false);
-    }
-
-    /// <summary>
-    /// Tries to connect two tiles by flows, treating diagonal case
-    /// </summary>
-    /// <param name="from"></param>
-    /// <param name="to"></param>
-    /// <param name="lastInputRowCol"></param>
-    /// <returns></returns>
-    public bool connectGameBox(GameBox from, GameBox to, Vector2Int lastInputRowCol)
-    {
-        GameBox lastGameBox = from;
-        GameBox currentGameBox = to;
-        //From last tile to current tile
-        Vector2Int direction = new Vector2Int(_inputTileRowCol.y - lastInputRowCol.y,
-            _inputTileRowCol.x - lastInputRowCol.x);
-
-        //Diagonal case
-        if (direction.x != 0 && direction.y != 0)
-        {
-            //First check with one of the components of direction
-            GameBox auxGB = _board[lastInputRowCol.x + direction.y, lastInputRowCol.y].GetComponent<GameBox>();
-            Vector2Int auxDir = new Vector2Int(0, direction.y);
-            bool valid = (auxGB.getType() == GameBox.BoxType.Empty);
-            //If not valid, we try again in another direction (with the other component of direction)
-            if (!valid)
-            {
-                auxGB = _board[lastInputRowCol.x, lastInputRowCol.y + direction.x].GetComponent<GameBox>();
-                auxDir = new Vector2Int(direction.x, 0);
-                valid = (auxGB.getType() == GameBox.BoxType.Empty);
-            }
-
-            if (valid)
-            {
-                //We save the component not choosen at auxDir
-                direction = (auxDir.x != 0) ? new Vector2Int(0, direction.y) : new Vector2Int(direction.x, 0);
-                linkGameBox(lastGameBox, auxGB, auxDir);
-
-                lastGameBox = auxGB;
-            }
-            //We cant treat diagonal case
-            else
-            {
-                return false;
-            }
-        }
-
-        linkGameBox(lastGameBox, currentGameBox, direction);
-
-        return true;
-    }
-
-    /// <summary>
-    /// Auxiliar method to link two GameBox with direction dir
-    /// </summary>
-    /// <param name="from"></param>
-    /// <param name="to"></param>
-    /// <param name="dir"></param>
-    public void linkGameBox(GameBox from, GameBox to, Vector2Int dir)
-    {
-        from.setNextGB(to);
-        to.setPreviusGB(from);
-        to.setPathColor(from.getPathColor());
-        to.setPathFrom(dir);
     }
 
     public GameObject getTileFromInput(Vector2 inputPosition)
@@ -349,11 +239,16 @@ public class BoardManager : MonoBehaviour
     private void createFlowPoints()
     {
         int[][] flows = _map.getFlows();
+        int numFlows = _map.getTotalFlows();
+        Flow.setMapNumFlows((uint)numFlows);
+        _flows = new Flow[numFlows];
+
         if (flows != null)
         {
             int colorIndex = 0;
             foreach (int[] flowColor in flows)
             {
+                _flows[colorIndex] = new Flow();
                 //Start index
                 int index = flowColor[0];
                 int row = index / Cols;
@@ -363,6 +258,7 @@ public class BoardManager : MonoBehaviour
                 gb.setType(GameBox.BoxType.FlowPoint);
                 gb.setFigureSprite(_sprites[0]);
                 gb.setColor(GameManager.instance.getSelectedSkin().colors[colorIndex]);
+                gb.setFlow(_flows[colorIndex]);
                 _flowStartAndEndPoints[2 * colorIndex] = auxOb;
                 GameBox tempGB = gb;
 
@@ -375,12 +271,11 @@ public class BoardManager : MonoBehaviour
                 gb.setType(GameBox.BoxType.FlowPoint);
                 gb.setFigureSprite(_sprites[0]);
                 gb.setColor(GameManager.instance.getSelectedSkin().colors[colorIndex]);
+                gb.setFlow(_flows[colorIndex]);
                 _flowStartAndEndPoints[2 * colorIndex + 1] = auxOb;
 
-                gb.setOtherFlowPoint(tempGB);
-                tempGB.setOtherFlowPoint(gb);
-
                 colorIndex++;
+                
             }
         }
     }
@@ -444,7 +339,6 @@ public class BoardManager : MonoBehaviour
 
     private bool _pressed;
     private GameObject _lastPressed;
-    private GameBox _lastFlowPointOrigin;
     private Vector2Int _inputTileRowCol;
     public int Rows { get; private set; }
     public int Cols { get; private set; }
@@ -453,5 +347,8 @@ public class BoardManager : MonoBehaviour
     [SerializeField] Text _pruebaCoordenadas;
     [SerializeField] Text _pruebaCanvasSize;
     [SerializeField] GameObject _cursor;
+    [SerializeField] Camera _cam;
     GameObject[] _flowStartAndEndPoints;
+    private Flow[] _flows;
+    private Flow _lastFlowSelected;
 }
