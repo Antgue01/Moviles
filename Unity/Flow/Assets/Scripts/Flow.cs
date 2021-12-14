@@ -40,11 +40,11 @@ public class Flow
             if (tile.getFlow() == null)
             {
 
-                LinkedListNode<GameBox> n = _tiles.AddLast(tile);
-                tile.setFlow(this, n);
                 if (_tiles.Count == 0)
                     tile.setAsFirst();
                 else tile.setAsLast();
+                LinkedListNode<GameBox> n = _tiles.AddLast(tile);
+                tile.setFlow(this, n);
                 tile.setConfirmedNode(_confirmedTiles.AddLast(tile));
                 tile.setPathColor(_myColor);
             }
@@ -141,6 +141,7 @@ public class Flow
                     LinkedListNode<GameBox> aux = _currentEnd;
                     _currentEnd = aux.Previous;
                     aux.Value.setFlow(null, null);
+                    _tiles.Remove(aux);
 
                 }
                 else
@@ -149,6 +150,8 @@ public class Flow
                     LinkedListNode<GameBox> aux = _currentEnd;
                     _currentEnd = aux.Next;
                     aux.Value.setFlow(null, null);
+                    _tiles.Remove(aux);
+
                 }
             }
         }
