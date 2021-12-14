@@ -2317,6 +2317,7 @@ MonoBehaviour:
   _topOffset: 0.2
   _botOffset: 0
   _grid: {fileID: 1450791941}
+  _cam: {fileID: 1375850863}
 --- !u!4 &2120471374
 Transform:
   m_ObjectHideFlags: 0
