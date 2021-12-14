@@ -953,6 +953,7 @@ MonoBehaviour:
   _pruebaCoordenadas: {fileID: 1089186904}
   _pruebaCanvasSize: {fileID: 592273533}
   _cursor: {fileID: 662268966}
+  _cam: {fileID: 1375850863}
 --- !u!4 &628285579
 Transform:
   m_ObjectHideFlags: 0
