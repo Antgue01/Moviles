@@ -43,7 +43,8 @@ public class GameBox : MonoBehaviour
 
     public Color getColor()
     {
-        return _myFlow.GetColor();
+        if (_myFlow != null) return _myFlow.GetColor();
+        else return new Color(-1, -1, -1);
     }
 
     public void setPathColor(Color c)
