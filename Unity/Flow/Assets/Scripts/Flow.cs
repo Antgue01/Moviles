@@ -8,7 +8,6 @@ using UnityEngine;
 /// </summary>
 public class Flow
 {
-
     public Flow()
     {
         _id = _nextExpectedId;
@@ -30,396 +29,256 @@ public class Flow
         else _maxExpectedId = maxId;
 
     }
-    /// <summary>
-    /// Adds the point as a starter or last point and sets its first or last flag
-    /// </summary>
-    /// <param name="tile">the tile to be added</param>
-    public void addFlowFixedPoint(GameBox tile)
-    {
-        if (_tiles.Count < 2)
-        {
-            //if it's from other flow we do nothing
-            if (tile.getFlow() == null)
-            {
 
-                if (_tiles.Count == 0)
-                    tile.setAsFirst();
-                else tile.setAsLast();
-                LinkedListNode<GameBox> n = _tiles.AddLast(tile);
-                tile.setFlow(this, n);
-                tile.setConfirmedNode(_confirmedTiles.AddLast(tile));
-                tile.setPathColor(_myColor);
-            }
-            else Debug.LogError("this fixed point is from other flow. It won't be added");
-        }
-        else Debug.LogWarning("There are already 2 fixed points. This tile won't be added");
-    }
-    /// <summary>
-    /// sets the starting direction of the flow depending of the position of the point in the board
-    /// </summary>
-    /// <param name="tile">The starting tile node</param>
-    public void startDragging(LinkedListNode<GameBox> tileNode)
-    {
-        if (tileNode.Value.getFlow()._id == _id)
-        {
-            if (tileNode.Value.isFirst())
-            {
-                _dir = 1;
-                _connected = false;
-                _currentEnd = _tiles.First;
-                if (tileNode.Next != null)
-                    cutFromTile(tileNode.Next.Value);
-            }
-            else if (tileNode.Value.isLast())
-            {
-                _connected = false;
-                _dir = -1;
-                _currentEnd = _tiles.Last;
-                if (tileNode.Previous != null)
-                    cutFromTile(tileNode.Previous.Value);
-            }
-            else Debug.LogError("This is not a fixed point");
-        }
-        else Debug.LogError("Can't start dragging from other flow tile");
-
-    }
     /// <summary>
     /// sets the starting direction of the flow depending of the position of the point in the board
     /// </summary>
     /// <param name="tile">The starting tile</param>
     public void startDragging(GameBox tile)
     {
-        startDragging(tile.getNode());
+        disconfirmTiles();
+        //If its a flow point, we set it as first
+		if (tile.getType() == GameBox.BoxType.FlowPoint)
+		{
+            //If there is already a path created in other flow point, we clear it
+            if(_tiles.First != null)
+			{
+                clearTileList();
+			}
+            tile.setNode(_tiles.AddLast(tile));
+		}
+        //If its a normal flow, we cut from here to continue
+		else
+		{
+            cutFromTile(tile);
+		}
     }
+
+    public void stopDragging()
+	{
+        confirmTiles();
+	}
+
     /// <summary>
-    /// adds the tile to the list and connects it to the flow if it`s neccesary
+    /// Clears the _tiles list from origin
     /// </summary>
-    /// <param name="tile"></param>
-    public void addTile(GameBox tile)
-    {
-        if (tile.getFlow() == null)
+    public void clearTileList()
+	{
+        LinkedListNode<GameBox> tileNode = _tiles.First;
+        LinkedListNode<GameBox> tileNextNodeAux = tileNode.Next;
+        GameBox tile = tileNode.Value;
+
+        tile.setNode(null);
+        _tiles.Remove(tileNode);
+
+        while (tileNextNodeAux != null)
         {
-            if (_dir != -1 && _dir != 1)
-                Debug.LogError("invalid direction on addTile");
-            else if(!_connected)
+            tileNode = tileNextNodeAux;
+            tileNextNodeAux = tileNode.Next;
+            tile = tileNode.Value;
+
+            tile.setPathActive(false);
+            //If its a flow point, we keep the reference of Flow
+            tile.setFlow((tile.getType() == GameBox.BoxType.FlowPoint) ? this : null);
+            tile.setNode(null);
+            _tiles.Remove(tileNode);
+        }
+    }
+
+    /// <summary>
+    /// Tries to connect two tiles by flows, treating diagonal case
+    /// </summary>
+    /// <returns>true if success</returns>
+    public bool connectFlow(GameBox newFlow, Vector2Int lastInputRowCol, Vector2Int direction, GameObject[,] board)
+    {
+        GameBox currentGameBox = newFlow;
+
+        //Diagonal case
+        if (direction.x != 0 && direction.y != 0)
+        {
+            //First check with one of the components of direction
+            GameBox auxGB = board[lastInputRowCol.x + direction.y, lastInputRowCol.y].GetComponent<GameBox>();
+            Vector2Int auxDir = new Vector2Int(0, direction.y);
+            bool valid = (auxGB.getType() == GameBox.BoxType.Empty);
+            //If not valid, we try again in another direction (with the other component of direction)
+            if (!valid)
             {
-                if (_dir == 1)
-                {
-                    LinkedListNode<GameBox> node = _tiles.AddAfter(_currentEnd, tile);
-                    tile.setFlow(this, node);
-                    tile.setPathActive(true);
-                    tile.setPathColor(_myColor);
-                    _currentEnd = _currentEnd.Next;
-                    if (_currentEnd.Value.isLast())
-                        _connected = true;
-                }
-                else
-                {
-                    LinkedListNode<GameBox> node = _tiles.AddBefore(_currentEnd, tile);
-                    tile.setFlow(this, node);
-                    tile.setPathActive(true);
-                    tile.setPathColor(_myColor);
-                    _currentEnd = _currentEnd.Previous;
-                    if (_currentEnd.Value.isFirst())
-                        _connected = true;
-                }
+                auxGB = board[lastInputRowCol.x, lastInputRowCol.y + direction.x].GetComponent<GameBox>();
+                auxDir = new Vector2Int(direction.x, 0);
+                valid = (auxGB.getType() == GameBox.BoxType.Empty);
             }
 
-        }
-        else Debug.LogError("this tile is from another flow! Can't add it");
-    }
-    public void removeLastTile()
-    {
-        if (_currentEnd != _tiles.First && _currentEnd != _tiles.Last)
-        {
-            if (_dir != -1 && _dir != 1)
-                Debug.LogError("invalid direction on removeLastTile");
+            if (valid)
+            {
+                //We save the component not choosen at auxDir
+                direction = (auxDir.x != 0) ? new Vector2Int(0, direction.y) : new Vector2Int(direction.x, 0);
+                linkGameBox(auxGB, auxDir);
+            }
+            //We cant treat diagonal case
             else
             {
-                _connected = false;
-                if (_dir == 1)
-                {
-                    _currentEnd.Value.setPathActive(false);
-                    LinkedListNode<GameBox> aux = _currentEnd;
-                    _currentEnd = aux.Previous;
-                    aux.Value.setFlow(null, null);
-                    _tiles.Remove(aux);
-
-                }
-                else
-                {
-                    _currentEnd.Value.setPathActive(false);
-                    LinkedListNode<GameBox> aux = _currentEnd;
-                    _currentEnd = aux.Next;
-                    aux.Value.setFlow(null, null);
-                    _tiles.Remove(aux);
-
-                }
+                return false;
             }
         }
+
+        linkGameBox(currentGameBox, direction);
+
+        return true;
     }
 
     /// <summary>
-    /// Depending on the flow direction adds the tile in the confirmed list before the last fixed point or after the first one
+    /// Auxiliar method to link a GameBox with direction dir
     /// </summary>
-    /// <param name="tile">The tile to confirm</param>
-    public void confirmTile(GameBox tile)
+    public void linkGameBox(GameBox newFlow, Vector2Int dir)
     {
-        //if the tile isn't from this flow, we do nothing
-        if (tile.getFlow()._id == _id)
-        {
+        newFlow.setFlow(this);
+        newFlow.setNode(_tiles.AddLast(newFlow));
+        newFlow.setPathColor(_myColor);
+        newFlow.setPathFrom(dir);
+    }
 
-            if (_dir != -1 && _dir != 1)
-                Debug.LogError("invalid direction on confirmTile");
+    /// <summary>
+    /// Adds the tile to the list and connects it to the flow
+    /// </summary>
+    /// <returns>true if success</returns>
+    public bool addTile(GameBox tile, Vector2Int lastInputRowCol, Vector2Int direction, GameObject[,] board)
+    {
+        bool success;
+        //No flow assigned yet
+		if (tile.getFlow() == null)
+		{
+            success = connectFlow(tile, lastInputRowCol, direction, board);
+		}
+		else
+		{
+            //Same flow component
+			if (tile.getFlow() == this)
+			{
+                //Already in list
+				if (_tiles.Contains(tile))
+				{
+                    cutFromTile(tile);
+                    success = true;
+				}
+                //Must be the other flow point
+				else
+				{
+                    connectFlow(tile, lastInputRowCol, direction, board);
+                    //Force to stop input
+                    success = false;
+                }
+			}
+            //Different flow component
             else
             {
-                if (_dir == 1)
-                    tile.setConfirmedNode(_confirmedTiles.AddBefore(_tiles.Last, tile));
-                else
-                    tile.setConfirmedNode(_confirmedTiles.AddAfter(_tiles.First, tile));
-                tile.setBackgroundColor(_myColor);
-                tile.setBackgroundActive(true);
+                //And its a flow point
+                if (tile.getType() == GameBox.BoxType.FlowPoint)
+                {
+                    success = false;
+                }
+				else
+				{
+                    tile.getFlow().cutFromTile(tile.getNode().Previous.Value);
+                    success = connectFlow(tile, lastInputRowCol, direction, board);
+                }
             }
-        }
-        else Debug.LogError("Can't confirm from other flow tile");
-    }
-    /// <summary>
-    /// removes the flows from the tile given on the flow direction from the confirmed list
-    /// </summary>
-    /// <param name="tile">The tile from where to disconfirm</param>
-    public void disconfirmFromTile(GameBox tile)
-    {
-        disconfirmFromTile(tile, _dir);
+		}
+
+        return success;
     }
 
     /// <summary>
-    /// removes the flow from the tile given on a specified direction from the confirmed list
+    /// Adds tiles to the confirmed list
     /// </summary>
-    /// <param name="tile">The tile from where to disconfirm</param>
-    /// <param name="direction">The direction to disconfirm</param>
-    public void disconfirmFromTile(GameBox tile, int direction)
-    {
-        //if the tile isn't from this flow, we do nothing
-        if (tile.getFlow()._id == _id)
+    public void confirmTiles()
+	{
+        LinkedListNode<GameBox> tileNode = _tiles.First;
+
+        if (tileNode.Next == null) return;
+
+        while (tileNode != null)
         {
-            if (direction != -1 && direction != 1)
-                Debug.LogError("invalid direction given");
-            else
-            {
-                _connected = false;
-                tile.setBackgroundActive(false);
-                if (direction == 1)
-                {
-                    disconfirmForwards(tile);
-                }
-                else
-                {
-                    disconfirmBackwards(tile);
-                }
-                //we remove the tile from the confirmed list
-                _confirmedTiles.Remove(tile.getNode());
-
-            }
+            GameBox tile = tileNode.Value;
+            Flow confirmedFlow = tile.getConfirmedFlow();
+            if (confirmedFlow != null && confirmedFlow!=this)
+			{
+                confirmedFlow.disconfirmTiles();
+                confirmedFlow.confirmTiles();
+			}
+            tile.setBackgroundActive(true);
+            tile.setColor(_myColor);
+            tile.setConfirmedFlowDir(tile.getFlowDir());
+            tile.setConfirmedNode(_confirmedTiles.AddLast(tileNode.Value));
+            tile.confirmFlow();
+            tileNode = tileNode.Next;
         }
-        else Debug.LogError("Can't disconfirm from other flow tile");
+
+        setConnected(_confirmedTiles.Last.Value.getType()==GameBox.BoxType.FlowPoint);
     }
 
+    public void disconfirmTiles()
+	{
+        LinkedListNode<GameBox> tileNode = _confirmedTiles.First;
 
+        while(tileNode != null)
+		{
+            GameBox tile = tileNode.Value;
+            tile.setBackgroundActive(false);
+            tile.setConfirmedNode(null);
+            tile.disconfirmFlow();
+            LinkedListNode<GameBox> tileNodeNextAux = tileNode.Next;
+            _confirmedTiles.Remove(tileNode);
+            tileNode = tileNodeNextAux;
+		}
+
+        setConnected(false);
+    }
 
     /// <summary>
     /// cuts the flow from the tile given on the flow direction, but leaves the confirmed tiles in order to be able to restore the flows
     /// </summary>
-    /// <param name="tile">The tile from where to cut</param>
-    public void cutFromTile(GameBox tile)
+    /// <param name="fromTile">The tile from where to cut</param>
+    public void cutFromTile(GameBox fromTile)
     {
-        cutFromTile(tile, _dir);
-    }
-    /// <summary>
-    /// cuts the flow from the tile given on a specified direction, but leaves the confirmed tiles in order to be able to restore the flows
-    /// </summary>
-    /// <param name="tile">The tile from where to cut</param>
-    /// <param name="direction">The direction to cut</param>
-    public void cutFromTile(GameBox tile, int direction)
-    {
-        //if the tile isn't from this flow, we do nothing
-        if (tile.getFlow()._id == _id)
+        LinkedListNode<GameBox> tileNode = fromTile.getNode().Next;
+        while (tileNode != null)
         {
-            if (direction != -1 && direction != 1)
-                Debug.LogError("invalid direction given");
-            else
-            {
-                //we remove the references of the current tile
-                tile.setPathActive(false);
-                tile.setFlow(null, null);
-                if (direction == 1)
-                {
-                    cutForwards(tile);
-                }
-                else
-                {
-                    cutBackwards(tile);
-                }
-                //we remove the tile
-                _tiles.Remove(tile.getNode());
+            GameBox tile = tileNode.Value;
+            tile.setPathActive(false);
+            //If its a flow point, we keep the reference of Flow
+			tile.setFlow((tile.getType()==GameBox.BoxType.FlowPoint) ? this : null);
+            tile.setNode(null);
+            LinkedListNode<GameBox> tileNextNodeAux = tileNode.Next;
+            _tiles.Remove(tileNode);
 
-            }
-        }
-        else Debug.LogError("Can't cut from other flow tile");
-    }
-    //-----------------------------------------Privates------------------------------------------
-    private void cutBackwards(GameBox tile)
-    {
-        LinkedListNode<GameBox> prev;
-        prev = tile.getNode().Previous;
-        while (!prev.Value.isFirst())
-        {
-            //we remove the references of the current tile
-            prev.Value.setPathActive(false);
-            prev.Value.setFlow(null, null);
-            LinkedListNode<GameBox> aux = prev;
-            prev = aux.Previous;
-            _tiles.Remove(aux);
-        }
-    }
+            Flow confirmedFlow = tile.getConfirmedFlow();
+            if (confirmedFlow != null && confirmedFlow != this)
+                confirmedFlow.tryToRestoreCuts();
 
-    private void cutForwards(GameBox tile)
-    {
-        LinkedListNode<GameBox> next;
-        next = tile.getNode().Next;
-        while (!next.Value.isLast())
-        {
-            next.Value.setPathActive(false);
-            next.Value.setFlow(null, null);
-            LinkedListNode<GameBox> aux = next;
-            next = aux.Next;
-            _tiles.Remove(aux);
-        }
-    }
-
-    public void restore(GameBox tile, int direction)
-    {
-        //if the tile isn't from this flow, we do nothing
-        if (tile.getFlow()._id == _id)
-        {
-            if (direction != 1 && direction != -1)
-                Debug.LogError("Invalid direction to restore");
-            else
-            {
-                if (tile.getFlow() != null)
-                    Debug.LogWarning("This tile already has another flow, restoring it before removing from the other flow " +
-                        "could result on unexpected errors");
-                tile.setColor(_myColor);
-                if (tile.getConfirmedNode() == null)
-                    Debug.LogError("Couldn't restore from null confirmed node");
-                else
-                    addTileFromOther(tile, tile.getConfirmedNode(), direction);
-                if (direction == 1)
-                {
-                    restoreForwards(tile);
-                }
-                else
-                {
-                    restoreBackWards(tile);
-                }
-            }
-        }
-        else Debug.LogError("Can't restore from other flow tile");
-    }
-
-    private void disconfirmBackwards(GameBox tile)
-    {
-        LinkedListNode<GameBox> confirmedNode = tile.getConfirmedNode();
-        if (confirmedNode != null)
-        {
-
-            LinkedListNode<GameBox> prev = confirmedNode.Previous;
-            while (!prev.Value.isLast())
-            {
-                prev.Value.setBackgroundActive(false);
-                LinkedListNode<GameBox> aux = prev;
-                prev = aux.Previous;
-                _confirmedTiles.Remove(aux);
-            }
-        }
-        else Debug.LogError("This tile isn't confirmed!");
-    }
-
-    private void disconfirmForwards(GameBox tile)
-    {
-        LinkedListNode<GameBox> confirmedNode = tile.getConfirmedNode();
-        if (confirmedNode != null)
-        {
-            LinkedListNode<GameBox> next = confirmedNode.Next;
-            while (!next.Value.isLast())
-            {
-                next.Value.setBackgroundActive(false);
-                LinkedListNode<GameBox> aux = next;
-                next = aux.Next;
-                _confirmedTiles.Remove(aux);
-            }
-        }
-        else Debug.LogError("This tile isn't confirmed!");
-    }
-    /// <summary>
-    /// adds the tile from a specified node in the desired direction
-    /// </summary>
-    /// <param name="tile">the tile to add</param>
-    /// <param name="from">the node from where to add</param>
-    /// <param name="direction">the direction to add</param>
-    private void addTileFromOther(GameBox tile, LinkedListNode<GameBox> from, int direction)
-    {
-        if (direction != -1 && direction != 1)
-            Debug.LogError("invalid direction on addTile");
-        else
-        {
-            if (direction == 1)
-                tile.setFlow(this, _tiles.AddAfter(from, tile));
-            else
-                tile.setFlow(this, _tiles.AddBefore(from, tile));
-            tile.setColor(_myColor);
-        }
-    }
-    /// <summary>
-    /// restores the flow backwards from a tile
-    /// </summary>
-    /// <param name="tile"></param>
-    private void restoreBackWards(GameBox tile)
-    {
-        LinkedListNode<GameBox> aux = tile.getConfirmedNode();
-        LinkedListNode<GameBox> prev = aux.Previous;
-        while (!prev.Value.isFirst())
-        {
-            prev.Value.setColor(_myColor);
-            prev.Value.setPathActive(true);
-            if (prev.Value.getConfirmedNode() == null)
-                Debug.LogError("Couldn't restore from null confirmed node");
-            else
-                addTileFromOther(prev.Value, aux, -1);
-            prev = prev.Previous;
-            aux = aux.Previous;
+            tileNode = tileNextNodeAux;
         }
     }
 
     /// <summary>
-    /// restores the flow forwards from a tile
+    /// Tries to restore confirmed flows
     /// </summary>
-    /// <param name="tile"></param>
-    private void restoreForwards(GameBox tile)
-    {
-        LinkedListNode<GameBox> aux = tile.getConfirmedNode();
-        LinkedListNode<GameBox> next = aux.Next;
-        while (!next.Value.isLast())
-        {
-            next.Value.setColor(_myColor);
-            next.Value.setPathActive(true);
-            if (next.Value.getConfirmedNode() == null)
-                Debug.LogError("Couldn't restore from null confirmed node");
-            else
-                addTileFromOther(next.Value, aux, 1);
-            next = next.Next;
-            aux = aux.Next;
-        }
-    }
+    public void tryToRestoreCuts()
+	{
+        LinkedListNode<GameBox> tileNode = _tiles.Last;
+        tileNode = _confirmedTiles.Find(tileNode.Value);
+        tileNode = tileNode.Next;
+		while (tileNode != null)
+		{
+            GameBox tile = tileNode.Value;
+            if (tile.getFlow() != null && tile.getFlow() != this) break;
+            tile.setNode(_tiles.AddLast(tile));
+            tile.setFlow(tile.getConfirmedFlow());
+            tile.setPathActive(true);
+            tile.setPathColor(tile.getColor());
+            tile.setPathFrom(tile.getConfirmedFlowDir());
+            tileNode = tileNode.Next;
+		}
+	}
 
     public Color GetColor() { return _myColor; }
     public bool getConnected() { return _connected; }
@@ -429,10 +288,9 @@ public class Flow
     const int maxId = 15;
     private static uint _maxExpectedId = maxId - 1;
     private static int _nextExpectedId = 0;
-    int _dir;
+    //int _dir;
     bool _connected;
     Color _myColor;
-    LinkedListNode<GameBox> _currentEnd = null;
     LinkedList<GameBox> _tiles;
     LinkedList<GameBox> _confirmedTiles;
 }

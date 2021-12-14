@@ -13,12 +13,6 @@ public class GameBox : MonoBehaviour
     {
         _type = t;
     }
-
-    public void setFlow(Flow flow, LinkedListNode<GameBox> node)
-    {
-        _myFlow = flow;
-        _myNode = node;
-    }
     public void setConfirmedNode(LinkedListNode<GameBox> confirmedNode)
     {
         _myConfirmedNode = confirmedNode;
@@ -43,7 +37,7 @@ public class GameBox : MonoBehaviour
 
     public Color getColor()
     {
-        if (_myFlow != null) return _myFlow.GetColor();
+        if (_confirmedFlow != null) return _confirmedFlow.GetColor();
         else return new Color(-1, -1, -1);
     }
 
@@ -58,25 +52,6 @@ public class GameBox : MonoBehaviour
         return _pathImage.GetComponent<SpriteRenderer>().color;
     }
 
-    public void setNextGB(GameBox gb)
-    {
-        _nextGameBox = gb;
-    }
-
-    public GameBox getNextGB()
-    {
-        return _nextGameBox;
-    }
-
-    public void setNextConfirmedGB(GameBox gb)
-    {
-        _nextConfirmedGameBox = gb;
-    }
-
-    public GameBox getNextConfirmedGB()
-    {
-        return _nextConfirmedGameBox;
-    }
     public void setFlowDir(Vector2Int dir)
     {
         _flowDir = dir;
@@ -95,19 +70,6 @@ public class GameBox : MonoBehaviour
     public Vector2Int getConfirmedFlowDir()
     {
         return _confirmedFlowDir;
-    }
-    public void setOriginFlowPoint(GameBox origin)
-    {
-        _originFlowPoint = origin;
-    }
-    public GameBox getOriginFlowPoint()
-    {
-        return _originFlowPoint;
-    }
-
-    public void setOtherFlowPoint(GameBox other)
-    {
-        _otherFlowPoint = other;
     }
 
     public void setBackgroundActive(bool b)
@@ -139,9 +101,29 @@ public class GameBox : MonoBehaviour
         }
     }
 
+    public void setFlow(Flow flow)
+    {
+        _flow = flow;
+    }
+
     public Flow getFlow()
     {
-        return _myFlow;
+        return _flow;
+    }
+
+    public Flow getConfirmedFlow()
+    {
+        return _confirmedFlow;
+    }
+
+    public void confirmFlow()
+	{
+        _confirmedFlow = _flow;
+	}
+
+    public void disconfirmFlow()
+    {
+        _confirmedFlow = null;
     }
 
     public bool getPathActive()
@@ -185,182 +167,15 @@ public class GameBox : MonoBehaviour
         _backgroundImage.GetComponent<SpriteRenderer>().color = c;
     }
 
-    /// <summary>
-    /// Unlinks all the flows from this Tile onwards
-    /// </summary>
-    public void cutFromThisTile()
-    {
-        GameBox aux = getNextGB();
-        setNextGB(null);
-        while (aux != null)
-        {
-            aux.setPreviusGB(null);
-            aux.setPathActive(false);
-            GameBox originFP = aux.getOriginFlowPoint();
-            if (originFP != null)
-            {
-                aux = aux.getNextGB();
-                originFP.tryToRestoreFromOrigin();
-                continue;
-            }
-
-            GameBox auxNext = aux.getNextGB();
-            aux.setNextGB(null);
-            aux = auxNext;
-        }
+    public void setNode(LinkedListNode<GameBox> node)
+	{
+        _myNode = node;
     }
 
-    public void hideConfirmedFromThisTile()
-    {
-        GameBox aux = this;
-        aux.setPathActive(false);
-        aux.setNextGB(null);
-
-        while (aux.getNextConfirmedGB() != null)
-        {
-            aux = aux.getNextConfirmedGB();
-            if (getColor() == aux.getPathColor())
-            {
-                aux.setPathActive(false);
-                aux.setNextGB(null);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Called if this GameBox is a Flow Point
-    /// </summary>
-    public void confirmFlows()
-    {
-        if (getType() != BoxType.FlowPoint) return;
-
-        GameBox aux = this;
-        Color confirmedColor = getColor();
-        setBackgroundActive(aux.getNextGB() != null &&
-            aux.getNextGB().getPathColor() == confirmedColor);
-
-        while (aux.getNextGB() != null &&
-            aux.getNextGB().getPathColor() == confirmedColor)
-        {
-            aux.setNextConfirmedGB(aux.getNextGB());
-            aux = aux.getNextGB();
-            //If it already has an origin flow point
-            GameBox originFP = aux.getOriginFlowPoint();
-            if (originFP != null)
-            {
-                originFP.disconfirmFlows();
-                originFP.confirmFlows();
-            }
-            aux.setOriginFlowPoint(this);
-            aux.setBackgroundActive(true);
-            aux.setColor(confirmedColor);
-            aux.setConfirmedFlowDir(aux.getFlowDir());
-        }
-    }
-
-    public void disconfirmFromThisTile()
-    {
-        GameBox aux = this;
-        aux.setOriginFlowPoint(null);
-        aux.setBackgroundActive(false);
-
-        while (aux.getNextConfirmedGB() != null)
-        {
-            GameBox nextAux = aux.getNextConfirmedGB();
-            aux.setNextConfirmedGB(null);
-            aux = nextAux;
-            aux.setOriginFlowPoint(null);
-            aux.setBackgroundActive(false);
-        }
-    }
-
-    /// <summary>
-    /// Called if this GameBox is a Flow Point
-    /// </summary>
-    public void disconfirmFlows()
-    {
-        if (getType() != BoxType.FlowPoint) return;
-
-        GameBox aux = this;
-        setBackgroundActive(false);
-
-        while (aux.getNextConfirmedGB() != null)
-        {
-            GameBox nextAux = aux.getNextConfirmedGB();
-            aux.setNextConfirmedGB(null);
-            aux = nextAux;
-            aux.setOriginFlowPoint(null);
-            aux.setBackgroundActive(false);
-        }
-
-        //We disconfirm and cut also from the other flow point, in case we disconfirm from one of them
-        if (_otherFlowPoint != null && _otherFlowPoint.getNextConfirmedGB() != null)
-        {
-            _otherFlowPoint.disconfirmFlows();
-            _otherFlowPoint.cutFromThisTile();
-        }
-    }
-    /// <summary>
-    /// Tries to restore confirmed flow tiles from origin, called if this GameBox is a Flow Point
-    /// </summary>
-    public void tryToRestoreFromOrigin()
-    {
-        GameBox aux = this;
-
-        while (aux.getNextConfirmedGB() != null)
-        {
-            //If there is an active flow
-            if (aux.getNextConfirmedGB().getPathActive())
-            {
-                //With the same color, we pass to the next confirmed tile
-                if (getColor() == aux.getNextConfirmedGB().getPathColor())
-                {
-                    aux = aux.getNextConfirmedGB();
-                }
-                //With a different color, we stop restoring
-                else
-                {
-                    break;
-                }
-            }
-            //Restore the confirmed flow if there is no current flow at this tile
-            else
-            {
-                aux.setNextGB(aux.getNextConfirmedGB());
-                aux = aux.getNextConfirmedGB();
-                aux.setPathColor(aux.getColor());
-                aux.setPathFrom(aux.getConfirmedFlowDir());
-            }
-        }
-    }
-    public void setPreviusGB(GameBox gameBox)
-    {
-        _previusGameBox = gameBox;
-    }
-    public GameBox getPreviusGB()
-    {
-        return _previusGameBox;
-    }
-    public void setAsFirst()
-    {
-        if (!_last)
-            _first = true;
-        else Debug.LogError("This gameBox is the last one of the flow. Can't be the first");
-    }
-    public bool isLast()
-    {
-        return _last;
-    }
-    public void setAsLast()
-    {
-        if (!_first)
-            _last = true;
-        else Debug.LogError("This gameBox is the first one of the flow. Can't be the last");
-    }
-    public bool isFirst()
-    {
-        return _first;
-    }
+    public void setConfirmednode(LinkedListNode<GameBox> node)
+	{
+        _myConfirmedNode = node;
+	}
 
     public LinkedListNode<GameBox> getNode()
     {
@@ -374,31 +189,20 @@ public class GameBox : MonoBehaviour
     {
         setBackgroundActive(false);
         setPathActive(false);
-        setOriginFlowPoint(null);
-        setNextGB(null);
-        setNextConfirmedGB(null);
     }
 
     private BoxType _type;
-    //Used to link flows not confirmed yet
-    private GameBox _nextGameBox = null;
-    private GameBox _previusGameBox = null;
-    //Used to link flows and save the confirmed state of them
-    private GameBox _nextConfirmedGameBox = null;
     //Current flow dir
     private Vector2Int _flowDir;
     //Confirmed flow dir
     private Vector2Int _confirmedFlowDir;
-    //The origin flow point of this flow
-    private GameBox _originFlowPoint = null;
-    //Needs to know the other flow point in case this is one of them
-    private GameBox _otherFlowPoint = null;
-    const int NumFlows = 16;
-    private Flow _myFlow;
+    //A flow point always has one
+    private Flow _flow;
+    private Flow _confirmedFlow;
     private LinkedListNode<GameBox> _myNode;
     private LinkedListNode<GameBox> _myConfirmedNode;
-    bool _first = false;
-    bool _last = false;
+    //bool _first = false;
+    //bool _last = false;
     const float bgColorReduction = .35f;
 
     [SerializeField] private GameObject _backgroundImage;
