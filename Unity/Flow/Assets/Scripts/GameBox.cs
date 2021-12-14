@@ -28,26 +28,27 @@ public class GameBox : MonoBehaviour
         return _type;
     }
 
+    /// <summary>
+    /// sets all the images color, including the path and background
+    /// </summary>
+    /// <param name="c">the color we want to set</param>
     public void setColor(Color c)
     {
-        _myColor = c;
 
-        _figureImage.GetComponent<SpriteRenderer>().color = _myColor;
-        _animImage.GetComponent<SpriteRenderer>().color = _myColor;
-        _pathImage.GetComponent<SpriteRenderer>().color = _myColor;
-
-        Color colorAlphaReduced = _myColor;
-        colorAlphaReduced.a = 0.3f;
-        _backgroundImage.GetComponent<SpriteRenderer>().color = colorAlphaReduced;
+        _figureImage.GetComponent<SpriteRenderer>().color = c;
+        _animImage.GetComponent<SpriteRenderer>().color = c;
+        _pathImage.GetComponent<SpriteRenderer>().color = c;
+        setBackgroundColor(c);
     }
 
     public Color getColor()
     {
-        return _myColor;
+        return _myFlow.GetColor();
     }
 
     public void setPathColor(Color c)
     {
+
         _pathImage.GetComponent<SpriteRenderer>().color = c;
     }
 
@@ -175,6 +176,12 @@ public class GameBox : MonoBehaviour
                 _pathImage.transform.localEulerAngles = new Vector3(0, 0, 180);
                 break;
         }
+    }
+
+    public void setBackgroundColor(Color c)
+    {
+        c.a -= bgColorReduction;
+        _backgroundImage.GetComponent<SpriteRenderer>().color = c;
     }
 
     /// <summary>
@@ -371,7 +378,6 @@ public class GameBox : MonoBehaviour
         setNextConfirmedGB(null);
     }
 
-    private Color _myColor = Color.white;
     private BoxType _type;
     //Used to link flows not confirmed yet
     private GameBox _nextGameBox = null;
@@ -392,6 +398,7 @@ public class GameBox : MonoBehaviour
     private LinkedListNode<GameBox> _myConfirmedNode;
     bool _first = false;
     bool _last = false;
+    const float bgColorReduction = .35f;
 
     [SerializeField] private GameObject _backgroundImage;
     [SerializeField] private GameObject _figureImage;
