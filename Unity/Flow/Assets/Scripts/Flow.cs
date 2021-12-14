@@ -14,6 +14,8 @@ public class Flow
         _id = _nextExpectedId;
         _myColor = GameManager.instance.getSelectedSkin().colors[_id];
         _nextExpectedId++;
+        _tiles = new LinkedList<GameBox>();
+        _confirmedTiles = new LinkedList<GameBox>();
         //we cannot create an extra flow
         if (_nextExpectedId > _maxExpectedId)
         {
