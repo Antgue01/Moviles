@@ -12,5 +12,9 @@ public class GameBoxAnimController : MonoBehaviour
     {
         _animator.Play("Grow");
     }
+    public void growAndShrink()
+    {
+        _animator.Play("GrowAndShrink");
+    }
     Animator _animator;
 }
