@@ -131,8 +131,8 @@ public class LevelManager : MonoBehaviour
 
     public void substractRemainingHint()
     {
-        setRemainingHintsText();
         _remainingHints--;
+        setRemainingHintsText();        
         GameManager.instance.updateNumHints(_remainingHints);
     }
 

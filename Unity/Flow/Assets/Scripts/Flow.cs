@@ -12,7 +12,7 @@ public class Flow
     {
         _boardManager = bm;
         _id = _nextExpectedId;
-        _myColor = GameManager.instance.getSelectedSkin().colors[_id];
+        _flowColor = GameManager.instance.getSelectedSkin().colors[_id];
         _nextExpectedId++;
         _tiles = new LinkedList<GameBox>();
         _confirmedTiles = new LinkedList<GameBox>();
@@ -21,6 +21,7 @@ public class Flow
         {
             Debug.LogWarning("Maximum index exceeded");
         }
+        _hintUsedInThisFlow = false;
     }
     //? preguntar a marco y will
     public static void setMapNumFlows(uint numFlows)
@@ -65,6 +66,8 @@ public class Flow
     /// </summary>
     public void clearTileList()
 	{
+        if (_tiles.Count == 0) return;
+
         LinkedListNode<GameBox> tileNode = _tiles.First;
         LinkedListNode<GameBox> tileNextNodeAux = tileNode.Next;
         GameBox tile = tileNode.Value;
@@ -90,7 +93,7 @@ public class Flow
     /// Tries to connect two tiles by flows, treating diagonal case
     /// </summary>
     /// <returns>true if success</returns>
-    public bool connectFlow(GameBox newFlow, Vector2Int lastInputRowCol, Vector2Int direction, GameObject[,] board)
+    public bool connectFlow(GameBox newFlow, Vector2Int lastInputRowCol, Vector2Int direction)
     {
         GameBox currentGameBox = newFlow;
 
@@ -98,13 +101,13 @@ public class Flow
         if (direction.x != 0 && direction.y != 0)
         {
             //First check with one of the components of direction
-            GameBox auxGB = board[lastInputRowCol.x + direction.y, lastInputRowCol.y].GetComponent<GameBox>();
+            GameBox auxGB = _boardManager.getBoard()[lastInputRowCol.x + direction.y, lastInputRowCol.y].GetComponent<GameBox>();
             Vector2Int auxDir = new Vector2Int(0, direction.y);
             bool valid = (auxGB.getType() == GameBox.BoxType.Empty);
             //If not valid, we try again in another direction (with the other component of direction)
             if (!valid)
             {
-                auxGB = board[lastInputRowCol.x, lastInputRowCol.y + direction.x].GetComponent<GameBox>();
+                auxGB = _boardManager.getBoard()[lastInputRowCol.x, lastInputRowCol.y + direction.x].GetComponent<GameBox>();
                 auxDir = new Vector2Int(direction.x, 0);
                 valid = (auxGB.getType() == GameBox.BoxType.Empty);
             }
@@ -134,7 +137,7 @@ public class Flow
     {
         newFlow.setFlow(this);
         newFlow.setNode(_tiles.AddLast(newFlow));
-        newFlow.setPathColor(_myColor);
+        newFlow.setPathColor(_flowColor);
         newFlow.setPathFrom(dir);
     }
 
@@ -142,13 +145,13 @@ public class Flow
     /// Adds the tile to the list and connects it to the flow
     /// </summary>
     /// <returns>true if success</returns>
-    public bool addTile(GameBox tile, Vector2Int lastInputRowCol, Vector2Int direction, GameObject[,] board)
+    public bool addTile(GameBox tile, Vector2Int lastInputRowCol, Vector2Int direction)
     {
         bool success;
         //No flow assigned yet
 		if (tile.getFlow() == null)
 		{
-            success = connectFlow(tile, lastInputRowCol, direction, board);
+            success = connectFlow(tile, lastInputRowCol, direction);
 		}
 		else
 		{
@@ -164,7 +167,7 @@ public class Flow
                 //Must be the other flow point
 				else
 				{
-                    connectFlow(tile, lastInputRowCol, direction, board);
+                    connectFlow(tile, lastInputRowCol, direction);
                     //Force to stop input
                     success = false;
                 }
@@ -180,7 +183,7 @@ public class Flow
 				else
 				{
                     tile.getFlow().cutFromTile(tile.getNode().Previous.Value);
-                    success = connectFlow(tile, lastInputRowCol, direction, board);
+                    success = connectFlow(tile, lastInputRowCol, direction);
                 }
             }
 		}
@@ -207,7 +210,7 @@ public class Flow
                 confirmedFlow.confirmTiles();
 			}
             tile.setBackgroundActive(true);
-            tile.setColor(_myColor);
+            tile.setColor(_flowColor);
             tile.setConfirmedFlowDir(tile.getFlowDir());
             tile.setConfirmedNode(_confirmedTiles.AddLast(tileNode.Value));
             tile.confirmFlow();
@@ -284,18 +287,65 @@ public class Flow
 		}
 	}
 
-    public Color GetColor() { return _myColor; }
+    public bool useHintOnFlow()
+    {        
+        if(!_hintUsedInThisFlow && _connected)
+        {
+            //if(else CAMINO QUE YA ESTÁ HECHO COINCIDE CON EL DE LA HINT NO HAY QUE HACERLE HINT)
+            return false;
+        }
+
+        if (!_hintUsedInThisFlow)
+        {
+            _hintUsedInThisFlow = true;
+
+            disconfirmTiles();
+            clearTileList();
+            int[] flowPath = _boardManager.getMap().getFlows()[_id];
+
+
+            Vector2Int lastTileRowCol = new Vector2Int();
+            lastTileRowCol.x = flowPath[0] / _boardManager.Cols;
+            lastTileRowCol.y = flowPath[0] % _boardManager.Cols;
+
+            _tiles.AddLast(_boardManager.getBoard()[lastTileRowCol.x, lastTileRowCol.y].GetComponent<GameBox>());
+
+            Vector2Int currentTileRowCol = new Vector2Int();
+            for (int x=1; x < flowPath.Length; x++)
+            {
+                currentTileRowCol.x = flowPath[x] / _boardManager.Cols;
+                currentTileRowCol.y = flowPath[x] % _boardManager.Cols;               
+
+                Vector2Int direction = new Vector2Int(currentTileRowCol.y - lastTileRowCol.y,
+                                                      currentTileRowCol.x - lastTileRowCol.x);
+
+                GameBox currentGameBox = _boardManager.getBoard()[currentTileRowCol.x, currentTileRowCol.y].GetComponent<GameBox>();
+                addTile(currentGameBox, lastTileRowCol, direction);
+                lastTileRowCol = currentTileRowCol;
+            }
+
+            confirmTiles();
+        }
+        return true;
+    }
+
+    public void setUsedHintInThisFlow(bool u) { _hintUsedInThisFlow = u; }
+    public bool getUsedHintInThisFlow() { return _hintUsedInThisFlow; }
+    public Color GetColor() { return _flowColor; }
     public bool getConnected() { return _connected; }
     public void setConnected(bool value) { _connected = value; }
+
+    
+
 
     int _id = -1;
     const int maxId = 15;
     private static uint _maxExpectedId = maxId - 1;
     private static int _nextExpectedId = 0;
-    //int _dir;
-    bool _connected;
-    Color _myColor;
-    LinkedList<GameBox> _tiles;
-    LinkedList<GameBox> _confirmedTiles;
-    BoardManager _boardManager;
+    private bool _connected;
+    private Color _flowColor;
+    private LinkedList<GameBox> _tiles;
+    private LinkedList<GameBox> _confirmedTiles;
+    private BoardManager _boardManager;
+    private bool _hintUsedInThisFlow;
 }
