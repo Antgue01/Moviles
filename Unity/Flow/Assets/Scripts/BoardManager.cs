@@ -161,7 +161,12 @@ public class BoardManager : MonoBehaviour
                 _board[x, j].GetComponent<GameBox>().restore();
 
         for(int x = 0; x < _flows.Length; x++)
+        {
             _flows[x].disconfirmTiles();
+            _flows[x].clearTileList();
+            _flows[x].setUsedHintInThisFlow(false);
+        }
+           
 
         //Reset info
         resetInfo();
@@ -216,7 +221,7 @@ public class BoardManager : MonoBehaviour
         _movements = 0;
         _flowsConnected = 0;
         _pipe = 0;
-        _levelManager.setLevelDone(false);
+        _levelManager.setLevelDone(false);       
     }
 
     private void setUIinfo()

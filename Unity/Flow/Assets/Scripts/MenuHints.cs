@@ -16,12 +16,6 @@ public class MenuHints : MonoBehaviour
         
     }
 
-    public void watchVideo()
-    {
-        _lvlManager.watchVideo();
-        close();
-    }
-
     public void close()
     {
         _hintsMenu.SetActive(false);
