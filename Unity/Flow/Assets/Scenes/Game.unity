@@ -539,7 +539,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2120471373}
         m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
-        m_MethodName: watchVideo
+        m_MethodName: showHintMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -966,6 +966,7 @@ GameObject:
   - component: {fileID: 364938240}
   - component: {fileID: 364938242}
   - component: {fileID: 364938241}
+  - component: {fileID: 364938243}
   m_Layer: 5
   m_Name: MenuEnd
   m_TagString: Untagged
@@ -1035,6 +1036,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 364938239}
   m_CullTransparentMesh: 1
+--- !u!114 &364938243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364938239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8793416a03ef68c4f92027fb284b0de4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _menu: {fileID: 364938239}
+  _lvlManager: {fileID: 2120471373}
 --- !u!1001 &383270541
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1052,7 +1067,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: a6fd136daf99a8f4cb19ca6f523b2079, type: 2}
     - target: {fileID: 723185779894205650, guid: 0f6cb83db43a1734b863f68078fcb0de, type: 3}
       propertyPath: selectedLevelDebug
-      value: 139
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 723185779894205650, guid: 0f6cb83db43a1734b863f68078fcb0de, type: 3}
       propertyPath: selectedSectionDebug
@@ -2365,7 +2380,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1252461243}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 364938243}
+        m_TargetAssemblyTypeName: MenuEnd, Assembly-CSharp
+        m_MethodName: nextLevel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1252461243
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2486,7 +2513,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1273063609}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1290755376}
+        m_TargetAssemblyTypeName: MenuHints, Assembly-CSharp
+        m_MethodName: close
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1273063609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2602,6 +2641,7 @@ GameObject:
   - component: {fileID: 1290755373}
   - component: {fileID: 1290755375}
   - component: {fileID: 1290755374}
+  - component: {fileID: 1290755376}
   m_Layer: 5
   m_Name: MenuHints
   m_TagString: Untagged
@@ -2671,6 +2711,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1290755372}
   m_CullTransparentMesh: 1
+--- !u!114 &1290755376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1290755372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e1c5648c1f5b94f90d5cb6dac806a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hintsMenu: {fileID: 1290755372}
+  _lvlManager: {fileID: 2120471373}
 --- !u!1 &1328916422
 GameObject:
   m_ObjectHideFlags: 0
@@ -2741,7 +2795,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: next level
+  m_Text: share
 --- !u!222 &1328916425
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3276,7 +3330,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1643344171}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1290755376}
+        m_TargetAssemblyTypeName: MenuHints, Assembly-CSharp
+        m_MethodName: close
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1643344171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3476,7 +3542,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1698826687}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1290755376}
+        m_TargetAssemblyTypeName: MenuHints, Assembly-CSharp
+        m_MethodName: watchVideo
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1698826687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4227,6 +4305,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _boardManager: {fileID: 628285578}
+  _endMenu: {fileID: 364938239}
+  _hintsMenu: {fileID: 1290755372}
   _levelText: {fileID: 760669913}
   _sizeText: {fileID: 1435520304}
   _flowText: {fileID: 498175469}

@@ -74,8 +74,11 @@ public class LevelManager : MonoBehaviour
     public void setLevelDone(bool isDone)
     {
         _isLevelDone = isDone;
-        if (isDone)
+        if(_isLevelDone)
+        {
+            _endMenu.SetActive(true);
             GameManager.instance.UpdateLevel(_bestMovements);
+        }       
     }
 
     private void checkLevelCompleted()
@@ -102,13 +105,18 @@ public class LevelManager : MonoBehaviour
         //load previous scene
     }
 
+
+    public void showHintMenu()
+    {
+        _hintsMenu.SetActive(true);
+    }
+
     public void watchVideo()
     {
         //do watch video
 
         _remainingHints++;
         GameManager.instance.updateNumHints(_remainingHints);
-
     }
 
     public void resetLevel()
@@ -187,6 +195,8 @@ public class LevelManager : MonoBehaviour
     }
 
     [SerializeField] BoardManager _boardManager;
+    [SerializeField] GameObject _endMenu;
+    [SerializeField] GameObject _hintsMenu;
     [SerializeField] Text _levelText;
     [SerializeField] Text _sizeText;
     [SerializeField] Text _flowText;

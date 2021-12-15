@@ -164,6 +164,10 @@ public class BoardManager : MonoBehaviour
             for (int j = 0; j < _map.getCols(); ++j)
                 _board[x, j].GetComponent<GameBox>().restore();
 
+        for(int x = 0; x < _flows.Length; x++)
+        {
+            _flows[x].disconfirmTiles();
+        }
 
         //Reset info
         resetInfo();
