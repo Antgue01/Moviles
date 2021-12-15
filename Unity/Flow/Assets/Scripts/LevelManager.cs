@@ -116,6 +116,7 @@ public class LevelManager : MonoBehaviour
     {
         //do watch video
 
+        _hintsMenu.SetActive(false);
         _remainingHints++;
         setRemainingHintsText();
         GameManager.instance.updateNumHints(_remainingHints);

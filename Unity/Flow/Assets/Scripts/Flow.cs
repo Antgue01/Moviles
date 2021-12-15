@@ -237,8 +237,11 @@ public class Flow
             tileNode = tileNodeNextAux;
 		}
 
-        if (_connected) _boardManager.updateFlowsConnected(-1);
-        _connected = false;
+        if (_connected)
+        {
+            _boardManager.updateFlowsConnected(-1);
+            _connected = false;
+        }        
     }
 
     /// <summary>
