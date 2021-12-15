@@ -994,7 +994,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.164, y: 0.282}
   m_AnchorMax: {x: 0.83970374, y: 0.71400005}
-  m_AnchoredPosition: {x: 0, y: -0.0012512207}
+  m_AnchoredPosition: {x: 0, y: -0.0012817383}
   m_SizeDelta: {x: 0, y: 0.0025635}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &364938241
@@ -2009,12 +2009,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9f494562af66c54baa4ffb985986f92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _loadBannerButton: {fileID: 2135139201}
-  _showBannerButton: {fileID: 157268398}
-  _hideBannerButton: {fileID: 312555591}
   _bannerPosition: 4
-  _androidAdUnitId: 4506825
-  _iOsAdUnitId: Banner_iOS
+  _androidAdUnitId: Banner_Android
 --- !u!1 &1089186902
 GameObject:
   m_ObjectHideFlags: 0
