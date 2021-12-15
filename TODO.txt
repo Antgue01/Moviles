@@ -1,4 +1,5 @@
 MARCO-----------------------------------------------------------------------------------------------------------------------------------------
+HECHO** Menu final partida y menu hints  
 ** Terminar partida y actualizar UI con la partida
 ** Pistas: 
 	-pintar estrellas al pedir pista
