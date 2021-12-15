@@ -176,7 +176,22 @@ public class BoardManager : MonoBehaviour
 
     public void useHint()
     {
-        //Do hint
+        int selectedFlow;
+        bool hasCandidate = false;
+        for(int x = 0; x < _flows.Length && !hasCandidate; x++)
+        {
+            if (!_flows[x].getConnected())
+            {
+                selectedFlow = x;
+                hasCandidate = true;
+            }
+        }
+
+        if (hasCandidate)
+        {
+            //hacer que muestre la estrella y toda la pesca
+            _levelManager.substractRemainingHint();
+        }
     }
 
     public void updateFlowsConnected(int add)
@@ -198,6 +213,11 @@ public class BoardManager : MonoBehaviour
             _levelManager.setMovementsText(_movements);
             _lastMovementFlowId = flowId;
         }
+    }
+
+    public int getMovements()
+    {
+        return _movements;
     }
 
     private void resetInfo()

@@ -4310,6 +4310,7 @@ MonoBehaviour:
   _bestText: {fileID: 401926470}
   _pipeText: {fileID: 1959061101}
   _hintText: {fileID: 924530131}
+  _levelDoneText: {fileID: 655220260}
   _UITop: {fileID: 866315814}
   _UIBot: {fileID: 1137394774}
   _topOffset: 0.2

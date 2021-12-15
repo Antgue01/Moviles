@@ -77,6 +77,7 @@ public class LevelManager : MonoBehaviour
         if(_isLevelDone)
         {
             _endMenu.SetActive(true);
+            _levelDoneText.text = "You complete the level in " + _boardManager.getMovements() +" moves.";
             GameManager.instance.UpdateLevel(_bestMovements);
         }       
     }
@@ -116,6 +117,22 @@ public class LevelManager : MonoBehaviour
         //do watch video
 
         _remainingHints++;
+        setRemainingHintsText();
+        GameManager.instance.updateNumHints(_remainingHints);
+    }
+
+    public void useHint()
+    {
+        if (_remainingHints > 0)
+        {            
+            _boardManager.useHint();     
+        }
+    }
+
+    public void substractRemainingHint()
+    {
+        setRemainingHintsText();
+        _remainingHints--;
         GameManager.instance.updateNumHints(_remainingHints);
     }
 
@@ -132,9 +149,21 @@ public class LevelManager : MonoBehaviour
             _map = _mapParser.createLevelMap(_lot[_currentLevel]);
             _boardManager.loadMap(_map);
             updateButtonsInfo();
-
         }
     }
+
+    public void previousLevel()
+    {
+        if (_currentLevel > 0)
+        {
+            _currentLevel--;
+            _map = _mapParser.createLevelMap(_lot[_currentLevel]);
+            _boardManager.loadMap(_map);
+            updateButtonsInfo();
+        }
+    }
+
+
     void AdjustGridToScreen()
     {
 
@@ -171,28 +200,8 @@ public class LevelManager : MonoBehaviour
         y translationY*/
         _grid.transform.localScale = Vector3.one * scale;
         _grid.transform.Translate(new Vector3(-translationX, translationY, 0));
-    }
-    public void previousLevel()
-    {
-        if (_currentLevel > 0)
-        {
-            _currentLevel--;
-            _map = _mapParser.createLevelMap(_lot[_currentLevel]);
-            _boardManager.loadMap(_map);
-            updateButtonsInfo();
-        }
-    }
+    } 
 
-    public void useHint()
-    {
-        if (_remainingHints > 0)
-        {
-            _remainingHints--;
-            GameManager.instance.updateNumHints(_remainingHints);
-            _boardManager.useHint();
-            setRemainingHintsText();
-        }
-    }
 
     [SerializeField] BoardManager _boardManager;
     [SerializeField] GameObject _endMenu;
@@ -204,6 +213,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] Text _bestText;
     [SerializeField] Text _pipeText;
     [SerializeField] Text _hintText;
+    [SerializeField] Text _levelDoneText;
     [SerializeField] RectTransform _UITop;
     [SerializeField] RectTransform _UIBot;
     [SerializeField] float _topOffset;
