@@ -278,7 +278,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: -0.00023651123}
+  m_AnchoredPosition: {x: 0, y: -0.00023651123}
   m_SizeDelta: {x: -0.23999023, y: -0.27000427}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &110760384
@@ -2013,7 +2013,7 @@ MonoBehaviour:
   _showBannerButton: {fileID: 157268398}
   _hideBannerButton: {fileID: 312555591}
   _bannerPosition: 4
-  _androidAdUnitId: Banner_Android
+  _androidAdUnitId: 4506825
   _iOsAdUnitId: Banner_iOS
 --- !u!1 &1089186902
 GameObject:
@@ -2630,7 +2630,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.10655556, y: 0.36600003}
   m_AnchorMax: {x: 0.89800006, y: 0.71400005}
-  m_AnchoredPosition: {x: -0.49993896, y: 4.0400085}
+  m_AnchoredPosition: {x: -0.49987793, y: 4.0400085}
   m_SizeDelta: {x: 4.55, y: -0.41000366}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1290755374
@@ -3349,7 +3349,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: -0.00023651123}
+  m_AnchoredPosition: {x: 0, y: -0.00023651123}
   m_SizeDelta: {x: -0.23999023, y: -0.27000427}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1680515683

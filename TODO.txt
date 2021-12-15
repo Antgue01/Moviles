@@ -6,7 +6,8 @@ HECHO** Menu final partida y menu hints
 	-si se corta quitar estrellas
 	-si se vuelve a unir volver a poner estrellas pero SOLO si es el camino que mostró la pista
 	- Botón UI de juego que muestre un Submenú de pregunta sobre si quiere ver el vídeo y en caso de tal reproducirlo y añadir pista
-** Previous y next level (comprobar que se borra y se pinta bien el nuevo)
+HECHO** Previous y next level (comprobar que se borra y se pinta bien el nuevo)
+**Arreglar que no se salga del array al darle a next o previous
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -15,7 +16,7 @@ ANTONIO-------------------------------------------------------------------------
 	- Parte inferior que haya un anuncio del servidor de Unity
 
 
-** Bloquear portrait (cambio de horizontal a vertican en el móvil)
+HECHO(?)** Bloquear portrait (cambio de horizontal a vertican en el móvil)
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -24,6 +25,7 @@ ANTONIO-------------------------------------------------------------------------
 TODO -----------------------------------------------------------------------------------------------------------------------------------------
 
 (EN CUALQUIER MOMENTO)
+** Muros y después Huecos
 ** Escalar bien GRID (checkear resoluciones cuadradas)
 ** +B de los mapas (muros exteriores)
 ** Botones de volver atrás en la escena (implementar acción)

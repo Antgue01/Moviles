@@ -31,7 +31,17 @@ public class BoardManager : MonoBehaviour
 
         _pruebaCoordenadas.text = "row: " + _inputTilePos.x + ", col: " + _inputTilePos.y;
         _pruebaCanvasSize.text = "W: " + _canvasRT.rect.width + ", H: " + _canvasRT.rect.height;
+    }
 
+    //------------------------------------------------------------------------------------------------------------------------------------//
+    //--------------------------------------------------------------------------------------------------------INPUT  --------------------//
+    //----------------------------------------------------------------------------------------------------------------------------------//
+    public GameObject getTileFromInput(Vector2 inputPosition)
+    {
+        _inputTilePos = _transformer.getTilePos(inputPosition, _grid.transform, Rows, Cols);
+        if (_inputTilePos.x == -1 || _inputTilePos.y == -1) return null;
+        _inputTileRowCol = _inputTilePos;
+        return _board[_inputTileRowCol.x, _inputTileRowCol.y];
     }
 
     private void HandleInput()
@@ -137,27 +147,16 @@ public class BoardManager : MonoBehaviour
         if (_cursor.activeSelf) _cursor.SetActive(false);
     }
 
-    public GameObject getTileFromInput(Vector2 inputPosition)
-    {
-        _inputTilePos = _transformer.getTilePos(inputPosition, _grid.transform, Rows, Cols);
-        if (_inputTilePos.x == -1 || _inputTilePos.y == -1) return null;
-        _inputTileRowCol = _inputTilePos;
-        return _board[_inputTileRowCol.x, _inputTileRowCol.y];
-    }
+
+
+    //------------------------------------------------------------------------------------------------------------------------------------//
+    //--------------------------------------------------------------------------------------------------------UI GESTION ----------------//
+    //----------------------------------------------------------------------------------------------------------------------------------//
 
     public void setLevelManager(LevelManager lvlManager)
     {
         _levelManager = lvlManager;
     }
-
-    public void loadMap(Map m)
-    {
-        _map = m;
-        resetInfo();
-        configureBoard();
-        setUIinfo();
-    }
-
 
     public void resetLevel()
     {
@@ -168,6 +167,7 @@ public class BoardManager : MonoBehaviour
 
         //Reset info
         resetInfo();
+        setUIinfo();
     }
 
     public void useHint()
@@ -175,12 +175,52 @@ public class BoardManager : MonoBehaviour
         //Do hint
     }
 
-    private void configureBoard()
+    public void updateFlowsConnected(int add)
     {
+        if (add > 0 && _flowsConnected < _map.getTotalFlows() || add < 0 && _flowsConnected > 0)
+        {
+            _flowsConnected += add;
+            _levelManager.setFlowsText(_flowsConnected, _map.getTotalFlows());
+        }            
+    }
+
+    private void resetInfo()
+    {
+        _levelDone = false;
+        _movements = 0;
+        _flowsConnected = 0;
+        _pipe = 0;
+        _levelManager.setLevelDone(false);
+    }
+
+    private void setUIinfo()
+    {
+        _levelManager.setSizeText(Rows, Cols);
+        _levelManager.setFlowsText(_flowsConnected, _map.getTotalFlows());
+        _levelManager.setPipeText(_pipe);
+        _levelManager.setMovementsText(_movements);
+    }
+
+    //------------------------------------------------------------------------------------------------------------------------------------//
+    //-------------------------------------------------------------------------------------------------------- MAP INSTANCE--------------//
+    //----------------------------------------------------------------------------------------------------------------------------------//
+    public void loadMap(Map m)
+    {
+        _map = m;
+        resetInfo();
+        configureBoard();
+        setUIinfo();
+    }
+
+    private void configureBoard()
+    {   
+        if(_board != null)
+            for (int row = 0; row < _board.GetLength(0); ++row)
+                for (int col = 0; col < _board.GetLength(1); col++)
+                    Destroy(_board[row, col]);
+
         if (_map != null && _grid != null)
         {
-            //float boxWidth = _grid.GetComponent<RectTransform>().rect.width / _map.getCols();
-            //float boxHeight = _grid.GetComponent<RectTransform>().rect.width / _map.getRows();
             Rows = _map.getRows();
             Cols = _map.getCols();
             _flowStartAndEndPoints = new GameObject[2 * _map.getTotalFlows()];
@@ -196,42 +236,14 @@ public class BoardManager : MonoBehaviour
                     go.GetComponent<GameBox>().setType(GameBox.BoxType.Empty);
                     //go.GetComponent<GameBox>().setFigureImageSize(boxWidth, boxHeight);
                     _board[row, col] = go;
-
                 }
             }
             createFlowPoints();
             checkHollows();
             checkBridges();
-
-
-            if (Cols >= Rows)
-            {
-                //float scale = _canvasRT.rect.width / (_grid.GetComponent<GridLayoutGroup>().cellSize.x * _map.getCols());
-                //_grid.GetComponent<RectTransform>().localScale = new Vector3(scale, scale, 1);
-
-                //Hay que cambiar esta parte para reposicionar porque el cellsize despu�s de escalar sigue valiendo lo mismo que antes de escalar
-                //float height = _map.getRows() * _grid.GetComponent<GridLayoutGroup>().cellSize.y * scale;
-                //RectTransform gridRT = _grid.GetComponent<RectTransform>();
-                //gridRT.transform.position = new Vector3(gridRT.position.x, height / 2 , gridRT.position.z);
-            }
-            else
-            {
-                //float scale = _canvasRT.rect.height / (_grid.GetComponent<GridLayoutGroup>().cellSize.y * _map.getRows());
-                //_grid.GetComponent<RectTransform>().localScale = new Vector3(scale, scale, 1);
-
-                ////Hay que cambiar esta parte para reposicionar porque el cellsize despu�s de escalar sigue valiendo lo mismo que antes de escalar
-                //float height = _map.getRows() * _grid.GetComponent<GridLayoutGroup>().cellSize.y;
-                //RectTransform gridRT = _grid.GetComponent<RectTransform>();
-                //gridRT.position = new Vector3(gridRT.position.x, 500, gridRT.position.z);
-            }
         }
 
     }
-
-    //private void Canvas_preWillRenderCanvases()
-    //{
-    //    throw new System.NotImplementedException();
-    //}
 
     /// <summary>
     /// Create the start and end point for every color flow.
@@ -248,7 +260,7 @@ public class BoardManager : MonoBehaviour
             int colorIndex = 0;
             foreach (int[] flowColor in flows)
             {
-                _flows[colorIndex] = new Flow();
+                _flows[colorIndex] = new Flow(this);
                 //Start index
                 int index = flowColor[0];
                 int row = index / Cols;
@@ -298,22 +310,7 @@ public class BoardManager : MonoBehaviour
             }
     }
 
-    private void resetInfo()
-    {
-        _levelDone = false;
-        _movements = 0;
-        _flowsConnected = 0;
-        _pipe = 0;
-        _levelManager.setLevelDone(false);
-    }
 
-    private void setUIinfo()
-    {
-        _levelManager.setSizeText(Rows, Cols);
-        _levelManager.setFlowsText(0, _map.getTotalFlows());
-        _levelManager.setPipeText(_pipe);
-        _levelManager.setMovementsText(_movements);
-    }
 
 
     [SerializeField] Sprite[] _sprites;

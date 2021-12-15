@@ -8,8 +8,9 @@ using UnityEngine;
 /// </summary>
 public class Flow
 {
-    public Flow()
+    public Flow(BoardManager bm)
     {
+        _boardManager = bm;
         _id = _nextExpectedId;
         _myColor = GameManager.instance.getSelectedSkin().colors[_id];
         _nextExpectedId++;
@@ -27,7 +28,7 @@ public class Flow
         if (numFlows <= maxId)
             _maxExpectedId = numFlows;
         else _maxExpectedId = maxId;
-
+        _nextExpectedId = 0;
     }
 
     /// <summary>
@@ -213,7 +214,9 @@ public class Flow
             tileNode = tileNode.Next;
         }
 
-        setConnected(_confirmedTiles.Last.Value.getType()==GameBox.BoxType.FlowPoint);
+
+        _connected = _confirmedTiles.Last.Value.getType()==GameBox.BoxType.FlowPoint;
+        if(_connected) _boardManager.updateFlowsConnected(1);
     }
 
     public void disconfirmTiles()
@@ -231,7 +234,8 @@ public class Flow
             tileNode = tileNodeNextAux;
 		}
 
-        setConnected(false);
+        if (_connected) _boardManager.updateFlowsConnected(-1);
+        _connected = false;
     }
 
     /// <summary>
@@ -293,4 +297,5 @@ public class Flow
     Color _myColor;
     LinkedList<GameBox> _tiles;
     LinkedList<GameBox> _confirmedTiles;
+    BoardManager _boardManager;
 }
