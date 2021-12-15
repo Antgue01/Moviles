@@ -9,6 +9,7 @@ public class BoardManager : MonoBehaviour
     void Start()
     {
         _transformer = new InputTransformer();
+        _lastMovementFlowId = -1;
     }
 
     // Update is called once per frame
@@ -78,13 +79,12 @@ public class BoardManager : MonoBehaviour
             //Start dragging
             else
             {
-                Flow currentFlow = currentGameBox.getFlow();
+                _currentFlowSelected = currentGameBox.getFlow();
                 _pressed = true;
                 _lastPressed = currentTile;
                 _cursor.SetActive(true);
-                _cursor.GetComponent<SpriteRenderer>().color = currentFlow.GetColor();
-                _lastFlowSelected = currentFlow;
-                _lastFlowSelected.startDragging(currentGameBox);
+                _cursor.GetComponent<SpriteRenderer>().color = _currentFlowSelected.GetColor();  
+                _currentFlowSelected.startDragging(currentGameBox);
             }
         }
         else if (justUp && _pressed)
@@ -116,7 +116,7 @@ public class BoardManager : MonoBehaviour
                 Vector2Int direction = new Vector2Int(_inputTileRowCol.y - lastInputRowCol.y,
                 _inputTileRowCol.x - lastInputRowCol.x);
 
-                if (_lastFlowSelected.addTile(currentGameBox, lastInputRowCol, direction, _board))
+                if (_currentFlowSelected.addTile(currentGameBox, lastInputRowCol, direction, _board))
 				{
                     _lastPressed = currentTile;
                 }
@@ -139,10 +139,10 @@ public class BoardManager : MonoBehaviour
     {
         _pressed = false;
         _lastPressed = null;
-        if (_lastFlowSelected != null)
+        if (_currentFlowSelected != null)
         {
-            _lastFlowSelected.stopDragging();
-            _lastFlowSelected = null;
+            _currentFlowSelected.stopDragging();
+            _currentFlowSelected = null;
         }
         if (_cursor.activeSelf) _cursor.SetActive(false);
     }
@@ -181,7 +181,19 @@ public class BoardManager : MonoBehaviour
         {
             _flowsConnected += add;
             _levelManager.setFlowsText(_flowsConnected, _map.getTotalFlows());
+            float pipe = ((float)_flowsConnected / (float) _map.getTotalFlows()) * 100.0f;
+            _levelManager.setPipeText((int)pipe);
         }            
+    }
+
+    public void flowConfirmTile(int flowId)
+    {
+        if(_lastMovementFlowId != flowId)
+        {
+            _movements++;
+            _levelManager.setMovementsText(_movements);
+            _lastMovementFlowId = flowId;
+        }
     }
 
     private void resetInfo()
@@ -347,5 +359,6 @@ public class BoardManager : MonoBehaviour
     [SerializeField] Camera _cam;
     GameObject[] _flowStartAndEndPoints;
     private Flow[] _flows;
-    private Flow _lastFlowSelected;
+    private Flow _currentFlowSelected;
+    private int _lastMovementFlowId;
 }

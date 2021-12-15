@@ -214,7 +214,7 @@ public class Flow
             tileNode = tileNode.Next;
         }
 
-
+        _boardManager.flowConfirmTile(_id);
         _connected = _confirmedTiles.Last.Value.getType()==GameBox.BoxType.FlowPoint;
         if(_connected) _boardManager.updateFlowsConnected(1);
     }
