@@ -9,9 +9,8 @@ HECHO** Arreglar reset the map, aparentemente se limpian bien los gamebox pero s
 	-si se vuelve a unir volver a poner estrellas pero SOLO si es el camino que mostró la pista
 	-HECHO** Botón UI de juego que muestre un Submenú de pregunta sobre si quiere ver el vídeo y añadir pista
 
-HECHO** Arreglar que no se salga del array al darle a los botones next / previous
+** Arreglar que no se salga del array al darle a los botones next / previous
 ** Arreglar que cuando se le de un click a un menu de la escena game se desactive el input hasta que se cierre
-** Botones de next y previous se tienen que poner grises ("desactivados") cuando no puedan hacer nada
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -28,8 +27,8 @@ HECHO(?)** Bloquear portrait (cambio de horizontal a vertican en el móvil)
 
 WILL--------------------------------------------------------------------------------------------------------------------------------------
 HECHO** Escalar bien GRID (checkear resoluciones cuadradas)
-HECHO** Hacer que no sume movimiento cuando se mueve un flow diferente al anterior pero se deja en el mismo sitio
-HECHO** Arreglar que cuando se corta un flow por segunda vez le suma 2 movimientos en vez de 1
+** Hacer que no sume movimiento cuando se mueve un flow diferente al anterior pero se deja en el mismo sitio
+** Arreglar que cuando se corta un flow por segunda vez le suma 2 movimientos en vez de 1
 ** Menú principal
 ** Botones de volver atrás en la escena (implementar acción)
 ** Arreglar pipe para que sume cuando se ocupa una celda
@@ -40,6 +39,7 @@ TODO ---------------------------------------------------------------------------
 
 ** Muros y después Huecos
 ** +B de los mapas (muros exteriores)
+** Arreglar UI de seleccionar niveles
 
 
 

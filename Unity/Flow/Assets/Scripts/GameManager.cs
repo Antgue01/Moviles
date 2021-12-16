@@ -139,9 +139,7 @@ public class GameManager : MonoBehaviour
             j++;
         }
         //if we have beaten our record, we update it
-        if (_saveData.sections[i].levelLots[j].bestMovesPerLevel.Count == _selectedLevel)
-            _saveData.sections[i].levelLots[j].bestMovesPerLevel.Add(moves);
-        else if (_saveData.sections[i].levelLots[j].bestMovesPerLevel[_selectedLevel] > moves)
+        if (_saveData.sections[i].levelLots[j].bestMovesPerLevel[_selectedLevel] > moves)
             _saveData.sections[i].levelLots[j].bestMovesPerLevel[_selectedLevel] = moves;
         //if we just completed the last level we unlocked we unlock the next one
         int lastLevel = _saveData.sections[i].levelLots[j].lastUnlockedLevel;

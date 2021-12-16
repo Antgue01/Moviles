@@ -18,7 +18,14 @@ public class AdManager
         if (Advertisement.Banner.isLoaded)
             Advertisement.Banner.Show(_bannerId);
     }
-    
+    public void hideBanner()
+    {
+        Advertisement.Banner.Hide();
+    }
+    public void showBanner()
+    {
+        Advertisement.Banner.Show(_bannerId);
+    }
     /// <summary>
     /// Plays a rewarded video without notifying anyone     
     /// </summary>

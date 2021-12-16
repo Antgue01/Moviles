@@ -5,7 +5,10 @@ using UnityEngine.Advertisements;
 public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener
 {
     [SerializeField] LevelManager _levelManager;
-    public void requestAd() { GameManager.instance.GetAdManager().playRewardedVideo(this,this); }
+    public void requestAd() {
+        GameManager.instance.GetAdManager().hideBanner();
+        GameManager.instance.GetAdManager().playRewardedVideo(this,this); 
+    }
 
     public void OnUnityAdsAdLoaded(string adUnitId)
     {
@@ -22,6 +25,7 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
             Debug.Log("Unity Ads Rewarded Ad Completed");
             // Grant a reward.
             _levelManager.watchVideo();
+            GameManager.instance.GetAdManager().showBanner();
 
         }
     }
