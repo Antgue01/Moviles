@@ -114,7 +114,6 @@ public class LevelManager : MonoBehaviour
 
     public void watchVideo()
     {
-        //do watch video
 
         _hintsMenu.SetActive(false);
         _remainingHints++;

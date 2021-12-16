@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Advertisements;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -11,6 +12,10 @@ public class GameManager : MonoBehaviour
     {
         if (instance == null)
         {
+            _adManager = new AdManager();
+            _adManager.init();
+            _banner = new BannerAd(_secondsToNextAd);
+            _adManager.setBannerPosition(BannerPosition.BOTTOM_CENTER);
             instance = this;
             _saveData = new SaveDataManager();
             Application.wantsToQuit += _saveData.save;
@@ -19,6 +24,8 @@ public class GameManager : MonoBehaviour
         else
         {
             instance._levelManager = _levelManager;
+            instance._adManager = _adManager;
+            instance._banner = _banner;
 #if UNITY_EDITOR
             instance.selectedLevelDebug = selectedLevelDebug;
             instance.selectedLevelLotDebug = selectedLevelLotDebug;
@@ -104,6 +111,7 @@ public class GameManager : MonoBehaviour
     {
         _saveData.numHints = numHints;
     }
+    public AdManager GetAdManager() { return _adManager; }
     [SerializeField] Section[] _sections;
     [SerializeField] Skin[] _skins;
 
@@ -112,6 +120,10 @@ public class GameManager : MonoBehaviour
     /// record yet, creates the record
     /// </summary>
     /// <param name="moves">The number of moves we did on the current level</param>
+    private void Update()
+    {
+        _banner.Update();
+    }
     public void UpdateLevel(int moves)
     {
         //we search our level
@@ -140,12 +152,15 @@ public class GameManager : MonoBehaviour
     }
 
     [SerializeField] LevelManager _levelManager;
+    [SerializeField] float _secondsToNextAd;
     public static GameManager instance { get; private set; } = null;
     LevelLot _selectedLevelLot;
     Section _selectedSection;
     int _selectedLevel;
     Skin _currentSkin;
     SaveDataManager _saveData;
+    AdManager _adManager;
+    BannerAd _banner;
 #if UNITY_EDITOR
     [SerializeField] Section selectedSectionDebug;
     [SerializeField] LevelLot selectedLevelLotDebug;

@@ -540,6 +540,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 723185779894205650, guid: 0f6cb83db43a1734b863f68078fcb0de, type: 3}
+      propertyPath: _secondsToNextAd
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 723185779894205650, guid: 0f6cb83db43a1734b863f68078fcb0de, type: 3}
       propertyPath: selectedSkinDebug
       value: 
       objectReference: {fileID: 11400000, guid: b3774b0602ddb6c41a1a994d7d97956c, type: 2}
