@@ -77,12 +77,12 @@ public class LevelManager : MonoBehaviour
     public void setLevelDone(bool isDone)
     {
         _isLevelDone = isDone;
-        if(_isLevelDone)
+        if (_isLevelDone)
         {
             showEndMenu();
             _levelDoneText.text = "You complete the level in " + _boardManager.getMovements() +" moves.";
             GameManager.instance.UpdateLevel(_bestMovements);
-        }       
+        }
     }
 
     private void checkLevelCompleted()
@@ -132,15 +132,15 @@ public class LevelManager : MonoBehaviour
     public void useHint()
     {
         if (_remainingHints > 0)
-        {            
-            _boardManager.useHint();     
+        {
+            _boardManager.useHint();
         }
     }
 
     public void substractRemainingHint()
     {
         _remainingHints--;
-        setRemainingHintsText();        
+        setRemainingHintsText();
         GameManager.instance.updateNumHints(_remainingHints);
     }
 
@@ -213,14 +213,14 @@ public class LevelManager : MonoBehaviour
         float translationY = 0;
 
         if (freeAspect >= gridAspect)
-		{
+        {
             //fit in width
             scale = freeWidth / gridWidth;
             translationX = freeWidth / 2;
             translationY = (gridWidth * scale) / 2;
         }
-		else
-		{
+        else
+        {
             //fit in height
             scale = freeHeight / gridHeight;
             translationX = (gridHeight * scale) / 2;
@@ -231,7 +231,7 @@ public class LevelManager : MonoBehaviour
         float deltaVerticalCentre = topfreePosY - freeHeight / 2;
         _grid.transform.localScale = Vector3.one * scale;
         _grid.transform.position = new Vector3(-translationX, translationY + deltaVerticalCentre, 0);
-    } 
+    }
 
 
     [SerializeField] BoardManager _boardManager;

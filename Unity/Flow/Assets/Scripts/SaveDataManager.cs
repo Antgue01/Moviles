@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
@@ -12,7 +14,7 @@ public class SaveDataManager
     {
         public string name;
         public int lastUnlockedLevel;
-        public List<int> bestMovesPerLevel;
+        public int[] bestMovesPerLevel;
 
     }
     [System.Serializable]
@@ -45,7 +47,15 @@ public class SaveDataManager
             {
                 sections[i].levelLots[j].name = gameManagerSections[i].levelLots[j].LevelLotName;
                 sections[i].levelLots[j].lastUnlockedLevel = 0;
-                sections[i].levelLots[j].bestMovesPerLevel = new List<int>();
+                string[] separators = { "\n", "\r", "\r\n", "\n\r" };
+
+                int levels = gameManagerSections[i].levelLots[j].LevelLotFile.ToString().Split(separators, System.StringSplitOptions.RemoveEmptyEntries).Length;
+                sections[i].levelLots[j].bestMovesPerLevel = new int[levels];
+                int[] bestMoves = sections[i].levelLots[j].bestMovesPerLevel;
+                for (int k = 0; k < bestMoves.Length; k++)
+                {
+                    bestMoves[k] = -1;
+                }
 
             }
         }
