@@ -16,6 +16,7 @@ public class Flow
         _nextExpectedId++;
         _tiles = new LinkedList<GameBox>();
         _confirmedTiles = new LinkedList<GameBox>();
+        _lastConfirmedTiles = new LinkedList<GameBox>();
         //we cannot create an extra flow
         if (_nextExpectedId > _maxExpectedId)
         {
@@ -58,6 +59,8 @@ public class Flow
 
     public void stopDragging()
 	{
+        if (willMapBeModified())
+            _boardManager.mapModified(_id);
         confirmTiles();
 	}
 
@@ -192,33 +195,71 @@ public class Flow
     }
 
     /// <summary>
+    /// Always before confirmTiles if needed, to check if the map will be modified
+    /// </summary>
+    /// <returns></returns>
+    public bool willMapBeModified()
+	{
+        if (_tiles.Count == 1 && _lastConfirmedTiles.Count < 1) return false;
+        if (_tiles.Count != _lastConfirmedTiles.Count) return true;
+
+        LinkedListNode<GameBox> tileNode = _tiles.First;
+
+        while (tileNode != null)
+		{
+            if (!_lastConfirmedTiles.Contains(tileNode.Value)) return true;
+            tileNode = tileNode.Next;
+        }
+
+        return false;
+    }
+
+    public void saveLastConfirmedTiles()
+	{
+        LinkedListNode<GameBox> tileNode = _confirmedTiles.First;
+
+        _lastConfirmedTiles.Clear();
+
+        while (tileNode != null)
+        {
+            _lastConfirmedTiles.AddLast(tileNode.Value);
+            tileNode = tileNode.Next;
+        }
+    }
+
+    /// <summary>
     /// Adds tiles to the confirmed list
     /// </summary>
     public void confirmTiles()
 	{
         LinkedListNode<GameBox> tileNode = _tiles.First;
 
-        if (tileNode.Next == null) return;
-
-        while (tileNode != null)
-        {
-            GameBox tile = tileNode.Value;
-            Flow confirmedFlow = tile.getConfirmedFlow();
-            if (confirmedFlow != null && confirmedFlow!=this)
-			{
-                confirmedFlow.disconfirmTiles();
-                confirmedFlow.confirmTiles();
-			}
-            tile.setBackgroundActive(true);
-            tile.setColor(_flowColor);
-            tile.setConfirmedFlowDir(tile.getFlowDir());
-            tile.setConfirmedNode(_confirmedTiles.AddLast(tileNode.Value));
-            tile.confirmFlow();
-            tileNode = tileNode.Next;
+        if (tileNode.Next == null)
+            _tiles.Remove(tileNode);
+		else
+		{
+            while (tileNode != null)
+            {
+                GameBox tile = tileNode.Value;
+                Flow confirmedFlow = tile.getConfirmedFlow();
+                if (confirmedFlow != null && confirmedFlow != this)
+                {
+                    confirmedFlow.disconfirmTiles();
+                    confirmedFlow.confirmTiles();
+                }
+                tile.setBackgroundActive(true);
+                tile.setColor(_flowColor);
+                tile.setConfirmedFlowDir(tile.getFlowDir());
+                tile.setConfirmedNode(_confirmedTiles.AddLast(tileNode.Value));
+                tile.confirmFlow();
+                tileNode = tileNode.Next;
+            }
         }
 
-        _boardManager.flowConfirmTile(_id);
-        _connected = _confirmedTiles.Last.Value.getType()==GameBox.BoxType.FlowPoint;
+        saveLastConfirmedTiles();
+
+        if(_confirmedTiles.Count>0)
+            _connected = _confirmedTiles.Last.Value.getType()==GameBox.BoxType.FlowPoint;
         if(_connected) _boardManager.updateFlowsConnected(1);
     }
 
@@ -327,6 +368,8 @@ public class Flow
                 lastTileRowCol = currentTileRowCol;
             }
 
+            if (willMapBeModified())
+                _boardManager.mapModified(_id);
             confirmTiles();
         }
         return true;
@@ -349,6 +392,7 @@ public class Flow
     private Color _flowColor;
     private LinkedList<GameBox> _tiles;
     private LinkedList<GameBox> _confirmedTiles;
+    private LinkedList<GameBox> _lastConfirmedTiles;
     private BoardManager _boardManager;
     private bool _hintUsedInThisFlow;
 }
