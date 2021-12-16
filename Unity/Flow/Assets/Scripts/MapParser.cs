@@ -11,34 +11,46 @@ public class MapParser
         //Map map = new global::Map();
         Map map = new Map();
         string[] separator = { ";" };
-        string[] data = codeMap.Split(separator, System.StringSplitOptions.RemoveEmptyEntries);
+        string[] data = codeMap.Split(separator, System.StringSplitOptions.RemoveEmptyEntries);        
         string[] header = data[0].Split(',');
 
-        //HEAD FORMAT: ROWS[:COLS], RESERVED, LEVEL, HOWMANYFLOWS [,[BRIDGE[:BRIDGE]]] [,[HOLLOWS[:HOLLOWS]]] [,[WALL|WALL[:WALL|WALL]]];
+        //HEAD FORMAT: ROWS[:COLS][+B], RESERVED, LEVEL, HOWMANYFLOWS [,[BRIDGE[:BRIDGE]]] [,[HOLLOWS[:HOLLOWS]]] [,[WALL|WALL[:WALL|WALL]]];
         //LEVEL FORMAT: HEAD; FLOW(1); FLOW(2); FLOW(HOWMANYFLOWS-1);
         if (header[0].Length == 1)
         {
             map.setCols(int.Parse(header[0]));
             map.setRows(map.getCols());
+            map.setPlusB(false);
         }
         else
         {
-            string []dims = header[0].Split(':');
-            map.setCols(int.Parse(dims[0]));
-            map.setRows(int.Parse(dims[1]));
+            string[] dimsSeparator = { ":", "+" };            
+            string[] dims = header[0].Split(dimsSeparator, System.StringSplitOptions.RemoveEmptyEntries);
+            if(dims.Length == 2)
+            {
+                map.setCols(int.Parse(dims[0]));
+                map.setRows(int.Parse(dims[1]));
+                map.setPlusB(false);
+            }
+            else if(dims.Length == 3 && dims[2].ToLower() == "b")
+            {
+                map.setCols(int.Parse(dims[0]));
+                map.setRows(int.Parse(dims[1]));
+                map.setPlusB(true);
+            }           
         }
 
         map.setLevel(int.Parse(header[2]));
         _totalFlows = int.Parse(header[3]);
         map.setTotalFlows(_totalFlows);
-        int i = 4;
-        while (i < header.Length)
-        {
-            if (i == 4) map.setBridges(System.Array.ConvertAll(header[i].Split(':'), int.Parse)); //SI FUNCIONA BORRAR MÉTODO readBridges, SI NO UTILIZAR MÉTODO
-            //if (i == 4) _map.setBridges(readBridges(header[i]));
-            else if (i == 5) map.setHollows(readHollows(header[i]));
-            else if (i == 6) map.setWalls(readWalls(header[i]));
-        }
+        //int i = 4;
+        //while (i < header.Length)
+        //{
+        //    if (i == 4) map.setBridges(System.Array.ConvertAll(header[i].Split(':'), int.Parse)); //SI FUNCIONA BORRAR MÉTODO readBridges, SI NO UTILIZAR MÉTODO
+        //    //if (i == 4) _map.setBridges(readBridges(header[i]));
+        //    else if (i == 5) map.setHollows(readHollows(header[i]));
+        //    else if (i == 6) map.setWalls(readWalls(header[i]));
+        //}
 
         map.setFlows(readFlows(data));
 

@@ -12,6 +12,7 @@ public class Map
     public void setBridges(int[] b) { _bridges = b; }
     public void setHollows(int[] h) {  _hollows = h; }
     public void setWalls(KeyValuePair<int, int>[] w) { _walls = w; }
+    public void setPlusB(bool b) { _hasPlusB = b; }
 
     public int getRows() { return _rows; }
     public int getCols() { return _cols; }
@@ -21,6 +22,7 @@ public class Map
     public int[] getBridges() { return _bridges; }
     public int[] getHollows() { return _hollows; }
     public KeyValuePair<int, int>[] getWalls() { return _walls; }
+    public bool getPlusB() {  return _hasPlusB; }
 
     private int _rows;
     private int _cols;
@@ -30,4 +32,5 @@ public class Map
     private int[] _bridges;
     private int[] _hollows;
     private KeyValuePair<int, int>[] _walls;
+    private bool _hasPlusB;
 }
