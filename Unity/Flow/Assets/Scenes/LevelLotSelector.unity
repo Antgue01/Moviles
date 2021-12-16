@@ -338,7 +338,8 @@ MonoBehaviour:
   _layoutZone: {fileID: 847588517}
   _headerPrefab: {fileID: 7549537036868015288, guid: a443e1a063fed0f44a8615d7b47e28ce, type: 3}
   _levelLotPrefab: {fileID: 5700368819555273342, guid: de70f6483e92c2c4fa0ada46d5f82398, type: 3}
-  _sectionBodyPrefab: {fileID: 417284203398037307, guid: 928deb94375e49c4ab848bc975def6da, type: 3}
+  _image: {fileID: 812252769}
+  _text: {fileID: 556812557}
 --- !u!1 &812252768
 GameObject:
   m_ObjectHideFlags: 0

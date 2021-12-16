@@ -17,8 +17,9 @@ public class sectionManager : MonoBehaviour
     /// <param name="sections">the sections info used to instantiate</param>
     void build(Section[] sections)
     {
-        float totalHeight = 0;
+        float totalHeight = _text.rect.height + _image.rect.height + maxBannerHeightSize;
 
+        RectTransform rect = null;
         for (int i = 0; i < sections.Length; i++)
         {
             //we instantiate the header of the section
@@ -35,14 +36,17 @@ public class sectionManager : MonoBehaviour
                 LevelLotVisuals levelLotVisuals = levelLotObject.GetComponent<LevelLotVisuals>();
                 LevelLotSelector selector = levelLotObject.GetComponent<LevelLotSelector>();
                 selector.setSection(sections[i]);
-                totalHeight += levelLotObject.GetComponent<RectTransform>().rect.height;
+                rect = levelLotObject.GetComponent<RectTransform>();
+                totalHeight += rect.rect.height;
                 levelLotVisuals.setColor(sections[i].themeColor);
                 levelLotVisuals.setName(levellot.LevelLotName);
                 //todo CUANDO SEPAMOS GUARDAR EL PROGRESO QUE SE CAMBIE LO DE AQUÍ ABAJO
 
                 levelLotVisuals.setLevelsInfo(levellot.LevelLotFile.ToString().Split(separators, System.StringSplitOptions.RemoveEmptyEntries).Length, /*levelLot.playedLevels*/0);
             }
+
         }
+        totalHeight += rect.rect.height;
         _scrollContentTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, totalHeight);
 
     }
@@ -50,8 +54,9 @@ public class sectionManager : MonoBehaviour
     [SerializeField] RectTransform _layoutZone;
     [SerializeField] GameObject _headerPrefab;
     [SerializeField] GameObject _levelLotPrefab;
-    [SerializeField] GameObject _sectionBodyPrefab;
-
+    [SerializeField] RectTransform _image;
+    [SerializeField] RectTransform _text;
+    private const float maxBannerHeightSize = 90;
 }
 
 
