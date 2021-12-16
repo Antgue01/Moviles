@@ -18,9 +18,10 @@ ANTONIO-------------------------------------------------------------------------
 ** Anuncios
 	- Parte inferior que haya un anuncio del servidor de Unity
 
-** Probar progeso (que se guarda y se carga bien los datos del json)
+
 HECHO(?)** Bloquear portrait (cambio de horizontal a vertican en el móvil)
 ** Hacer que se reproduzca vídeo cuando se le da a YES en el menú de gethints HECHO
+** Arreglar UI de seleccionar niveles
 ** Desbloquear todos los niveles o según progreso y comprobar que funcione bien en la escena (que le doy a un nivel bloqueado y no juega y si le doy a uno que no está bloqueado si juega)
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -36,10 +37,10 @@ HECHO** Escalar bien GRID (checkear resoluciones cuadradas)
 
 
 TODO -----------------------------------------------------------------------------------------------------------------------------------------
-
+** Probar progeso (que se guarda y se carga bien los datos del json) (se ha roto también en Unity la escena de selección de nivel y se ve igual que en la build, hay que arreglar eso primero)
 ** Muros y después Huecos
 ** +B de los mapas (muros exteriores)
-** Arreglar UI de seleccionar niveles
+
 
 
 
