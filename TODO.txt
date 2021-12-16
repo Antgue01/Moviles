@@ -38,7 +38,7 @@ TODO ---------------------------------------------------------------------------
 
 ** Muros y después Huecos
 ** +B de los mapas (muros exteriores)
-** Hacer que se reproduzca vídeo cuando se le da a YES en el menú de gethints
+HECHO** Hacer que se reproduzca vídeo cuando se le da a YES en el menú de gethints
 ** Probar progeso (que se guarda y se carga bien los datos del json)
 ** Desbloquear todos los niveles o según progreso y comprobar que funcione bien en la escena (que le doy a un nivel bloqueado y no juega y si le doy a uno que no está bloqueado si juega)
 
