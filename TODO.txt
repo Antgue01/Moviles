@@ -2,6 +2,7 @@ MARCO---------------------------------------------------------------------------
 HECHO** Menu final partida y menu hints  
 HECHO** Terminar partida y actualizar UI con la partida
 HECHO** Previous y next level (comprobar que se borra y se pinta bien el nuevo)
+HECHO** Arreglar reset the map, aparentemente se limpian bien los gamebox pero se quedan residuos
 ** Pistas: 
 	-pintar estrellas al pedir pista
 	-si se corta quitar estrellas
@@ -20,23 +21,25 @@ HECHO(?)** Bloquear portrait (cambio de horizontal a vertican en el móvil)
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 
+WILL--------------------------------------------------------------------------------------------------------------------------------------
+HECHO** Escalar bien GRID (checkear resoluciones cuadradas)
+** Hacer que no sume movimiento cuando se mueve un flow diferente al anterior pero se deja en el mismo sitio
+** Arreglar que cuando se corta un flow por segunda vez le suma 2 movimientos en vez de 1
+** Menú principal
+** Botones de volver atrás en la escena (implementar acción)
+** Arreglar pipe para que sume cuando se ocupa una celda
+-----------------------------------------------------------------------------------------------------------------------------------------
+
 
 TODO -----------------------------------------------------------------------------------------------------------------------------------------
 
 ** Muros y después Huecos
-** Escalar bien GRID (checkear resoluciones cuadradas)
 ** +B de los mapas (muros exteriores)
-** Botones de volver atrás en la escena (implementar acción)
 ** Arreglar que no se salga del array al darle a los botones next / previous
-** Hacer que no sume movimiento cuando se mueve un flow diferente al anterior pero se deja en el mismo sitio
 ** Hacer que se reproduzca vídeo cuando se le da a YES en el menú de gethints
-HECHO** Arreglar reset the map, aparentemente se limpian bien los gamebox pero se quedan residuos
 ** Probar progeso (que se guarda y se carga bien los datos del json)
 ** Desbloquear todos los niveles o según progreso y comprobar que funcione bien en la escena (que le doy a un nivel bloqueado y no juega y si le doy a uno que no está bloqueado si juega)
 ** Arreglar que cuando se le de un click a un menu de la escena game se desactive el input hasta que se cierre
-** Arreglar que cuando se corta un flow por segunda vez le suma 2 movimientos en vez de 1
-** Arreglar pipe para que sume cuando se ocupa una celda
-
 
 
 
