@@ -17,7 +17,7 @@ public class LevelLotSelector : MonoBehaviour
     {
         GameManager.instance.goToLevelSelection(_myLevelLot, _mySection);
         //todo SEGURAMENTE HAY ALGUNA MANERA MÁS SOFISTICADA DE CAMBIAR DE ESCENA. IGUAL SE EXPLICA EN CLASE
-        GameManager.instance.ChangeScene(1);
+        GameManager.instance.SwitchSceneTo(GameManager.SceneEnum.LevelSelector);
     }
     private LevelLot _myLevelLot;
     private Section _mySection;

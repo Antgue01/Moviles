@@ -16,7 +16,7 @@ public class LevelSelector : MonoBehaviour
     {
         GameManager.instance.setSelectedLevel(_selectedLevel);
         //todo FIJO QUE HAY UNA FORMA MÁS ELEGANTE DE CAMBIAR DE ESCENA
-        GameManager.instance.ChangeScene(2);
+        GameManager.instance.SwitchSceneTo(GameManager.SceneEnum.Game);
     }
     private void Update()
     {

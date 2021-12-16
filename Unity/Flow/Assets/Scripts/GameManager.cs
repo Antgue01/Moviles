@@ -90,9 +90,9 @@ public class GameManager : MonoBehaviour
         _selectedLevelLot = myLevelLot;
 
     }
-    public void ChangeScene(int sceneIndex)
+    public void SwitchSceneTo(SceneEnum scene)
     {
-        SceneManager.LoadScene(sceneIndex);
+        SceneManager.LoadScene((int)scene);
     }
 
     public Section getSelectedSection()
@@ -185,4 +185,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] LevelLot selectedLevelLotDebug;
     [SerializeField] int selectedLevelDebug;
 #endif
+
+    public enum SceneEnum
+	{
+        MainMenu = 0,
+        LevelLotSelector = 1,
+        LevelSelector = 2,
+        Game = 3
+	}
+
 }
