@@ -149,6 +149,7 @@ public class LevelManager : MonoBehaviour
             _map = _mapParser.createLevelMap(_lot[_currentLevel]);
             _boardManager.loadMap(_map);
             updateButtonsInfo();
+            AdjustGridToScreen();
         }
     }
 
@@ -160,6 +161,7 @@ public class LevelManager : MonoBehaviour
             _map = _mapParser.createLevelMap(_lot[_currentLevel]);
             _boardManager.loadMap(_map);
             updateButtonsInfo();
+            AdjustGridToScreen();
         }
     }
 
@@ -208,7 +210,7 @@ public class LevelManager : MonoBehaviour
         //offset from centre of vertical ui free space
         float deltaVerticalCentre = topfreePosY - freeHeight / 2;
         _grid.transform.localScale = Vector3.one * scale;
-        _grid.transform.Translate(new Vector3(-translationX, translationY + deltaVerticalCentre, 0));
+        _grid.transform.position = new Vector3(-translationX, translationY + deltaVerticalCentre, 0);
     } 
 
 
