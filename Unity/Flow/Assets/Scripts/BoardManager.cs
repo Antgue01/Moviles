@@ -9,7 +9,7 @@ public class BoardManager : MonoBehaviour
     void Start()
     {
         _transformer = new InputTransformer();
-        _lastMovementFlowId = -1;
+        _lastModifiedMapFlowId = -1;
     }
 
     // Update is called once per frame
@@ -208,13 +208,17 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    public void flowConfirmTile(int flowId)
+    /// <summary>
+    /// Called if map has been modified
+    /// </summary>
+    /// <param name="flowId"></param>
+    public void mapModified(int flowId)
     {
-        if (_lastMovementFlowId != flowId)
+        if (_lastModifiedMapFlowId != flowId)
         {
             _movements++;
             _levelManager.setMovementsText(_movements);
-            _lastMovementFlowId = flowId;
+            _lastModifiedMapFlowId = flowId;
         }
     }
 
@@ -383,5 +387,5 @@ public class BoardManager : MonoBehaviour
     GameObject[] _flowPointsBox;
     private Flow[] _flows;
     private Flow _currentFlowSelected;
-    private int _lastMovementFlowId;
+    private int _lastModifiedMapFlowId;
 }
