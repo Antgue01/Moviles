@@ -11,6 +11,7 @@ HECHO** Arreglar reset the map, aparentemente se limpian bien los gamebox pero s
 
 HECHO** Arreglar que no se salga del array al darle a los botones next / previous
 ** Arreglar que cuando se le de un click a un menu de la escena game se desactive el input hasta que se cierre
+** Botones de next y previous se tienen que poner grises ("desactivados") cuando no puedan hacer nada
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 
