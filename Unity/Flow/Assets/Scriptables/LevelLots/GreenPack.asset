@@ -14,5 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelLotName: Green Pack
   LevelLotFile: {fileID: 4900000, guid: 479ea2238ca66264d87a7c18230386e6, type: 3}
-  maxLevels: 0
-  playedLevels: 0
+  UnlockAll: 1

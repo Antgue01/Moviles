@@ -45,11 +45,14 @@ public class SaveDataManager
             sections[i].name = gameManagerSections[i].SectionName;
             for (int j = 0; j < sections[i].levelLots.Length; j++)
             {
-                sections[i].levelLots[j].name = gameManagerSections[i].levelLots[j].LevelLotName;
-                sections[i].levelLots[j].lastUnlockedLevel = 0;
                 string[] separators = { "\n", "\r", "\r\n", "\n\r" };
 
                 int levels = gameManagerSections[i].levelLots[j].LevelLotFile.ToString().Split(separators, System.StringSplitOptions.RemoveEmptyEntries).Length;
+                sections[i].levelLots[j].name = gameManagerSections[i].levelLots[j].LevelLotName;
+                if (gameManagerSections[i].levelLots[j].UnlockAll)
+                    sections[i].levelLots[j].lastUnlockedLevel = levels - 1;
+                else
+                    sections[i].levelLots[j].lastUnlockedLevel = 0;
                 sections[i].levelLots[j].bestMovesPerLevel = new int[levels];
                 int[] bestMoves = sections[i].levelLots[j].bestMovesPerLevel;
                 for (int k = 0; k < bestMoves.Length; k++)

@@ -14,5 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelLotName: Classic Pack
   LevelLotFile: {fileID: 4900000, guid: 92b8229b0e4a85941ae24e32524f081b, type: 3}
-  maxLevels: 0
-  playedLevels: 0
+  UnlockAll: 1

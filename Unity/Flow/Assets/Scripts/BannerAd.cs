@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Advertisements;
 
-public class BannerAd 
+public class BannerAd :IUnityAdsInitializationListener
 {
     public BannerAd(float NextResetTime)
     {
@@ -19,6 +19,16 @@ public class BannerAd
         }
     }
 
+    public void OnInitializationComplete()
+    {
+        GameManager.instance.GetAdManager().playBanner();
+        Debug.Log("DEBERIA ESTAR BIEN");
+    }
+
+    public void OnInitializationFailed(UnityAdsInitializationError error, string message)
+    {
+        Debug.LogError("JFLSJFLSJFLSJFOISJFOISJFIOESJFOESIJFIOESFJOISHFOSIEHF");
+    }
 
     private float _timePassed;
     private float _timeToNextAdd;

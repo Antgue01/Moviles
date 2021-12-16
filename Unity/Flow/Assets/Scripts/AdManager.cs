@@ -5,9 +5,9 @@ using UnityEngine.Advertisements;
 
 public class AdManager
 {
-    public void init()
+    public void init(IUnityAdsInitializationListener lis)
     {
-        Advertisement.Initialize(_gameId, false);
+        Advertisement.Initialize(_gameId, false, lis);
     }
     /// <summary>
     /// Plays a banner without notifying anyone if the ad can be loaded
@@ -15,8 +15,7 @@ public class AdManager
     public void playBanner()
     {
         Advertisement.Banner.Load(_bannerId);
-        if (Advertisement.Banner.isLoaded)
-            Advertisement.Banner.Show(_bannerId);
+        Advertisement.Banner.Show(_bannerId);
     }
     public void hideBanner()
     {

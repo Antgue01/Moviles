@@ -6,5 +6,6 @@ using UnityEngine;
 public class LevelLot : ScriptableObject
 {
     public string LevelLotName;
-    public TextAsset LevelLotFile;    
+    public TextAsset LevelLotFile;
+    public bool UnlockAll;
 }

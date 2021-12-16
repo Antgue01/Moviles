@@ -27,17 +27,14 @@ public class sectionManager : MonoBehaviour
             totalHeight += header.GetComponent<RectTransform>().rect.height;
             headervisuals.setName(sections[i].SectionName);
             headervisuals.setTheme(sections[i].themeColor);
-            GameObject body = Instantiate<GameObject>(_sectionBodyPrefab, _layoutZone);
-            LevelLotSelector selector = body.GetComponent<LevelLotSelector>();
-            selector.setSection(sections[i]);
-            selector.setLevelLotHeight(_levelLotPrefab.GetComponent<RectTransform>().rect.height);
             //we fill the progress data for each level lot and then we instantiate them
             string[] separators = { "\n", "\r", "\r\n", "\n\r" };
             foreach (LevelLot levellot in sections[i].levelLots)
             {
                 GameObject levelLotObject = Instantiate(_levelLotPrefab, _layoutZone);
-                selector.addLvlLot(levellot);
                 LevelLotVisuals levelLotVisuals = levelLotObject.GetComponent<LevelLotVisuals>();
+                LevelLotSelector selector = levelLotObject.GetComponent<LevelLotSelector>();
+                selector.setSection(sections[i]);
                 totalHeight += levelLotObject.GetComponent<RectTransform>().rect.height;
                 levelLotVisuals.setColor(sections[i].themeColor);
                 levelLotVisuals.setName(levellot.LevelLotName);

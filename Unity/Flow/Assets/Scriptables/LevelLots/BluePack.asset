@@ -14,5 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelLotName: Blue Pack
   LevelLotFile: {fileID: 4900000, guid: d569929210ce42549a6a6d1df73ef922, type: 3}
-  maxLevels: 0
-  playedLevels: 0
+  UnlockAll: 1

@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelLotName: Hourglass Pack
   LevelLotFile: {fileID: 4900000, guid: 485b39efeaed21948bf385a00f0da2de, type: 3}
+  UnlockAll: 1

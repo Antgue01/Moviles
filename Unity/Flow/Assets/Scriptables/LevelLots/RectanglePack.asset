@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelLotName: Rectangle Pack
   LevelLotFile: {fileID: 4900000, guid: ca52f2ed5cd92e14a914b984d0f59ebf, type: 3}
+  UnlockAll: 1

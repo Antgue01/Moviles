@@ -13,8 +13,8 @@ public class GameManager : MonoBehaviour
         if (instance == null)
         {
             _adManager = new AdManager();
-            _adManager.init();
             _banner = new BannerAd(_secondsToNextAd);
+            _adManager.init(_banner);
             _adManager.setBannerPosition(BannerPosition.BOTTOM_CENTER);
             instance = this;
             _saveData = new SaveDataManager();
@@ -39,6 +39,24 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public bool isUnlockedLevel(int lv)
+    {
+        KeyValuePair<int, int> data = getSaveInfo(_selectedSection, _selectedLevelLot);
+        bool isInRange = lv >= 0 && lv < _saveData.sections[data.Key].levelLots[data.Value].bestMovesPerLevel.Length;
+        if (!isInRange)
+            Debug.LogWarning("Level out of range. isUnlockedLevel will return false");
+        return isInRange && _saveData.sections[data.Key].levelLots[data.Value].lastUnlockedLevel >= lv;
+    }
+
+    public bool isLevelCompleted(int lv)
+    {
+        KeyValuePair<int, int> data = getSaveInfo(_selectedSection, _selectedLevelLot);
+        bool isInRange = lv >= 0 && lv < _saveData.sections[data.Key].levelLots[data.Value].bestMovesPerLevel.Length;
+        if (!isInRange)
+            Debug.LogWarning("Level out of range. IsLevelCompleted will return false");
+        return isInRange && _saveData.sections[data.Key].levelLots[data.Value].bestMovesPerLevel[lv] > -1;
+    }
+
     /// <summary>
     /// Gets the last completed level from a certain level lot in a section
     /// </summary>
@@ -48,17 +66,22 @@ public class GameManager : MonoBehaviour
     public int getLastCompletedLevel(Section section, LevelLot lvlot)
     {
 
+        KeyValuePair<int, int> data = getSaveInfo(section, lvlot);
+        return _saveData.sections[data.Key].levelLots[data.Value].lastUnlockedLevel - 1;
+    }
+    KeyValuePair<int, int> getSaveInfo(Section s, LevelLot l)
+    {
         int i = 0;
-        while (_saveData.sections[i].name != section.SectionName)
+        while (_saveData.sections[i].name != s.SectionName)
         {
             i++;
         }
         int j = 0;
-        while (_saveData.sections[i].levelLots[j].name != lvlot.LevelLotName)
+        while (_saveData.sections[i].levelLots[j].name != l.LevelLotName)
         {
             j++;
         }
-        return _saveData.sections[i].levelLots[j].lastUnlockedLevel - 1;
+        return new KeyValuePair<int, int>(i, j);
     }
 
     public void goToLevelSelection(LevelLot myLevelLot, Section mySection)
@@ -121,10 +144,7 @@ public class GameManager : MonoBehaviour
     /// record yet, creates the record
     /// </summary>
     /// <param name="moves">The number of moves we did on the current level</param>
-    private void Update()
-    {
-        _banner.Update();
-    }
+
     public void UpdateLevel(int moves)
     {
         //we search our level

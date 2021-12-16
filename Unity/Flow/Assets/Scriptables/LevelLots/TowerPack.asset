@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelLotName: Tower Pack
   LevelLotFile: {fileID: 4900000, guid: ec3732a3e342bdf428642a463cf666bc, type: 3}
+  UnlockAll: 1
