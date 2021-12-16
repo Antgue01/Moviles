@@ -27,8 +27,8 @@ HECHO(?)** Bloquear portrait (cambio de horizontal a vertican en el móvil)
 
 WILL--------------------------------------------------------------------------------------------------------------------------------------
 HECHO** Escalar bien GRID (checkear resoluciones cuadradas)
-** Hacer que no sume movimiento cuando se mueve un flow diferente al anterior pero se deja en el mismo sitio
-** Arreglar que cuando se corta un flow por segunda vez le suma 2 movimientos en vez de 1
+HECHO** Hacer que no sume movimiento cuando se mueve un flow diferente al anterior pero se deja en el mismo sitio
+HECHO** Arreglar que cuando se corta un flow por segunda vez le suma 2 movimientos en vez de 1
 ** Menú principal
 ** Botones de volver atrás en la escena (implementar acción)
 ** Arreglar pipe para que sume cuando se ocupa una celda
