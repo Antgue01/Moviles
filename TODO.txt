@@ -36,7 +36,7 @@ TODO ---------------------------------------------------------------------------
 ** Muros y después Huecos
 ** +B de los mapas (muros exteriores)
 ** Arreglar que no se salga del array al darle a los botones next / previous
-** Hacer que se reproduzca vídeo cuando se le da a YES en el menú de gethints
+** Hacer que se reproduzca vídeo cuando se le da a YES en el menú de gethints HECHO
 ** Probar progeso (que se guarda y se carga bien los datos del json)
 ** Desbloquear todos los niveles o según progreso y comprobar que funcione bien en la escena (que le doy a un nivel bloqueado y no juega y si le doy a uno que no está bloqueado si juega)
 ** Arreglar que cuando se le de un click a un menu de la escena game se desactive el input hasta que se cierre

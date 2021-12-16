@@ -5,7 +5,7 @@ using UnityEngine.Advertisements;
 public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener
 {
     [SerializeField] LevelManager _levelManager;
-    public void requestAd() { GameManager.instance.GetAdManager().playRewardedVideo(); }
+    public void requestAd() { GameManager.instance.GetAdManager().playRewardedVideo(this,this); }
 
     public void OnUnityAdsAdLoaded(string adUnitId)
     {
