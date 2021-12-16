@@ -25,8 +25,8 @@ public class LevelLotDisplayer : MonoBehaviour
         RectTransform levelTransform = null;
         for (int i = 0; i < numPages; i++)
         {
-            Vector3 pos = new Vector3( i * _canvasTransform.rect.width/5+ _startPoint.anchoredPosition.x/5,
-                _startPoint.anchoredPosition.y/5, 0);
+            Vector3 pos = new Vector3( i * _canvasTransform.rect.width+ _startPoint.anchoredPosition.x,
+                _startPoint.anchoredPosition.y, 0);
             GameObject levelGridObject = Instantiate<GameObject>(_levelPagePrefab, pos, _scroll.rotation, _scroll);
             LevelDisplayer lvlDisplayer = levelGridObject.GetComponent<LevelDisplayer>();
             lvlDisplayer.Display(lvlLot,section, i,levelsPerPage);
@@ -35,7 +35,6 @@ public class LevelLotDisplayer : MonoBehaviour
             levelTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, _scroll.rect.height);
             w += _canvasTransform.rect.width;
         }
-        w -= _canvasTransform.rect.width - levelTransform.rect.width +_startPoint.anchoredPosition.x;
         _scroll.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, w);
         _scroll.Translate(Vector3.right * w );
     }

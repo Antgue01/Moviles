@@ -21,7 +21,8 @@ ANTONIO-------------------------------------------------------------------------
 
 HECHO(?)** Bloquear portrait (cambio de horizontal a vertican en el móvil)
 ** Hacer que se reproduzca vídeo cuando se le da a YES en el menú de gethints HECHO
-** Arreglar UI de seleccionar niveles
+** Arreglar UI de seleccionar niveles HECHO
+** Probar progeso (que se guarda y se carga bien los datos del json)
 ** Desbloquear todos los niveles o según progreso y comprobar que funcione bien en la escena (que le doy a un nivel bloqueado y no juega y si le doy a uno que no está bloqueado si juega)
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -37,7 +38,6 @@ HECHO** Arreglar que cuando se corta un flow por segunda vez le suma 2 movimient
 
 
 TODO -----------------------------------------------------------------------------------------------------------------------------------------
-** Probar progeso (que se guarda y se carga bien los datos del json) (se ha roto también en Unity la escena de selección de nivel y se ve igual que en la build, hay que arreglar eso primero)
 ** Muros y después Huecos
 ** +B de los mapas (muros exteriores)
 
