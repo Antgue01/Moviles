@@ -22,7 +22,7 @@ public class BoardManager : MonoBehaviour
             _levelDone = true;
             foreach (GameObject StaticPoint in _flowPointsBox)
             {
-                StaticPoint.GetComponent<GameBoxAnimController>().grow(); 
+                StaticPoint.GetComponent<GameBoxAnimController>().grow();
             }
             _levelManager.setLevelDone(true);
 
@@ -44,86 +44,94 @@ public class BoardManager : MonoBehaviour
 
     private void HandleInput()
     {
-        Vector2 inputPosition;
-        bool justDown, justUp;
+        Vector2 inputPosition = Vector2.one * -1;
+        bool justDown=false, justUp=false;
 #if UNITY_EDITOR
         inputPosition = Input.mousePosition;
         justDown = Input.GetMouseButtonDown(0);
         justUp = Input.GetMouseButtonUp(0);
+
 #else
-        Touch myTouch = Input.GetTouch(0);
-        inputPosition = myTouch.position;
-        justDown = myTouch.phase == TouchPhase.Began;
-        justUp = myTouch.phase == TouchPhase.Ended;
+        if (Input.touchCount > 0)
+        {
+
+            Touch myTouch = Input.GetTouch(0);
+            inputPosition = myTouch.position;
+            justDown = myTouch.phase == TouchPhase.Began;
+            justUp = myTouch.phase == TouchPhase.Ended;
+        }
 #endif
-
-        if (_cursor.activeSelf)
+        if (inputPosition.x != -1)
         {
-            Vector2 inputPosToWorld = _cam.ScreenToWorldPoint(inputPosition);
-            _cursor.transform.position = inputPosToWorld;
-        }
 
-        //Just pressed
-        if (justDown && !_pressed)
-        {
-            GameObject currentTile = getTileFromInput(inputPosition);
-            //Check if it is a valid Tile
-            if (currentTile == null) return;
-
-            GameBox currentGameBox = currentTile.GetComponent<GameBox>();
-            //Chcek if is flow or flow point, so we could drag
-            if (currentGameBox.getFlow() == null) return;
-            //Start dragging
-            else
+            if (_cursor.activeSelf)
             {
-                _currentFlowSelected = currentGameBox.getFlow();
-                _pressed = true;
-                _lastPressed = currentTile;
-                _cursor.SetActive(true);
-                _cursor.GetComponent<SpriteRenderer>().color = _currentFlowSelected.GetColor();  
-                _currentFlowSelected.startDragging(currentGameBox);
+                Vector2 inputPosToWorld = _cam.ScreenToWorldPoint(inputPosition);
+                _cursor.transform.position = inputPosToWorld;
             }
-        }
-        else if (justUp && _pressed)
-        {
-            endInput();
-        }
-        //While dragging
-        else if (_pressed)
-        {
-            Vector2Int lastInputRowCol = _inputTileRowCol;
-            GameObject currentTile = getTileFromInput(inputPosition);
-            //Check if it is a valid Tile
-            if (currentTile == null)
+
+            //Just pressed
+            if (justDown && !_pressed)
+            {
+                GameObject currentTile = getTileFromInput(inputPosition);
+                //Check if it is a valid Tile
+                if (currentTile == null) return;
+
+                GameBox currentGameBox = currentTile.GetComponent<GameBox>();
+                //Chcek if is flow or flow point, so we could drag
+                if (currentGameBox.getFlow() == null) return;
+                //Start dragging
+                else
+                {
+                    _currentFlowSelected = currentGameBox.getFlow();
+                    _pressed = true;
+                    _lastPressed = currentTile;
+                    _cursor.SetActive(true);
+                    _cursor.GetComponent<SpriteRenderer>().color = _currentFlowSelected.GetColor();
+                    _currentFlowSelected.startDragging(currentGameBox);
+                }
+            }
+            else if (justUp && _pressed)
             {
                 endInput();
-                return;
             }
-            //Check if it is the same Tile
-            if (currentTile == _lastPressed) return;
-
-            GameBox currentGameBox = currentTile.GetComponent<GameBox>();
-            GameBox lastGameBox = _lastPressed.GetComponent<GameBox>();
-
-            GameBox.BoxType currentType = currentGameBox.getType();
-
-            if (currentType == GameBox.BoxType.Empty || currentType == GameBox.BoxType.FlowPoint)
+            //While dragging
+            else if (_pressed)
             {
-                Vector2Int direction = new Vector2Int(_inputTileRowCol.y - lastInputRowCol.y,
-                                                      _inputTileRowCol.x - lastInputRowCol.x);
-
-                if (_currentFlowSelected.addTile(currentGameBox, lastInputRowCol, direction))
-				{
-                    _lastPressed = currentTile;
+                Vector2Int lastInputRowCol = _inputTileRowCol;
+                GameObject currentTile = getTileFromInput(inputPosition);
+                //Check if it is a valid Tile
+                if (currentTile == null)
+                {
+                    endInput();
+                    return;
                 }
-				else
-				{
+                //Check if it is the same Tile
+                if (currentTile == _lastPressed) return;
+
+                GameBox currentGameBox = currentTile.GetComponent<GameBox>();
+                GameBox lastGameBox = _lastPressed.GetComponent<GameBox>();
+
+                GameBox.BoxType currentType = currentGameBox.getType();
+
+                if (currentType == GameBox.BoxType.Empty || currentType == GameBox.BoxType.FlowPoint)
+                {
+                    Vector2Int direction = new Vector2Int(_inputTileRowCol.y - lastInputRowCol.y,
+                                                          _inputTileRowCol.x - lastInputRowCol.x);
+
+                    if (_currentFlowSelected.addTile(currentGameBox, lastInputRowCol, direction))
+                    {
+                        _lastPressed = currentTile;
+                    }
+                    else
+                    {
+                        endInput();
+                    }
+                }
+                else
+                {
                     endInput();
                 }
-            }
-            else
-            {
-                endInput();
             }
         }
     }
@@ -160,13 +168,13 @@ public class BoardManager : MonoBehaviour
             for (int j = 0; j < _map.getCols(); ++j)
                 _board[x, j].GetComponent<GameBox>().restore();
 
-        for(int x = 0; x < _flows.Length; x++)
+        for (int x = 0; x < _flows.Length; x++)
         {
             _flows[x].disconfirmTiles();
             _flows[x].clearTileList();
             _flows[x].setUsedHintInThisFlow(false);
         }
-           
+
 
         //Reset info
         resetInfo();
@@ -176,7 +184,7 @@ public class BoardManager : MonoBehaviour
     public void useHint()
     {
         bool hasCandidate = false;
-        for(int x = 0; x < _flows.Length && !hasCandidate; x++)
+        for (int x = 0; x < _flows.Length && !hasCandidate; x++)
         {
             if (!_flows[x].getUsedHintInThisFlow())
             {
@@ -184,7 +192,7 @@ public class BoardManager : MonoBehaviour
                 {
                     _levelManager.substractRemainingHint();
                     hasCandidate = true;
-                }               
+                }
             }
         }
     }
@@ -195,14 +203,14 @@ public class BoardManager : MonoBehaviour
         {
             _flowsConnected += add;
             _levelManager.setFlowsText(_flowsConnected, _map.getTotalFlows());
-            float pipe = ((float)_flowsConnected / (float) _map.getTotalFlows()) * 100.0f;
+            float pipe = ((float)_flowsConnected / (float)_map.getTotalFlows()) * 100.0f;
             _levelManager.setPipeText((int)pipe);
-        }            
+        }
     }
 
     public void flowConfirmTile(int flowId)
     {
-        if(_lastMovementFlowId != flowId)
+        if (_lastMovementFlowId != flowId)
         {
             _movements++;
             _levelManager.setMovementsText(_movements);
@@ -221,7 +229,7 @@ public class BoardManager : MonoBehaviour
         _movements = 0;
         _flowsConnected = 0;
         _pipe = 0;
-        _levelManager.setLevelDone(false);       
+        _levelManager.setLevelDone(false);
     }
 
     private void setUIinfo()
@@ -244,8 +252,8 @@ public class BoardManager : MonoBehaviour
     }
 
     private void configureBoard()
-    {   
-        if(_board != null)
+    {
+        if (_board != null)
             for (int row = 0; row < _board.GetLength(0); ++row)
                 for (int col = 0; col < _board.GetLength(1); col++)
                     Destroy(_board[row, col]);
@@ -318,7 +326,7 @@ public class BoardManager : MonoBehaviour
                 _flowPointsBox[2 * colorIndex + 1] = auxOb;
 
                 colorIndex++;
-                
+
             }
         }
     }
@@ -354,7 +362,7 @@ public class BoardManager : MonoBehaviour
     [SerializeField] Camera _cam;
 
     //MAP
-    private Map _map;   
+    private Map _map;
     private LevelManager _levelManager;
     private GameObject[,] _board;
 

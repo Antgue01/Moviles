@@ -23,14 +23,25 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            instance._levelManager = _levelManager;
-            instance._adManager = _adManager;
-            instance._banner = _banner;
+            //_levelManager = instance._levelManager;
+            //instance._levelManager = _levelManager;
+            //instance._adManager = _adManager;
+            _adManager = instance._adManager;
+            //instance._banner = _banner;
+            _banner = instance._banner;
+            _selectedLevel = instance._selectedLevel;
+            //instance._selectedLevel = _selectedLevel;
+            _selectedLevelLot = instance._selectedLevelLot;
+            //instance._selectedLevelLot = _selectedLevelLot;
+            //instance._selectedSection = _selectedSection;
+            _selectedSection = instance._selectedSection;
+            _selectedSkin = instance._selectedSkin;
+            //instance._currentSkin = _currentSkin;
 #if UNITY_EDITOR
             instance.selectedLevelDebug = selectedLevelDebug;
             instance.selectedLevelLotDebug = selectedLevelLotDebug;
             instance.selectedSectionDebug = selectedSectionDebug;
-            instance.selectedSkinDebug = selectedSkinDebug;
+            instance._selectedSkin = _selectedSkin;
 #endif
             Destroy(this.gameObject);
         }
@@ -96,11 +107,9 @@ public class GameManager : MonoBehaviour
     public Skin getSelectedSkin()
     {
 
-#if UNITY_EDITOR
-        _currentSkin = selectedSkinDebug;
-#endif
 
-        return _currentSkin;
+
+        return _selectedSkin;
     }
 
 
@@ -153,11 +162,11 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] LevelManager _levelManager;
     [SerializeField] float _secondsToNextAd;
+    [SerializeField] Skin _selectedSkin;
     public static GameManager instance { get; private set; } = null;
     LevelLot _selectedLevelLot;
     Section _selectedSection;
     int _selectedLevel;
-    Skin _currentSkin;
     SaveDataManager _saveData;
     AdManager _adManager;
     BannerAd _banner;
@@ -165,6 +174,5 @@ public class GameManager : MonoBehaviour
     [SerializeField] Section selectedSectionDebug;
     [SerializeField] LevelLot selectedLevelLotDebug;
     [SerializeField] int selectedLevelDebug;
-    [SerializeField] Skin selectedSkinDebug;
 #endif
 }
