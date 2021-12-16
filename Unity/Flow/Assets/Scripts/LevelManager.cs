@@ -45,7 +45,7 @@ public class LevelManager : MonoBehaviour
 
     public void setSizeText(int rows, int cols)
     {
-        _sizeText.text = rows + "x" + cols;
+        _sizeText.text = cols + "x" + rows;
     }
 
     public void setFlowsText(int howManyFlows, int totalFlows)
@@ -248,13 +248,13 @@ public class LevelManager : MonoBehaviour
             //fit in width
             scale = freeWidth / gridWidth;
             translationX = freeWidth / 2;
-            translationY = (gridWidth * scale) / 2;
+            translationY = (gridHeight * scale) / 2;
         }
         else
         {
             //fit in height
             scale = freeHeight / gridHeight;
-            translationX = (gridHeight * scale) / 2;
+            translationX = (gridWidth * scale) / 2;
             translationY = freeHeight / 2;
         }
 
