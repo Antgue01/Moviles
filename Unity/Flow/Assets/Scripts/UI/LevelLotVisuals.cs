@@ -1,17 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class LevelLotVisuals : MonoBehaviour
+public class LevelLotVisuals : MonoBehaviour, IPointerDownHandler,IPointerUpHandler
 {
     [SerializeField] Text _myName;
     [SerializeField] Text _myResults;
+    Color _myColor;
     public void setColor(Color color)
     {
-        if (_myName != null)
-            _myName.color = color;
-        else Debug.LogWarning("Pack name not set");
+        _myColor = color;
+        _myName.color = color;
     }
     public void setName(string name)
     {
@@ -25,5 +26,15 @@ public class LevelLotVisuals : MonoBehaviour
         if (_myResults != null)
             _myResults.text = playedLevels + "/" + totalLevels;
         else Debug.LogWarning("Pack name not set");
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        _myName.color = Color.white;
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        _myName.color = _myColor;
     }
 }
