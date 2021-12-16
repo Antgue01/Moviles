@@ -23,20 +23,12 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            //_levelManager = instance._levelManager;
-            //instance._levelManager = _levelManager;
-            //instance._adManager = _adManager;
             _adManager = instance._adManager;
-            //instance._banner = _banner;
             _banner = instance._banner;
             _selectedLevel = instance._selectedLevel;
-            //instance._selectedLevel = _selectedLevel;
             _selectedLevelLot = instance._selectedLevelLot;
-            //instance._selectedLevelLot = _selectedLevelLot;
-            //instance._selectedSection = _selectedSection;
             _selectedSection = instance._selectedSection;
             _selectedSkin = instance._selectedSkin;
-            //instance._currentSkin = _currentSkin;
 #if UNITY_EDITOR
             instance.selectedLevelDebug = selectedLevelDebug;
             instance.selectedLevelLotDebug = selectedLevelLotDebug;
