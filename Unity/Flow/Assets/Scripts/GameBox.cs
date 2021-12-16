@@ -81,6 +81,11 @@ public class GameBox : MonoBehaviour
         _pathImage.SetActive(b);
     }
 
+    public void setStarActive(bool b)
+    {
+        _starImage.SetActive(b);
+    }
+
     public void setFigureSprite(Sprite s)
     {
         if (s == null)
@@ -130,6 +135,11 @@ public class GameBox : MonoBehaviour
     {
         return _pathImage.activeSelf;
     }
+    public bool getStarActive()
+    {
+        return _starImage.activeSelf;
+    }
+
 
     /// <summary>
     /// Sets the pipe position and rotation from a given direction to be active in this tile
@@ -205,6 +215,7 @@ public class GameBox : MonoBehaviour
     const float bgColorReduction = .35f;
 
     [SerializeField] private GameObject _backgroundImage;
+    [SerializeField] private GameObject _starImage;
     [SerializeField] private GameObject _figureImage;
     [SerializeField] private GameObject _pathImage;
     [SerializeField] private GameObject _animImage;

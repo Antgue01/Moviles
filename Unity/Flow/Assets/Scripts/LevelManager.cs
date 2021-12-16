@@ -156,6 +156,12 @@ public class LevelManager : MonoBehaviour
         _boardManager.setOnMenu(false);
     }
 
+    public void nextLevelFromMenu()
+    {
+        nextLevel();
+        closeEndMenu();
+    }
+
     public void resetLevel()
     {
         _boardManager.resetLevel();

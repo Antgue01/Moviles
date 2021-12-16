@@ -277,11 +277,12 @@ public class BoardManager : MonoBehaviour
             for (int row = 0; row < Rows; ++row)
             {
                 for (int col = 0; col < Cols; ++col)
-                {
+                {                   
                     GameObject go = Instantiate(gameBoxPrefab, _grid.transform) as GameObject;
                     go.transform.localPosition = new Vector3(col + .5f, -row - .5f, 0);
                     go.GetComponent<SpriteRenderer>().color = sectionColor;
                     go.GetComponent<GameBox>().setType(GameBox.BoxType.Empty);
+                    
                     //go.GetComponent<GameBox>().setFigureImageSize(boxWidth, boxHeight);
                     _board[row, col] = go;
                 }
@@ -308,6 +309,7 @@ public class BoardManager : MonoBehaviour
             int colorIndex = 0;
             foreach (int[] flowColor in flows)
             {
+                GameBox[] starEndPoints = new GameBox[2];
                 _flows[colorIndex] = new Flow(this);
                 //Start index
                 int index = flowColor[0];
@@ -315,12 +317,13 @@ public class BoardManager : MonoBehaviour
                 int column = index % Cols;
                 GameObject auxOb = _board[row, column];
                 GameBox gb = auxOb.GetComponent<GameBox>();
+                
                 gb.setType(GameBox.BoxType.FlowPoint);
                 gb.setFigureSprite(_sprites[0]);
                 gb.setColor(GameManager.instance.getSelectedSkin().colors[colorIndex]);
                 gb.setFlow(_flows[colorIndex]);
                 _flowPointsBox[2 * colorIndex] = auxOb;
-                GameBox tempGB = gb;
+                starEndPoints[0] = gb;
 
                 //Final index
                 index = flowColor[flowColor.Length - 1];
@@ -333,8 +336,10 @@ public class BoardManager : MonoBehaviour
                 gb.setColor(GameManager.instance.getSelectedSkin().colors[colorIndex]);
                 gb.setFlow(_flows[colorIndex]);
                 _flowPointsBox[2 * colorIndex + 1] = auxOb;
+                starEndPoints[1] = gb;
 
-                colorIndex++;
+                _flows[colorIndex].setStartEndFlowPoints(starEndPoints);
+                colorIndex++;                                
 
             }
         }

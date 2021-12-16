@@ -5,11 +5,11 @@ HECHO** Previous y next level (comprobar que se borra y se pinta bien el nuevo)
 HECHO** Arreglar reset the map, aparentemente se limpian bien los gamebox pero se quedan residuos
 
 ** Pistas: 
-	-pintar estrellas al pedir pista
+	-HECHO**pintar estrellas al pedir pista
 	-si se corta quitar estrellas
 	-si se vuelve a unir volver a poner estrellas pero SOLO si es el camino que mostró la pista
 	-HECHO** Botón UI de juego que muestre un Submenú de pregunta sobre si quiere ver el vídeo y añadir pista
-** No aplicar hint a un flow que esté hecho correctamente
+HECHO** No aplicar hint a un flow que esté hecho correctamente
 
 HECHO** Arreglar que no se salga del array al darle a los botones next / previous
 HECHO** Arreglar que cuando se le de un click a un menu de la escena game se desactive el input hasta que se cierre
@@ -21,10 +21,11 @@ ANTONIO-------------------------------------------------------------------------
 ** Anuncios
 	- Parte inferior que haya un anuncio del servidor de Unity
 
-** Probar progeso (que se guarda y se carga bien los datos del json)
 HECHO(?)** Bloquear portrait (cambio de horizontal a vertican en el móvil)
-** Hacer que se reproduzca vídeo cuando se le da a YES en el menú de gethints HECHO
+HECHO** Hacer que se reproduzca vídeo cuando se le da a YES en el menú de gethints
 ** Desbloquear todos los niveles o según progreso y comprobar que funcione bien en la escena (que le doy a un nivel bloqueado y no juega y si le doy a uno que no está bloqueado si juega)
+HECHO** Arreglar UI de seleccionar niveles
+** Probar progeso (que se guarda y se carga bien los datos del json)
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 

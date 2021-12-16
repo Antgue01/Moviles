@@ -338,11 +338,8 @@ public class Flow
 
     public bool useHintOnFlow()
     {        
-        if(!_hintUsedInThisFlow && _connected)
-        {
-            //if(else CAMINO QUE YA ESTÁ HECHO COINCIDE CON EL DE LA HINT NO HAY QUE HACERLE HINT)
+        if(!_hintUsedInThisFlow && _connected && flowHasCorrectPath())           
             return false;
-        }
 
         if (!_hintUsedInThisFlow)
         {
@@ -357,7 +354,9 @@ public class Flow
             lastTileRowCol.x = flowPath[0] / _boardManager.Cols;
             lastTileRowCol.y = flowPath[0] % _boardManager.Cols;
 
-            _tiles.AddLast(_boardManager.getBoard()[lastTileRowCol.x, lastTileRowCol.y].GetComponent<GameBox>());
+            GameBox tile = _boardManager.getBoard()[lastTileRowCol.x, lastTileRowCol.y].GetComponent<GameBox>();
+            tile.setStarActive(true);
+            _tiles.AddLast(tile);
 
             Vector2Int currentTileRowCol = new Vector2Int();
             for (int x=1; x < flowPath.Length; x++)
@@ -368,10 +367,12 @@ public class Flow
                 Vector2Int direction = new Vector2Int(currentTileRowCol.y - lastTileRowCol.y,
                                                       currentTileRowCol.x - lastTileRowCol.x);
 
-                GameBox currentGameBox = _boardManager.getBoard()[currentTileRowCol.x, currentTileRowCol.y].GetComponent<GameBox>();
-                addTile(currentGameBox, lastTileRowCol, direction);
+                tile = _boardManager.getBoard()[currentTileRowCol.x, currentTileRowCol.y].GetComponent<GameBox>();
+                addTile(tile, lastTileRowCol, direction);
                 lastTileRowCol = currentTileRowCol;
             }
+
+            tile.setStarActive(true);
 
             if (willMapBeModified())
                 _boardManager.mapModified(_id);
@@ -386,13 +387,27 @@ public class Flow
         clearTileList();
         _hintUsedInThisFlow = false;
     }
+
+    private bool flowHasCorrectPath()
+    {
+        int[] flowPath = _boardManager.getMap().getFlows()[_id];
+        bool isCorrect = true;
+        for(int x = 0; x < flowPath.Length && isCorrect; x++)
+        {
+            int rowTile = flowPath[x] / _boardManager.Cols;
+            int colTile = flowPath[x] % _boardManager.Cols;
+            if (_boardManager.getBoard()[rowTile, colTile].GetComponent<GameBox>().getFlow() != this)
+                isCorrect = false;
+        }
+            
+        return isCorrect;
+    }
     public void setUsedHintInThisFlow(bool u) { _hintUsedInThisFlow = u; }
     public bool getUsedHintInThisFlow() { return _hintUsedInThisFlow; }
     public Color GetColor() { return _flowColor; }
     public bool getConnected() { return _connected; }
     public void setConnected(bool value) { _connected = value; }
-
-    
+    public void setStartEndFlowPoints(GameBox[] fp) { _startEndPoints = fp; }
 
 
     int _id = -1;
@@ -401,6 +416,7 @@ public class Flow
     private static int _nextExpectedId = 0;
     private bool _connected;
     private Color _flowColor;
+    private GameBox[] _startEndPoints;
     private LinkedList<GameBox> _tiles;
     private LinkedList<GameBox> _confirmedTiles;
     private LinkedList<GameBox> _lastConfirmedTiles;
