@@ -13,7 +13,7 @@ ANTONIO-------------------------------------------------------------------------
 ** Probar progeso (que se guarda y se carga bien los datos del json)
 
 WILL--------------------------------------------------------------------------------------------------------------------------------------
-** Botones de volver atrás en la escena (implementar acción)
+HECHO** Botones de volver atrás en la escena (implementar acción)
 
 
 

@@ -90,6 +90,7 @@ public class GameManager : MonoBehaviour
         _selectedLevelLot = myLevelLot;
 
     }
+    
     public void SwitchSceneTo(SceneEnum scene)
     {
         SceneManager.LoadScene((int)scene);
