@@ -166,40 +166,49 @@ public class LevelManager : MonoBehaviour
 
     void AdjustGridToScreen()
     {
-
+        //From camera
         float height = _cam.orthographicSize * 2;
         float width = (height * _cam.aspect);
-        //we substract 1 because of the origin point
-        float topSize = (1 - _UITop.anchorMin.y) * height + _topOffset;
-        float botSize = (1 - (1 - _UIBot.anchorMax.y)) * height + _botOffset;
-        //we calculate the height by substracting the top lowest point and the bottom upper point from the original height
-        float gridHeight = height - botSize - topSize;
-        //we calculate the rule of threet to check if it would fit
 
-        double newH = _map.getRows() * width / _map.getCols();
-        double newW = _map.getCols() * gridHeight / _map.getRows();
+        //Every tile is 1 Unit
+        float gridHeight = _map.getRows();
+        float gridWidth = _map.getCols();
+
+        //UI limits
+        float topfreePosY = _UITop.TransformPoint(_UITop.anchoredPosition).y;
+        float botfreePosY = _UIBot.TransformPoint(_UIBot.anchoredPosition + _UIBot.sizeDelta).y;
+
+        //UI free space
+        float freeHeight = Mathf.Abs(topfreePosY - botfreePosY);
+        float freeWidth = width;
+        //Apect in height
+        float freeAspect = freeHeight / freeWidth;
+        //Aspect in height
+        float gridAspect = gridHeight / gridWidth;
+
+        float scale = 1;
         float translationX = 0;
         float translationY = 0;
-        //If scaling the Y it wouldn't fit
-        float scale = 1;
-        if (newH >= gridHeight)
-        {
-            //Scale factor
-            scale = gridHeight / _map.getRows();
-            translationX = (_map.getCols() * scale) / 2;
-            translationY = gridHeight / 2;
+
+        if (freeAspect >= gridAspect)
+		{
+            //fit in width
+            scale = freeWidth / gridWidth;
+            translationX = freeWidth / 2;
+            translationY = (gridWidth * scale) / 2;
         }
-        else if (newW >= width)
-        {
-            //Scale factor
-            scale = width / _map.getCols();
-            translationX = width / 2;
-            translationY = (_map.getRows() * scale) / 2;
+		else
+		{
+            //fit in height
+            scale = freeHeight / gridHeight;
+            translationX = (gridHeight * scale) / 2;
+            translationY = freeHeight / 2;
         }
-        /*todo probar con un tablero en horizontal. Tengo la corazonada de que en ese caso habría que intercambiar translationx
-        y translationY*/
+
+        //offset from centre of vertical ui free space
+        float deltaVerticalCentre = topfreePosY - freeHeight / 2;
         _grid.transform.localScale = Vector3.one * scale;
-        _grid.transform.Translate(new Vector3(-translationX, translationY, 0));
+        _grid.transform.Translate(new Vector3(-translationX, translationY + deltaVerticalCentre, 0));
     } 
 
 
