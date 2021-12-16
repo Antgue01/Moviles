@@ -361,12 +361,10 @@ public class Flow
             int[] flowPath = _boardManager.getMap().getFlows()[_id];
 
 
-            Vector2Int lastTileRowCol = new Vector2Int();
-            lastTileRowCol.x = flowPath[0] / _boardManager.Cols;
-            lastTileRowCol.y = flowPath[0] % _boardManager.Cols;
+            Vector2Int lastTileRowCol = new Vector2Int(flowPath[0] / _boardManager.Cols, flowPath[0] % _boardManager.Cols);
 
             GameBox tile = _boardManager.getBoard()[lastTileRowCol.x, lastTileRowCol.y].GetComponent<GameBox>();            
-            _tiles.AddLast(tile);
+            tile.setNode(_tiles.AddLast(tile));
 
             Vector2Int currentTileRowCol = new Vector2Int();
             for (int x=1; x < flowPath.Length; x++)
