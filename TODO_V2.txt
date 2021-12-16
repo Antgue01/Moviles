@@ -1,0 +1,23 @@
+MARCO ------------------------------------------------------------------------------------------------------------------------------------------
+
+** +B de los mapas (muros exteriores)
+
+
+
+ANTONIO-----------------------------------------------------------------------------------------------------------------------------------------
+
+**Parte inferior que haya un anuncio del servidor de Unity
+**Hacer que se reproduzca vídeo cuando se le da a YES en el menú de gethints
+** Arreglar UI de seleccionar niveles
+** Desbloquear todos los niveles o según progreso y comprobar que funcione bien en la escena (que le doy a un nivel bloqueado y no juega y si le doy a uno que no está bloqueado si juega)
+** Probar progeso (que se guarda y se carga bien los datos del json)
+
+WILL--------------------------------------------------------------------------------------------------------------------------------------
+** Botones de volver atrás en la escena (implementar acción)
+
+
+
+TODO -----------------------------------------------------------------------------------------------------------------------------------------
+
+** Muros y después Huecos
+** Resoluciones cuadradas funcionales para el resto de escenas, (En la primera hacer scroll vertical bien)

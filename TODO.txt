@@ -9,7 +9,7 @@ HECHO** Arreglar reset the map, aparentemente se limpian bien los gamebox pero s
 	-HECHO**si se corta quitar estrellas
 	-HECHO**si se vuelve a unir volver a poner estrellas pero SOLO si es el camino que mostró la pista
 	-HECHO** Botón UI de juego que muestre un Submenú de pregunta sobre si quiere ver el vídeo y añadir pista
-	** Al utilizar pista algunos tiles dan null reference al cortarlos
+	-HECHO** Al utilizar pista algunos tiles dan null reference al cortarlos
 HECHO** No aplicar hint a un flow que esté hecho correctamente
 
 HECHO** Arreglar que no se salga del array al darle a los botones next / previous
