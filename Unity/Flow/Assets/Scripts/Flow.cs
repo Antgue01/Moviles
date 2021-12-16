@@ -375,6 +375,12 @@ public class Flow
         return true;
     }
 
+    public void resetFlow()
+    {
+        disconfirmTiles();
+        clearTileList();
+        _hintUsedInThisFlow = false;
+    }
     public void setUsedHintInThisFlow(bool u) { _hintUsedInThisFlow = u; }
     public bool getUsedHintInThisFlow() { return _hintUsedInThisFlow; }
     public Color GetColor() { return _flowColor; }

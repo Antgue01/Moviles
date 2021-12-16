@@ -79,7 +79,7 @@ public class LevelManager : MonoBehaviour
         _isLevelDone = isDone;
         if(_isLevelDone)
         {
-            _endMenu.SetActive(true);
+            showEndMenu();
             _levelDoneText.text = "You complete the level in " + _boardManager.getMovements() +" moves.";
             GameManager.instance.UpdateLevel(_bestMovements);
         }       
@@ -109,16 +109,21 @@ public class LevelManager : MonoBehaviour
         //load previous scene
     }
 
-
     public void showHintMenu()
     {
+        _boardManager.setOnMenu(true);
         _hintsMenu.SetActive(true);
+    }
+
+    public void closeHintMenu()
+    {
+        _boardManager.setOnMenu(false);
+        _hintsMenu.SetActive(false);
     }
 
     public void watchVideo()
     {
-
-        _hintsMenu.SetActive(false);
+        closeHintMenu();
         _remainingHints++;
         setRemainingHintsText();
         GameManager.instance.updateNumHints(_remainingHints);
@@ -137,6 +142,18 @@ public class LevelManager : MonoBehaviour
         _remainingHints--;
         setRemainingHintsText();        
         GameManager.instance.updateNumHints(_remainingHints);
+    }
+
+    public void showEndMenu()
+    {
+        _endMenu.SetActive(true);
+        _boardManager.setOnMenu(true);
+    }
+
+    public void closeEndMenu()
+    {
+        _endMenu.SetActive(false);
+        _boardManager.setOnMenu(false);
     }
 
     public void resetLevel()

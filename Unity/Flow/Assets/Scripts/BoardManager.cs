@@ -10,6 +10,7 @@ public class BoardManager : MonoBehaviour
     {
         _transformer = new InputTransformer();
         _lastModifiedMapFlowId = -1;
+        _onMenu = false;
     }
 
     // Update is called once per frame
@@ -28,7 +29,8 @@ public class BoardManager : MonoBehaviour
 
         }
 
-        HandleInput();
+        if(!_onMenu)
+            HandleInput();
     }
 
     //------------------------------------------------------------------------------------------------------------------------------------//
@@ -169,12 +171,7 @@ public class BoardManager : MonoBehaviour
                 _board[x, j].GetComponent<GameBox>().restore();
 
         for (int x = 0; x < _flows.Length; x++)
-        {
-            _flows[x].disconfirmTiles();
-            _flows[x].clearTileList();
-            _flows[x].setUsedHintInThisFlow(false);
-        }
-
+            _flows[x].resetFlow();
 
         //Reset info
         resetInfo();
@@ -357,7 +354,7 @@ public class BoardManager : MonoBehaviour
     public Map getMap() { return _map; }
     public int Rows { get; private set; }
     public int Cols { get; private set; }
-
+    public void setOnMenu(bool m) { _onMenu = m; }
 
     [SerializeField] Sprite[] _sprites;
     [SerializeField] GameObject gameBoxPrefab;
@@ -378,10 +375,12 @@ public class BoardManager : MonoBehaviour
 
     //INPUT
     private InputTransformer _transformer;
+    private bool _onMenu;
     private bool _pressed;
     private GameObject _lastPressed;
     private Vector2Int _inputTileRowCol;
     Vector2Int _inputTilePos = Vector2Int.zero;
+    
 
     //FLOWS
     GameObject[] _flowPointsBox;
