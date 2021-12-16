@@ -44,6 +44,7 @@ HECHO** Arreglar pipe para que sume cuando se ocupa una celda
 TODO -----------------------------------------------------------------------------------------------------------------------------------------
 
 ** Muros y después Huecos
+** Resoluciones cuadradas funcionales para el resto de escenas, (En la primera hacer scroll vertical bien)
 
 
 
