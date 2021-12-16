@@ -14,41 +14,11 @@ public class AdManager
     /// </summary>
     public void playBanner()
     {
-        Advertisement.Load(_bannerId);
+        Advertisement.Banner.Load(_bannerId);
         if (Advertisement.Banner.isLoaded)
-            Advertisement.Show(_bannerId);
+            Advertisement.Banner.Show(_bannerId);
     }
-    /// <summary>
-    /// Plays a banner notifying on ad load if the ad can be loaded
-    /// </summary>
-    /// <param name="loadListener">The listener to notify</param>
-    public void playBanner(IUnityAdsLoadListener loadListener)
-    {
-        Advertisement.Load(_bannerId, loadListener);
-        if (Advertisement.Banner.isLoaded)
-            Advertisement.Show(_bannerId);
-    }
-    /// <summary>
-    /// Plays a banner notifying on show (start, completed, click and failure) if the ad can be loaded
-    /// </summary>
-    /// <param name="showListener">The listener to notify</param>
-    public void playBanner(IUnityAdsShowListener showListener)
-    {
-        Advertisement.Load(_bannerId);
-        if (Advertisement.Banner.isLoaded)
-            Advertisement.Show(_bannerId, showListener);
-    }
-    /// <summary>
-    /// Plays a banner notifying on load and on show if the ad can be loaded
-    /// </summary>
-    /// <param name="loadListener">The listener to notify on load</param>
-    /// <param name="showListener">The listener to notify on show</param>
-    public void playBanner(IUnityAdsLoadListener loadListener, IUnityAdsShowListener showListener)
-    {
-        Advertisement.Load(_bannerId, loadListener);
-        if (Advertisement.Banner.isLoaded)
-            Advertisement.Show(_bannerId, showListener);
-    }
+    
     /// <summary>
     /// Plays a rewarded video without notifying anyone     
     /// </summary>
