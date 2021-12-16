@@ -10,9 +10,11 @@ public class LevelManager : MonoBehaviour
     {
 
         _boardManager.setLevelManager(this);
-        _mapParser = new MapParser();
+        _mapParser = new MapParser();        
+        string noSplitLot = GameManager.instance.getSelectedLot().LevelLotFile.ToString();
 
-        _lot = GameManager.instance.getSelectedLot().LevelLotFile.ToString().Split('\n');
+        string[] separators = { "\n", "\r", "\r\n", "\n\r" };
+        _lot = noSplitLot.Split(separators, System.StringSplitOptions.RemoveEmptyEntries);
         _currentLevel = GameManager.instance.getSelectedLevel();
         if (_currentLevel >= 0 && _currentLevel < _lot.Length)
         {

@@ -10,7 +10,8 @@ public class MapParser
     {
         //Map map = new global::Map();
         Map map = new Map();
-        string[] data = codeMap.Split(';');
+        string[] separator = { ";" };
+        string[] data = codeMap.Split(separator, System.StringSplitOptions.RemoveEmptyEntries);
         string[] header = data[0].Split(',');
 
         //HEAD FORMAT: ROWS[:COLS], RESERVED, LEVEL, HOWMANYFLOWS [,[BRIDGE[:BRIDGE]]] [,[HOLLOWS[:HOLLOWS]]] [,[WALL|WALL[:WALL|WALL]]];
