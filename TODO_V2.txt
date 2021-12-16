@@ -6,8 +6,8 @@ MARCO --------------------------------------------------------------------------
 
 ANTONIO-----------------------------------------------------------------------------------------------------------------------------------------
 
-**Parte inferior que haya un anuncio del servidor de Unity
-**Hacer que se reproduzca vídeo cuando se le da a YES en el menú de gethints
+** Parte inferior que haya un anuncio del servidor de Unity
+** Averiguar porque el video da 47 millones de pistas en vez de 1
 ** Arreglar UI de seleccionar niveles
 ** Desbloquear todos los niveles o según progreso y comprobar que funcione bien en la escena (que le doy a un nivel bloqueado y no juega y si le doy a uno que no está bloqueado si juega)
 ** Probar progeso (que se guarda y se carga bien los datos del json)
@@ -20,4 +20,4 @@ WILL----------------------------------------------------------------------------
 TODO -----------------------------------------------------------------------------------------------------------------------------------------
 
 ** Muros y después Huecos
-** Resoluciones cuadradas funcionales para el resto de escenas, (En la primera hacer scroll vertical bien)
+** Resoluciones cuadradas funcionales para TODAS las escenas
