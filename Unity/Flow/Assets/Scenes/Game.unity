@@ -1208,7 +1208,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: a6fd136daf99a8f4cb19ca6f523b2079, type: 2}
     - target: {fileID: 723185779894205650, guid: 0f6cb83db43a1734b863f68078fcb0de, type: 3}
       propertyPath: selectedLevelDebug
-      value: 148
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 723185779894205650, guid: 0f6cb83db43a1734b863f68078fcb0de, type: 3}
       propertyPath: selectedSectionDebug
@@ -4364,6 +4364,10 @@ MonoBehaviour:
   _boardManager: {fileID: 628285578}
   _endMenu: {fileID: 364938239}
   _hintsMenu: {fileID: 1290755372}
+  _previousLevelImage: {fileID: 1586916406}
+  _nextLevelImage: {fileID: 136941878}
+  _previousLevelButton: {fileID: 1586916405}
+  _nextLevelButton: {fileID: 136941877}
   _levelText: {fileID: 760669913}
   _sizeText: {fileID: 1435520304}
   _flowText: {fileID: 498175469}

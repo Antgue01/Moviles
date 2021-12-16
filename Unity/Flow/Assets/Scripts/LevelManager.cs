@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -95,6 +96,35 @@ public class LevelManager : MonoBehaviour
         setBestMovementsText();
         setRemainingHintsText();
         checkLevelCompleted();
+        checkPreviousNextButtons();
+    }
+
+    private void checkPreviousNextButtons()
+    {
+        if (_currentLevel == 0)
+        {
+            _previousLevelImage.color = Color.gray;
+            _previousLevelButton.transition = Selectable.Transition.None;
+
+            _nextLevelImage.color = Color.white;
+            _nextLevelButton.transition = Selectable.Transition.SpriteSwap;
+        }
+        else if(_currentLevel == _lot.Length - 1)
+        {
+            _previousLevelImage.color = Color.white;
+            _previousLevelButton.transition = Selectable.Transition.SpriteSwap;
+
+            _nextLevelImage.color = Color.gray;
+            _nextLevelButton.transition = Selectable.Transition.None;
+        }
+        else
+        {
+            _previousLevelImage.color = Color.white;
+            _previousLevelButton.transition = Selectable.Transition.SpriteSwap;
+
+            _nextLevelImage.color = Color.white;
+            _nextLevelButton.transition = Selectable.Transition.SpriteSwap;
+        }
     }
 
     /* ------------------------------------------------------ BUTTON ACTIONS -----------------------------------------------------*/
@@ -238,6 +268,10 @@ public class LevelManager : MonoBehaviour
     [SerializeField] BoardManager _boardManager;
     [SerializeField] GameObject _endMenu;
     [SerializeField] GameObject _hintsMenu;
+    [SerializeField] Image _previousLevelImage;
+    [SerializeField] Image _nextLevelImage;
+    [SerializeField] Button _previousLevelButton;
+    [SerializeField] Button _nextLevelButton;
     [SerializeField] Text _levelText;
     [SerializeField] Text _sizeText;
     [SerializeField] Text _flowText;
