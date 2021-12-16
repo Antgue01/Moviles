@@ -263,7 +263,14 @@ public class Flow
 
         if(_confirmedTiles.Count>0)
             _connected = _confirmedTiles.Last.Value.getType()==GameBox.BoxType.FlowPoint;
-        if(_connected) _boardManager.updateFlowsConnected(1);
+        if (_connected)
+        {
+            _boardManager.updateFlowsConnected(1);
+            if (_hintUsedInThisFlow && flowHasCorrectPath())
+            {
+                setStarActive(true);
+            }
+        }
     }
 
     public void disconfirmTiles()
@@ -285,6 +292,10 @@ public class Flow
         {
             _boardManager.updateFlowsConnected(-1);
             _connected = false;
+            if (_hintUsedInThisFlow)
+            {
+                setStarActive(false);
+            }
         }        
     }
 
@@ -354,8 +365,7 @@ public class Flow
             lastTileRowCol.x = flowPath[0] / _boardManager.Cols;
             lastTileRowCol.y = flowPath[0] % _boardManager.Cols;
 
-            GameBox tile = _boardManager.getBoard()[lastTileRowCol.x, lastTileRowCol.y].GetComponent<GameBox>();
-            tile.setStarActive(true);
+            GameBox tile = _boardManager.getBoard()[lastTileRowCol.x, lastTileRowCol.y].GetComponent<GameBox>();            
             _tiles.AddLast(tile);
 
             Vector2Int currentTileRowCol = new Vector2Int();
@@ -372,11 +382,10 @@ public class Flow
                 lastTileRowCol = currentTileRowCol;
             }
 
-            tile.setStarActive(true);
-
             if (willMapBeModified())
                 _boardManager.mapModified(_id);
             confirmTiles();
+            setStarActive(true);
         }
         return true;
     }
@@ -391,6 +400,9 @@ public class Flow
     private bool flowHasCorrectPath()
     {
         int[] flowPath = _boardManager.getMap().getFlows()[_id];
+
+        if (flowPath.Length != _tiles.Count) return false;
+        
         bool isCorrect = true;
         for(int x = 0; x < flowPath.Length && isCorrect; x++)
         {
@@ -402,6 +414,13 @@ public class Flow
             
         return isCorrect;
     }
+
+    private void setStarActive(bool b)
+    {
+        _startEndPoints[0].setStarActive(b);
+        _startEndPoints[1].setStarActive(b);
+    }
+
     public void setUsedHintInThisFlow(bool u) { _hintUsedInThisFlow = u; }
     public bool getUsedHintInThisFlow() { return _hintUsedInThisFlow; }
     public Color GetColor() { return _flowColor; }
