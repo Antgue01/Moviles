@@ -196,13 +196,12 @@ public class GameBox : MonoBehaviour
     private Vector2Int _flowDir;
     //Confirmed flow dir
     private Vector2Int _confirmedFlowDir;
-    //A flow point always has one
+    //A flow point always has Flow reference
     private Flow _flow;
     private Flow _confirmedFlow;
     private LinkedListNode<GameBox> _myNode;
     private LinkedListNode<GameBox> _myConfirmedNode;
-    //bool _first = false;
-    //bool _last = false;
+
     const float bgColorReduction = .35f;
 
     [SerializeField] private GameObject _backgroundImage;

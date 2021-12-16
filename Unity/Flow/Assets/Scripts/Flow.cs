@@ -76,6 +76,7 @@ public class Flow
         GameBox tile = tileNode.Value;
 
         tile.setNode(null);
+        if (tile.getType() != GameBox.BoxType.FlowPoint) _boardManager.updatePipesNumber(-1);
         _tiles.Remove(tileNode);
 
         while (tileNextNodeAux != null)
@@ -88,6 +89,7 @@ public class Flow
             //If its a flow point, we keep the reference of Flow
             tile.setFlow((tile.getType() == GameBox.BoxType.FlowPoint) ? this : null);
             tile.setNode(null);
+            if (tile.getType() != GameBox.BoxType.FlowPoint) _boardManager.updatePipesNumber(-1);
             _tiles.Remove(tileNode);
         }
     }
@@ -140,6 +142,7 @@ public class Flow
     {
         newFlow.setFlow(this);
         newFlow.setNode(_tiles.AddLast(newFlow));
+        if (newFlow.getType() != GameBox.BoxType.FlowPoint) _boardManager.updatePipesNumber(1);
         newFlow.setPathColor(_flowColor);
         newFlow.setPathFrom(dir);
     }
@@ -299,6 +302,7 @@ public class Flow
             //If its a flow point, we keep the reference of Flow
 			tile.setFlow((tile.getType()==GameBox.BoxType.FlowPoint) ? this : null);
             tile.setNode(null);
+            if (tile.getType() != GameBox.BoxType.FlowPoint) _boardManager.updatePipesNumber(-1);
             LinkedListNode<GameBox> tileNextNodeAux = tileNode.Next;
             _tiles.Remove(tileNode);
 
@@ -323,6 +327,7 @@ public class Flow
             GameBox tile = tileNode.Value;
             if (tile.getFlow() != null && tile.getFlow() != this) break;
             tile.setNode(_tiles.AddLast(tile));
+            if (tile.getType() != GameBox.BoxType.FlowPoint) _boardManager.updatePipesNumber(1);
             tile.setFlow(tile.getConfirmedFlow());
             tile.setPathActive(true);
             tile.setPathColor(tile.getColor());

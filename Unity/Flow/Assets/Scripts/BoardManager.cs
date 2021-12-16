@@ -200,8 +200,15 @@ public class BoardManager : MonoBehaviour
         {
             _flowsConnected += add;
             _levelManager.setFlowsText(_flowsConnected, _map.getTotalFlows());
-            float pipe = ((float)_flowsConnected / (float)_map.getTotalFlows()) * 100.0f;
-            _levelManager.setPipeText((int)pipe);
+        }
+    }
+
+    public void updatePipesNumber(int add)
+    {
+        if (_pipes + add >= 0 && _pipes + add <= _totalInitiallyEmpty)
+        {
+            _pipes += add;
+            _levelManager.setPipeText((int)((_pipes/_totalInitiallyEmpty) * 100.0f));
         }
     }
 
@@ -229,7 +236,8 @@ public class BoardManager : MonoBehaviour
         _levelDone = false;
         _movements = 0;
         _flowsConnected = 0;
-        _pipe = 0;
+        _pipes = 0;
+        _totalInitiallyEmpty = (Cols * Rows) - (_flows.Length * 2);
         _levelManager.setLevelDone(false);
     }
 
@@ -237,7 +245,7 @@ public class BoardManager : MonoBehaviour
     {
         _levelManager.setSizeText(Rows, Cols);
         _levelManager.setFlowsText(_flowsConnected, _map.getTotalFlows());
-        _levelManager.setPipeText(_pipe);
+        _levelManager.setPipeText((int)_pipes);
         _levelManager.setMovementsText(_movements);
     }
 
@@ -247,8 +255,8 @@ public class BoardManager : MonoBehaviour
     public void loadMap(Map m)
     {
         _map = m;
-        resetInfo();
         configureBoard();
+        resetInfo();
         setUIinfo();
     }
 
@@ -370,7 +378,8 @@ public class BoardManager : MonoBehaviour
     //INFO
     private int _flowsConnected;
     private int _movements;
-    private int _pipe;
+    private float _pipes;
+    private float _totalInitiallyEmpty;
     private bool _levelDone;
 
     //INPUT
