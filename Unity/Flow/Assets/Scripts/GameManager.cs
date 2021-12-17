@@ -45,7 +45,8 @@ public class GameManager : MonoBehaviour
         bool isInRange = lv >= 0 && lv < _saveData.sections[data.Key].levelLots[data.Value].bestMovesPerLevel.Length;
         if (!isInRange)
             Debug.LogWarning("Level out of range. isUnlockedLevel will return false");
-        return isInRange && _saveData.sections[data.Key].levelLots[data.Value].lastUnlockedLevel >= lv;
+        return isInRange &&
+            (_saveData.sections[data.Key].levelLots[data.Value].lastUnlockedLevel >= lv || _selectedLevelLot.UnlockAll);
     }
 
     public bool isLevelCompleted(int lv)
@@ -57,7 +58,7 @@ public class GameManager : MonoBehaviour
         return isInRange && _saveData.sections[data.Key].levelLots[data.Value].bestMovesPerLevel[lv] > -1;
     }
 
-    public  int getNumPlayedLevels(LevelLot levellot)
+    public int getNumPlayedLevels(LevelLot levellot)
     {
         //todo hacerlo
         return 0;
@@ -96,7 +97,7 @@ public class GameManager : MonoBehaviour
         _selectedLevelLot = myLevelLot;
 
     }
-    
+
     public void SwitchSceneTo(SceneEnum scene)
     {
         SceneManager.LoadScene((int)scene);
@@ -194,11 +195,11 @@ public class GameManager : MonoBehaviour
 #endif
 
     public enum SceneEnum
-	{
+    {
         MainMenu = 0,
         LevelLotSelector = 1,
         LevelSelector = 2,
         Game = 3
-	}
+    }
 
 }

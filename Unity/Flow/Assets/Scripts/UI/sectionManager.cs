@@ -36,6 +36,7 @@ public class sectionManager : MonoBehaviour
                 LevelLotVisuals levelLotVisuals = levelLotObject.GetComponent<LevelLotVisuals>();
                 LevelLotSelector selector = levelLotObject.GetComponent<LevelLotSelector>();
                 selector.setSection(sections[i]);
+                selector.setLvlLot(levellot);
                 rect = levelLotObject.GetComponent<RectTransform>();
                 totalHeight += rect.rect.height;
                 levelLotVisuals.setColor(sections[i].themeColor);

@@ -11,9 +11,10 @@ public class LevelSelector : MonoBehaviour
         int n;
         if (!int.TryParse(_number.text, out n))
             Debug.LogError("The level number is not a number");
-        else
+        else if(GameManager.instance.isUnlockedLevel(n-1))
         {
-            GameManager.instance.setSelectedLevel(n);
+            
+            GameManager.instance.setSelectedLevel(n-1);
             GameManager.instance.SwitchSceneTo(GameManager.SceneEnum.Game);
         }
     }

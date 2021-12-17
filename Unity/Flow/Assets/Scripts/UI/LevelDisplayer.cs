@@ -17,24 +17,25 @@ public class LevelDisplayer : MonoBehaviour
     public void Display(LevelLot lvlot, Section section, int gridNumber, int levelsPerPage)
     {
         _levelsPerPage = levelsPerPage;
-        _levelRange.text = (gridNumber * _levelsPerPage + 1).ToString() + " - " + ((gridNumber + 1) * _levelsPerPage).ToString();
+        int min = gridNumber * _levelsPerPage;
+        int max = (gridNumber + 1) * _levelsPerPage;
+        _levelRange.text = (min + 1).ToString() + " - " + (max).ToString();
 
         LevelVisuals visuals = null;
         GameObject levelObject = null;
-        for (int i = 0; i < levelsPerPage; i++)
+        for (int i = min; i < max; i++)
         {
             levelObject = Instantiate<GameObject>(_levelPrefab, _gridTransform);
             visuals = levelObject.GetComponent<LevelVisuals>();
-            if (GameManager.instance.isLevelCompleted(i * levelsPerPage))
+            if (GameManager.instance.isLevelCompleted(i))
                 visualizeComplete(visuals, section);
-            else if (lvlot.UnlockAll || GameManager.instance.isUnlockedLevel(i * levelsPerPage))
+            else if (GameManager.instance.isUnlockedLevel(i))
                 visualizeUnlocked(visuals);
             else
                 visualizeLocked(visuals);
-            visuals.setLevel((gridNumber * _levelsPerPage) + i + 1);
+            visuals.setLevel(i+1);
 
         }
-        RectTransform levelTr = levelObject.GetComponent<RectTransform>();
     }
 
     private void visualizeLocked(LevelVisuals visuals)
