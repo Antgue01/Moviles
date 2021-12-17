@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour
             _adManager = new AdManager();
             _banner = new BannerAd(_secondsToNextAd);
             _adManager.init(_banner);
-            _adManager.setBannerPosition(BannerPosition.BOTTOM_CENTER);
             instance = this;
             _saveData = new SaveDataManager();
 

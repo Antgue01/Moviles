@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,15 +8,20 @@ public class AdManager
 {
     public void init(IUnityAdsInitializationListener lis)
     {
-        Advertisement.Initialize(_gameId, false, lis);
+        Advertisement.Initialize(_gameId, true, lis);
     }
     /// <summary>
-    /// Plays a banner without notifying anyone if the ad can be loaded
+    /// Loads a banner without notifying anyone if the ad can be loaded
     /// </summary>
-    public void playBanner()
+    public void loadBanner()
     {
-        Advertisement.Banner.Load(_bannerId);
-        Advertisement.Banner.Show(_bannerId);
+        BannerLoadOptions options = new BannerLoadOptions
+        {
+
+            loadCallback = onBannerLoaded,
+            errorCallback = onBannerError
+        };
+        Advertisement.Banner.Load(_bannerId,options);
     }
     public void hideBanner()
     {
@@ -23,7 +29,43 @@ public class AdManager
     }
     public void showBanner()
     {
-        Advertisement.Banner.Show(_bannerId);
+        Debug.Log("SHOW BANNER ESTA AQUI");
+        BannerOptions options = new BannerOptions
+        {
+            clickCallback = OnBannerClicked,
+            hideCallback = OnBannerHidden,
+            showCallback = OnBannerShown
+        };
+        Advertisement.Banner.Show(_bannerId,options);
+    }
+
+    private void OnBannerShown()
+    {
+        Debug.Log("ON BANNER SHOW");
+    }
+
+    private void OnBannerHidden()
+    {
+        Debug.Log("ON BANNER HIDDEN");
+    }
+
+    private void OnBannerClicked()
+    {
+        Debug.Log("ON BANNER CLICKED");
+
+    }
+
+    void onBannerError(string err)
+    {
+        Debug.Log("BANNER ERROR");
+
+        Debug.Log(err);
+    }
+    void onBannerLoaded()
+    {
+        Debug.Log("ON BANNER LOADED");
+
+        showBanner();
     }
     /// <summary>
     /// Plays a rewarded video without notifying anyone     
