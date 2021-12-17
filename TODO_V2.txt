@@ -6,7 +6,7 @@ HECHO** +B de los mapas (muros exteriores)
 **Pasos para +B y Muros
 	-HECHO**Paso 1: Arreglar parser
 	-HECHO**Paso 2: Arreglar map
-	-**Paso 3: Modificar estructuras para tratamiento de muros
+	-HECHO**Paso 3: Modificar estructuras para tratamiento de muros
 	-**Paso 4: Determinar los muros que se tienen que pintar en cada gamebox (cuidado! puede tener muchos muros en muchisimas diferentes posiciones)
 	-**Paso 5: Muros compartidos solo los debe pintar 1 gamebox
 	-**Paso 6: Añadir restricciones: poner direcciones invalidas en cada gamebox
