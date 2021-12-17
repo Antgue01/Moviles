@@ -6,6 +6,23 @@ using System;
 
 public class GameBox : MonoBehaviour
 {
+    void Start()
+    {
+        //_validDirs = new bool[4];
+        //for(int x = 0; x < _validDirs.Length; x++)
+        //{
+        //    _validDirs[x] = true;
+        //}
+    }
+
+    public void initDirs()
+    {
+        _validDirs = new bool[4];
+        for (int x = 0; x < _validDirs.Length; x++)
+        {
+            _validDirs[x] = true;
+        }
+    }
     //Non variable Tile Types
     public enum BoxType { Bridge, Hollow, FlowPoint, Empty }
 
@@ -84,6 +101,87 @@ public class GameBox : MonoBehaviour
     public void setStarActive(bool b)
     {
         _starImage.SetActive(b);
+    }
+
+    public void setWallLeftActive(bool b)
+    {
+        _wallLeft.SetActive(b);
+    }
+
+    public void setWallRightActive(bool b)
+    {
+        _wallRight.SetActive(b);
+    }
+
+    public void setWallUpActive(bool b)
+    {
+        _wallUp.SetActive(b);
+    }
+
+    public void setWallDownActive(bool b)
+    {
+        _wallDown.SetActive(b);
+    }
+
+    public bool isValidDir(Vector2Int dir)
+    {
+        bool isValid = true;
+        switch (dir)
+        {
+            case Vector2Int v when v.Equals(Vector2Int.left):
+                isValid = _validDirs[0];
+                break;
+            case Vector2Int v when v.Equals(Vector2Int.right):
+                isValid = _validDirs[1];
+                break;
+            case Vector2Int v when v.Equals(Vector2Int.up):
+                isValid = _validDirs[2];
+                break;
+            case Vector2Int v when v.Equals(Vector2Int.down):
+                isValid = _validDirs[3];
+                break;     
+        }
+        return isValid;
+    }
+
+    public void setInvalidDir(int tileDiff)
+    {
+        if(tileDiff == -1) //We are goint to the Left Game Box
+        {
+            _validDirs[0] = false;            
+        }
+        else if(tileDiff == 1) //We are goint to the Right Game Box
+        {
+            _validDirs[1] = false;
+        }
+        else if(tileDiff < - 1) //We are goint to the Up Game Box
+        {
+            _validDirs[2] = false;
+        }
+        else if(tileDiff > 1) //We are goint to the Down Game Box
+        {
+            _validDirs[3] = false;
+        }
+    }
+
+    public void setWallActive(int tileDiff)
+    {
+        if (tileDiff == -1) //Left Wall
+        {
+            _wallLeft.SetActive(true);
+        }
+        else if (tileDiff == 1) //Right Wall
+        {
+            _wallRight.SetActive(true);
+        }
+        else if (tileDiff < -1) //Up wall
+        {
+            _wallUp.SetActive(true);
+        }
+        else if (tileDiff > 1) //Down Wall
+        {
+            _wallDown.SetActive(true);
+        }
     }
 
     public void setFigureSprite(Sprite s)
@@ -211,11 +309,16 @@ public class GameBox : MonoBehaviour
     private Flow _confirmedFlow;
     private LinkedListNode<GameBox> _myNode;
     private LinkedListNode<GameBox> _myConfirmedNode;
+    private bool[] _validDirs;
 
     const float bgColorReduction = .35f;
 
     [SerializeField] private GameObject _backgroundImage;
     [SerializeField] private GameObject _starImage;
+    [SerializeField] private GameObject _wallLeft;
+    [SerializeField] private GameObject _wallRight;
+    [SerializeField] private GameObject _wallUp;
+    [SerializeField] private GameObject _wallDown;
     [SerializeField] private GameObject _figureImage;
     [SerializeField] private GameObject _pathImage;
     [SerializeField] private GameObject _animImage;

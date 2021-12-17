@@ -283,14 +283,16 @@ public class BoardManager : MonoBehaviour
                     go.transform.localPosition = new Vector3(col + .5f, -row - .5f, 0);
                     go.GetComponent<SpriteRenderer>().color = sectionColor;
                     go.GetComponent<GameBox>().setType(GameBox.BoxType.Empty);
-                    
+                    go.GetComponent<GameBox>().initDirs();
+
                     //go.GetComponent<GameBox>().setFigureImageSize(boxWidth, boxHeight);
                     _board[row, col] = go;
                 }
             }
             createFlowPoints();
             checkHollows();
-            checkBridges();
+            checkWalls();
+            //checkBridges();
         }
 
     }
@@ -361,6 +363,26 @@ public class BoardManager : MonoBehaviour
             for (int x = 0; x < _map.getHollows().Length; x++)
             {
 
+            }
+    }
+
+    private void checkWalls()
+    {
+        if(_map.getWalls() != null)
+            for(int x  = 0; x < _map.getWalls().Length; x++)
+            {
+                int tile1 = _map.getWalls()[x].Key;
+                int tile2 = _map.getWalls()[x].Value;
+
+                int tile1Row = tile1 / _map.getCols();
+                int tile1Col = tile1 % _map.getCols();
+                int tile2Row = tile2 / _map.getCols();
+                int tile2Col = tile2 % _map.getCols();
+
+                _board[tile1Row, tile1Col].GetComponent<GameBox>().setInvalidDir(tile2 - tile1);
+                _board[tile2Row, tile2Col].GetComponent<GameBox>().setInvalidDir(tile1 - tile2);
+
+                _board[tile1Row, tile1Col].GetComponent<GameBox>().setWallActive(tile2 - tile1);
             }
     }
 

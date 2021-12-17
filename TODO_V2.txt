@@ -26,8 +26,8 @@ ANTONIO-------------------------------------------------------------------------
 
 ** Parte inferior que haya un anuncio del servidor de Unity
 
-** Escena de selección de nivel a veces se quedan blancos
-** Escena de selección de nivel poner estrellita a los niveles que se han hecho perfectos
+HECHO** Escena de selección de nivel a veces se quedan blancos
+HECHO** Escena de selección de nivel poner estrellita a los niveles que se han hecho perfectos
 
 
 

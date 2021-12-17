@@ -137,7 +137,7 @@ public class GameManager : MonoBehaviour
     public Section getSelectedSection()
     {
 #if UNITY_EDITOR
-        //_selectedSection = selectedSectionDebug;
+        _selectedSection = selectedSectionDebug;
 #endif
         return _selectedSection;
     }
@@ -145,7 +145,7 @@ public class GameManager : MonoBehaviour
     public LevelLot getSelectedLot()
     {
 #if UNITY_EDITOR
-        //_selectedLevelLot = selectedLevelLotDebug;
+        _selectedLevelLot = selectedLevelLotDebug;
 #endif
         return _selectedLevelLot;
     }
@@ -153,7 +153,7 @@ public class GameManager : MonoBehaviour
     public int getSelectedLevel()
     {
 #if UNITY_EDITOR
-        //_selectedLevel = selectedLevelDebug;
+        _selectedLevel = selectedLevelDebug;
 #endif
         return _selectedLevel;
     }

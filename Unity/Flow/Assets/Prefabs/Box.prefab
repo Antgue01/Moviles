@@ -631,6 +631,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _backgroundImage: {fileID: 9025299383014766874}
   _starImage: {fileID: 7465079571930836580}
+  _wallLeft: {fileID: 6276015628588737187}
+  _wallRight: {fileID: 1967986002220574130}
+  _wallUp: {fileID: 6453112624360506311}
+  _wallDown: {fileID: 6910777946731394657}
   _figureImage: {fileID: 1175781138991309727}
   _pathImage: {fileID: 9108570539266884680}
   _animImage: {fileID: 5086735427218395931}
