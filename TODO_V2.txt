@@ -1,23 +1,32 @@
 MARCO ------------------------------------------------------------------------------------------------------------------------------------------
-
+** Averiguar porque el video da 47 millones de pistas en vez de 1
 ** +B de los mapas (muros exteriores)
+
 
 
 
 ANTONIO-----------------------------------------------------------------------------------------------------------------------------------------
 
+
 ** Parte inferior que haya un anuncio del servidor de Unity
-** Averiguar porque el video da 47 millones de pistas en vez de 1
-** Arreglar UI de seleccionar niveles
-** Desbloquear todos los niveles o según progreso y comprobar que funcione bien en la escena (que le doy a un nivel bloqueado y no juega y si le doy a uno que no está bloqueado si juega)
-** Probar progeso (que se guarda y se carga bien los datos del json)
+
+** Escena de selección de nivel a veces se quedan blancos
+** Escena de selección de nivel poner estrellita a los niveles que se han hecho perfectos
+
+
 
 WILL--------------------------------------------------------------------------------------------------------------------------------------
-HECHO** Botones de volver atrás en la escena (implementar acción)
-
+** Resoluciones cuadradas funcionales para TODAS las escenas
+** Escena de selección de nivel: Al cambiar de resolución se ajusta bien
 
 
 TODO -----------------------------------------------------------------------------------------------------------------------------------------
 
 ** Muros y después Huecos
-** Resoluciones cuadradas funcionales para TODAS las escenas
+
+** Probar todo en Android
+	- Resoluciones
+	- Progreso
+	- Anuncios
+	- Botones
+	
