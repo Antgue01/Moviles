@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    
+
 
     public bool isUnlockedLevel(int lv)
     {
@@ -119,25 +119,25 @@ public class GameManager : MonoBehaviour
 
     public Section getSelectedSection()
     {
-//#if UNITY_EDITOR
-//        _selectedSection = selectedSectionDebug;
-//#endif
+        //#if UNITY_EDITOR
+        //        _selectedSection = selectedSectionDebug;
+        //#endif
         return _selectedSection;
     }
 
     public LevelLot getSelectedLot()
     {
-//#if UNITY_EDITOR
-//        _selectedLevelLot = selectedLevelLotDebug;
-//#endif
+        //#if UNITY_EDITOR
+        //        _selectedLevelLot = selectedLevelLotDebug;
+        //#endif
         return _selectedLevelLot;
     }
 
     public int getSelectedLevel()
     {
-//#if UNITY_EDITOR
-//        _selectedLevel = selectedLevelDebug;
-//#endif
+        //#if UNITY_EDITOR
+        //        _selectedLevel = selectedLevelDebug;
+        //#endif
         return _selectedLevel;
     }
 
@@ -157,13 +157,7 @@ public class GameManager : MonoBehaviour
     {
         _saveData.numHints = numHints;
     }
-    public void updatePlayedLevels()
-    {
-        KeyValuePair<int, int> data = getSaveInfo(_selectedSection, _selectedLevelLot);
-        //if the player is not repeating the same level
-        if (_saveData.sections[data.Key].levelLots[data.Value].bestMovesPerLevel[_selectedLevel] <= -1)
-            _saveData.sections[data.Key].levelLots[data.Value].playedLevels++;
-    }
+   
     public AdManager GetAdManager() { return _adManager; }
     [SerializeField] Section[] _sections;
     [SerializeField] Skin[] _skins;
@@ -178,9 +172,14 @@ public class GameManager : MonoBehaviour
     {
         //we search our level
         KeyValuePair<int, int> data = getSaveInfo(_selectedSection, _selectedLevelLot);
-        //if we have beaten our record, we update it
-        if (_saveData.sections[data.Key].levelLots[data.Value].bestMovesPerLevel[_selectedLevel] > moves)
+        //if we have beaten our record, we update it ya. 
+        int bestMoves = _saveData.sections[data.Key].levelLots[data.Value].bestMovesPerLevel[_selectedLevel];
+        if (bestMoves == -1 || bestMoves > moves)
+        {
             _saveData.sections[data.Key].levelLots[data.Value].bestMovesPerLevel[_selectedLevel] = moves;
+            if (bestMoves == -1)
+                _saveData.sections[data.Key].levelLots[data.Value].playedLevels++;
+        }
         //if we just completed the last level we unlocked we unlock the next one
         if (!_selectedLevelLot.UnlockAll)
         {

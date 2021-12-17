@@ -11,8 +11,8 @@ public class LevelManager : MonoBehaviour
     {
 
         _boardManager.setLevelManager(this);
-        _mapParser = new MapParser();   
-        
+        _mapParser = new MapParser();
+
         string noSplitLot = GameManager.instance.getSelectedLot().LevelLotFile.ToString();
         string[] separators = { "\n", "\r", "\r\n", "\n\r" };
         _lot = noSplitLot.Split(separators, System.StringSplitOptions.RemoveEmptyEntries);
@@ -60,7 +60,7 @@ public class LevelManager : MonoBehaviour
 
     public void setBestMovementsText()
     {
-        if (_bestMovements == 0)
+        if (_bestMovements == -1)
             _bestText.text = "best: -";
         else _bestText.text = "best: " + _bestMovements;
     }
@@ -74,11 +74,11 @@ public class LevelManager : MonoBehaviour
     {
         _isLevelDone = isDone;
         if (_isLevelDone)
-        {            
+        {
             showEndMenu();
-            _levelDoneText.text = "You complete the level in " + _boardManager.getMovements() +" moves.";
-            GameManager.instance.UpdateLevel(_bestMovements);
-            GameManager.instance.updatePlayedLevels();
+            _levelDoneText.text = "You complete the level in " + _boardManager.getMovements() + " moves.";
+            GameManager.instance.setSelectedLevel(_currentLevel);
+            GameManager.instance.UpdateLevel(_boardManager.getMovements());
         }
     }
 
@@ -94,11 +94,11 @@ public class LevelManager : MonoBehaviour
     private void updateButtonsInfo()
     {
         setLevelText();
+        _bestMovements = GameManager.instance.getBestMoves(_currentLevel);
         setBestMovementsText();
         setRemainingHintsText();
         checkLevelCompleted();
         checkPreviousNextButtons();
-        _bestMovements = GameManager.instance.getBestMoves(_currentLevel);
     }
 
     private void checkPreviousNextButtons()
@@ -111,7 +111,7 @@ public class LevelManager : MonoBehaviour
             _nextLevelImage.color = Color.white;
             _nextLevelButton.transition = Selectable.Transition.SpriteSwap;
         }
-        else if(_currentLevel == _lot.Length - 1)
+        else if (_currentLevel == _lot.Length - 1 || (_currentLevel + 1 < _lot.Length && !GameManager.instance.isUnlockedLevel(_currentLevel + 1)))
         {
             _previousLevelImage.color = Color.white;
             _previousLevelButton.transition = Selectable.Transition.SpriteSwap;
@@ -192,11 +192,13 @@ public class LevelManager : MonoBehaviour
     public void resetLevel()
     {
         _boardManager.resetLevel();
+        _bestMovements = GameManager.instance.getBestMoves(_currentLevel);
+        setBestMovementsText();
     }
 
     public void nextLevel()
     {
-        if (_currentLevel + 1 < _lot.Length)
+        if (_currentLevel + 1 < _lot.Length && GameManager.instance.isUnlockedLevel(_currentLevel + 1))
         {
             _currentLevel++;
             _map = _mapParser.createLevelMap(_lot[_currentLevel]);
