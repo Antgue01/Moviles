@@ -40,12 +40,13 @@ HECHO** Resoluciones cuadradas funcionales para TODAS las escenas
 HECHO** Escena de selección de nivel: Al cambiar de resolución se ajusta bien
 HECHO** Que funcione las escenas de forma independiente con las opciones de debug
 HECHO** Que el texto de cada nivel se ponga al color correspondiente
+HECHO**Arreglar 10x10 mania por problema de parser
+HECHO** Color del texto de la ui de niveles que sea del mismo color que la sección
 
 TODO -----------------------------------------------------------------------------------------------------------------------------------------
 
 ** Hacer que los muros que no sean necesario pintar no se pinten (huecos juntos, por ejemplo)
-**Revisar 10x10 mania a ver por qué peta
-** Color del texto de la ui de niveles que sea del mismo color que la sección
+
 ** Probar todo en Android
 	- Resoluciones
 	- Progreso
