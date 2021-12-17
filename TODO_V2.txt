@@ -20,6 +20,12 @@ HECHO** +B de los mapas (muros exteriores)
 	-HECHO**Paso 1: Marcar gamebox como hollow
 	-HECHO**Paso 2: Calcular qué partes de los muros debe pintar (los compartidos solo los debe pintar 1)
 	
+RETOQUES:
+** Hacer más gorda la línea de los muros hasta que ocupe lo mismo que el grid
+** Retocar grid para que sea menos visible (más fina y reducir alfa)
+** Hacer que los muros que no sean necesario pintar no se pinten (huecos juntos, por ejemplo)
+** Color de los muros
+
 ANTONIO-----------------------------------------------------------------------------------------------------------------------------------------
 
 
