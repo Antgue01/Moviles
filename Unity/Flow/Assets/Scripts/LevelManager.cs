@@ -96,6 +96,7 @@ public class LevelManager : MonoBehaviour
         setLevelText();
         _bestMovements = GameManager.instance.getBestMoves(_currentLevel);
         setBestMovementsText();
+        _remainingHints = GameManager.instance.getRemainingHints();
         setRemainingHintsText();
         checkLevelCompleted();
         checkPreviousNextButtons();

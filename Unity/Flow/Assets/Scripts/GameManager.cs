@@ -78,6 +78,11 @@ public class GameManager : MonoBehaviour
         return _saveData.sections[data.Key].levelLots[data.Value].playedLevels;
     }
 
+    public int getRemainingHints()
+    {
+        return _saveData.numHints;
+    }
+
     /// <summary>
     /// Gets the last completed level from a certain level lot in a section
     /// </summary>
@@ -157,7 +162,7 @@ public class GameManager : MonoBehaviour
     {
         _saveData.numHints = numHints;
     }
-   
+
     public AdManager GetAdManager() { return _adManager; }
     [SerializeField] Section[] _sections;
     [SerializeField] Skin[] _skins;
