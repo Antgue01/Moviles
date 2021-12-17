@@ -293,6 +293,7 @@ public class BoardManager : MonoBehaviour
             checkHollows();
             checkWalls();
             //checkBridges();
+            checkPlusB();
         }
 
     }
@@ -362,7 +363,7 @@ public class BoardManager : MonoBehaviour
         if (_map.getHollows() != null)
             for (int x = 0; x < _map.getHollows().Length; x++)
             {
-
+               
             }
     }
 
@@ -385,6 +386,28 @@ public class BoardManager : MonoBehaviour
                 _board[tile1Row, tile1Col].GetComponent<GameBox>().setWallActive(tile2 - tile1);
                 _board[tile2Row, tile2Col].GetComponent<GameBox>().setWallActive(tile1 - tile2);
             }
+    }
+
+    private void checkPlusB()
+    {
+        if (_map.getPlusB())
+        {            
+            //Left walls
+            for (int row = 0; row < _map.getRows(); row++)
+                _board[row, 0].GetComponent<GameBox>().setWallLeftActive(true);
+
+            //Right walls
+            for (int row = 0; row < _map.getRows(); row++)
+                _board[row, _map.getCols() - 1].GetComponent<GameBox>().setWallRightActive(true);
+
+            //Sup walls
+            for (int col = 0; col < _map.getCols(); col++)
+                _board[0, col].GetComponent<GameBox>().setWallUpActive(true);
+
+            //Down walls
+            for (int col = 0; col < _map.getCols(); col++)
+                _board[_map.getRows() - 1, col].GetComponent<GameBox>().setWallDownActive(true);
+        }
     }
 
     public GameObject[,] getBoard() { return _board; }

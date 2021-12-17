@@ -6,23 +6,6 @@ using System;
 
 public class GameBox : MonoBehaviour
 {
-    void Start()
-    {
-        //_validDirs = new bool[4];
-        //for(int x = 0; x < _validDirs.Length; x++)
-        //{
-        //    _validDirs[x] = true;
-        //}
-    }
-
-    public void initDirs()
-    {
-        _validDirs = new bool[4];
-        for (int x = 0; x < _validDirs.Length; x++)
-        {
-            _validDirs[x] = true;
-        }
-    }
     //Non variable Tile Types
     public enum BoxType { Bridge, Hollow, FlowPoint, Empty }
 
@@ -123,6 +106,15 @@ public class GameBox : MonoBehaviour
         _wallDown.SetActive(b);
     }
 
+    public void initDirs()
+    {
+        _validDirs = new bool[4];
+        for (int x = 0; x < _validDirs.Length; x++)
+        {
+            _validDirs[x] = true;
+        }
+    }
+
     public bool isValidDir(Vector2Int dir)
     {
         bool isValid = true;
@@ -182,6 +174,14 @@ public class GameBox : MonoBehaviour
         {
             _wallDown.SetActive(true);
         }
+    }
+
+    public void setActiveAllWalls(bool b)
+    {
+        _wallLeft.SetActive(b);   
+        _wallRight.SetActive(b);     
+        _wallUp.SetActive(b);      
+        _wallDown.SetActive(b);
     }
 
     public void setFigureSprite(Sprite s)
