@@ -121,7 +121,7 @@ public class Flow
             {
                 //We save the component not choosen at auxDir
                 direction = (auxDir.x != 0) ? new Vector2Int(0, direction.y) : new Vector2Int(direction.x, 0);
-                linkGameBox(auxGB, auxDir);
+                if (!addTile(auxGB,lastInputRowCol,auxDir)) return false;
             }
             //We cant treat diagonal case
             else
