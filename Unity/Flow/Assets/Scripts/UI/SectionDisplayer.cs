@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class sectionManager : MonoBehaviour
+public class SectionDisplayer : MonoBehaviour
 {
 
     void Start()
@@ -23,7 +23,7 @@ public class sectionManager : MonoBehaviour
         for (int i = 0; i < sections.Length; i++)
         {
             //we instantiate the header of the section
-            GameObject header = Instantiate<GameObject>(_headerPrefab, _layoutZone);
+            GameObject header = Instantiate(_headerPrefab, _contentTransform.transform);
             HeaderVisuals headervisuals = header.GetComponent<HeaderVisuals>();
             totalHeight += header.GetComponent<RectTransform>().rect.height;
             headervisuals.setName(sections[i].SectionName);
@@ -32,7 +32,7 @@ public class sectionManager : MonoBehaviour
             string[] separators = { "\n", "\r", "\r\n", "\n\r" };
             foreach (LevelLot levellot in sections[i].levelLots)
             {
-                GameObject levelLotObject = Instantiate(_levelLotPrefab, _layoutZone);
+                GameObject levelLotObject = Instantiate(_levelLotPrefab, _contentTransform.transform);
                 LevelLotVisuals levelLotVisuals = levelLotObject.GetComponent<LevelLotVisuals>();
                 LevelLotSelector selector = levelLotObject.GetComponent<LevelLotSelector>();
                 selector.setSection(sections[i]);
@@ -41,23 +41,21 @@ public class sectionManager : MonoBehaviour
                 totalHeight += rect.rect.height;
                 levelLotVisuals.setColor(sections[i].themeColor);
                 levelLotVisuals.setName(levellot.LevelLotName);
-                //todo CUANDO SEPAMOS GUARDAR EL PROGRESO QUE SE CAMBIE LO DE AQUÍ ABAJO
 
                 levelLotVisuals.setLevelsInfo(levellot.LevelLotFile.ToString().Split(separators, System.StringSplitOptions.RemoveEmptyEntries).Length, GameManager.instance.getNumPlayedLevels(sections[i],levellot));
             }
 
         }
         totalHeight += rect.rect.height;
-        _scrollContentTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, totalHeight);
+        _contentTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, totalHeight);
 
     }
-    [SerializeField] RectTransform _scrollContentTransform;
-    [SerializeField] RectTransform _layoutZone;
     [SerializeField] GameObject _headerPrefab;
     [SerializeField] GameObject _levelLotPrefab;
     [SerializeField] RectTransform _image;
     [SerializeField] RectTransform _text;
-    private const float maxBannerHeightSize = 90;
+    [SerializeField] RectTransform _contentTransform;
+    private const float maxBannerHeightSize = 150;
 }
 
 

@@ -32,9 +32,8 @@ public class LevelLotDisplayer : MonoBehaviour
         _contentTransform.Translate(Vector3.left * _contentTransform.rect.x / 2);
     }
     [SerializeField] GameObject _levelPagePrefab;
-    [SerializeField] RectTransform _canvasTransform;
     [SerializeField] Text _sectionName;
+    [SerializeField] RectTransform _canvasTransform;
     [SerializeField] RectTransform _contentTransform;
-    [SerializeField] HorizontalLayoutGroup _horizontalLayout;
     public const int levelsPerPage = 30;
 }

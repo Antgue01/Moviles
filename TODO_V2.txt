@@ -32,13 +32,11 @@ HECHO** Escena de selección de nivel poner estrellita a los niveles que se han 
 
 
 WILL--------------------------------------------------------------------------------------------------------------------------------------
-** Resoluciones cuadradas funcionales para TODAS las escenas
-** Escena de selección de nivel: Al cambiar de resolución se ajusta bien
-
+HECHO** Resoluciones cuadradas funcionales para TODAS las escenas
+HECHO** Escena de selección de nivel: Al cambiar de resolución se ajusta bien
+** Que funcione las escenas de forma independiente con las opciones de debug
 
 TODO -----------------------------------------------------------------------------------------------------------------------------------------
-
-** Que funcione las escenas de forma independiente con las opciones de debug
 
 ** Probar todo en Android
 	- Resoluciones
