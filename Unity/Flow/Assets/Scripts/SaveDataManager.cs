@@ -14,6 +14,7 @@ public class SaveDataManager
     {
         public string name;
         public int lastUnlockedLevel;
+        public int playedLevels;
         public int[] bestMovesPerLevel;
 
     }

@@ -39,6 +39,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    
+
     public bool isUnlockedLevel(int lv)
     {
         KeyValuePair<int, int> data = getSaveInfo(_selectedSection, _selectedLevelLot);
@@ -57,11 +59,23 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("Level out of range. IsLevelCompleted will return false");
         return isInRange && _saveData.sections[data.Key].levelLots[data.Value].bestMovesPerLevel[lv] > -1;
     }
-
-    public int getNumPlayedLevels(LevelLot levellot)
+    public int getBestMoves(int lv)
     {
-        //todo hacerlo
-        return 0;
+        KeyValuePair<int, int> data = getSaveInfo(_selectedSection, _selectedLevelLot);
+        bool isInRange = lv >= 0 && lv < _saveData.sections[data.Key].levelLots[data.Value].bestMovesPerLevel.Length;
+        if (!isInRange)
+        {
+            Debug.LogWarning("Level out of range");
+            return -1;
+        }
+        return _saveData.sections[data.Key].levelLots[data.Value].bestMovesPerLevel[lv];
+
+    }
+    public int getNumPlayedLevels(Section section, LevelLot levellot)
+    {
+        KeyValuePair<int, int> data = getSaveInfo(section, levellot);
+
+        return _saveData.sections[data.Key].levelLots[data.Value].playedLevels;
     }
 
     /// <summary>
@@ -143,6 +157,13 @@ public class GameManager : MonoBehaviour
     {
         _saveData.numHints = numHints;
     }
+    public void updatePlayedLevels()
+    {
+        KeyValuePair<int, int> data = getSaveInfo(_selectedSection, _selectedLevelLot);
+        //if the player is not repeating the same level
+        if (_saveData.sections[data.Key].levelLots[data.Value].bestMovesPerLevel[_selectedLevel] <= -1)
+            _saveData.sections[data.Key].levelLots[data.Value].playedLevels++;
+    }
     public AdManager GetAdManager() { return _adManager; }
     [SerializeField] Section[] _sections;
     [SerializeField] Skin[] _skins;
@@ -156,26 +177,20 @@ public class GameManager : MonoBehaviour
     public void UpdateLevel(int moves)
     {
         //we search our level
-        int i = 0;
-        while (_saveData.sections[i].name != _selectedSection.SectionName)
-        {
-            i++;
-        }
-        int j = 0;
-        while (_saveData.sections[i].levelLots[j].name != _selectedLevelLot.LevelLotName)
-        {
-            j++;
-        }
+        KeyValuePair<int, int> data = getSaveInfo(_selectedSection, _selectedLevelLot);
         //if we have beaten our record, we update it
-        if (_saveData.sections[i].levelLots[j].bestMovesPerLevel[_selectedLevel] > moves)
-            _saveData.sections[i].levelLots[j].bestMovesPerLevel[_selectedLevel] = moves;
+        if (_saveData.sections[data.Key].levelLots[data.Value].bestMovesPerLevel[_selectedLevel] > moves)
+            _saveData.sections[data.Key].levelLots[data.Value].bestMovesPerLevel[_selectedLevel] = moves;
         //if we just completed the last level we unlocked we unlock the next one
-        int lastLevel = _saveData.sections[i].levelLots[j].lastUnlockedLevel;
-        string[] separators = { "\n", "\r", "\r\n", "\n\r" };
-        int numLevels = _selectedLevelLot.LevelLotFile.ToString().Split(separators, StringSplitOptions.RemoveEmptyEntries).Length;
-        if (lastLevel == _selectedLevel && lastLevel < numLevels)
-            _saveData.sections[i].levelLots[j].lastUnlockedLevel++;
+        if (!_selectedLevelLot.UnlockAll)
+        {
+            int lastLevel = _saveData.sections[data.Key].levelLots[data.Value].lastUnlockedLevel;
+            string[] separators = { "\n", "\r", "\r\n", "\n\r" };
+            int numLevels = _selectedLevelLot.LevelLotFile.ToString().Split(separators, StringSplitOptions.RemoveEmptyEntries).Length;
+            if (lastLevel == _selectedLevel && lastLevel < numLevels)
+                _saveData.sections[data.Key].levelLots[data.Value].lastUnlockedLevel++;
 
+        }
     }
 
     [SerializeField] LevelManager _levelManager;

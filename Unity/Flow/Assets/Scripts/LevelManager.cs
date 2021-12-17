@@ -28,7 +28,7 @@ public class LevelManager : MonoBehaviour
         }
 
         _isLevelDone = false;
-        _bestMovements = 0;
+        _bestMovements = GameManager.instance.getBestMoves(_currentLevel);
     }
 
     // Update is called once per frame
@@ -78,6 +78,7 @@ public class LevelManager : MonoBehaviour
             showEndMenu();
             _levelDoneText.text = "You complete the level in " + _boardManager.getMovements() +" moves.";
             GameManager.instance.UpdateLevel(_bestMovements);
+            GameManager.instance.updatePlayedLevels();
         }
     }
 
@@ -97,6 +98,7 @@ public class LevelManager : MonoBehaviour
         setRemainingHintsText();
         checkLevelCompleted();
         checkPreviousNextButtons();
+        _bestMovements = GameManager.instance.getBestMoves(_currentLevel);
     }
 
     private void checkPreviousNextButtons()
