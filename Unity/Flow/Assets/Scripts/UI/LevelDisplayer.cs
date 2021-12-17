@@ -51,6 +51,7 @@ public class LevelDisplayer : MonoBehaviour
     {
         visuals.setVisualColor(LevelVisuals.LevelVisualElement.Background, _unlockedBackGroundColor);
         visuals.setVisualColor(LevelVisuals.LevelVisualElement.Border, _unlockedBorderColor);
+        visuals.setVisualColor(LevelVisuals.LevelVisualElement.Number, Color.white);
     }
 
     public float getSize()
@@ -68,6 +69,7 @@ public class LevelDisplayer : MonoBehaviour
         tickColor.g -= deltaColor;
         tickColor.b -= deltaColor;
         visuals.setVisualColor(LevelVisuals.LevelVisualElement.Tick, tickColor);
+        visuals.setVisualColor(LevelVisuals.LevelVisualElement.Number, Color.white);
     }
 
     public int getLevelsPerPage() { return _levelsPerPage; }

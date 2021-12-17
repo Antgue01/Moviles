@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class LevelVisuals : MonoBehaviour,IPointerDownHandler,IPointerUpHandler
+public class LevelVisuals : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     public enum LevelVisualElement { Background, Border, Tick, Lock, Number }
 
@@ -47,18 +47,23 @@ public class LevelVisuals : MonoBehaviour,IPointerDownHandler,IPointerUpHandler
         switch (elem)
         {
             case LevelVisualElement.Background:
+                _bgColor = color;
                 _bg.color = color;
                 break;
             case LevelVisualElement.Border:
+                _borderColor = color;
                 _border.color = color;
                 break;
             case LevelVisualElement.Tick:
+                _tickColor = color;
                 _tick.color = color;
                 break;
             case LevelVisualElement.Lock:
+                _lockColor = color;
                 _lock.color = color;
                 break;
             case LevelVisualElement.Number:
+                _numberColor = color;
                 _number.color = color;
                 break;
             default:
@@ -77,7 +82,11 @@ public class LevelVisuals : MonoBehaviour,IPointerDownHandler,IPointerUpHandler
 
     public void OnPointerUp(PointerEventData eventData)
     {
-      
+        _border.color = _borderColor;
+        _bg.color = _bgColor;
+        _number.color = _numberColor;
+        _lock.color = _lockColor;
+        _tick.color = _tickColor;
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -85,8 +94,14 @@ public class LevelVisuals : MonoBehaviour,IPointerDownHandler,IPointerUpHandler
         _border.color = Color.white;
         _bg.color = Color.white;
         _number.color = Color.black;
+        _lock.color = Color.white;
+        _tick.color = Color.white;
     }
-
+    Color _bgColor;
+    Color _borderColor;
+    Color _lockColor;
+    Color _numberColor;
+    Color _tickColor;
     [SerializeField] Image _bg;
     [SerializeField] Image _border;
     [SerializeField] Image _tick;
