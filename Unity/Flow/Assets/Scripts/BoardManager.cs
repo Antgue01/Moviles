@@ -233,6 +233,7 @@ public class BoardManager : MonoBehaviour
 
     private void resetInfo()
     {
+        _lastModifiedMapFlowId = -1;
         _levelDone = false;
         _movements = 0;
         _flowsConnected = 0;

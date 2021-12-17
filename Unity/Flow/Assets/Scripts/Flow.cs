@@ -391,6 +391,7 @@ public class Flow
     public void resetFlow()
     {
         disconfirmTiles();
+        saveLastConfirmedTiles();
         clearTileList();
         _hintUsedInThisFlow = false;
     }
