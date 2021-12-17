@@ -39,6 +39,7 @@ public class SaveDataManager
     /// </summary>
     void createNewData()
     {
+        hash = "";
         Section[] gameManagerSections = GameManager.instance.GetSections();
         sections = new sectionData[gameManagerSections.Length];
         for (int i = 0; i < sections.Length; i++)
@@ -107,9 +108,12 @@ public class SaveDataManager
         //tried to cheat, so we delete the progress
         if (hashFunction(json) != auxHash)
         {
+            Debug.Log("A QUE TE BORRO. HASH FUNCTION: "+hashFunction(json));
+            Debug.Log("EL HASH NORMAL: " + auxHash);
             File.Delete(Application.persistentDataPath + "savedata.json");
             createNewData();
         }
+       
     }
     string hashFunction(string input)
     {

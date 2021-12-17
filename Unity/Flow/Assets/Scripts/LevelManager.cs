@@ -79,6 +79,7 @@ public class LevelManager : MonoBehaviour
             _levelDoneText.text = "You complete the level in " + _boardManager.getMovements() + " moves.";
             GameManager.instance.setSelectedLevel(_currentLevel);
             GameManager.instance.UpdateLevel(_boardManager.getMovements(),_map.getTotalFlows());
+            GameManager.instance.save();
         }
     }
 

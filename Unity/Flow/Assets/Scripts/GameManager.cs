@@ -18,7 +18,6 @@ public class GameManager : MonoBehaviour
             _adManager.setBannerPosition(BannerPosition.BOTTOM_CENTER);
             instance = this;
             _saveData = new SaveDataManager();
-            Application.wantsToQuit += _saveData.save;
             DontDestroyOnLoad(this.gameObject);
         }
         else
@@ -72,6 +71,12 @@ public class GameManager : MonoBehaviour
         return _saveData.sections[data.Key].levelLots[data.Value].bestMovesPerLevel[lv];
 
     }
+
+    public void save()
+    {
+        _saveData.save();
+    }
+
     public bool getIsPerfect(int lv)
     {
         KeyValuePair<int, int> data = getSaveInfo(_selectedSection, _selectedLevelLot);
