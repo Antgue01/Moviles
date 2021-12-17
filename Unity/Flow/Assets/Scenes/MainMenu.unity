@@ -266,7 +266,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &669516492
 GameObject:
@@ -361,7 +361,7 @@ RectTransform:
   m_Children:
   - {fileID: 1319903318}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -716,12 +716,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 3305ca93fb077fc4c9437699e9ec3983, type: 2}
     - target: {fileID: 723185779894205650, guid: 0f6cb83db43a1734b863f68078fcb0de, type: 3}
+      propertyPath: _selectedSectionDebug
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 723185779894205650, guid: 0f6cb83db43a1734b863f68078fcb0de, type: 3}
       propertyPath: selectedLevelLotDebug
       value: 
       objectReference: {fileID: 11400000, guid: 716dcf8845b368a4285c76e4c4abb1df, type: 2}
+    - target: {fileID: 723185779894205650, guid: 0f6cb83db43a1734b863f68078fcb0de, type: 3}
+      propertyPath: _selectedLevelLotDebug
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 723185779894205651, guid: 0f6cb83db43a1734b863f68078fcb0de, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 723185779894205651, guid: 0f6cb83db43a1734b863f68078fcb0de, type: 3}
       propertyPath: m_LocalPosition.x
