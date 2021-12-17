@@ -106,13 +106,22 @@ public class GameBox : MonoBehaviour
         _wallDown.SetActive(b);
     }
 
-    public void initDirs()
+    public void initWallDirsAndColor()
     {
         _validDirs = new bool[4];
         for (int x = 0; x < _validDirs.Length; x++)
         {
             _validDirs[x] = true;
         }
+        _sectionColor = GameManager.instance.getSelectedSection().themeColor;
+        _sectionColor.r += _wallColorDelta;
+        _sectionColor.g += _wallColorDelta;
+        _sectionColor.b += _wallColorDelta;
+
+        _wallLeft.GetComponent<SpriteRenderer>().color = _sectionColor;
+        _wallRight.GetComponent<SpriteRenderer>().color = _sectionColor;
+        _wallUp.GetComponent<SpriteRenderer>().color = _sectionColor;
+        _wallDown.GetComponent<SpriteRenderer>().color = _sectionColor;
     }
 
     public bool isValidDir(Vector2Int dir)
@@ -178,9 +187,9 @@ public class GameBox : MonoBehaviour
 
     public void setActiveAllWalls(bool b)
     {
-        _wallLeft.SetActive(b);   
-        _wallRight.SetActive(b);     
-        _wallUp.SetActive(b);      
+        _wallLeft.SetActive(b);
+        _wallRight.SetActive(b);
+        _wallUp.SetActive(b);
         _wallDown.SetActive(b);
     }
 
@@ -310,7 +319,7 @@ public class GameBox : MonoBehaviour
     private LinkedListNode<GameBox> _myNode;
     private LinkedListNode<GameBox> _myConfirmedNode;
     private bool[] _validDirs;
-
+    private Color _sectionColor;
     const float bgColorReduction = .35f;
 
     [SerializeField] private GameObject _backgroundImage;
@@ -322,5 +331,6 @@ public class GameBox : MonoBehaviour
     [SerializeField] private GameObject _figureImage;
     [SerializeField] private GameObject _pathImage;
     [SerializeField] private GameObject _animImage;
+    [SerializeField] private float _wallColorDelta = 0.2f;
 }
 

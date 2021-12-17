@@ -21,10 +21,9 @@ HECHO** +B de los mapas (muros exteriores)
 	-HECHO**Paso 2: Calcular qué partes de los muros debe pintar (los compartidos solo los debe pintar 1)
 	
 RETOQUES:
-** Hacer más gorda la línea de los muros hasta que ocupe lo mismo que el grid
-** Retocar grid para que sea menos visible (más fina y reducir alfa)
-** Hacer que los muros que no sean necesario pintar no se pinten (huecos juntos, por ejemplo)
-** Color de los muros
+HECHO** Hacer más gorda la línea de los muros hasta que ocupe lo mismo que el grid
+HECHO** Retocar grid para que sea menos visible (más fina y reducir alfa)
+HECHO** Color de los muros
 
 ANTONIO-----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -44,6 +43,9 @@ HECHO** Que el texto de cada nivel se ponga al color correspondiente
 
 TODO -----------------------------------------------------------------------------------------------------------------------------------------
 
+** Hacer que los muros que no sean necesario pintar no se pinten (huecos juntos, por ejemplo)
+**Revisar 10x10 mania a ver por qué peta
+** Color del texto de la ui de niveles que sea del mismo color que la sección
 ** Probar todo en Android
 	- Resoluciones
 	- Progreso

@@ -281,10 +281,10 @@ public class BoardManager : MonoBehaviour
                 {                   
                     GameObject go = Instantiate(gameBoxPrefab, _grid.transform) as GameObject;
                     go.transform.localPosition = new Vector3(col + .5f, -row - .5f, 0);
+                    sectionColor.a = 0.25f;
                     go.GetComponent<SpriteRenderer>().color = sectionColor;
                     go.GetComponent<GameBox>().setType(GameBox.BoxType.Empty);
-                    go.GetComponent<GameBox>().initDirs();
-
+                    go.GetComponent<GameBox>().initWallDirsAndColor();
                     //go.GetComponent<GameBox>().setFigureImageSize(boxWidth, boxHeight);
                     _board[row, col] = go;
                 }
@@ -388,7 +388,7 @@ public class BoardManager : MonoBehaviour
                 _board[tile2Row, tile2Col].GetComponent<GameBox>().setInvalidDir(tile1 - tile2);
 
                 _board[tile1Row, tile1Col].GetComponent<GameBox>().setWallActive(tile2 - tile1);
-                _board[tile2Row, tile2Col].GetComponent<GameBox>().setWallActive(tile1 - tile2);
+                //_board[tile2Row, tile2Col].GetComponent<GameBox>().setWallActive(tile1 - tile2);
             }
     }
 
