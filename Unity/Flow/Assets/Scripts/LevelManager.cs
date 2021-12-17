@@ -40,7 +40,7 @@ public class LevelManager : MonoBehaviour
     /* ------------------------------------------------------ UINTERFACE INFO ---------------------------------------------------*/
     public void setLevelText()
     {
-        _levelText.text = "Level " + _currentLevel;
+        _levelText.text = "Level " + (_currentLevel + 1);
     }
 
     public void setSizeText(int rows, int cols)
@@ -74,7 +74,7 @@ public class LevelManager : MonoBehaviour
     {
         _isLevelDone = isDone;
         if (_isLevelDone)
-        {
+        {            
             showEndMenu();
             _levelDoneText.text = "You complete the level in " + _boardManager.getMovements() +" moves.";
             GameManager.instance.UpdateLevel(_bestMovements);

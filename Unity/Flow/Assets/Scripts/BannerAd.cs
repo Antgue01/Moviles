@@ -22,12 +22,11 @@ public class BannerAd :IUnityAdsInitializationListener
     public void OnInitializationComplete()
     {
         GameManager.instance.GetAdManager().playBanner();
-        Debug.Log("DEBERIA ESTAR BIEN");
     }
 
     public void OnInitializationFailed(UnityAdsInitializationError error, string message)
     {
-        Debug.LogError("JFLSJFLSJFLSJFOISJFOISJFIOESJFOESIJFIOESFJOISHFOSIEHF");
+        Debug.LogError("Failed on banner init.");
     }
 
     private float _timePassed;
