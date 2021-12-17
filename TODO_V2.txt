@@ -1,9 +1,25 @@
 MARCO ------------------------------------------------------------------------------------------------------------------------------------------
-** Averiguar porque el video da 47 millones de pistas en vez de 1
-** +B de los mapas (muros exteriores)
+HECHO** Solucionar porque el video da 47 millones de pistas en vez de 1
+HECHO** +B de los mapas (muros exteriores)
 
+** Muros
+**Pasos para +B y Muros
+	-HECHO**Paso 1: Arreglar parser
+	-HECHO**Paso 2: Arreglar map
+	-**Paso 3: Modificar estructuras para tratamiento de muros
+	-**Paso 4: Determinar los muros que se tienen que pintar en cada gamebox (cuidado! puede tener muchos muros en muchisimas diferentes posiciones)
+	-**Paso 5: Muros compartidos solo los debe pintar 1 gamebox
+	-**Paso 6: Añadir restricciones: poner direcciones invalidas en cada gamebox
+			- Direcciones invalidas: listas de direcciones inválidas: Habría que recorrer la lista para preguntar por cada dirección
+			- Direcciones inválidas en game box: array de bools, habría que swapear entre dirección y bool pero no habría recorrido
 
+	-**Paso 5: Refactorizar movimientos para tener en cuenta los muros
+	-**Paso 6: Si tiene el +B pintar en los cuadros exteriores los muros, si no lo tienen (los compartidos solo los debe pintar 1)
 
+** Huecos (habiendo hecho los muros)
+	-**Paso 1: Marcar gamebox como hollow
+	-**Paso 2: Calcular qué partes de los muros debe pintar (los compartidos solo los debe pintar 1)
+	
 
 ANTONIO-----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -22,7 +38,7 @@ WILL----------------------------------------------------------------------------
 
 TODO -----------------------------------------------------------------------------------------------------------------------------------------
 
-** Muros y después Huecos
+
 
 ** Probar todo en Android
 	- Resoluciones

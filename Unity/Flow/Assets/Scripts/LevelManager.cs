@@ -27,7 +27,8 @@ public class LevelManager : MonoBehaviour
             checkLevelCompleted();
         }
 
-        _isLevelDone = false;       
+        _isLevelDone = false;
+        _userIsWatchingVideo = false;
     }
 
     // Update is called once per frame
@@ -148,12 +149,23 @@ public class LevelManager : MonoBehaviour
         _hintsMenu.SetActive(false);
     }
 
+    public void userIsWatchingVideo()
+    {
+        _userIsWatchingVideo = true;
+    }
+
     public void watchVideo()
     {
-        closeHintMenu();
-        _remainingHints++;
-        setRemainingHintsText();
-        GameManager.instance.updateNumHints(_remainingHints);
+        if (_userIsWatchingVideo)
+        {
+            _userIsWatchingVideo = false;
+            Debug.Log("Watch video");
+            closeHintMenu();
+            _remainingHints++;
+            setRemainingHintsText();
+            GameManager.instance.updateNumHints(_remainingHints);
+        }
+        
     }
 
     public void useHint()
@@ -298,4 +310,5 @@ public class LevelManager : MonoBehaviour
     private int _currentLevel;
     private int _bestMovements;
     private int _remainingHints;
+    private bool _userIsWatchingVideo;
 }

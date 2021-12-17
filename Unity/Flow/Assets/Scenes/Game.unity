@@ -1081,11 +1081,11 @@ PrefabInstance:
     - target: {fileID: 723185779894205650, guid: 0f6cb83db43a1734b863f68078fcb0de, type: 3}
       propertyPath: selectedSectionDebug
       value: 
-      objectReference: {fileID: 11400000, guid: afe95e01c4aa1da4daca3a1ee0d1a0d0, type: 2}
+      objectReference: {fileID: 11400000, guid: 4678026913ac40f49a872c3adb5a4e63, type: 2}
     - target: {fileID: 723185779894205650, guid: 0f6cb83db43a1734b863f68078fcb0de, type: 3}
       propertyPath: selectedLevelLotDebug
       value: 
-      objectReference: {fileID: 11400000, guid: 73c968be2f8e18f41992cb2517f08c08, type: 2}
+      objectReference: {fileID: 11400000, guid: 3182deb2008752542ae9dc684b77c150, type: 2}
     - target: {fileID: 723185779894205651, guid: 0f6cb83db43a1734b863f68078fcb0de, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -3297,6 +3297,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 2120471373}
+        m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
+        m_MethodName: userIsWatchingVideo
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1698826689}
         m_TargetAssemblyTypeName: RewardedAdsButton, Assembly-CSharp
         m_MethodName: requestAd
