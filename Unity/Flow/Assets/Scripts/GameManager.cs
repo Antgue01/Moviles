@@ -10,7 +10,13 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        if (instance == null)
+        if (instance != null)
+        {
+            instance._levelManager = _levelManager;
+            instance._selectedSkin = _selectedSkin;
+            Destroy(this.gameObject);
+        }
+        else
         {
             _adManager = new AdManager();
             _banner = new BannerAd(_secondsToNextAd);
@@ -18,23 +24,17 @@ public class GameManager : MonoBehaviour
             _adManager.setBannerPosition(BannerPosition.BOTTOM_CENTER);
             instance = this;
             _saveData = new SaveDataManager();
-            DontDestroyOnLoad(this.gameObject);
-        }
-        else
-        {
-            _adManager = instance._adManager;
-            _banner = instance._banner;
-            _selectedLevel = instance._selectedLevel;
-            _selectedLevelLot = instance._selectedLevelLot;
-            _selectedSection = instance._selectedSection;
-            _selectedSkin = instance._selectedSkin;
+
 #if UNITY_EDITOR
-            instance.selectedLevelDebug = selectedLevelDebug;
-            instance.selectedLevelLotDebug = selectedLevelLotDebug;
-            instance.selectedSectionDebug = selectedSectionDebug;
-            instance._selectedSkin = _selectedSkin;
+            if (selectedSectionDebug != null && selectedLevelLotDebug != null)
+            {
+                instance._selectedLevel = selectedLevelDebug;
+                instance._selectedLevelLot = selectedLevelLotDebug;
+                instance._selectedSection = selectedSectionDebug;
+            }
 #endif
-            Destroy(this.gameObject);
+
+            DontDestroyOnLoad(this.gameObject);
         }
     }
 
@@ -131,7 +131,6 @@ public class GameManager : MonoBehaviour
     {
         _selectedSection = mySection;
         _selectedLevelLot = myLevelLot;
-
     }
 
     public void SwitchSceneTo(SceneEnum scene)
@@ -141,33 +140,21 @@ public class GameManager : MonoBehaviour
 
     public Section getSelectedSection()
     {
-#if UNITY_EDITOR
-        _selectedSection = selectedSectionDebug;
-#endif
         return _selectedSection;
     }
 
     public LevelLot getSelectedLot()
     {
-#if UNITY_EDITOR
-        _selectedLevelLot = selectedLevelLotDebug;
-#endif
         return _selectedLevelLot;
     }
 
     public int getSelectedLevel()
     {
-#if UNITY_EDITOR
-        _selectedLevel = selectedLevelDebug;
-#endif
         return _selectedLevel;
     }
 
     public Skin getSelectedSkin()
     {
-
-
-
         return _selectedSkin;
     }
 

@@ -31,16 +31,11 @@ public class LevelManager : MonoBehaviour
         _userIsWatchingVideo = false;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     /* ------------------------------------------------------ UINTERFACE INFO ---------------------------------------------------*/
     public void setLevelText()
     {
-        _levelText.text = "Level " + (_currentLevel + 1);
+        _levelText.color = GameManager.instance.getSelectedSection().themeColor;
+        _levelText.text = "level " + (_currentLevel + 1);
     }
 
     public void setSizeText(int rows, int cols)
@@ -299,8 +294,6 @@ public class LevelManager : MonoBehaviour
     [SerializeField] Text _levelDoneText;
     [SerializeField] RectTransform _UITop;
     [SerializeField] RectTransform _UIBot;
-    [SerializeField] float _topOffset;
-    [SerializeField] float _botOffset;
     [SerializeField] Transform _grid;
     [SerializeField] Camera _cam;
     private MapParser _mapParser;

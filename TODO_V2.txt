@@ -34,7 +34,8 @@ HECHO** Escena de selección de nivel poner estrellita a los niveles que se han 
 WILL--------------------------------------------------------------------------------------------------------------------------------------
 HECHO** Resoluciones cuadradas funcionales para TODAS las escenas
 HECHO** Escena de selección de nivel: Al cambiar de resolución se ajusta bien
-** Que funcione las escenas de forma independiente con las opciones de debug
+HECHO** Que funcione las escenas de forma independiente con las opciones de debug
+HECHO** Que el texto de cada nivel se ponga al color correspondiente
 
 TODO -----------------------------------------------------------------------------------------------------------------------------------------
 

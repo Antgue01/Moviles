@@ -505,7 +505,7 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0, g: 0.6132076, b: 0, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0, g: 0.8490566, b: 0.081550084, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -714,7 +714,7 @@ PrefabInstance:
     - target: {fileID: 723185779894205650, guid: 0f6cb83db43a1734b863f68078fcb0de, type: 3}
       propertyPath: selectedSectionDebug
       value: 
-      objectReference: {fileID: 11400000, guid: 3305ca93fb077fc4c9437699e9ec3983, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 723185779894205650, guid: 0f6cb83db43a1734b863f68078fcb0de, type: 3}
       propertyPath: _selectedSectionDebug
       value: 
@@ -722,7 +722,7 @@ PrefabInstance:
     - target: {fileID: 723185779894205650, guid: 0f6cb83db43a1734b863f68078fcb0de, type: 3}
       propertyPath: selectedLevelLotDebug
       value: 
-      objectReference: {fileID: 11400000, guid: 716dcf8845b368a4285c76e4c4abb1df, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 723185779894205650, guid: 0f6cb83db43a1734b863f68078fcb0de, type: 3}
       propertyPath: _selectedLevelLotDebug
       value: 
