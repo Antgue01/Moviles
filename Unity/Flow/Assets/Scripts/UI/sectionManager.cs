@@ -42,7 +42,7 @@ public class sectionManager : MonoBehaviour
                 levelLotVisuals.setName(levellot.LevelLotName);
                 //todo CUANDO SEPAMOS GUARDAR EL PROGRESO QUE SE CAMBIE LO DE AQUÍ ABAJO
 
-                levelLotVisuals.setLevelsInfo(levellot.LevelLotFile.ToString().Split(separators, System.StringSplitOptions.RemoveEmptyEntries).Length, /*levelLot.playedLevels*/0);
+                levelLotVisuals.setLevelsInfo(levellot.LevelLotFile.ToString().Split(separators, System.StringSplitOptions.RemoveEmptyEntries).Length, GameManager.instance.getNumPlayedLevels(levellot));
             }
 
         }

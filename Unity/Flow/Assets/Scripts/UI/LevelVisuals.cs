@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class LevelVisuals : MonoBehaviour
+public class LevelVisuals : MonoBehaviour,IPointerDownHandler,IPointerUpHandler
 {
     public enum LevelVisualElement { Background, Border, Tick, Lock, Number }
 
@@ -72,6 +73,18 @@ public class LevelVisuals : MonoBehaviour
     public void setLevel(int lvl)
     {
         _number.text = lvl.ToString();
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+      
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        _border.color = Color.white;
+        _bg.color = Color.white;
+        _number.color = Color.black;
     }
 
     [SerializeField] Image _bg;

@@ -18,7 +18,6 @@ public class LevelDisplayer : MonoBehaviour
     {
         _levelsPerPage = levelsPerPage;
         _levelRange.text = (gridNumber * _levelsPerPage + 1).ToString() + " - " + ((gridNumber + 1) * _levelsPerPage).ToString();
-        _selector.setInitialLevel(gridNumber * _levelsPerPage);
 
         LevelVisuals visuals = null;
         GameObject levelObject = null;
@@ -36,7 +35,6 @@ public class LevelDisplayer : MonoBehaviour
 
         }
         RectTransform levelTr = levelObject.GetComponent<RectTransform>();
-        _selector.setLevelsSize(levelTr.rect.width, levelTr.rect.height);
     }
 
     private void visualizeLocked(LevelVisuals visuals)
@@ -84,6 +82,5 @@ public class LevelDisplayer : MonoBehaviour
     [SerializeField] RectTransform _gridTransform;
     [SerializeField] RectTransform _Transform;
     [SerializeField] Text _levelRange;
-    [SerializeField] LevelSelector _selector;
 
 }

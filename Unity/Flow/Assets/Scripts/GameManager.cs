@@ -57,6 +57,12 @@ public class GameManager : MonoBehaviour
         return isInRange && _saveData.sections[data.Key].levelLots[data.Value].bestMovesPerLevel[lv] > -1;
     }
 
+    public  int getNumPlayedLevels(LevelLot levellot)
+    {
+        //todo hacerlo
+        return 0;
+    }
+
     /// <summary>
     /// Gets the last completed level from a certain level lot in a section
     /// </summary>
