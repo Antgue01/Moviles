@@ -372,7 +372,7 @@ public class BoardManager : MonoBehaviour
             for(int x  = 0; x < _map.getWalls().Length; x++)
             {
                 int tile1 = _map.getWalls()[x].Key;
-                int tile2 = _map.getWalls()[x].Value;
+                int tile2 = _map.getWalls()[x].Value;                
 
                 int tile1Row = tile1 / _map.getCols();
                 int tile1Col = tile1 % _map.getCols();
@@ -383,6 +383,7 @@ public class BoardManager : MonoBehaviour
                 _board[tile2Row, tile2Col].GetComponent<GameBox>().setInvalidDir(tile1 - tile2);
 
                 _board[tile1Row, tile1Col].GetComponent<GameBox>().setWallActive(tile2 - tile1);
+                _board[tile2Row, tile2Col].GetComponent<GameBox>().setWallActive(tile1 - tile2);
             }
     }
 
