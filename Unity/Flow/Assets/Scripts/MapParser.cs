@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-
+//Maps with hollows: 0-29
+//Map with walls:  30 - 59
 public class MapParser
 {    
     public Map createLevelMap(string codeMap)
@@ -43,14 +44,14 @@ public class MapParser
         map.setLevel(int.Parse(header[2]));
         _totalFlows = int.Parse(header[3]);
         map.setTotalFlows(_totalFlows);
-        //int i = 4;
-        //while (i < header.Length)
-        //{
-        //    if (i == 4) map.setBridges(System.Array.ConvertAll(header[i].Split(':'), int.Parse)); //SI FUNCIONA BORRAR MÉTODO readBridges, SI NO UTILIZAR MÉTODO
-        //    //if (i == 4) _map.setBridges(readBridges(header[i]));
-        //    else if (i == 5) map.setHollows(readHollows(header[i]));
-        //    else if (i == 6) map.setWalls(readWalls(header[i]));
-        //}
+        int i = 4;
+        while (i < header.Length)
+        {            
+            if (i == 4 && header[i] != "") map.setBridges(readBridges(header[i]));
+            if (i == 5 && header[i] != "") map.setHollows(readHollows(header[i]));
+            else if (i == 6 && header[i] != "") map.setWalls(readWalls(header[i]));
+            i++;
+        }
 
         map.setFlows(readFlows(data));
 
@@ -59,35 +60,24 @@ public class MapParser
 
     private int[] readBridges(string data)
     {
-        string[] dataSplit = data.Split(':');
-        int[] bridges = new int[dataSplit.Length];
-
-        for (int x = 0; x < bridges.Length; x++)
-            bridges[x] = int.Parse(dataSplit[x]);
-
-        return bridges;
+        return System.Array.ConvertAll(data.Split(':'), int.Parse);
     }
 
     private int[] readHollows(string data)
     {
-        string[] dataSplit = data.Split(':');
-        int[] hollows = new int[dataSplit.Length];
-
-        for (int x = 0; x < hollows.Length; x++)
-            hollows[x] = (int) (dataSplit[x][0] - 0); // CARE WITH ADDITIONAL INFO
-
-        return hollows;
+        return System.Array.ConvertAll(data.Split(':'), int.Parse);
     }
 
     private KeyValuePair<int,int>[] readWalls(string data)
     {
         string[] dataSplit = data.Split(':');        
         KeyValuePair<int, int>[] walls = new KeyValuePair<int, int>[dataSplit.Length];
-        for (int j = 0; j < walls.Length; j++)
+        int[] wallsplit = new int[2];
+
+        for (int x = 0; x < walls.Length; x++)
         {
-            string a = dataSplit[j][0].ToString();
-            string b = dataSplit[j][2].ToString();
-            walls[j] = new KeyValuePair<int, int>(int.Parse(a), int.Parse(b));
+            wallsplit = System.Array.ConvertAll(dataSplit[x].Split('|'), int.Parse);           
+            walls[x] = new KeyValuePair<int, int>(wallsplit[0], wallsplit[1]);
         }
         return walls;
     }

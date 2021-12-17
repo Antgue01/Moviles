@@ -27,8 +27,7 @@ public class LevelManager : MonoBehaviour
             checkLevelCompleted();
         }
 
-        _isLevelDone = false;
-        _bestMovements = GameManager.instance.getBestMoves(_currentLevel);
+        _isLevelDone = false;       
     }
 
     // Update is called once per frame
