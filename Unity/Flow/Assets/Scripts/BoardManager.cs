@@ -363,7 +363,11 @@ public class BoardManager : MonoBehaviour
         if (_map.getHollows() != null)
             for (int x = 0; x < _map.getHollows().Length; x++)
             {
-               
+                int tileRow = _map.getHollows()[x] / _map.getCols();
+                int tileCol = _map.getHollows()[x] % _map.getCols();
+                GameBox gb = _board[tileRow, tileCol].GetComponent<GameBox>();
+                gb.setType(GameBox.BoxType.Hollow);
+                gb.setActiveAllWalls(true);
             }
     }
 

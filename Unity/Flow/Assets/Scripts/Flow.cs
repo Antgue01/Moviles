@@ -108,13 +108,13 @@ public class Flow
             //First check with one of the components of direction
             GameBox auxGB = _boardManager.getBoard()[lastInputRowCol.x + direction.y, lastInputRowCol.y].GetComponent<GameBox>();
             Vector2Int auxDir = new Vector2Int(0, direction.y);
-            bool valid = (auxGB.getType() == GameBox.BoxType.Empty);
+            bool valid = (auxGB.getType() == GameBox.BoxType.Empty && auxGB.isValidDir(direction));
             //If not valid, we try again in another direction (with the other component of direction)
             if (!valid)
             {
                 auxGB = _boardManager.getBoard()[lastInputRowCol.x, lastInputRowCol.y + direction.x].GetComponent<GameBox>();
                 auxDir = new Vector2Int(direction.x, 0);
-                valid = (auxGB.getType() == GameBox.BoxType.Empty);
+                valid = (auxGB.getType() == GameBox.BoxType.Empty && auxGB.isValidDir(direction));
             }
 
             if (valid)
@@ -128,6 +128,10 @@ public class Flow
             {
                 return false;
             }
+        }
+        else if(!currentGameBox.isValidDir(direction))
+        {
+            return false;
         }
 
         linkGameBox(currentGameBox, direction);
