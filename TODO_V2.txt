@@ -38,7 +38,7 @@ WILL----------------------------------------------------------------------------
 
 TODO -----------------------------------------------------------------------------------------------------------------------------------------
 
-
+** Que funcione las escenas de forma independiente con las opciones de debug
 
 ** Probar todo en Android
 	- Resoluciones
