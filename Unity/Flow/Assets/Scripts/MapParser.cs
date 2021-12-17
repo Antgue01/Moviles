@@ -17,16 +17,16 @@ public class MapParser
 
         //HEAD FORMAT: ROWS[:COLS][+B], RESERVED, LEVEL, HOWMANYFLOWS [,[BRIDGE[:BRIDGE]]] [,[HOLLOWS[:HOLLOWS]]] [,[WALL|WALL[:WALL|WALL]]];
         //LEVEL FORMAT: HEAD; FLOW(1); FLOW(2); FLOW(HOWMANYFLOWS-1);
-        if (header[0].Length == 1)
+        string[] dimsSeparator = { ":", "+" };
+        string[] dims = header[0].Split(dimsSeparator, System.StringSplitOptions.RemoveEmptyEntries);
+        if (dims.Length == 1)
         {
-            map.setCols(int.Parse(header[0]));
-            map.setRows(map.getCols());
+            map.setCols(int.Parse(dims[0]));
+            map.setRows(int.Parse(dims[0]));
             map.setPlusB(false);
         }
         else
         {
-            string[] dimsSeparator = { ":", "+" };            
-            string[] dims = header[0].Split(dimsSeparator, System.StringSplitOptions.RemoveEmptyEntries);
             if(dims.Length == 2)
             {
                 map.setCols(int.Parse(dims[0]));
