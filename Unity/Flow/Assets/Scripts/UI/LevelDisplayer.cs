@@ -28,12 +28,12 @@ public class LevelDisplayer : MonoBehaviour
             levelObject = Instantiate<GameObject>(_levelPrefab, _gridTransform);
             visuals = levelObject.GetComponent<LevelVisuals>();
             if (GameManager.instance.isLevelCompleted(i))
-                visualizeComplete(visuals, section);
+                visualizeComplete(visuals, section, i);
             else if (GameManager.instance.isUnlockedLevel(i))
                 visualizeUnlocked(visuals);
             else
                 visualizeLocked(visuals);
-            visuals.setLevel(i+1);
+            visuals.setLevel(i + 1);
 
         }
     }
@@ -59,22 +59,37 @@ public class LevelDisplayer : MonoBehaviour
         return _Transform.rect.size.x;
     }
 
-    void visualizeComplete(LevelVisuals visuals,Section section)
+    void visualizeComplete(LevelVisuals visuals, Section section, int level)
     {
-        visuals.setVisualVisible(LevelVisuals.LevelVisualElement.Tick, true);
         visuals.setVisualColor(LevelVisuals.LevelVisualElement.Background, section.themeColor);
         visuals.setVisualColor(LevelVisuals.LevelVisualElement.Border, section.themeColor);
         Color tickColor = section.themeColor;
         tickColor.r -= deltaColor;
         tickColor.g -= deltaColor;
         tickColor.b -= deltaColor;
-        visuals.setVisualColor(LevelVisuals.LevelVisualElement.Tick, tickColor);
+        if (GameManager.instance.getIsPerfect(level))
+        {
+            Color color = section.themeColor;
+            color.a -= starAlphaDisminution;
+            color.r -= starAlphaDisminution;
+            color.g -= starAlphaDisminution;
+            color.b -= starAlphaDisminution;
+            visuals.setVisualColor(LevelVisuals.LevelVisualElement.Star, color);
+            visuals.setVisualVisible(LevelVisuals.LevelVisualElement.Star, true);
+        }
+        else
+        {
+            visuals.setVisualColor(LevelVisuals.LevelVisualElement.Tick, tickColor);
+            visuals.setVisualVisible(LevelVisuals.LevelVisualElement.Tick, true);
+        }
         visuals.setVisualColor(LevelVisuals.LevelVisualElement.Number, Color.white);
+
     }
 
     public int getLevelsPerPage() { return _levelsPerPage; }
     const float deltaColor = .35f;
     int _levelsPerPage;
+    [SerializeField] float starAlphaDisminution = .3f;
     [SerializeField] Color _lockedBorderColor;
     [SerializeField] Color _unlockedBorderColor;
     [SerializeField] Color _lockedBackGroundColor;

@@ -16,6 +16,7 @@ public class SaveDataManager
         public int lastUnlockedLevel;
         public int playedLevels;
         public int[] bestMovesPerLevel;
+        public bool[] isPerfectPerLevel;
 
     }
     [System.Serializable]
@@ -55,6 +56,7 @@ public class SaveDataManager
                 else
                     sections[i].levelLots[j].lastUnlockedLevel = 0;
                 sections[i].levelLots[j].bestMovesPerLevel = new int[levels];
+                sections[i].levelLots[j].isPerfectPerLevel = new bool[levels];
                 int[] bestMoves = sections[i].levelLots[j].bestMovesPerLevel;
                 for (int k = 0; k < bestMoves.Length; k++)
                 {

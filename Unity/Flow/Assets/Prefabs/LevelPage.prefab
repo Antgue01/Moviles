@@ -149,7 +149,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8232617943930849876}
   - component: {fileID: 7382041200691033272}
-  - component: {fileID: 6478396972625222114}
   m_Layer: 5
   m_Name: LevelPage
   m_TagString: Untagged
@@ -200,16 +199,3 @@ MonoBehaviour:
   _gridTransform: {fileID: 1645053761130464693}
   _Transform: {fileID: 8232617943930849876}
   _levelRange: {fileID: 1645053762401328145}
---- !u!114 &6478396972625222114
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6776174643036982382}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cc482b867aac724d8a15c3c5a480467, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _number: {fileID: 0}

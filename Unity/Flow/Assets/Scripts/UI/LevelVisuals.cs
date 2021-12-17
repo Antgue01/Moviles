@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class LevelVisuals : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-    public enum LevelVisualElement { Background, Border, Tick, Lock, Number }
+    public enum LevelVisualElement { Background, Border, Tick, Lock, Star, Number }
 
     /// <summary>
     /// sets an element's visibility
@@ -31,6 +31,9 @@ public class LevelVisuals : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
                 break;
             case LevelVisualElement.Number:
                 _number.gameObject.SetActive(visible);
+                break;
+            case LevelVisualElement.Star:
+                _star.gameObject.SetActive(visible);
                 break;
             default:
                 Debug.LogWarning("Invalid elem passed");
@@ -66,6 +69,10 @@ public class LevelVisuals : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
                 _numberColor = color;
                 _number.color = color;
                 break;
+            case LevelVisualElement.Star:
+                _starColor= color;
+                _star.color = color;
+                break;
             default:
                 Debug.LogWarning("Invalid elem passed");
                 break;
@@ -87,6 +94,7 @@ public class LevelVisuals : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         _number.color = _numberColor;
         _lock.color = _lockColor;
         _tick.color = _tickColor;
+        _star.color = _starColor;
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -95,17 +103,20 @@ public class LevelVisuals : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         _bg.color = Color.white;
         _number.color = Color.black;
         _lock.color = Color.white;
-        _tick.color = Color.white;
+        _tick.color = new Color();
+        _star.color = _starColorOnPressed;
     }
     Color _bgColor;
     Color _borderColor;
     Color _lockColor;
     Color _numberColor;
     Color _tickColor;
+     Color _starColor;
     [SerializeField] Image _bg;
     [SerializeField] Image _border;
     [SerializeField] Image _tick;
     [SerializeField] Image _lock;
+    [SerializeField] Image _star;
     [SerializeField] Text _number;
-
+    [SerializeField] Color _starColorOnPressed;
 }

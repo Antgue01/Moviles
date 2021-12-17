@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("Level out of range. IsLevelCompleted will return false");
         return isInRange && _saveData.sections[data.Key].levelLots[data.Value].bestMovesPerLevel[lv] > -1;
     }
+
     public int getBestMoves(int lv)
     {
         KeyValuePair<int, int> data = getSaveInfo(_selectedSection, _selectedLevelLot);
@@ -69,6 +70,17 @@ public class GameManager : MonoBehaviour
             return -1;
         }
         return _saveData.sections[data.Key].levelLots[data.Value].bestMovesPerLevel[lv];
+
+    }
+    public bool getIsPerfect(int lv)
+    {
+        KeyValuePair<int, int> data = getSaveInfo(_selectedSection, _selectedLevelLot);
+        bool isInRange = lv >= 0 && lv < _saveData.sections[data.Key].levelLots[data.Value].bestMovesPerLevel.Length;
+        if (!isInRange)
+        {
+            Debug.LogWarning("Level out of range.IsPerfect will return false");
+        }
+        return isInRange && _saveData.sections[data.Key].levelLots[data.Value].isPerfectPerLevel[lv];
 
     }
     public int getNumPlayedLevels(Section section, LevelLot levellot)
@@ -125,7 +137,7 @@ public class GameManager : MonoBehaviour
     public Section getSelectedSection()
     {
 #if UNITY_EDITOR
-        _selectedSection = selectedSectionDebug;
+        //_selectedSection = selectedSectionDebug;
 #endif
         return _selectedSection;
     }
@@ -133,7 +145,7 @@ public class GameManager : MonoBehaviour
     public LevelLot getSelectedLot()
     {
 #if UNITY_EDITOR
-        _selectedLevelLot = selectedLevelLotDebug;
+        //_selectedLevelLot = selectedLevelLotDebug;
 #endif
         return _selectedLevelLot;
     }
@@ -141,7 +153,7 @@ public class GameManager : MonoBehaviour
     public int getSelectedLevel()
     {
 #if UNITY_EDITOR
-        _selectedLevel = selectedLevelDebug;
+        //_selectedLevel = selectedLevelDebug;
 #endif
         return _selectedLevel;
     }
@@ -173,7 +185,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <param name="moves">The number of moves we did on the current level</param>
 
-    public void UpdateLevel(int moves)
+    public void UpdateLevel(int moves, int totalFlows)
     {
         //we search our level
         KeyValuePair<int, int> data = getSaveInfo(_selectedSection, _selectedLevelLot);
@@ -181,6 +193,7 @@ public class GameManager : MonoBehaviour
         int bestMoves = _saveData.sections[data.Key].levelLots[data.Value].bestMovesPerLevel[_selectedLevel];
         if (bestMoves == -1 || bestMoves > moves)
         {
+            _saveData.sections[data.Key].levelLots[data.Value].isPerfectPerLevel[_selectedLevel] = moves == totalFlows;
             _saveData.sections[data.Key].levelLots[data.Value].bestMovesPerLevel[_selectedLevel] = moves;
             if (bestMoves == -1)
                 _saveData.sections[data.Key].levelLots[data.Value].playedLevels++;
