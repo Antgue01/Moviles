@@ -22,7 +22,6 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
     {
         if (GameManager.instance.GetAdManager().isRewardedVideo(adUnitId) && showCompletionState.Equals(UnityAdsShowCompletionState.COMPLETED))
         {
-            Debug.Log("Unity Ads Rewarded Ad Completed");
             // Grant a reward.
             _levelManager.watchVideo();
             GameManager.instance.GetAdManager().showBanner();
@@ -50,6 +49,5 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
 
     public void OnUnityAdsShowClick(string placementId)
     {
-        int a = 2;
     }
 }

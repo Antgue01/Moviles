@@ -160,11 +160,11 @@ public class LevelManager : MonoBehaviour
         if (_userIsWatchingVideo)
         {
             _userIsWatchingVideo = false;
-            Debug.Log("Watch video");
             closeHintMenu();
             _remainingHints++;
             setRemainingHintsText();
             GameManager.instance.updateNumHints(_remainingHints);
+            GameManager.instance.save();
         }
         
     }
