@@ -32,12 +32,10 @@ public class GameManager : MonoBehaviour
                 instance._selectedSection = selectedSectionDebug;
             }
 #endif
-
             DontDestroyOnLoad(this.gameObject);
         }
     }
-
-
+    public void save() { _saveData.save(); }
 
     public bool isUnlockedLevel(int lv)
     {
@@ -68,12 +66,6 @@ public class GameManager : MonoBehaviour
             return -1;
         }
         return _saveData.sections[data.Key].levelLots[data.Value].bestMovesPerLevel[lv];
-
-    }
-
-    public void save()
-    {
-        _saveData.save();
     }
 
     public bool getIsPerfect(int lv)
@@ -85,18 +77,12 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("Level out of range.IsPerfect will return false");
         }
         return isInRange && _saveData.sections[data.Key].levelLots[data.Value].isPerfectPerLevel[lv];
-
     }
     public int getNumPlayedLevels(Section section, LevelLot levellot)
     {
         KeyValuePair<int, int> data = getSaveInfo(section, levellot);
 
         return _saveData.sections[data.Key].levelLots[data.Value].playedLevels;
-    }
-
-    public int getRemainingHints()
-    {
-        return _saveData.numHints;
     }
 
     /// <summary>
@@ -107,10 +93,10 @@ public class GameManager : MonoBehaviour
     /// <returns>The last level (beginning from 0) we completed</returns>
     public int getLastCompletedLevel(Section section, LevelLot lvlot)
     {
-
         KeyValuePair<int, int> data = getSaveInfo(section, lvlot);
         return _saveData.sections[data.Key].levelLots[data.Value].lastUnlockedLevel - 1;
     }
+
     KeyValuePair<int, int> getSaveInfo(Section s, LevelLot l)
     {
         int i = 0;
@@ -125,51 +111,6 @@ public class GameManager : MonoBehaviour
         }
         return new KeyValuePair<int, int>(i, j);
     }
-
-    public void goToLevelSelection(LevelLot myLevelLot, Section mySection)
-    {
-        _selectedSection = mySection;
-        _selectedLevelLot = myLevelLot;
-    }
-
-    public void SwitchSceneTo(SceneEnum scene)
-    {
-        SceneManager.LoadScene((int)scene);
-    }
-
-    public Section getSelectedSection()
-    {
-        return _selectedSection;
-    }
-
-    public LevelLot getSelectedLot()
-    {
-        return _selectedLevelLot;
-    }
-
-    public int getSelectedLevel()
-    {
-        return _selectedLevel;
-    }
-
-    public Skin getSelectedSkin()
-    {
-        return _selectedSkin;
-    }
-
-
-    public Section[] GetSections() { return _sections; }
-    public Skin[] GetSkins() { return _skins; }
-    public void setSelectedLevel(int lvl) { _selectedLevel = lvl; }
-    public void updateNumHints(int numHints)
-    {
-        _saveData.numHints = numHints;
-    }
-
-    public AdManager GetAdManager() { return _adManager; }
-    [SerializeField] Section[] _sections;
-    [SerializeField] Skin[] _skins;
-
     /// <summary>
     /// updates the current level moves if we beat the record. If the current level does not have a 
     /// record yet, creates the record
@@ -197,9 +138,29 @@ public class GameManager : MonoBehaviour
             int numLevels = _selectedLevelLot.LevelLotFile.ToString().Split(separators, StringSplitOptions.RemoveEmptyEntries).Length;
             if (lastLevel == _selectedLevel && lastLevel < numLevels)
                 _saveData.sections[data.Key].levelLots[data.Value].lastUnlockedLevel++;
-
         }
     }
+
+    public void goToLevelSelection(LevelLot myLevelLot, Section mySection)
+    {
+        _selectedSection = mySection;
+        _selectedLevelLot = myLevelLot;
+    }
+
+    public int getRemainingHints() { return _saveData.numHints; }
+    public void SwitchSceneTo(SceneEnum scene) { SceneManager.LoadScene((int)scene); }
+    public Section getSelectedSection() { return _selectedSection; }
+    public LevelLot getSelectedLot() { return _selectedLevelLot; }
+    public int getSelectedLevel() { return _selectedLevel; }
+    public Skin getSelectedSkin() { return _selectedSkin; }
+    public Section[] GetSections() { return _sections; }
+    public Skin[] GetSkins() { return _skins; }
+    public void setSelectedLevel(int lvl) { _selectedLevel = lvl; }
+    public void updateNumHints(int numHints) { _saveData.numHints = numHints; }
+    public AdManager GetAdManager() { return _adManager; }
+
+    [SerializeField] Section[] _sections;
+    [SerializeField] Skin[] _skins;
 
     [SerializeField] LevelManager _levelManager;
     [SerializeField] float _secondsToNextAd;
@@ -212,8 +173,11 @@ public class GameManager : MonoBehaviour
     AdManager _adManager;
     BannerAd _banner;
 #if UNITY_EDITOR
+    [Tooltip("Section for debugging.")]
     [SerializeField] Section selectedSectionDebug;
+    [Tooltip("LevelLot for debugging.")]
     [SerializeField] LevelLot selectedLevelLotDebug;
+    [Tooltip("Level for debugging.")]
     [SerializeField] int selectedLevelDebug;
 #endif
 

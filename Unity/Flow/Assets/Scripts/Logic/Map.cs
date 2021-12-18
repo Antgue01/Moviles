@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Map info container
+/// </summary>
 public class Map
 {
     public void setRows(int r) { _rows = r; }

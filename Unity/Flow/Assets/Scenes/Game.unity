@@ -1282,8 +1282,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sprites:
   - {fileID: 21300000, guid: 0f784607f0bcdfd43a0ed5e60201a8b1, type: 3}
-  - {fileID: 21300000, guid: b9cb8245b1a3a944b96f051f3c6cbbd3, type: 3}
-  - {fileID: 21300000, guid: f0dce572456cd4f4cb2c95053d3cb7cd, type: 3}
+  - {fileID: 21300000, guid: 4c277f36a07c32f45b7f19887c7f2dbb, type: 3}
   gameBoxPrefab: {fileID: 8161263463040058764, guid: efb032bd83f15d04593279073f9a6b08, type: 3}
   _grid: {fileID: 1450791940}
   _cursor: {fileID: 662268967}

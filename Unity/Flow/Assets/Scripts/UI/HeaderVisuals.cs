@@ -5,11 +5,6 @@ using UnityEngine.UI;
 
 public class HeaderVisuals : MonoBehaviour
 {
-    [SerializeField] Image _myLine;
-    [SerializeField] Image _myImage;
-    [SerializeField] Text _myName;
-    
-    const float deltaColor = .35f;
     public void setName(string name)
     {
         if (_myName != null)
@@ -28,4 +23,10 @@ public class HeaderVisuals : MonoBehaviour
             _myImage.color = color;
         else Debug.LogWarning("Image not set in header");
     }
+
+    [SerializeField] Image _myLine;
+    [SerializeField] Image _myImage;
+    [SerializeField] Text _myName;
+
+    const float deltaColor = .35f;
 }

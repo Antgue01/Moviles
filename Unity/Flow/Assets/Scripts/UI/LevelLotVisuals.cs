@@ -6,9 +6,6 @@ using UnityEngine.UI;
 
 public class LevelLotVisuals : MonoBehaviour, IPointerDownHandler,IPointerUpHandler
 {
-    [SerializeField] Text _myName;
-    [SerializeField] Text _myResults;
-    Color _myColor;
     public void setColor(Color color)
     {
         _myColor = color;
@@ -37,4 +34,8 @@ public class LevelLotVisuals : MonoBehaviour, IPointerDownHandler,IPointerUpHand
     {
         _myName.color = _myColor;
     }
+
+    [SerializeField] Text _myName;
+    [SerializeField] Text _myResults;
+    Color _myColor;
 }

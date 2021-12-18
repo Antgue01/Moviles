@@ -6,10 +6,8 @@ using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
 {
-    // Start is called before the first frame update
     void Start()
     {
-
         _boardManager.setLevelManager(this);
         _mapParser = new MapParser();
 
@@ -24,7 +22,6 @@ public class LevelManager : MonoBehaviour
             _boardManager.loadMap(_map);
             AdjustGridToScreen();
             updateButtonsInfo();
-            checkLevelCompleted();
         }
 
         _isLevelDone = false;
@@ -32,6 +29,7 @@ public class LevelManager : MonoBehaviour
     }
 
     /* ------------------------------------------------------ UINTERFACE INFO ---------------------------------------------------*/
+    #region UI INFO
     public void setLevelText()
     {
         _levelText.color = GameManager.instance.getSelectedSection().themeColor;
@@ -73,15 +71,11 @@ public class LevelManager : MonoBehaviour
             showEndMenu();
             _levelDoneText.text = "You complete the level in " + _boardManager.getMovements() + " moves.";
             GameManager.instance.setSelectedLevel(_currentLevel);
-            GameManager.instance.UpdateLevel(_boardManager.getMovements(),_map.getTotalFlows());
+            GameManager.instance.UpdateLevel(_boardManager.getMovements(), _map.getTotalFlows());
             GameManager.instance.save();
         }
     }
 
-    private void checkLevelCompleted()
-    {
-        //Comprobar si el _currentLevel estaba ya completo y mostrar estrella, si no est� completado y la estrella est� visible ocultarla      
-    }
     private void setRemainingHintsText()
     {
         _hintText.text = _remainingHints + "X";
@@ -94,7 +88,6 @@ public class LevelManager : MonoBehaviour
         setBestMovementsText();
         _remainingHints = GameManager.instance.getRemainingHints();
         setRemainingHintsText();
-        checkLevelCompleted();
         checkPreviousNextButtons();
     }
 
@@ -125,13 +118,9 @@ public class LevelManager : MonoBehaviour
             _nextLevelButton.transition = Selectable.Transition.SpriteSwap;
         }
     }
-
+    #endregion
     /* ------------------------------------------------------ BUTTON ACTIONS -----------------------------------------------------*/
-
-    public void goToSelectionLotScene()
-    {
-        //load previous scene
-    }
+    #region BUTTON ACTIONS
 
     public void showHintMenu()
     {
@@ -161,7 +150,6 @@ public class LevelManager : MonoBehaviour
             GameManager.instance.updateNumHints(_remainingHints);
             GameManager.instance.save();
         }
-        
     }
 
     public void useHint()
@@ -228,8 +216,11 @@ public class LevelManager : MonoBehaviour
             AdjustGridToScreen();
         }
     }
+    #endregion
 
-
+    /// <summary>
+    /// Adjust grids position and scale
+    /// </summary>
     void AdjustGridToScreen()
     {
         //From camera
@@ -277,9 +268,11 @@ public class LevelManager : MonoBehaviour
         _grid.transform.position = new Vector3(-translationX, translationY + deltaVerticalCentre, 0);
     }
 
-
+    [Tooltip("BoardManager reference.")]
     [SerializeField] BoardManager _boardManager;
+    [Tooltip("End Menu UI.")]
     [SerializeField] GameObject _endMenu;
+    [Tooltip("Hints Menu UI")]
     [SerializeField] GameObject _hintsMenu;
     [SerializeField] Image _previousLevelImage;
     [SerializeField] Image _nextLevelImage;
@@ -296,7 +289,9 @@ public class LevelManager : MonoBehaviour
     [SerializeField] RectTransform _UITop;
     [SerializeField] RectTransform _UIBot;
     [SerializeField] Transform _grid;
+    [Tooltip("Main Camera reference.")]
     [SerializeField] Camera _cam;
+
     private MapParser _mapParser;
     Map _map;
 

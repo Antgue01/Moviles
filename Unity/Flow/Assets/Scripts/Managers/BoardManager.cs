@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
-    // Start is called before the first frame update
     void Start()
     {
         _transformer = new InputTransformer();
@@ -13,7 +12,6 @@ public class BoardManager : MonoBehaviour
         _onMenu = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (_levelDone) return;
@@ -33,12 +31,15 @@ public class BoardManager : MonoBehaviour
             HandleInput();
     }
 
-    //------------------------------------------------------------------------------------------------------------------------------------//
-    //--------------------------------------------------------------------------------------------------------INPUT  --------------------//
-    //----------------------------------------------------------------------------------------------------------------------------------//
-    public GameBox getTileFromInput(Vector2 inputPosition)
+	#region INPUT
+    /// <summary>
+    /// Obtains the board tile from input position
+    /// </summary>
+    /// <param name="inputPosition"></param>
+    /// <returns></returns>
+	public GameBox getTileFromInput(Vector2 inputPosition)
     {
-        _inputTilePos = _transformer.getTilePos(inputPosition, _grid.transform, Rows, Cols);
+        _inputTilePos = _transformer.getTilePos(inputPosition, _grid.transform, Rows, Cols, _cam);
         if (_inputTilePos.x == -1 || _inputTilePos.y == -1) return null;
         _inputTileRowCol = _inputTilePos;
         return _board[_inputTileRowCol.x, _inputTileRowCol.y];
@@ -153,18 +154,10 @@ public class BoardManager : MonoBehaviour
         if (_cursor.gameObject.activeSelf) _cursor.gameObject.SetActive(false);
     }
 
+	#endregion
 
-
-    //------------------------------------------------------------------------------------------------------------------------------------//
-    //--------------------------------------------------------------------------------------------------------UI GESTION ----------------//
-    //----------------------------------------------------------------------------------------------------------------------------------//
-
-    public void setLevelManager(LevelManager lvlManager)
-    {
-        _levelManager = lvlManager;
-    }
-
-    public void resetLevel()
+	#region UI MANAGMENT
+	public void resetLevel()
     {
         for (int x = 0; x < _map.getRows(); ++x)
             for (int j = 0; j < _map.getCols(); ++j)
@@ -212,25 +205,6 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Called if map has been modified
-    /// </summary>
-    /// <param name="flowId"></param>
-    public void mapModified(int flowId)
-    {
-        if (_lastModifiedMapFlowId != flowId)
-        {
-            _movements++;
-            _levelManager.setMovementsText(_movements);
-            _lastModifiedMapFlowId = flowId;
-        }
-    }
-
-    public int getMovements()
-    {
-        return _movements;
-    }
-
     private void resetInfo()
     {
         _lastModifiedMapFlowId = -1;
@@ -250,15 +224,29 @@ public class BoardManager : MonoBehaviour
         _levelManager.setMovementsText(_movements);
     }
 
-    //------------------------------------------------------------------------------------------------------------------------------------//
-    //-------------------------------------------------------------------------------------------------------- MAP INSTANCE--------------//
-    //----------------------------------------------------------------------------------------------------------------------------------//
-    public void loadMap(Map m)
+	#endregion
+
+	#region MAP MANAGMENT
+	public void loadMap(Map m)
     {
         _map = m;
         configureBoard();
         resetInfo();
         setUIinfo();
+    }
+
+    /// <summary>
+    /// Called if map has been modified
+    /// </summary>
+    /// <param name="flowId"></param>
+    public void mapModified(int flowId)
+    {
+        if (_lastModifiedMapFlowId != flowId)
+        {
+            _movements++;
+            _levelManager.setMovementsText(_movements);
+            _lastModifiedMapFlowId = flowId;
+        }
     }
 
     private void configureBoard()
@@ -290,10 +278,10 @@ public class BoardManager : MonoBehaviour
                 }
             }
             createFlowPoints();            
-            checkWalls();
+            createWalls();
             //checkBridges();
-            checkPlusB();
-            checkHollows();
+            createPlusB();
+            createHollows();
         }
 
     }
@@ -349,16 +337,16 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    private void checkBridges()
-    {
-        if (_map.getBridges() != null)
-            for (int x = 0; x < _map.getBridges().Length; x++)
-            {
+    //private void checkBridges()
+    //{
+    //    if (_map.getBridges() != null)
+    //        for (int x = 0; x < _map.getBridges().Length; x++)
+    //        {
 
-            }
-    }
+    //        }
+    //}
 
-    private void checkHollows()
+    private void createHollows()
     {
         int currentTileRow = 0, currentTileCol = 0;
 
@@ -391,7 +379,8 @@ public class BoardManager : MonoBehaviour
                 currentTileCol = _map.getHollows()[x] % _map.getCols();
                 GameBox currentTile = _board[currentTileRow, currentTileCol];
 
-                //Check other hollows   
+                //Check other hollows
+
                 //Check right hollow
                 int auxRow, auxCol;
                 GameBox auxTile;
@@ -406,7 +395,6 @@ public class BoardManager : MonoBehaviour
                         auxTile.setWallLeftActive(false);
                     }
                 }
-               
 
                 if(currentTileCol > 0)
                 {
@@ -420,7 +408,7 @@ public class BoardManager : MonoBehaviour
                         auxTile.setWallRightActive(false);
                     }
                 }
-               
+                
                 if(currentTileRow > 0)
                 {
                     //Check up hollow
@@ -433,7 +421,7 @@ public class BoardManager : MonoBehaviour
                         auxTile.setWallDownActive(false);
                     }
                 }
-               
+                
                 if(currentTileRow < _map.getRows() - 1)
                 {
                     //Check down hollow
@@ -453,7 +441,7 @@ public class BoardManager : MonoBehaviour
         
     }
 
-    private void checkWalls()
+    private void createWalls()
     {
         if(_map.getWalls() != null)
             for(int x  = 0; x < _map.getWalls().Length; x++)
@@ -473,7 +461,7 @@ public class BoardManager : MonoBehaviour
             }
     }
 
-    private void checkPlusB()
+    private void createPlusB()
     {
         if (_map.getPlusB())
         {            
@@ -495,16 +483,25 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+	#endregion
+
+	public void setLevelManager(LevelManager lvlManager) { _levelManager = lvlManager; }
+    public int getMovements() { return _movements; }
     public GameBox[,] getBoard() { return _board; }
     public Map getMap() { return _map; }
     public int Rows { get; private set; }
     public int Cols { get; private set; }
     public void setOnMenu(bool m) { _onMenu = m; }
 
+    [Tooltip("Main sprites for tiles.")]
     [SerializeField] Sprite[] _sprites;
+    [Tooltip("GameBox Prefab.")]
     [SerializeField] GameObject gameBoxPrefab;
+    [Tooltip("Grid GameObject reference.")]
     [SerializeField] GameObject _grid;
+    [Tooltip("Cursor SpriteRenderer reference.")]
     [SerializeField] SpriteRenderer _cursor;
+    [Tooltip("Main Camera reference.")]
     [SerializeField] Camera _cam;
 
     //MAP

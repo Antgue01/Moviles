@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,7 +22,7 @@ public class Flow
         }
         _hintUsedInThisFlow = false;
     }
-    //? preguntar a marco y will
+
     public static void setMapNumFlows(uint numFlows)
     {
         if (numFlows <= maxId)
@@ -34,7 +32,7 @@ public class Flow
     }
 
     /// <summary>
-    /// sets the starting direction of the flow depending of the position of the point in the board
+    /// Sets the starting direction of the flow depending of the position of the point in the board
     /// </summary>
     /// <param name="tile">The starting tile</param>
     public void startDragging(GameBox tile)
@@ -236,6 +234,24 @@ public class Flow
     }
 
     /// <summary>
+    /// Updates the connected value if flow is connected
+    /// </summary>
+    private void updateConnection()
+	{
+        if (_confirmedTiles.Count > 0)
+            _connected = _confirmedTiles.Last.Value.getBoxType() == GameBox.BoxType.FlowPoint;
+
+        if (_connected)
+        {
+            _boardManager.updateFlowsConnected(1);
+            if (_hintUsedInThisFlow && flowHasCorrectPath())
+            {
+                setStarActive(true);
+            }
+        }
+    }
+
+    /// <summary>
     /// Adds tiles to the confirmed list
     /// </summary>
     public void confirmTiles()
@@ -266,18 +282,29 @@ public class Flow
 
         saveLastConfirmedTiles();
 
-        if(_confirmedTiles.Count>0)
-            _connected = _confirmedTiles.Last.Value.getBoxType()==GameBox.BoxType.FlowPoint;
+        updateConnection();
+    }
+
+    /// <summary>
+    /// Updates the connected value if flow is disconnected
+    /// </summary>
+    public void updateDisconnection()
+	{
+        //Check connection and disconnect the flow
         if (_connected)
         {
-            _boardManager.updateFlowsConnected(1);
-            if (_hintUsedInThisFlow && flowHasCorrectPath())
+            _boardManager.updateFlowsConnected(-1);
+            _connected = false;
+            if (_hintUsedInThisFlow)
             {
-                setStarActive(true);
+                setStarActive(false);
             }
         }
     }
 
+    /// <summary>
+    /// Remove tiles from the confirmed list
+    /// </summary>
     public void disconfirmTiles()
 	{
         LinkedListNode<GameBox> tileNode = _confirmedTiles.First;
@@ -293,19 +320,11 @@ public class Flow
             tileNode = tileNodeNextAux;
 		}
 
-        if (_connected)
-        {
-            _boardManager.updateFlowsConnected(-1);
-            _connected = false;
-            if (_hintUsedInThisFlow)
-            {
-                setStarActive(false);
-            }
-        }        
+        updateDisconnection();
     }
 
     /// <summary>
-    /// cuts the flow from the tile given on the flow direction, but leaves the confirmed tiles in order to be able to restore the flows
+    /// Cuts the flow tiles list from the tile given, but leaves the confirmed tiles in order to be able to restore the flows
     /// </summary>
     /// <param name="fromTile">The tile from where to cut</param>
     public void cutFromTile(GameBox fromTile)
@@ -322,6 +341,7 @@ public class Flow
             LinkedListNode<GameBox> tileNextNodeAux = tileNode.Next;
             _tiles.Remove(tileNode);
 
+            //If it has a different confirmed flow, try to restore cuts.
             Flow confirmedFlow = tile.getConfirmedFlow();
             if (confirmedFlow != null && confirmedFlow != this)
                 confirmedFlow.tryToRestoreCuts();
@@ -331,7 +351,7 @@ public class Flow
     }
 
     /// <summary>
-    /// Tries to restore confirmed flows
+    /// Tries to restore flow tiles from confirmed flows
     /// </summary>
     public void tryToRestoreCuts()
 	{

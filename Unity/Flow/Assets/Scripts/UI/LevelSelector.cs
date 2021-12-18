@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class LevelSelector : MonoBehaviour
 {
-    [SerializeField] Text _number;
     public void SelectLevel()
     {
         int n;
@@ -18,4 +17,6 @@ public class LevelSelector : MonoBehaviour
             GameManager.instance.SwitchSceneTo(GameManager.SceneEnum.Game);
         }
     }
+
+    [SerializeField] Text _number;
 }

@@ -6,15 +6,13 @@ using UnityEngine.UI;
 
 public class LevelDisplayer : MonoBehaviour
 {
-
-
     /// <summary>
     /// Creates all the levels from a level lot
     /// </summary>
     /// <param name="lvlot">the level lot we are creating the levels from</param>
     /// <param name="section">The section of the level lot</param>
     /// <param name="gridNumber">The page of the grid</param>
-    public void Display(LevelLot lvlot, Section section, int gridNumber, int levelsPerPage)
+    public void display(LevelLot lvlot, Section section, int gridNumber, int levelsPerPage)
     {
         _levelsPerPage = levelsPerPage;
         int min = gridNumber * _levelsPerPage;
@@ -64,18 +62,16 @@ public class LevelDisplayer : MonoBehaviour
         visuals.setVisualColor(LevelVisuals.LevelVisualElement.Number, _unlockedNumberColor);
     }
 
-    public float getSize()
-    {
-        return _Transform.rect.size.x;
-    }
     void getColorDependingOnBehaviour(LevelLot.ColorBehaviour behaviour, out Color myColor, LevelLot lvlLot, int page, int row)
     {
         myColor = Color.white;
+        //Color by blocks
         if (behaviour == LevelLot.ColorBehaviour.PagesColor)
         {
             int index = page % lvlLot.colors.Length;
             myColor = lvlLot.colors[index];
         }
+        //Color by rows
         else if (behaviour == LevelLot.ColorBehaviour.LevelRowColor)
         {
 
@@ -125,7 +121,9 @@ public class LevelDisplayer : MonoBehaviour
 
     }
 
+    public float getSize() { return _Transform.rect.size.x; }
     public int getLevelsPerPage() { return _levelsPerPage; }
+
     const float deltaColor = .05f;
     int _levelsPerPage;
     [SerializeField] Color _lockedBorderColor;

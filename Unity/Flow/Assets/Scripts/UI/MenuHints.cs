@@ -4,12 +4,7 @@ using UnityEngine;
 
 public class MenuHints : MonoBehaviour
 {
-   
-
-    public void close()
-    {
-        _hintsMenu.SetActive(false);
-    }
+    public void close() { _hintsMenu.SetActive(false); }
 
     [SerializeField] GameObject _hintsMenu;
     [SerializeField] LevelManager _lvlManager;

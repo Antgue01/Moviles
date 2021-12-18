@@ -106,12 +106,14 @@ public class LevelVisuals : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         _tick.color = _completedColorOnPressed;
         _star.color = _completedColorOnPressed;
     }
+
     Color _bgColor;
     Color _borderColor;
     Color _lockColor;
     Color _numberColor;
     Color _tickColor;
-     Color _starColor;
+    Color _starColor;
+
     [SerializeField] Image _bg;
     [SerializeField] Image _border;
     [SerializeField] Image _tick;

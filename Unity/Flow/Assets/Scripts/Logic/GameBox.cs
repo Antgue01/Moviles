@@ -6,29 +6,21 @@ using System;
 
 public class GameBox : MonoBehaviour
 {
-    //Non variable Tile Types
+    /// <summary>
+    /// Non variable Tile Types
+    /// </summary>
     public enum BoxType { Bridge, Hollow, FlowPoint, Empty }
 
-    public void setType(BoxType t)
-    {
-        _type = t;
-    }
-    public void setConfirmedNode(LinkedListNode<GameBox> confirmedNode)
-    {
-        _myConfirmedNode = confirmedNode;
-    }
-    public BoxType getBoxType()
-    {
-        return _type;
-    }
+    public void setType(BoxType t) { _type = t; }
+    public void setConfirmedNode(LinkedListNode<GameBox> confirmedNode) { _myConfirmedNode = confirmedNode; }
+    public BoxType getBoxType() { return _type; }
 
     /// <summary>
-    /// sets all the images color, including the path and background
+    /// Sets all the images color, including the path and background
     /// </summary>
     /// <param name="c">the color we want to set</param>
     public void setColor(Color c)
     {
-
         _figureImage.color = c;
         _animImage.color = c;
         _pathImage.color = c;
@@ -41,70 +33,29 @@ public class GameBox : MonoBehaviour
         else return new Color(-1, -1, -1);
     }
 
-    public void setPathColor(Color c)
-    {
+    public void setPathColor(Color c) { _pathImage.color = c; }
 
-        _pathImage.color = c;
-    }
+    public Color getPathColor() { return _pathImage.color; }
+    public void setFlowDir(Vector2Int dir) { _flowDir = dir; }
 
-    public Color getPathColor()
-    {
-        return _pathImage.color;
-    }
+    public Vector2Int getFlowDir() { return _flowDir; }
 
-    public void setFlowDir(Vector2Int dir)
-    {
-        _flowDir = dir;
-    }
+    public void setConfirmedFlowDir(Vector2Int dir) { _confirmedFlowDir = dir; }
 
-    public Vector2Int getFlowDir()
-    {
-        return _flowDir;
-    }
+    public Vector2Int getConfirmedFlowDir() { return _confirmedFlowDir; }
 
-    public void setConfirmedFlowDir(Vector2Int dir)
-    {
-        _confirmedFlowDir = dir;
-    }
+    public void setBackgroundActive(bool b) { _backgroundImage.enabled = b; }
+    public void setPathActive(bool b) { _pathImage.enabled = b; }
 
-    public Vector2Int getConfirmedFlowDir()
-    {
-        return _confirmedFlowDir;
-    }
+    public void setStarActive(bool b) { _starImage.enabled = b; }
 
-    public void setBackgroundActive(bool b)
-    {
-        _backgroundImage.enabled = b;
-    }
-    public void setPathActive(bool b)
-    {
-        _pathImage.enabled = b;
-    }
+    public void setWallLeftActive(bool b) { _wallLeft.enabled = b; }
 
-    public void setStarActive(bool b)
-    {
-        _starImage.enabled = b;
-    }
+    public void setWallRightActive(bool b) { _wallRight.enabled = b; }
 
-    public void setWallLeftActive(bool b)
-    {
-        _wallLeft.enabled = b;
-    }
+    public void setWallUpActive(bool b) { _wallUp.enabled = b; }
 
-    public void setWallRightActive(bool b)
-    {
-        _wallRight.enabled = b;
-    }
-
-    public void setWallUpActive(bool b)
-    {
-        _wallUp.enabled = b;
-    }
-
-    public void setWallDownActive(bool b)
-    {
-        _wallDown.enabled = b;
-    }
+    public void setWallDownActive(bool b) { _wallDown.enabled = b; }
 
     public void initWallDirsAndColor()
     {
@@ -209,44 +160,21 @@ public class GameBox : MonoBehaviour
             if (!_figureImage.enabled)
                 _figureImage.enabled = true;
             _figureImage.sprite = s;
-
         }
     }
 
-    public void setFlow(Flow flow)
-    {
-        _flow = flow;
-    }
+    public void setFlow(Flow flow) { _flow = flow; }
 
-    public Flow getFlow()
-    {
-        return _flow;
-    }
+    public Flow getFlow() { return _flow; }
 
-    public Flow getConfirmedFlow()
-    {
-        return _confirmedFlow;
-    }
+    public Flow getConfirmedFlow() { return _confirmedFlow; }
 
-    public void confirmFlow()
-    {
-        _confirmedFlow = _flow;
-    }
+    public void confirmFlow() { _confirmedFlow = _flow; }
 
-    public void disconfirmFlow()
-    {
-        _confirmedFlow = null;
-    }
+    public void disconfirmFlow() { _confirmedFlow = null; }
 
-    public bool getPathActive()
-    {
-        return _pathImage.enabled;
-    }
-    public bool getStarActive()
-    {
-        return _starImage.enabled;
-    }
-
+    public bool getPathActive() { return _pathImage.enabled; }
+    public bool getStarActive() { return _starImage.enabled; }
 
     /// <summary>
     /// Sets the pipe position and rotation from a given direction to be active in this tile
@@ -284,24 +212,14 @@ public class GameBox : MonoBehaviour
         _backgroundImage.color = c;
     }
 
-    public void setNode(LinkedListNode<GameBox> node)
-    {
-        _myNode = node;
-    }
+    public void setNode(LinkedListNode<GameBox> node) { _myNode = node; }
 
-    public void setConfirmednode(LinkedListNode<GameBox> node)
-    {
-        _myConfirmedNode = node;
-    }
+    public void setConfirmednode(LinkedListNode<GameBox> node) { _myConfirmedNode = node; }
 
-    public LinkedListNode<GameBox> getNode()
-    {
-        return _myNode;
-    }
-    public LinkedListNode<GameBox> getConfirmedNode()
-    {
-        return _myConfirmedNode;
-    }
+    public LinkedListNode<GameBox> getNode() { return _myNode; }
+
+    public LinkedListNode<GameBox> getConfirmedNode() { return _myConfirmedNode; }
+
     public void restore()
     {
         setBackgroundActive(false);
