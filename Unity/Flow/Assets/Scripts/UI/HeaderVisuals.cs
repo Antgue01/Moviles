@@ -6,12 +6,9 @@ using UnityEngine.UI;
 public class HeaderVisuals : MonoBehaviour
 {
     [SerializeField] Image _myLine;
-    Image _myImage;
+    [SerializeField] Image _myImage;
     [SerializeField] Text _myName;
-    private void Awake()
-    {
-        _myImage = GetComponent<Image>();
-    }
+    
     const float deltaColor = .35f;
     public void setName(string name)
     {

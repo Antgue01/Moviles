@@ -796,7 +796,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -48.01003}
+  m_AnchoredPosition: {x: 0, y: -48.01004}
   m_SizeDelta: {x: 0, y: -96.02}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &353274598
@@ -954,7 +954,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: a6fd136daf99a8f4cb19ca6f523b2079, type: 2}
     - target: {fileID: 723185779894205650, guid: 0f6cb83db43a1734b863f68078fcb0de, type: 3}
       propertyPath: selectedLevelDebug
-      value: 23
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 723185779894205650, guid: 0f6cb83db43a1734b863f68078fcb0de, type: 3}
       propertyPath: selectedSectionDebug
@@ -1286,7 +1286,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: f0dce572456cd4f4cb2c95053d3cb7cd, type: 3}
   gameBoxPrefab: {fileID: 8161263463040058764, guid: efb032bd83f15d04593279073f9a6b08, type: 3}
   _grid: {fileID: 1450791940}
-  _cursor: {fileID: 662268966}
+  _cursor: {fileID: 662268967}
   _cam: {fileID: 1375850863}
 --- !u!4 &628285579
 Transform:
@@ -1336,7 +1336,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.037539262, y: 0.642}
   m_AnchorMax: {x: 0.95765626, y: 0.9555198}
-  m_AnchoredPosition: {x: 0.960022, y: 2.550003}
+  m_AnchoredPosition: {x: 0.95996094, y: 2.550003}
   m_SizeDelta: {x: 8.019997, y: 9.93}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &640676745
@@ -1657,7 +1657,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.13414815, y: 0.17114626}
   m_AnchorMax: {x: 0.869, y: 0.32345286}
-  m_AnchoredPosition: {x: -2, y: 2.727541}
+  m_AnchoredPosition: {x: -2, y: 2.727539}
   m_SizeDelta: {x: 6, y: 3.8809204}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &784378112
@@ -1699,23 +1699,11 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 784378113}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2120471373}
-        m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
-        m_MethodName: nextLevelFromMenu
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &784378113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1832,23 +1820,11 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 803160438}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2120471373}
-        m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
-        m_MethodName: nextLevelFromMenu
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &803160438
 MonoBehaviour:
   m_ObjectHideFlags: 0
