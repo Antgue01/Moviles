@@ -91,6 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _myLine: {fileID: 7549537037014223794}
+  _myImage: {fileID: 7549537036868015294}
   _myName: {fileID: 7549537037531827236}
 --- !u!1 &7549537037014223820
 GameObject:
