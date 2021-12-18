@@ -36,7 +36,7 @@ public class BoardManager : MonoBehaviour
     //------------------------------------------------------------------------------------------------------------------------------------//
     //--------------------------------------------------------------------------------------------------------INPUT  --------------------//
     //----------------------------------------------------------------------------------------------------------------------------------//
-    public GameObject getTileFromInput(Vector2 inputPosition)
+    public GameBox getTileFromInput(Vector2 inputPosition)
     {
         _inputTilePos = _transformer.getTilePos(inputPosition, _grid.transform, Rows, Cols);
         if (_inputTilePos.x == -1 || _inputTilePos.y == -1) return null;
@@ -66,7 +66,7 @@ public class BoardManager : MonoBehaviour
         if (inputPosition.x != -1)
         {
 
-            if (_cursor.activeSelf)
+            if (_cursor.gameObject.activeSelf)
             {
                 Vector2 inputPosToWorld = _cam.ScreenToWorldPoint(inputPosition);
                 _cursor.transform.position = inputPosToWorld;
@@ -75,24 +75,22 @@ public class BoardManager : MonoBehaviour
             //Just pressed
             if (justDown && !_pressed)
             {
-                GameObject currentTile = getTileFromInput(inputPosition);
+                GameBox currentTile = getTileFromInput(inputPosition);
                 //Check if it is a valid Tile
                 if (currentTile == null) return;
 
-                GameBox currentGameBox = currentTile.GetComponent<GameBox>();
-                //Chcek if is flow or flow point, so we could drag
-                if (currentGameBox.getFlow() == null) return;
+              
                 //Start dragging
                 else
                 {
-                    _currentFlowSelected = currentGameBox.getFlow();
+                    _currentFlowSelected = currentTile.getFlow();
                     _pressed = true;
                     _lastPressed = currentTile;
-                    _cursor.GetComponent<SpriteRenderer>().color = _currentFlowSelected.GetColor();
+                    _cursor.color = _currentFlowSelected.GetColor();
                     Vector2 inputPosToWorld = _cam.ScreenToWorldPoint(inputPosition);
                     _cursor.transform.position = inputPosToWorld;
-                    _cursor.SetActive(true);
-                    _currentFlowSelected.startDragging(currentGameBox);
+                    _cursor.gameObject.SetActive(true);
+                    _currentFlowSelected.startDragging(currentTile);
                 }
             }
             else if (justUp && _pressed)
@@ -103,7 +101,7 @@ public class BoardManager : MonoBehaviour
             else if (_pressed)
             {
                 Vector2Int lastInputRowCol = _inputTileRowCol;
-                GameObject currentTile = getTileFromInput(inputPosition);
+                GameBox currentTile = getTileFromInput(inputPosition);
                 //Check if it is a valid Tile
                 if (currentTile == null)
                 {
@@ -113,8 +111,8 @@ public class BoardManager : MonoBehaviour
                 //Check if it is the same Tile
                 if (currentTile == _lastPressed) return;
 
-                GameBox currentGameBox = currentTile.GetComponent<GameBox>();
-                GameBox lastGameBox = _lastPressed.GetComponent<GameBox>();
+                GameBox currentGameBox = currentTile;
+                GameBox lastGameBox = _lastPressed;
 
                 GameBox.BoxType currentType = currentGameBox.getBoxType();
 
@@ -152,7 +150,7 @@ public class BoardManager : MonoBehaviour
             _currentFlowSelected.stopDragging();
             _currentFlowSelected = null;
         }
-        if (_cursor.activeSelf) _cursor.SetActive(false);
+        if (_cursor.gameObject.activeSelf) _cursor.gameObject.SetActive(false);
     }
 
 
@@ -170,7 +168,7 @@ public class BoardManager : MonoBehaviour
     {
         for (int x = 0; x < _map.getRows(); ++x)
             for (int j = 0; j < _map.getCols(); ++j)
-                _board[x, j].GetComponent<GameBox>().restore();
+                _board[x, j].restore();
 
         for (int x = 0; x < _flows.Length; x++)
             _flows[x].resetFlow();
@@ -275,7 +273,7 @@ public class BoardManager : MonoBehaviour
             Rows = _map.getRows();
             Cols = _map.getCols();
             _flowPointsBox = new GameObject[2 * _map.getTotalFlows()];
-            _board = new GameObject[Rows, Cols];
+            _board = new GameBox[Rows, Cols];
             Color sectionColor = GameManager.instance.getSelectedSection().themeColor;
             for (int row = 0; row < Rows; ++row)
             {
@@ -285,10 +283,10 @@ public class BoardManager : MonoBehaviour
                     go.transform.localPosition = new Vector3(col + .5f, -row - .5f, 0);
                     sectionColor.a = 0.25f;
                     go.GetComponent<SpriteRenderer>().color = sectionColor;
-                    go.GetComponent<GameBox>().setType(GameBox.BoxType.Empty);
-                    go.GetComponent<GameBox>().initWallDirsAndColor();
-                    //go.GetComponent<GameBox>().setFigureImageSize(boxWidth, boxHeight);
-                    _board[row, col] = go;
+                    GameBox box = go.GetComponent<GameBox>();
+                    box.setType(GameBox.BoxType.Empty);
+                    box.initWallDirsAndColor();
+                    _board[row, col] = box;
                 }
             }
             createFlowPoints();            
@@ -321,8 +319,8 @@ public class BoardManager : MonoBehaviour
                 int index = flowColor[0];
                 int row = index / Cols;
                 int column = index % Cols;
-                GameObject auxOb = _board[row, column];
-                GameBox gb = auxOb.GetComponent<GameBox>();
+                GameBox gb = _board[row, column];
+                GameObject auxOb = gb.gameObject;
                 
                 gb.setType(GameBox.BoxType.FlowPoint);
                 gb.setFigureSprite(_sprites[0]);
@@ -335,8 +333,8 @@ public class BoardManager : MonoBehaviour
                 index = flowColor[flowColor.Length - 1];
                 row = index / Cols;
                 column = index % Cols;
-                auxOb = _board[row, column];
-                gb = auxOb.GetComponent<GameBox>();
+                gb = _board[row, column];
+                auxOb = gb.gameObject;
                 gb.setType(GameBox.BoxType.FlowPoint);
                 gb.setFigureSprite(_sprites[0]);
                 gb.setColor(GameManager.instance.getSelectedSkin().colors[colorIndex]);
@@ -370,7 +368,7 @@ public class BoardManager : MonoBehaviour
             {
                 currentTileRow = _map.getHollows()[x] / _map.getCols();
                 currentTileCol = _map.getHollows()[x] % _map.getCols();
-                GameBox currentTile = _board[currentTileRow, currentTileCol].GetComponent<GameBox>();
+                GameBox currentTile = _board[currentTileRow, currentTileCol];
                 currentTile.setType(GameBox.BoxType.Hollow);
                 currentTile.setActiveAllWalls(true);
 
@@ -391,7 +389,7 @@ public class BoardManager : MonoBehaviour
             {
                 currentTileRow = _map.getHollows()[x] / _map.getCols();
                 currentTileCol = _map.getHollows()[x] % _map.getCols();
-                GameBox currentTile = _board[currentTileRow, currentTileCol].GetComponent<GameBox>();
+                GameBox currentTile = _board[currentTileRow, currentTileCol];
 
                 //Check other hollows   
                 //Check right hollow
@@ -401,7 +399,7 @@ public class BoardManager : MonoBehaviour
                 {
                     auxRow = currentTileRow;
                     auxCol = currentTileCol + 1;
-                    auxTile = _board[auxRow, auxCol].GetComponent<GameBox>();
+                    auxTile = _board[auxRow, auxCol];
                     if (auxTile.getBoxType() == GameBox.BoxType.Hollow)  //Current in the left of the last
                     {
                         currentTile.setWallRightActive(false);
@@ -415,7 +413,7 @@ public class BoardManager : MonoBehaviour
                     //Check left hollow
                     auxRow = currentTileRow;
                     auxCol = currentTileCol - 1;
-                    auxTile = _board[auxRow, auxCol].GetComponent<GameBox>();
+                    auxTile = _board[auxRow, auxCol];
                     if (auxTile.getBoxType() == GameBox.BoxType.Hollow)  //Current in the right of the last
                     {
                         currentTile.setWallLeftActive(false);
@@ -428,7 +426,7 @@ public class BoardManager : MonoBehaviour
                     //Check up hollow
                     auxRow = currentTileRow - 1;
                     auxCol = currentTileCol;
-                    auxTile = _board[auxRow, auxCol].GetComponent<GameBox>();
+                    auxTile = _board[auxRow, auxCol];
                     if (auxTile.getBoxType() == GameBox.BoxType.Hollow)  //Current in the down of the last
                     {
                         currentTile.setWallUpActive(false);
@@ -441,7 +439,7 @@ public class BoardManager : MonoBehaviour
                     //Check down hollow
                     auxRow = currentTileRow + 1;
                     auxCol = currentTileCol;
-                     auxTile = _board[auxRow, auxCol].GetComponent<GameBox>();
+                     auxTile = _board[auxRow, auxCol];
                     if (auxTile.getBoxType() == GameBox.BoxType.Hollow) //Current in the up of the last
                     {
                         currentTile.setWallDownActive(false);
@@ -468,11 +466,10 @@ public class BoardManager : MonoBehaviour
                 int tile2Row = tile2 / _map.getCols();
                 int tile2Col = tile2 % _map.getCols();
 
-                _board[tile1Row, tile1Col].GetComponent<GameBox>().setInvalidDir(tile2 - tile1);
-                _board[tile2Row, tile2Col].GetComponent<GameBox>().setInvalidDir(tile1 - tile2);
+                _board[tile1Row, tile1Col].setInvalidDir(tile2 - tile1);
+                _board[tile2Row, tile2Col].setInvalidDir(tile1 - tile2);
 
-                _board[tile1Row, tile1Col].GetComponent<GameBox>().setWallActive(tile2 - tile1);
-                //_board[tile2Row, tile2Col].GetComponent<GameBox>().setWallActive(tile1 - tile2);
+                _board[tile1Row, tile1Col].setWallActive(tile2 - tile1);
             }
     }
 
@@ -482,23 +479,23 @@ public class BoardManager : MonoBehaviour
         {            
             //Left walls
             for (int row = 0; row < _map.getRows(); row++)
-                _board[row, 0].GetComponent<GameBox>().setWallLeftActive(true);
+                _board[row, 0].setWallLeftActive(true);
 
             //Right walls
             for (int row = 0; row < _map.getRows(); row++)
-                _board[row, _map.getCols() - 1].GetComponent<GameBox>().setWallRightActive(true);
+                _board[row, _map.getCols() - 1].setWallRightActive(true);
 
             //Sup walls
             for (int col = 0; col < _map.getCols(); col++)
-                _board[0, col].GetComponent<GameBox>().setWallUpActive(true);
+                _board[0, col].setWallUpActive(true);
 
             //Down walls
             for (int col = 0; col < _map.getCols(); col++)
-                _board[_map.getRows() - 1, col].GetComponent<GameBox>().setWallDownActive(true);
+                _board[_map.getRows() - 1, col].setWallDownActive(true);
         }
     }
 
-    public GameObject[,] getBoard() { return _board; }
+    public GameBox[,] getBoard() { return _board; }
     public Map getMap() { return _map; }
     public int Rows { get; private set; }
     public int Cols { get; private set; }
@@ -507,13 +504,13 @@ public class BoardManager : MonoBehaviour
     [SerializeField] Sprite[] _sprites;
     [SerializeField] GameObject gameBoxPrefab;
     [SerializeField] GameObject _grid;
-    [SerializeField] GameObject _cursor;
+    [SerializeField] SpriteRenderer _cursor;
     [SerializeField] Camera _cam;
 
     //MAP
     private Map _map;
     private LevelManager _levelManager;
-    private GameObject[,] _board;
+    private GameBox[,] _board;
 
     //INFO
     private int _flowsConnected;
@@ -526,7 +523,7 @@ public class BoardManager : MonoBehaviour
     private InputTransformer _transformer;
     private bool _onMenu;
     private bool _pressed;
-    private GameObject _lastPressed;
+    private GameBox _lastPressed;
     private Vector2Int _inputTileRowCol;
     Vector2Int _inputTilePos = Vector2Int.zero;
     
