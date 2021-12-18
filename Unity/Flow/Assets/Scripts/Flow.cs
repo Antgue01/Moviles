@@ -106,13 +106,13 @@ public class Flow
         if (direction.x != 0 && direction.y != 0)
         {
             //First check with one of the components of direction
-            GameBox auxGB = _boardManager.getBoard()[lastInputRowCol.x + direction.y, lastInputRowCol.y].GetComponent<GameBox>();
+            GameBox auxGB = _boardManager.getBoard()[lastInputRowCol.x + direction.y, lastInputRowCol.y];
             Vector2Int auxDir = new Vector2Int(0, direction.y);
             bool valid = (auxGB.getBoxType() == GameBox.BoxType.Empty && auxGB.isValidDir(direction));
             //If not valid, we try again in another direction (with the other component of direction)
             if (!valid)
             {
-                auxGB = _boardManager.getBoard()[lastInputRowCol.x, lastInputRowCol.y + direction.x].GetComponent<GameBox>();
+                auxGB = _boardManager.getBoard()[lastInputRowCol.x, lastInputRowCol.y + direction.x];
                 auxDir = new Vector2Int(direction.x, 0);
                 valid = (auxGB.getBoxType() == GameBox.BoxType.Empty && auxGB.isValidDir(direction));
             }
@@ -368,7 +368,7 @@ public class Flow
 
             Vector2Int lastTileRowCol = new Vector2Int(flowPath[0] / _boardManager.Cols, flowPath[0] % _boardManager.Cols);
 
-            GameBox tile = _boardManager.getBoard()[lastTileRowCol.x, lastTileRowCol.y].GetComponent<GameBox>();            
+            GameBox tile = _boardManager.getBoard()[lastTileRowCol.x, lastTileRowCol.y];            
             tile.setNode(_tiles.AddLast(tile));
 
             Vector2Int currentTileRowCol = new Vector2Int();
@@ -380,7 +380,7 @@ public class Flow
                 Vector2Int direction = new Vector2Int(currentTileRowCol.y - lastTileRowCol.y,
                                                       currentTileRowCol.x - lastTileRowCol.x);
 
-                tile = _boardManager.getBoard()[currentTileRowCol.x, currentTileRowCol.y].GetComponent<GameBox>();
+                tile = _boardManager.getBoard()[currentTileRowCol.x, currentTileRowCol.y];
                 addTile(tile, lastTileRowCol, direction);
                 lastTileRowCol = currentTileRowCol;
             }
@@ -412,7 +412,7 @@ public class Flow
         {
             int rowTile = flowPath[x] / _boardManager.Cols;
             int colTile = flowPath[x] % _boardManager.Cols;
-            if (_boardManager.getBoard()[rowTile, colTile].GetComponent<GameBox>().getFlow() != this)
+            if (_boardManager.getBoard()[rowTile, colTile].getFlow() != this)
                 isCorrect = false;
         }
             
