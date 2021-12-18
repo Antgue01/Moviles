@@ -34,7 +34,12 @@ HECHO** Parte inferior que haya un anuncio del servidor de Unity
 HECHO**quitar métodos innecesarios de los anuncios
 HECHO** Escena de selección de nivel a veces se quedan blancos
 HECHO** Escena de selección de nivel poner estrellita a los niveles que se han hecho perfectos
-
+HECHO
+** Probar todo en Android
+	- Resoluciones
+	- Progreso
+	- Anuncios
+	- Botones
 
 
 WILL--------------------------------------------------------------------------------------------------------------------------------------
@@ -48,10 +53,5 @@ HECHO** Probar que con menos colores en el scriptable funcione
 
 TODO -----------------------------------------------------------------------------------------------------------------------------------------
 
-
-** Probar todo en Android
-	- Resoluciones
-	- Progreso
-	- Anuncios
-	- Botones
+COMENTAR EL CÓDIGO
 	
