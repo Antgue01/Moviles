@@ -47,6 +47,9 @@ public class Flow
                 clearTileList();
 			}
             tile.setNode(_tiles.AddLast(tile));
+			//Animation
+			_startEndPoints[0].getAnimController().growAndShrink();
+			_startEndPoints[1].getAnimController().growAndShrink();
 		}
         //If its a normal flow, we cut from here to continue
 		else

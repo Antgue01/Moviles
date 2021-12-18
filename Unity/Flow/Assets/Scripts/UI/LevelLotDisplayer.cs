@@ -20,7 +20,7 @@ public class LevelLotDisplayer : MonoBehaviour
         string[] levels = lvlLot.LevelLotFile.ToString().Split(separators, System.StringSplitOptions.RemoveEmptyEntries);
         int numLevels = levels.Length;
         int numPages = numLevels / levelsPerPage;
-        float w = Camera.main.aspect * Camera.main.orthographicSize * 2;
+        float w = _mainCamera.aspect * _mainCamera.orthographicSize * 2;
         int i = 0;
         for (; i < numPages; i++)
         {
@@ -32,6 +32,7 @@ public class LevelLotDisplayer : MonoBehaviour
         _contentTransform.Translate(Vector3.left * _contentTransform.rect.x / 2);
     }
 
+    [SerializeField] Camera _mainCamera;
     [SerializeField] GameObject _levelPagePrefab;
     [SerializeField] Text _sectionName;
     [SerializeField] RectTransform _canvasTransform;

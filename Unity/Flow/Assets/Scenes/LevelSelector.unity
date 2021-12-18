@@ -314,6 +314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd533c9f36aafa64497751fc35497a8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mainCamera: {fileID: 59714430}
   _levelPagePrefab: {fileID: 6776174643036982382, guid: 631aedbcf36503142b2803d516f4a96b, type: 3}
   _sectionName: {fileID: 192927447}
   _canvasTransform: {fileID: 833722997}
