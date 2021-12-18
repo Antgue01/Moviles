@@ -73,12 +73,15 @@ public class SaveDataManager
     /// <returns>True in order to fit the Application wants to quit event</returns>
     public bool save()
     {
+
+        hash = "";
         //we generate the json without pepper
         string json = JsonUtility.ToJson(this);
         //we add the pepper
         json += "Q:c8!r7pb2L)<6~A";
         //we generate the hash
         hash = hashFunction(json);
+        Debug.Log("HAS QUE ESTOY GUARDANDO: " + hash);
         //we generate the true json with the hash
         json = JsonUtility.ToJson(this);
         //we save the json
@@ -100,6 +103,7 @@ public class SaveDataManager
         JsonUtility.FromJsonOverwrite(json, this);
         //we store the hash to check the legitimacy of the file and set our hash to empty
         string auxHash = hash;
+        Debug.Log("HASH QUE LEO: " + auxHash);
         hash = "";
         //we serialize the object without the hash and add the pepper
         json = JsonUtility.ToJson(this);
@@ -109,7 +113,6 @@ public class SaveDataManager
         if (hashFunction(json) != auxHash)
         {
             Debug.Log("A QUE TE BORRO. HASH FUNCTION: "+hashFunction(json));
-            Debug.Log("EL HASH NORMAL: " + auxHash);
             File.Delete(Application.persistentDataPath + "savedata.json");
             createNewData();
         }

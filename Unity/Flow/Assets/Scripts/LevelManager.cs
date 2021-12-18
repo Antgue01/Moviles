@@ -169,6 +169,7 @@ public class LevelManager : MonoBehaviour
         if (_remainingHints > 0)
         {
             _boardManager.useHint();
+            GameManager.instance.save();
         }
     }
 
