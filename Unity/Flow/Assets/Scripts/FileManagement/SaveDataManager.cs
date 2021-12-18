@@ -9,24 +9,6 @@ using UnityEngine;
 
 public class SaveDataManager
 {
-    [System.Serializable]
-    public struct LevelLotData
-    {
-        public string name;
-        public int lastUnlockedLevel;
-        public int playedLevels;
-        public int[] bestMovesPerLevel;
-        public bool[] isPerfectPerLevel;
-
-    }
-    [System.Serializable]
-    public struct sectionData
-    {
-
-        public string name;
-        public LevelLotData[] levelLots;
-    }
-
     public SaveDataManager()
     {
         if (!File.Exists(Application.persistentDataPath + "/savedata.json"))
@@ -35,7 +17,7 @@ public class SaveDataManager
             load();
     }
     /// <summary>
-    /// initializes the internal structure for a new save data
+    /// Initializes the internal structure for a new save data
     /// </summary>
     void createNewData()
     {
@@ -81,7 +63,6 @@ public class SaveDataManager
         json += "Q:c8!r7pb2L)<6~A";
         //we generate the hash
         hash = hashFunction(json);
-        Debug.Log("HAS QUE ESTOY GUARDANDO: " + hash);
         //we generate the true json with the hash
         json = JsonUtility.ToJson(this);
         //we save the json
@@ -103,16 +84,16 @@ public class SaveDataManager
         JsonUtility.FromJsonOverwrite(json, this);
         //we store the hash to check the legitimacy of the file and set our hash to empty
         string auxHash = hash;
-        Debug.Log("HASH QUE LEO: " + auxHash);
         hash = "";
         //we serialize the object without the hash and add the pepper
         json = JsonUtility.ToJson(this);
         json += "Q:c8!r7pb2L)<6~A";
         //if the hash we stored previously and the hash we just generated aren't equal, it means the user 
         //tried to cheat, so we delete the progress
-        if (hashFunction(json) != auxHash)
+        string currentHash = hashFunction(json);
+        if (currentHash != auxHash)
         {
-            Debug.Log("A QUE TE BORRO. HASH FUNCTION: "+hashFunction(json));
+            Debug.LogError("DELETING SAVE FILE, INCORRECT HASH: " + currentHash);
             File.Delete(Application.persistentDataPath + "savedata.json");
             createNewData();
         }
@@ -131,7 +112,26 @@ public class SaveDataManager
         }
         return builder.ToString();
     }
+
     public int numHints;
     public string hash = "";
     public sectionData[] sections;
+
+    [Serializable]
+    public struct LevelLotData
+    {
+        public string name;
+        public int lastUnlockedLevel;
+        public int playedLevels;
+        public int[] bestMovesPerLevel;
+        public bool[] isPerfectPerLevel;
+
+    }
+    [Serializable]
+    public struct sectionData
+    {
+
+        public string name;
+        public LevelLotData[] levelLots;
+    }
 }

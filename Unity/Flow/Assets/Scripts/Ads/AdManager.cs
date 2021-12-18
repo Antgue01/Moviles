@@ -84,6 +84,7 @@ public class AdManager
     }
     public bool isBanner(string adUnitId) { return adUnitId.Equals(_bannerId); }
     public bool isRewardedVideo(string adUnitId) { return adUnitId.Equals(_rewardId); }
+
     private const string _gameId = "4506825";
     private const string _rewardId = "Rewarded_Android";
     private const string _bannerId = "Banner_Android";
