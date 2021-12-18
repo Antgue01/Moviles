@@ -266,7 +266,7 @@ public class BoardManager : MonoBehaviour
         if (_board != null)
             for (int row = 0; row < _board.GetLength(0); ++row)
                 for (int col = 0; col < _board.GetLength(1); col++)
-                    Destroy(_board[row, col]);
+                    Destroy(_board[row, col].gameObject);
 
         if (_map != null && _grid != null)
         {
