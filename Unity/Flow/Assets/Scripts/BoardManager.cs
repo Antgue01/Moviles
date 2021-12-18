@@ -88,8 +88,10 @@ public class BoardManager : MonoBehaviour
                     _currentFlowSelected = currentGameBox.getFlow();
                     _pressed = true;
                     _lastPressed = currentTile;
-                    _cursor.SetActive(true);
                     _cursor.GetComponent<SpriteRenderer>().color = _currentFlowSelected.GetColor();
+                    Vector2 inputPosToWorld = _cam.ScreenToWorldPoint(inputPosition);
+                    _cursor.transform.position = inputPosToWorld;
+                    _cursor.SetActive(true);
                     _currentFlowSelected.startDragging(currentGameBox);
                 }
             }
