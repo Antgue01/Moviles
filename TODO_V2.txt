@@ -44,11 +44,11 @@ HECHO** Que funcione las escenas de forma independiente con las opciones de debu
 HECHO** Que el texto de cada nivel se ponga al color correspondiente
 HECHO**Arreglar 10x10 mania por problema de parser
 HECHO** Color del texto de la ui de niveles que sea del mismo color que la sección
+HECHO** Probar que con menos colores en el scriptable funcione
 
 TODO -----------------------------------------------------------------------------------------------------------------------------------------
 
 
-**probar que con menos colores en el scriptable funcione
 **quitar métodos innecesarios de los anuncios
 ** Probar todo en Android
 	- Resoluciones

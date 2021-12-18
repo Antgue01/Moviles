@@ -28,9 +28,9 @@ public class LevelDisplayer : MonoBehaviour
             levelObject = Instantiate<GameObject>(_levelPrefab, _gridTransform);
             visuals = levelObject.GetComponent<LevelVisuals>();
             if (GameManager.instance.isLevelCompleted(i))
-                visualizeComplete(visuals, section, i, lvlot, gridNumber, i / 5);
+                visualizeComplete(visuals, section, i, lvlot, gridNumber, (i-min) / 5);
             else if (GameManager.instance.isUnlockedLevel(i))
-                visualizeUnlocked(visuals, lvlot, gridNumber, i / 5);
+                visualizeUnlocked(visuals, lvlot, gridNumber, (i - min) / 5);
             else
                 visualizeLocked(visuals);
             visuals.setLevel(i + 1);
@@ -53,17 +53,12 @@ public class LevelDisplayer : MonoBehaviour
         Color unlockedBackGroundColor = _unlockedBackGroundColor;
         Color unlockedBorderColor = _unlockedBorderColor;
         LevelLot.ColorBehaviour behaviour = lvlLot.behaviour;
-        float r, g, b;
-        r = g = b = 1;
-        getRGBdependingOnBehaviour(behaviour, ref r, ref g, ref b, lvlLot, page, row);
+        Color myColor;
+        getColorDependingOnBehaviour(behaviour, out myColor, lvlLot, page, row);
 
-        unlockedBackGroundColor.r *= r;
-        unlockedBackGroundColor.g *= g;
-        unlockedBackGroundColor.b *= b;
+        unlockedBackGroundColor *= myColor;
+        unlockedBorderColor *= myColor;
 
-        unlockedBorderColor.r *= r;
-        unlockedBorderColor.g *= g;
-        unlockedBorderColor.b *= b;
         visuals.setVisualColor(LevelVisuals.LevelVisualElement.Background, unlockedBackGroundColor);
         visuals.setVisualColor(LevelVisuals.LevelVisualElement.Border, unlockedBorderColor);
         visuals.setVisualColor(LevelVisuals.LevelVisualElement.Number, _unlockedNumberColor);
@@ -73,23 +68,19 @@ public class LevelDisplayer : MonoBehaviour
     {
         return _Transform.rect.size.x;
     }
-    void getRGBdependingOnBehaviour(LevelLot.ColorBehaviour behaviour, ref float r, ref float g, ref float b, LevelLot lvlLot, int page, int row)
+    void getColorDependingOnBehaviour(LevelLot.ColorBehaviour behaviour, out Color myColor, LevelLot lvlLot, int page, int row)
     {
-
+        myColor = Color.white;
         if (behaviour == LevelLot.ColorBehaviour.PagesColor)
         {
             int index = page % lvlLot.colors.Length;
-            r = lvlLot.colors[index].r;
-            g = lvlLot.colors[index].g;
-            b = lvlLot.colors[index].b;
+            myColor = lvlLot.colors[index];
         }
         else if (behaviour == LevelLot.ColorBehaviour.LevelRowColor)
         {
 
-            int index = (row + page % (_levelsPerPage / lvlLot.colors.Length)) % lvlLot.colors.Length;
-            r = lvlLot.colors[index].r;
-            g = lvlLot.colors[index].g;
-            b = lvlLot.colors[index].b;
+            int index = (row + page) % lvlLot.colors.Length;
+            myColor = lvlLot.colors[index];
         }
     }
     void visualizeComplete(LevelVisuals visuals, Section section, int level, LevelLot lvlLot, int page, int row)
@@ -98,28 +89,19 @@ public class LevelDisplayer : MonoBehaviour
         Color tickColor = _tickBaseColor;
         Color starColor = _starBaseColor;
         LevelLot.ColorBehaviour behaviour = lvlLot.behaviour;
-        float r, g, b;
-        r = g = b = 1;
+        Color myColor = Color.white;
 
-        getRGBdependingOnBehaviour(behaviour, ref r, ref g, ref b, lvlLot, page, row);
+        getColorDependingOnBehaviour(behaviour, out myColor, lvlLot, page, row);
         if (behaviour == LevelLot.ColorBehaviour.Default)
         {
-            r = section.themeColor.r;
-            g = section.themeColor.g;
-            b = section.themeColor.b;
+            myColor *= section.themeColor;
         }
-        bg.r *= r;
-        bg.g *= g;
-        bg.b *= b;
 
-        tickColor.r *= r;
-        tickColor.g *= g;
-        tickColor.b *= b;
+        bg *= myColor;
 
-        starColor.r *= r;
-        starColor.g *= g;
-        starColor.b *= b;
+        tickColor *= myColor;
 
+        starColor *= myColor;
 
         visuals.setVisualColor(LevelVisuals.LevelVisualElement.Background, bg);
         visuals.setVisualColor(LevelVisuals.LevelVisualElement.Border, bg);

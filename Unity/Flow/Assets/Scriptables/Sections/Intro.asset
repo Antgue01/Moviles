@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Intro
   m_EditorClassIdentifier: 
   SectionName: Intro
-  themeColor: {r: 0, g: 0.5529412, b: 0, a: 1}
+  themeColor: {r: 0, g: 0.6901961, b: 0.09411765, a: 1}
   levelLots:
   - {fileID: 11400000, guid: 716dcf8845b368a4285c76e4c4abb1df, type: 2}
   - {fileID: 11400000, guid: a786693b2034f0e43bef8eee931695b3, type: 2}
