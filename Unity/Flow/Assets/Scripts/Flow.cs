@@ -41,7 +41,7 @@ public class Flow
     {
         disconfirmTiles();
         //If its a flow point, we set it as first
-		if (tile.getType() == GameBox.BoxType.FlowPoint)
+		if (tile.getBoxType() == GameBox.BoxType.FlowPoint)
 		{
             //If there is already a path created in other flow point, we clear it
             if(_tiles.First != null)
@@ -76,7 +76,7 @@ public class Flow
         GameBox tile = tileNode.Value;
 
         tile.setNode(null);
-        if (tile.getType() != GameBox.BoxType.FlowPoint) _boardManager.updatePipesNumber(-1);
+        if (tile.getBoxType() != GameBox.BoxType.FlowPoint) _boardManager.updatePipesNumber(-1);
         _tiles.Remove(tileNode);
 
         while (tileNextNodeAux != null)
@@ -87,9 +87,9 @@ public class Flow
 
             tile.setPathActive(false);
             //If its a flow point, we keep the reference of Flow
-            tile.setFlow((tile.getType() == GameBox.BoxType.FlowPoint) ? this : null);
+            tile.setFlow((tile.getBoxType() == GameBox.BoxType.FlowPoint) ? this : null);
             tile.setNode(null);
-            if (tile.getType() != GameBox.BoxType.FlowPoint) _boardManager.updatePipesNumber(-1);
+            if (tile.getBoxType() != GameBox.BoxType.FlowPoint) _boardManager.updatePipesNumber(-1);
             _tiles.Remove(tileNode);
         }
     }
@@ -108,13 +108,13 @@ public class Flow
             //First check with one of the components of direction
             GameBox auxGB = _boardManager.getBoard()[lastInputRowCol.x + direction.y, lastInputRowCol.y].GetComponent<GameBox>();
             Vector2Int auxDir = new Vector2Int(0, direction.y);
-            bool valid = (auxGB.getType() == GameBox.BoxType.Empty && auxGB.isValidDir(direction));
+            bool valid = (auxGB.getBoxType() == GameBox.BoxType.Empty && auxGB.isValidDir(direction));
             //If not valid, we try again in another direction (with the other component of direction)
             if (!valid)
             {
                 auxGB = _boardManager.getBoard()[lastInputRowCol.x, lastInputRowCol.y + direction.x].GetComponent<GameBox>();
                 auxDir = new Vector2Int(direction.x, 0);
-                valid = (auxGB.getType() == GameBox.BoxType.Empty && auxGB.isValidDir(direction));
+                valid = (auxGB.getBoxType() == GameBox.BoxType.Empty && auxGB.isValidDir(direction));
             }
 
             if (valid)
@@ -146,7 +146,7 @@ public class Flow
     {
         newFlow.setFlow(this);
         newFlow.setNode(_tiles.AddLast(newFlow));
-        if (newFlow.getType() != GameBox.BoxType.FlowPoint) _boardManager.updatePipesNumber(1);
+        if (newFlow.getBoxType() != GameBox.BoxType.FlowPoint) _boardManager.updatePipesNumber(1);
         newFlow.setPathColor(_flowColor);
         newFlow.setPathFrom(dir);
     }
@@ -186,7 +186,7 @@ public class Flow
             else
             {
                 //And its a flow point
-                if (tile.getType() == GameBox.BoxType.FlowPoint)
+                if (tile.getBoxType() == GameBox.BoxType.FlowPoint)
                 {
                     success = false;
                 }
@@ -266,7 +266,7 @@ public class Flow
         saveLastConfirmedTiles();
 
         if(_confirmedTiles.Count>0)
-            _connected = _confirmedTiles.Last.Value.getType()==GameBox.BoxType.FlowPoint;
+            _connected = _confirmedTiles.Last.Value.getBoxType()==GameBox.BoxType.FlowPoint;
         if (_connected)
         {
             _boardManager.updateFlowsConnected(1);
@@ -315,9 +315,9 @@ public class Flow
             GameBox tile = tileNode.Value;
             tile.setPathActive(false);
             //If its a flow point, we keep the reference of Flow
-			tile.setFlow((tile.getType()==GameBox.BoxType.FlowPoint) ? this : null);
+			tile.setFlow((tile.getBoxType()==GameBox.BoxType.FlowPoint) ? this : null);
             tile.setNode(null);
-            if (tile.getType() != GameBox.BoxType.FlowPoint) _boardManager.updatePipesNumber(-1);
+            if (tile.getBoxType() != GameBox.BoxType.FlowPoint) _boardManager.updatePipesNumber(-1);
             LinkedListNode<GameBox> tileNextNodeAux = tileNode.Next;
             _tiles.Remove(tileNode);
 
@@ -342,7 +342,7 @@ public class Flow
             GameBox tile = tileNode.Value;
             if (tile.getFlow() != null && tile.getFlow() != this) break;
             tile.setNode(_tiles.AddLast(tile));
-            if (tile.getType() != GameBox.BoxType.FlowPoint) _boardManager.updatePipesNumber(1);
+            if (tile.getBoxType() != GameBox.BoxType.FlowPoint) _boardManager.updatePipesNumber(1);
             tile.setFlow(tile.getConfirmedFlow());
             tile.setPathActive(true);
             tile.setPathColor(tile.getColor());

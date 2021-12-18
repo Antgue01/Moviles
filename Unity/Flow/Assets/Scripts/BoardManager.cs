@@ -114,7 +114,7 @@ public class BoardManager : MonoBehaviour
                 GameBox currentGameBox = currentTile.GetComponent<GameBox>();
                 GameBox lastGameBox = _lastPressed.GetComponent<GameBox>();
 
-                GameBox.BoxType currentType = currentGameBox.getType();
+                GameBox.BoxType currentType = currentGameBox.getBoxType();
 
                 if (currentType == GameBox.BoxType.Empty || currentType == GameBox.BoxType.FlowPoint)
                 {
@@ -289,11 +289,11 @@ public class BoardManager : MonoBehaviour
                     _board[row, col] = go;
                 }
             }
-            createFlowPoints();
-            checkHollows();
+            createFlowPoints();            
             checkWalls();
             //checkBridges();
             checkPlusB();
+            checkHollows();
         }
 
     }
@@ -360,15 +360,95 @@ public class BoardManager : MonoBehaviour
 
     private void checkHollows()
     {
+        int lastTileRow = 0, lastTileCol = 0, currentTileRow = 0, currentTileCol = 0;
+
         if (_map.getHollows() != null)
+        {
             for (int x = 0; x < _map.getHollows().Length; x++)
             {
-                int tileRow = _map.getHollows()[x] / _map.getCols();
-                int tileCol = _map.getHollows()[x] % _map.getCols();
-                GameBox gb = _board[tileRow, tileCol].GetComponent<GameBox>();
-                gb.setType(GameBox.BoxType.Hollow);
-                gb.setActiveAllWalls(true);
+                currentTileRow = _map.getHollows()[x] / _map.getCols();
+                currentTileCol = _map.getHollows()[x] % _map.getCols();
+                GameBox currentTile = _board[currentTileRow, currentTileCol].GetComponent<GameBox>();
+                currentTile.setType(GameBox.BoxType.Hollow);
+                currentTile.setActiveAllWalls(true);
+
+                //Check external walls
+                if (_map.getPlusB())
+                {
+                    if (currentTileCol == 0) currentTile.setWallLeftActive(false);
+                    else if (currentTileCol == _map.getCols() - 1) currentTile.setWallRightActive(false);
+
+                    if (currentTileRow == 0) currentTile.setWallUpActive(false);
+                    else if (currentTileRow == _map.getRows() - 1) currentTile.setWallDownActive(false);
+                }
             }
+
+            for (int x = 0; x < _map.getHollows().Length; x++)
+            {
+                currentTileRow = _map.getHollows()[x] / _map.getCols();
+                currentTileCol = _map.getHollows()[x] % _map.getCols();
+                GameBox currentTile = _board[currentTileRow, currentTileCol].GetComponent<GameBox>();
+
+                //Check other hollows   
+                //Check right hollow
+                int auxRow, auxCol;
+                GameBox auxTile;
+                if (currentTileCol < _map.getCols() - 1)
+                {
+                    auxRow = currentTileRow;
+                    auxCol = currentTileCol + 1;
+                    auxTile = _board[auxRow, auxCol].GetComponent<GameBox>();
+                    if (auxTile.getBoxType() == GameBox.BoxType.Hollow)  //Current in the left of the last
+                    {
+                        currentTile.setWallRightActive(false);
+                        auxTile.setWallLeftActive(false);
+                    }
+                }
+               
+
+                if(currentTileCol > 0)
+                {
+                    //Check left hollow
+                    auxRow = currentTileRow;
+                    auxCol = currentTileCol - 1;
+                    auxTile = _board[auxRow, auxCol].GetComponent<GameBox>();
+                    if (auxTile.getBoxType() == GameBox.BoxType.Hollow)  //Current in the right of the last
+                    {
+                        currentTile.setWallLeftActive(false);
+                        auxTile.setWallRightActive(false);
+                    }
+                }
+               
+                if(currentTileRow > 0)
+                {
+                    //Check up hollow
+                    auxRow = currentTileRow - 1;
+                    auxCol = currentTileCol;
+                    auxTile = _board[auxRow, auxCol].GetComponent<GameBox>();
+                    if (auxTile.getBoxType() == GameBox.BoxType.Hollow)  //Current in the down of the last
+                    {
+                        currentTile.setWallUpActive(false);
+                        auxTile.setWallDownActive(false);
+                    }
+                }
+               
+                if(currentTileRow < _map.getRows() - 1)
+                {
+                    //Check down hollow
+                    auxRow = currentTileRow + 1;
+                    auxCol = currentTileCol;
+                     auxTile = _board[auxRow, auxCol].GetComponent<GameBox>();
+                    if (auxTile.getBoxType() == GameBox.BoxType.Hollow) //Current in the up of the last
+                    {
+                        currentTile.setWallDownActive(false);
+                        auxTile.setWallUpActive(false);
+                    }
+                }                
+                
+            }
+        }
+
+        
     }
 
     private void checkWalls()

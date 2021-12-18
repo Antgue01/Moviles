@@ -17,7 +17,7 @@ public class GameBox : MonoBehaviour
     {
         _myConfirmedNode = confirmedNode;
     }
-    public BoxType getType()
+    public BoxType getBoxType()
     {
         return _type;
     }
