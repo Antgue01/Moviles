@@ -360,7 +360,7 @@ public class BoardManager : MonoBehaviour
 
     private void checkHollows()
     {
-        int lastTileRow = 0, lastTileCol = 0, currentTileRow = 0, currentTileCol = 0;
+        int currentTileRow = 0, currentTileCol = 0;
 
         if (_map.getHollows() != null)
         {
@@ -371,6 +371,8 @@ public class BoardManager : MonoBehaviour
                 GameBox currentTile = _board[currentTileRow, currentTileCol].GetComponent<GameBox>();
                 currentTile.setType(GameBox.BoxType.Hollow);
                 currentTile.setActiveAllWalls(true);
+
+                _board[currentTileRow, currentTileCol].GetComponent<SpriteRenderer>().enabled = false;
 
                 //Check external walls
                 if (_map.getPlusB())

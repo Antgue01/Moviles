@@ -24,6 +24,8 @@ RETOQUES:
 HECHO** Hacer más gorda la línea de los muros hasta que ocupe lo mismo que el grid
 HECHO** Retocar grid para que sea menos visible (más fina y reducir alfa)
 HECHO** Color de los muros
+HECHO** Hacer que los muros que no sean necesario pintar no se pinten (huecos juntos, por ejemplo)
+HECHO** Quitar border de huecos
 
 ANTONIO-----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -45,7 +47,7 @@ HECHO** Color del texto de la ui de niveles que sea del mismo color que la secci
 
 TODO -----------------------------------------------------------------------------------------------------------------------------------------
 
-** Hacer que los muros que no sean necesario pintar no se pinten (huecos juntos, por ejemplo)
+
 **probar que con menos colores en el scriptable funcione
 **quitar métodos innecesarios de los anuncios
 ** Probar todo en Android
