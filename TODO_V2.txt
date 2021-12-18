@@ -46,7 +46,8 @@ HECHO** Color del texto de la ui de niveles que sea del mismo color que la secci
 TODO -----------------------------------------------------------------------------------------------------------------------------------------
 
 ** Hacer que los muros que no sean necesario pintar no se pinten (huecos juntos, por ejemplo)
-
+**probar que con menos colores en el scriptable funcione
+**quitar métodos innecesarios de los anuncios
 ** Probar todo en Android
 	- Resoluciones
 	- Progreso
