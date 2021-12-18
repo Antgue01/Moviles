@@ -29,9 +29,9 @@ public class GameBox : MonoBehaviour
     public void setColor(Color c)
     {
 
-        _figureImage.GetComponent<SpriteRenderer>().color = c;
-        _animImage.GetComponent<SpriteRenderer>().color = c;
-        _pathImage.GetComponent<SpriteRenderer>().color = c;
+        _figureImage.color = c;
+        _animImage.color = c;
+        _pathImage.color = c;
         setBackgroundColor(c);
     }
 
@@ -44,12 +44,12 @@ public class GameBox : MonoBehaviour
     public void setPathColor(Color c)
     {
 
-        _pathImage.GetComponent<SpriteRenderer>().color = c;
+        _pathImage.color = c;
     }
 
     public Color getPathColor()
     {
-        return _pathImage.GetComponent<SpriteRenderer>().color;
+        return _pathImage.color;
     }
 
     public void setFlowDir(Vector2Int dir)
@@ -74,36 +74,36 @@ public class GameBox : MonoBehaviour
 
     public void setBackgroundActive(bool b)
     {
-        _backgroundImage.SetActive(b);
+        _backgroundImage.enabled = b;
     }
     public void setPathActive(bool b)
     {
-        _pathImage.SetActive(b);
+        _pathImage.enabled = b;
     }
 
     public void setStarActive(bool b)
     {
-        _starImage.SetActive(b);
+        _starImage.enabled = b;
     }
 
     public void setWallLeftActive(bool b)
     {
-        _wallLeft.SetActive(b);
+        _wallLeft.enabled = b;
     }
 
     public void setWallRightActive(bool b)
     {
-        _wallRight.SetActive(b);
+        _wallRight.enabled = b;
     }
 
     public void setWallUpActive(bool b)
     {
-        _wallUp.SetActive(b);
+        _wallUp.enabled = b;
     }
 
     public void setWallDownActive(bool b)
     {
-        _wallDown.SetActive(b);
+        _wallDown.enabled = b;
     }
 
     public void initWallDirsAndColor()
@@ -118,10 +118,10 @@ public class GameBox : MonoBehaviour
         _sectionColor.g += _wallColorDelta;
         _sectionColor.b += _wallColorDelta;
 
-        _wallLeft.GetComponent<SpriteRenderer>().color = _sectionColor;
-        _wallRight.GetComponent<SpriteRenderer>().color = _sectionColor;
-        _wallUp.GetComponent<SpriteRenderer>().color = _sectionColor;
-        _wallDown.GetComponent<SpriteRenderer>().color = _sectionColor;
+        _wallLeft.color = _sectionColor;
+        _wallRight.color = _sectionColor;
+        _wallUp.color = _sectionColor;
+        _wallDown.color = _sectionColor;
     }
 
     public bool isValidDir(Vector2Int dir)
@@ -140,26 +140,26 @@ public class GameBox : MonoBehaviour
                 break;
             case Vector2Int v when v.Equals(Vector2Int.down):
                 isValid = _validDirs[3];
-                break;     
+                break;
         }
         return isValid;
     }
 
     public void setInvalidDir(int tileDiff)
     {
-        if(tileDiff == -1) //We are goint to the Left Game Box
+        if (tileDiff == -1) //We are goint to the Left Game Box
         {
-            _validDirs[0] = false;            
+            _validDirs[0] = false;
         }
-        else if(tileDiff == 1) //We are goint to the Right Game Box
+        else if (tileDiff == 1) //We are goint to the Right Game Box
         {
             _validDirs[1] = false;
         }
-        else if(tileDiff < - 1) //We are goint to the Up Game Box
+        else if (tileDiff < -1) //We are goint to the Up Game Box
         {
             _validDirs[2] = false;
         }
-        else if(tileDiff > 1) //We are goint to the Down Game Box
+        else if (tileDiff > 1) //We are goint to the Down Game Box
         {
             _validDirs[3] = false;
         }
@@ -169,46 +169,46 @@ public class GameBox : MonoBehaviour
     {
         if (tileDiff == -1) //Left Wall
         {
-            _wallLeft.SetActive(true);
+            _wallLeft.enabled = true;
         }
         else if (tileDiff == 1) //Right Wall
         {
-            _wallRight.SetActive(true);
+            _wallRight.enabled = true;
         }
         else if (tileDiff < -1) //Up wall
         {
-            _wallUp.SetActive(true);
+            _wallUp.enabled = true;
         }
         else if (tileDiff > 1) //Down Wall
         {
-            _wallDown.SetActive(true);
+            _wallDown.enabled = true;
         }
     }
 
     public void setActiveAllWalls(bool b)
     {
-        _wallLeft.SetActive(b);
-        _wallRight.SetActive(b);
-        _wallUp.SetActive(b);
-        _wallDown.SetActive(b);
+        _wallLeft.enabled = b;
+        _wallRight.enabled = b;
+        _wallUp.enabled = b;
+        _wallDown.enabled = b;
     }
 
     public void setFigureSprite(Sprite s)
     {
         if (s == null)
         {
-            _figureImage.SetActive(false);
-            _animImage.SetActive(false);
+            _figureImage.enabled = false;
+            _animImage.enabled = false;
         }
         else
         {
-            if (!_animImage.activeSelf)
-                _animImage.SetActive(true);
-            _animImage.GetComponent<SpriteRenderer>().sprite = s;
+            if (!_animImage.enabled)
+                _animImage.enabled = true;
+            _animImage.sprite = s;
 
-            if (!_figureImage.activeSelf)
-                _figureImage.SetActive(true);
-            _figureImage.GetComponent<SpriteRenderer>().sprite = s;
+            if (!_figureImage.enabled)
+                _figureImage.enabled = true;
+            _figureImage.sprite = s;
 
         }
     }
@@ -229,9 +229,9 @@ public class GameBox : MonoBehaviour
     }
 
     public void confirmFlow()
-	{
+    {
         _confirmedFlow = _flow;
-	}
+    }
 
     public void disconfirmFlow()
     {
@@ -240,11 +240,11 @@ public class GameBox : MonoBehaviour
 
     public bool getPathActive()
     {
-        return _pathImage.activeSelf;
+        return _pathImage.enabled;
     }
     public bool getStarActive()
     {
-        return _starImage.activeSelf;
+        return _starImage.enabled;
     }
 
 
@@ -281,18 +281,18 @@ public class GameBox : MonoBehaviour
     public void setBackgroundColor(Color c)
     {
         c.a -= bgColorReduction;
-        _backgroundImage.GetComponent<SpriteRenderer>().color = c;
+        _backgroundImage.color = c;
     }
 
     public void setNode(LinkedListNode<GameBox> node)
-	{
+    {
         _myNode = node;
     }
 
     public void setConfirmednode(LinkedListNode<GameBox> node)
-	{
+    {
         _myConfirmedNode = node;
-	}
+    }
 
     public LinkedListNode<GameBox> getNode()
     {
@@ -322,15 +322,15 @@ public class GameBox : MonoBehaviour
     private Color _sectionColor;
     const float bgColorReduction = .35f;
 
-    [SerializeField] private GameObject _backgroundImage;
-    [SerializeField] private GameObject _starImage;
-    [SerializeField] private GameObject _wallLeft;
-    [SerializeField] private GameObject _wallRight;
-    [SerializeField] private GameObject _wallUp;
-    [SerializeField] private GameObject _wallDown;
-    [SerializeField] private GameObject _figureImage;
-    [SerializeField] private GameObject _pathImage;
-    [SerializeField] private GameObject _animImage;
+    [SerializeField] private SpriteRenderer _backgroundImage;
+    [SerializeField] private SpriteRenderer _starImage;
+    [SerializeField] private SpriteRenderer _wallLeft;
+    [SerializeField] private SpriteRenderer _wallRight;
+    [SerializeField] private SpriteRenderer _wallUp;
+    [SerializeField] private SpriteRenderer _wallDown;
+    [SerializeField] private SpriteRenderer _figureImage;
+    [SerializeField] private SpriteRenderer _pathImage;
+    [SerializeField] private SpriteRenderer _animImage;
     [SerializeField] private float _wallColorDelta = 0.2f;
 }
 
