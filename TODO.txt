@@ -1,0 +1,54 @@
+MARCO-----------------------------------------------------------------------------------------------------------------------------------------
+HECHO** Menu final partida y menu hints  
+HECHO** Terminar partida y actualizar UI con la partida
+HECHO** Previous y next level (comprobar que se borra y se pinta bien el nuevo)
+HECHO** Arreglar reset the map, aparentemente se limpian bien los gamebox pero se quedan residuos
+
+** Pistas: 
+	-HECHO**pintar estrellas al pedir pista
+	-HECHO**si se corta quitar estrellas
+	-HECHO**si se vuelve a unir volver a poner estrellas pero SOLO si es el camino que mostró la pista
+	-HECHO** Botón UI de juego que muestre un Submenú de pregunta sobre si quiere ver el vídeo y añadir pista
+	-HECHO** Al utilizar pista algunos tiles dan null reference al cortarlos
+HECHO** No aplicar hint a un flow que esté hecho correctamente
+
+HECHO** Arreglar que no se salga del array al darle a los botones next / previous
+HECHO** Arreglar que cuando se le de un click a un menu de la escena game se desactive el input hasta que se cierre
+HECHO** Botones de next y previous se tienen que poner grises ("desactivados") cuando no puedan hacer nada
+** +B de los mapas (muros exteriores)
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+
+ANTONIO-----------------------------------------------------------------------------------------------------------------------------------------
+** Anuncios
+	- Parte inferior que haya un anuncio del servidor de Unity
+
+HECHO(?)** Bloquear portrait (cambio de horizontal a vertican en el móvil)
+HECHO** Hacer que se reproduzca vídeo cuando se le da a YES en el menú de gethints
+** Desbloquear todos los niveles o según progreso y comprobar que funcione bien en la escena (que le doy a un nivel bloqueado y no juega y si le doy a uno que no está bloqueado si juega)
+HECHO** Arreglar UI de seleccionar niveles
+** Probar progeso (que se guarda y se carga bien los datos del json)
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+
+WILL--------------------------------------------------------------------------------------------------------------------------------------
+HECHO** Escalar bien GRID (checkear resoluciones cuadradas)
+HECHO** Hacer que no sume movimiento cuando se mueve un flow diferente al anterior pero se deja en el mismo sitio
+HECHO** Arreglar que cuando se corta un flow por segunda vez le suma 2 movimientos en vez de 1
+HECHO** Arreglar pipe para que sume cuando se ocupa una celda
+HECHO** Menú principal
+** Botones de volver atrás en la escena (implementar acción)
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+
+TODO -----------------------------------------------------------------------------------------------------------------------------------------
+
+** Muros y después Huecos
+** Resoluciones cuadradas funcionales para el resto de escenas, (En la primera hacer scroll vertical bien)
+
+
+
+
+
+
+

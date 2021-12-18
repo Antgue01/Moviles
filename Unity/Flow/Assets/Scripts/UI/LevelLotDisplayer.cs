@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class LevelLotDisplayer : MonoBehaviour
-
 {
 
     private void Start()
@@ -21,28 +20,20 @@ public class LevelLotDisplayer : MonoBehaviour
         string[] levels = lvlLot.LevelLotFile.ToString().Split(separators, System.StringSplitOptions.RemoveEmptyEntries);
         int numLevels = levels.Length;
         int numPages = numLevels / levelsPerPage;
-        float w = 0;
-        RectTransform levelTransform = null;
-        for (int i = 0; i < numPages; i++)
+        float w = Camera.main.aspect * Camera.main.orthographicSize * 2;
+        int i = 0;
+        for (; i < numPages; i++)
         {
-            Vector3 pos = new Vector3( i * _canvasTransform.rect.width/5+ _startPoint.anchoredPosition.x/5,
-                _startPoint.anchoredPosition.y/5, 0);
-            GameObject levelGridObject = Instantiate<GameObject>(_levelPagePrefab, pos, _scroll.rotation, _scroll);
+            GameObject levelGridObject = Instantiate(_levelPagePrefab, _contentTransform.transform);
             LevelDisplayer lvlDisplayer = levelGridObject.GetComponent<LevelDisplayer>();
-            lvlDisplayer.Display(lvlLot,section, i,levelsPerPage);
-            levelTransform = levelGridObject.GetComponent<RectTransform>();
-            levelTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _scroll.rect.width);
-            levelTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, _scroll.rect.height);
-            w += _canvasTransform.rect.width;
+            lvlDisplayer.Display(lvlLot, section, i, levelsPerPage);
         }
-        w -= _canvasTransform.rect.width - levelTransform.rect.width +_startPoint.anchoredPosition.x;
-        _scroll.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, w);
-        _scroll.Translate(Vector3.right * w );
+        _contentTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (_canvasTransform.rect.width + _levelPagePrefab.GetComponent<RectTransform>().rect.width * i));
+        _contentTransform.Translate(Vector3.left * _contentTransform.rect.x / 2);
     }
     [SerializeField] GameObject _levelPagePrefab;
-    [SerializeField] RectTransform _canvasTransform;
     [SerializeField] Text _sectionName;
-    [SerializeField] RectTransform _scroll;
-    [SerializeField] RectTransform _startPoint;
-   public const int levelsPerPage= 30;
+    [SerializeField] RectTransform _canvasTransform;
+    [SerializeField] RectTransform _contentTransform;
+    public const int levelsPerPage = 30;
 }

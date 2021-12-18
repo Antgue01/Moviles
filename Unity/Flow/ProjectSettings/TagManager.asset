@@ -41,3 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: SubMenu
+    uniqueID: 1367050105
+    locked: 0
+  - name: Grid
+    uniqueID: 424404353
+    locked: 0

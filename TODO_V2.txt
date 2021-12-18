@@ -1,0 +1,57 @@
+MARCO ------------------------------------------------------------------------------------------------------------------------------------------
+HECHO** Solucionar porque el video da 47 millones de pistas en vez de 1
+HECHO** +B de los mapas (muros exteriores)
+
+**HECHO Muros
+**HECHOPasos para +B y Muros
+	-HECHO**Paso 1: Arreglar parser
+	-HECHO**Paso 2: Arreglar map
+	-HECHO**Paso 3: Modificar estructuras para tratamiento de muros
+	-HECHO**Paso 4: Determinar los muros que se tienen que pintar en cada gamebox (cuidado! puede tener muchos muros en muchisimas diferentes posiciones)
+	-HECHO**Paso 5: Muros compartidos solo los debe pintar 1 gamebox
+	-HECHO**Paso 6: Añadir restricciones: poner direcciones invalidas en cada gamebox
+			- Direcciones invalidas: listas de direcciones inválidas: Habría que recorrer la lista para preguntar por cada dirección
+			- Direcciones inválidas en game box: array de bools, habría que swapear entre dirección y bool pero no habría recorrido
+
+	-HECHO**Paso 5: Refactorizar movimientos para tener en cuenta los muros
+	-HECHO**Paso 6: Si tiene el +B pintar en los cuadros exteriores los muros
+
+**HECHO Huecos (habiendo hecho los muros)
+	-HECHO**Paso 1: Marcar gamebox como hollow
+	-HECHO**Paso 2: Calcular qué partes de los muros debe pintar (los compartidos solo los debe pintar 1)
+	
+RETOQUES:
+HECHO** Hacer más gorda la línea de los muros hasta que ocupe lo mismo que el grid
+HECHO** Retocar grid para que sea menos visible (más fina y reducir alfa)
+HECHO** Color de los muros
+HECHO** Hacer que los muros que no sean necesario pintar no se pinten (huecos juntos, por ejemplo)
+HECHO** Quitar border de huecos
+
+ANTONIO-----------------------------------------------------------------------------------------------------------------------------------------
+
+
+HECHO** Parte inferior que haya un anuncio del servidor de Unity
+HECHO**quitar métodos innecesarios de los anuncios
+HECHO** Escena de selección de nivel a veces se quedan blancos
+HECHO** Escena de selección de nivel poner estrellita a los niveles que se han hecho perfectos
+HECHO
+** Probar todo en Android
+	- Resoluciones
+	- Progreso
+	- Anuncios
+	- Botones
+
+
+WILL--------------------------------------------------------------------------------------------------------------------------------------
+HECHO** Resoluciones cuadradas funcionales para TODAS las escenas
+HECHO** Escena de selección de nivel: Al cambiar de resolución se ajusta bien
+HECHO** Que funcione las escenas de forma independiente con las opciones de debug
+HECHO** Que el texto de cada nivel se ponga al color correspondiente
+HECHO**Arreglar 10x10 mania por problema de parser
+HECHO** Color del texto de la ui de niveles que sea del mismo color que la sección
+HECHO** Probar que con menos colores en el scriptable funcione
+
+TODO -----------------------------------------------------------------------------------------------------------------------------------------
+
+COMENTAR EL CÓDIGO
+	
