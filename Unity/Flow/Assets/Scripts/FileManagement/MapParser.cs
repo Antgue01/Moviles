@@ -1,15 +1,14 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using UnityEngine;
 
-//Maps with hollows: 0-29
-//Map with walls:  30 - 59
 public class MapParser
 {    
+    /// <summary>
+    /// Create and fills a Map instance from a string wich represents a map
+    /// </summary>
+    /// <param name="codeMap">Map representation</param>
+    /// <returns></returns>
     public Map createLevelMap(string codeMap)
     {
-        //Map map = new global::Map();
         Map map = new Map();
         string[] separator = { ";" };
         string[] data = codeMap.Split(separator, System.StringSplitOptions.RemoveEmptyEntries);        
