@@ -157,6 +157,7 @@ public class Flow
     /// <returns>true if success</returns>
     public bool addTile(GameBox tile, Vector2Int lastInputRowCol, Vector2Int direction)
     {
+        if (direction.x > 1 || direction.y > 1 || direction.x < -1 || direction.y < -1) return false;
         bool success;
         //No flow assigned yet
 		if (tile.getFlow() == null)
