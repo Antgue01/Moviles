@@ -12,6 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 951979a9bb052cb46a282c9f6f7c0cad, type: 3}
   m_Name: HourglassPack
   m_EditorClassIdentifier: 
+  behaviour: 1
+  colors:
+  - {r: 1, g: 0.4317265, b: 0, a: 1}
+  - {r: 0.5283019, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0.3301887, b: 0.058617234, a: 1}
+  - {r: 0.007847228, g: 0, b: 0.4056604, a: 1}
+  - {r: 0.7924528, g: 0.76829267, b: 0, a: 1}
+  pagesTexts:
+  - 9x11
+  - 9x12
+  - 11x13
+  - 11x14
+  - 13x15
   LevelLotName: Hourglass Pack
   LevelLotFile: {fileID: 4900000, guid: 485b39efeaed21948bf385a00f0da2de, type: 3}
   UnlockAll: 1

@@ -103,8 +103,8 @@ public class LevelVisuals : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
         _bg.color = Color.white;
         _number.color = Color.black;
         _lock.color = Color.white;
-        _tick.color = new Color();
-        _star.color = _starColorOnPressed;
+        _tick.color = _completedColorOnPressed;
+        _star.color = _completedColorOnPressed;
     }
     Color _bgColor;
     Color _borderColor;
@@ -118,5 +118,5 @@ public class LevelVisuals : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     [SerializeField] Image _lock;
     [SerializeField] Image _star;
     [SerializeField] Text _number;
-    [SerializeField] Color _starColorOnPressed;
+    [SerializeField] Color _completedColorOnPressed;
 }

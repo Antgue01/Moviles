@@ -29,7 +29,6 @@ public class AdManager
     }
     public void showBanner()
     {
-        Debug.Log("SHOW BANNER ESTA AQUI");
         BannerOptions options = new BannerOptions
         {
             clickCallback = OnBannerClicked,
@@ -41,29 +40,24 @@ public class AdManager
 
     private void OnBannerShown()
     {
-        Debug.Log("ON BANNER SHOW");
     }
 
     private void OnBannerHidden()
     {
-        Debug.Log("ON BANNER HIDDEN");
     }
 
     private void OnBannerClicked()
     {
-        Debug.Log("ON BANNER CLICKED");
 
     }
 
     void onBannerError(string err)
     {
-        Debug.Log("BANNER ERROR");
 
         Debug.Log(err);
     }
     void onBannerLoaded()
     {
-        Debug.Log("ON BANNER LOADED");
 
         showBanner();
     }

@@ -12,6 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 951979a9bb052cb46a282c9f6f7c0cad, type: 3}
   m_Name: RectanglePack
   m_EditorClassIdentifier: 
+  behaviour: 1
+  colors:
+  - {r: 1, g: 0.4317265, b: 0, a: 1}
+  - {r: 0.5283019, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0.3301887, b: 0.058617234, a: 1}
+  - {r: 0.007847228, g: 0, b: 0.4056604, a: 1}
+  - {r: 0.7924528, g: 0.76829267, b: 0, a: 1}
+  pagesTexts:
+  - 8x10
+  - 9x11
+  - 10x12
+  - 11x13
+  - 12x14
   LevelLotName: Rectangle Pack
   LevelLotFile: {fileID: 4900000, guid: ca52f2ed5cd92e14a914b984d0f59ebf, type: 3}
   UnlockAll: 1

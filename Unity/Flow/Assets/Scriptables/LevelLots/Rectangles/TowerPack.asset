@@ -12,6 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 951979a9bb052cb46a282c9f6f7c0cad, type: 3}
   m_Name: TowerPack
   m_EditorClassIdentifier: 
+  behaviour: 2
+  colors:
+  - {r: 0, g: 0.9433962, b: 0.034763, a: 1}
+  - {r: 0.4528302, g: 0, b: 0, a: 1}
+  - {r: 1, g: 0.9583559, b: 0, a: 1}
+  - {r: 0.8773585, g: 0.559445, b: 0.3674973, a: 1}
+  - {r: 0.2264151, g: 0.06531204, b: 0, a: 1}
+  - {r: 1, g: 0.27372342, b: 0, a: 1}
+  pagesTexts:
+  - 5x6 - 5x11
+  - 6x7 - 6x12
+  - 7x8 - 7x13
+  - 8x9 - 8x14
+  - 9x10 - 9x15
   LevelLotName: Tower Pack
   LevelLotFile: {fileID: 4900000, guid: ec3732a3e342bdf428642a463cf666bc, type: 3}
   UnlockAll: 1

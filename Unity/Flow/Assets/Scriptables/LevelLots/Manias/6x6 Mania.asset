@@ -12,5 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 951979a9bb052cb46a282c9f6f7c0cad, type: 3}
   m_Name: 6x6 Mania
   m_EditorClassIdentifier: 
+  behaviour: 0
+  colors: []
+  pagesTexts:
+  - 1 - 30
+  - 31 - 60
+  - 61 - 90
+  - 91 - 120
+  - 121 - 150
   LevelLotName: 6x6 Mania
   LevelLotFile: {fileID: 4900000, guid: 1675d3520a4dfb84d85cf9d8398d999c, type: 3}
+  UnlockAll: 0
