@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class GameBoxAnimController : MonoBehaviour
 {
-    private void Awake()
-    {
-        _animator = GetComponent<Animator>();
-    }
     public void grow()
     {
         _animator.Play("Grow");
@@ -16,5 +12,7 @@ public class GameBoxAnimController : MonoBehaviour
     {
         _animator.Play("GrowAndShrink");
     }
+
+    [SerializeField]
     Animator _animator;
 }

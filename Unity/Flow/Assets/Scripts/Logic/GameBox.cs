@@ -149,14 +149,9 @@ public class GameBox : MonoBehaviour
         if (s == null)
         {
             _figureImage.enabled = false;
-            _animImage.enabled = false;
         }
         else
         {
-            if (!_animImage.enabled)
-                _animImage.enabled = true;
-            _animImage.sprite = s;
-
             if (!_figureImage.enabled)
                 _figureImage.enabled = true;
             _figureImage.sprite = s;
@@ -220,6 +215,8 @@ public class GameBox : MonoBehaviour
 
     public LinkedListNode<GameBox> getConfirmedNode() { return _myConfirmedNode; }
 
+    public GameBoxAnimController getAnimController() { return _gbAnimController; }
+
     public void restore()
     {
         setBackgroundActive(false);
@@ -249,6 +246,7 @@ public class GameBox : MonoBehaviour
     [SerializeField] private SpriteRenderer _figureImage;
     [SerializeField] private SpriteRenderer _pathImage;
     [SerializeField] private SpriteRenderer _animImage;
+    [SerializeField] private GameBoxAnimController _gbAnimController;
     [SerializeField] private float _wallColorDelta = 0.2f;
 }
 

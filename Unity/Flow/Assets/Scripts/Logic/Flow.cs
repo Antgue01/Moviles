@@ -243,8 +243,7 @@ public class Flow
 
         if (_connected)
         {
-            _tiles.First.Value.gameObject.GetComponent<GameBoxAnimController>().grow();
-            _tiles.Last.Value.gameObject.GetComponent<GameBoxAnimController>().grow();
+            _tiles.Last.Value.getAnimController().grow();
             _boardManager.updateFlowsConnected(1);
             if (_hintUsedInThisFlow && flowHasCorrectPath())
             {

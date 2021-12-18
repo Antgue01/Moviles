@@ -19,9 +19,9 @@ public class BoardManager : MonoBehaviour
         if (_map != null && _flowsConnected == _map.getTotalFlows())
         {
             _levelDone = true;
-            foreach (GameObject StaticPoint in _flowPointsBox)
+            foreach (GameObject staticPoint in _flowPointsBox)
             {
-                StaticPoint.GetComponent<GameBoxAnimController>().grow();
+                staticPoint.GetComponent<GameBoxAnimController>().grow();
             }
             _levelManager.setLevelDone(true);
 
