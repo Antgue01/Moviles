@@ -29,28 +29,9 @@ public class AdManager
     }
     public void showBanner()
     {
-        BannerOptions options = new BannerOptions
-        {
-            clickCallback = OnBannerClicked,
-            hideCallback = OnBannerHidden,
-            showCallback = OnBannerShown
-        };
-        Advertisement.Banner.Show(_bannerId,options);
+        
+        Advertisement.Banner.Show(_bannerId);
     }
-
-    private void OnBannerShown()
-    {
-    }
-
-    private void OnBannerHidden()
-    {
-    }
-
-    private void OnBannerClicked()
-    {
-
-    }
-
     void onBannerError(string err)
     {
 

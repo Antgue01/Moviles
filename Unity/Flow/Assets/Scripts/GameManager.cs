@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
         else
         {
             _adManager = new AdManager();
-            _banner = new BannerAd(_secondsToNextAd);
+            _banner = new BannerAd();
             _adManager.init(_banner);
             instance = this;
             _saveData = new SaveDataManager();
