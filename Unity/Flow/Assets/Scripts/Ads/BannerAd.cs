@@ -7,10 +7,8 @@ public class BannerAd :IUnityAdsInitializationListener, IUnityAdsLoadListener
 
     public void OnInitializationComplete()
     {
-
         GameManager.instance.GetAdManager().setBannerPosition(BannerPosition.BOTTOM_CENTER);
         GameManager.instance.GetAdManager().loadBanner();
-
     }
 
     public void OnInitializationFailed(UnityAdsInitializationError error, string message)
