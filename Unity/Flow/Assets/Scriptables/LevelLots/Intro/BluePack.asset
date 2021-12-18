@@ -15,10 +15,6 @@ MonoBehaviour:
   behaviour: 1
   colors:
   - {r: 0, g: 0.1254902, b: 1, a: 1}
-  - {r: 0, g: 0.12409544, b: 1, a: 1}
-  - {r: 0, g: 0.1254902, b: 1, a: 1}
-  - {r: 0, g: 0.1254902, b: 1, a: 1}
-  - {r: 0, g: 0.1254902, b: 1, a: 1}
   pagesTexts:
   - 5x5 - Easy
   - 5x6
