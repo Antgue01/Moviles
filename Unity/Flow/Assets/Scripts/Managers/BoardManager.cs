@@ -79,12 +79,11 @@ public class BoardManager : MonoBehaviour
                 GameBox currentTile = getTileFromInput(inputPosition);
                 //Check if it is a valid Tile
                 if (currentTile == null) return;
-
-              
                 //Start dragging
                 else
                 {
                     _currentFlowSelected = currentTile.getFlow();
+                    if (_currentFlowSelected == null) return;
                     _pressed = true;
                     _lastPressed = currentTile;
                     _cursor.color = _currentFlowSelected.GetColor();
