@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7887969b6288a5d48aa85d07c7f2884e, type: 3}
+  m_Name: Autum
+  m_EditorClassIdentifier: 
+  skinName: Autum
+  colors:
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 0.4811321, g: 0.015432507, b: 0.015432507, a: 1}
+  - {r: 0.9433962, g: 0.40120208, b: 0.35065857, a: 1}
+  - {r: 0.7924528, g: 0.43659663, b: 0.5235109, a: 1}
+  - {r: 0.2264151, g: 0, b: 0, a: 1}
+  - {r: 0.4811321, g: 0.14549226, b: 0, a: 1}
+  - {r: 0.6037736, g: 0.17724824, b: 0.059238147, a: 1}
+  - {r: 1, g: 0.6516633, b: 0, a: 1}
+  - {r: 1, g: 0.83947116, b: 0, a: 1}
+  - {r: 0.6886792, g: 0.47822824, b: 0.15202916, a: 1}
+  - {r: 0.754717, g: 0.3963046, b: 0.109647535, a: 1}
+  - {r: 0.509434, g: 0.021146294, b: 0.20522974, a: 1}
+  - {r: 0.9339623, g: 0.8686659, b: 0.347152, a: 1}
+  - {r: 0.5943396, g: 0.15317646, b: 0, a: 1}
+  - {r: 1, g: 0.696952, b: 0.47547168, a: 1}
+  - {r: 1, g: 0.7816278, b: 0.645283, a: 1}

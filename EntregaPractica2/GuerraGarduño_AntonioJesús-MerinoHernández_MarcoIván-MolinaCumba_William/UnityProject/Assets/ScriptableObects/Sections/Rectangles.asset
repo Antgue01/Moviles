@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17dd25d6980d28a4289a420f97c86a5a, type: 3}
+  m_Name: Rectangles
+  m_EditorClassIdentifier: 
+  SectionName: Rectangles
+  themeColor: {r: 0.9843137, g: 0.5372549, b: 0, a: 1}
+  levelLots:
+  - {fileID: 11400000, guid: 21371537b305bee4aad75dbafce42b4b, type: 2}
+  - {fileID: 11400000, guid: c2799f4eee07f91428b73df80bdeefc2, type: 2}
+  - {fileID: 11400000, guid: 3182deb2008752542ae9dc684b77c150, type: 2}
