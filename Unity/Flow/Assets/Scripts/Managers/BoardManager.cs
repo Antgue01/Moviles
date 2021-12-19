@@ -222,6 +222,7 @@ public class BoardManager : MonoBehaviour
         _levelManager.setFlowsText(_flowsConnected, _map.getTotalFlows());
         _levelManager.setPipeText((int)_pipes);
         _levelManager.setMovementsText(_movements);
+        _levelManager.updateUIInfo();
     }
 
 	#endregion

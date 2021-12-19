@@ -20,8 +20,8 @@ public class LevelManager : MonoBehaviour
         {
             _map = _mapParser.createLevelMap(_lot[_currentLevel]);
             _boardManager.loadMap(_map);
+            updateUIInfo();
             AdjustGridToScreen();
-            updateButtonsInfo();
         }
 
         _isLevelDone = false;
@@ -32,7 +32,6 @@ public class LevelManager : MonoBehaviour
     #region UI INFO
     public void setLevelText()
     {
-        _levelText.color = GameManager.instance.getSelectedSection().themeColor;
         _levelText.text = "level " + (_currentLevel + 1);
     }
 
@@ -81,13 +80,23 @@ public class LevelManager : MonoBehaviour
         _hintText.text = _remainingHints + "X";
     }
 
-    private void updateButtonsInfo()
+    private void setLevelCompletedImage()
+	{
+        _levelCompletedImg.gameObject.SetActive(true);
+        _levelCompletedImg.sprite = (GameManager.instance.getIsPerfect(_currentLevel)) ? _starSprite : _tickSprite;
+	}
+
+    public void updateUIInfo()
     {
+        _levelText.color = GameManager.instance.getSelectedSection().themeColor;
         setLevelText();
         _bestMovements = GameManager.instance.getBestMoves(_currentLevel);
         setBestMovementsText();
         _remainingHints = GameManager.instance.getRemainingHints();
         setRemainingHintsText();
+        if (GameManager.instance.isLevelCompleted(_currentLevel))
+            setLevelCompletedImage();
+        else _levelCompletedImg.gameObject.SetActive(false);
         checkPreviousNextButtons();
     }
 
@@ -200,7 +209,7 @@ public class LevelManager : MonoBehaviour
             _currentLevel++;
             _map = _mapParser.createLevelMap(_lot[_currentLevel]);
             _boardManager.loadMap(_map);
-            updateButtonsInfo();
+            updateUIInfo();
             AdjustGridToScreen();
         }
     }
@@ -212,7 +221,7 @@ public class LevelManager : MonoBehaviour
             _currentLevel--;
             _map = _mapParser.createLevelMap(_lot[_currentLevel]);
             _boardManager.loadMap(_map);
-            updateButtonsInfo();
+            updateUIInfo();
             AdjustGridToScreen();
         }
     }
@@ -291,6 +300,9 @@ public class LevelManager : MonoBehaviour
     [SerializeField] Transform _grid;
     [Tooltip("Main Camera reference.")]
     [SerializeField] Camera _cam;
+    [SerializeField] Image _levelCompletedImg;
+    [SerializeField] Sprite _starSprite;
+    [SerializeField] Sprite _tickSprite;
 
     private MapParser _mapParser;
     Map _map;
